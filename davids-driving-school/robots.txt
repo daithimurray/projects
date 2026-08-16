@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+
+# TODO: add sitemap line once the domain is confirmed, e.g.
+# Sitemap: https://example.ie/sitemap.xml
