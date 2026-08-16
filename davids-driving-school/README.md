@@ -36,4 +36,6 @@ single delegated click listener; nothing is tracked until then (PRD §30).
 
 - `index.html` — the entire site: markup, inline CSS, JSON-LD. No JS
   required for any functionality (FAQ uses native `<details>`).
+  The display face (Petrona 600, SIL OFL) is embedded as a base64 woff2
+  latin subset, so the page stays a single zero-request file.
 - `robots.txt`
