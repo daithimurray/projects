@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en-IE">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Page Not Found | Liffey Accountancy</title>
+<meta name="robots" content="noindex">
+<link rel="stylesheet" href="styles.css">
+<script>document.documentElement.classList.add('js');</script>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to main content</a>
+
+<header class="site-header">
+  <div class="container header-inner">
+    <a class="brand" href="index.html">Liffey Accountancy</a>
+    <button class="nav-toggle" aria-expanded="false" aria-controls="site-nav">Menu</button>
+    <nav class="site-nav" id="site-nav" aria-label="Main">
+      <ul>
+        <li><a href="services.html">Services</a></li>
+        <li><a href="who-we-help.html">Who We Help</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="contact.html">Contact</a></li>
+        <li><a class="nav-tel" href="tel:+353000000000" data-cta="header-call">Call us</a></li>
+        <li><a class="nav-cta" href="contact.html" data-cta="header-consultation">Book a free consultation</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+  <div class="hero container">
+    <div class="hero-card">
+      <span class="section-label">Error 404</span>
+      <h1>That page is not here</h1>
+      <p class="lede">The page you were looking for does not exist or has moved. Fewer surprises is normally our whole thing — sorry about this one.</p>
+      <div class="cta-row mt-2">
+        <a class="btn btn-primary" href="index.html">Go to the homepage</a>
+        <a class="btn btn-secondary" href="contact.html">Contact us</a>
+      </div>
+      <p class="hero-local">Looking for something specific? Try <a href="services.html">Services</a>, <a href="who-we-help.html">Who We Help</a> or <a href="about.html">About</a>.</p>
+    </div>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="container footer-grid">
+    <div>
+      <h2>Liffey Accountancy</h2>
+      <p>Accounts, tax and business advice for businesses across North Kildare. Based in Maynooth, Co. Kildare.</p>
+      <p>Office hours: Monday&ndash;Friday, 09:00&ndash;17:30</p>
+    </div>
+    <div>
+      <h2>Explore</h2>
+      <ul>
+        <li><a href="services.html">Services</a></li>
+        <li><a href="who-we-help.html">Who We Help</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+    </div>
+    <div>
+      <h2>Contact</h2>
+      <ul>
+        <li><a href="tel:+353000000000" data-cta="footer-call">+353 00 000 0000</a></li>
+        <li><a href="mailto:hello@liffeyaccountancy.example" data-cta="footer-email">hello@liffeyaccountancy.example</a></li>
+        <li><a href="contact.html" data-cta="footer-consultation">Book a free consultation</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="container footer-bottom">
+    <span>&copy; 2026 Liffey Accountancy</span>
+    <span><a href="privacy.html">Privacy Notice</a> &middot; <a href="cookies.html">Cookie Notice</a></span>
+  </div>
+</footer>
+
+<script>
+(function () {
+  var toggle = document.querySelector('.nav-toggle');
+  var nav = document.getElementById('site-nav');
+  if (toggle && nav) {
+    toggle.addEventListener('click', function () {
+      var open = nav.classList.toggle('open');
+      toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+    });
+  }
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,290 @@
+<!doctype html>
+<html lang="en-IE">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex"><!-- staging deploy only: remove on the production domain -->
+<title>Book a Free Consultation — Accountants in Maynooth | Liffey Accountancy</title>
+<meta name="description" content="Tell us about your business. Book a free 20-minute consultation with Liffey Accountancy in Maynooth — no obligation. Call, email or send the form.">
+<!-- TODO before launch: set canonical + og:url once the domain is confirmed -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Liffey Accountancy">
+<meta property="og:title" content="Book a Free Consultation | Liffey Accountancy">
+<meta property="og:description" content="Tell us about your business. A free 20-minute introductory call — no obligation.">
+<link rel="stylesheet" href="styles.css">
+<script>document.documentElement.classList.add('js');</script>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to main content</a>
+
+<header class="site-header">
+  <div class="container header-inner">
+    <a class="brand" href="index.html">Liffey Accountancy</a>
+    <button class="nav-toggle" aria-expanded="false" aria-controls="site-nav">Menu</button>
+    <nav class="site-nav" id="site-nav" aria-label="Main">
+      <ul>
+        <li><a href="services.html">Services</a></li>
+        <li><a href="who-we-help.html">Who We Help</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="contact.html" aria-current="page">Contact</a></li>
+        <li><a class="nav-tel" href="tel:+353000000000" data-cta="header-call">Call us</a></li>
+        <li><a class="nav-cta" href="#consultation-form" data-cta="header-consultation">Book a free consultation</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+
+  <div class="hero container">
+    <div class="hero-card">
+      <span class="section-label">Contact</span>
+      <h1>Tell us about <span class="hl">your business</span></h1>
+      <p class="lede">Send the form, call, or email — whichever suits you. The first step is a free 20-minute introductory call, with no obligation.</p>
+    </div>
+  </div>
+
+  <section class="section" style="padding-top:0">
+    <div class="container split">
+
+      <div>
+        <span class="section-label">What happens next</span>
+        <h2>A simple, honest process</h2>
+        <ol class="steps">
+          <li>
+            <h3>You send the enquiry</h3>
+            <p>Use the form, call us, or email — whatever is easiest.</p>
+          </li>
+          <li>
+            <h3>We come back to you</h3>
+            <p>We contact you to arrange a time that suits.</p>
+          </li>
+          <li>
+            <h3>We hold a 20-minute introductory call</h3>
+            <p>We talk about your business, your current accounting support and any problems you want to solve.</p>
+          </li>
+          <li>
+            <h3>We both decide if it is a fit</h3>
+            <p>If it is, we agree the services and the monthly fee. If not, no harm done.</p>
+          </li>
+        </ol>
+
+        <div class="mt-2">
+          <h2 style="font-size:1.4rem">Contact details</h2>
+          <p>
+            <strong>Liffey Accountancy</strong><br>
+            Maynooth, Co. Kildare<br>
+            Phone: <a href="tel:+353000000000" data-cta="contact-call">+353 00 000 0000</a><br>
+            Email: <a href="mailto:hello@liffeyaccountancy.example" data-cta="contact-email">hello@liffeyaccountancy.example</a>
+          </p>
+          <p>Office hours:<br>Monday&ndash;Friday, 09:00&ndash;17:30</p>
+        </div>
+      </div>
+
+      <div>
+        <form class="form-card" id="consultation-form" method="post"
+              action="https://example.com/REPLACE-WITH-FORM-ENDPOINT" novalidate>
+          <!-- TODO before launch (blocking): point `action` at the chosen form service
+               or serverless endpoint (PRD §40, §57 Q11) and remove this comment. -->
+          <h2 style="font-size:1.5rem">Book a free consultation</h2>
+
+          <div class="form-grid">
+            <div class="field">
+              <label for="f-name">Name</label>
+              <input id="f-name" name="name" type="text" autocomplete="name" required aria-describedby="e-name">
+              <span class="error-msg" id="e-name">Please enter your name.</span>
+            </div>
+
+            <div class="field">
+              <label for="f-business">Business name <span class="optional">(optional)</span></label>
+              <input id="f-business" name="business" type="text" autocomplete="organization">
+            </div>
+
+            <div class="field">
+              <label for="f-email">Email</label>
+              <input id="f-email" name="email" type="email" autocomplete="email" required aria-describedby="e-email">
+              <span class="error-msg" id="e-email">Please enter a valid email address.</span>
+            </div>
+
+            <div class="field">
+              <label for="f-phone">Phone number</label>
+              <input id="f-phone" name="phone" type="tel" autocomplete="tel" required aria-describedby="e-phone">
+              <span class="error-msg" id="e-phone">Please enter your phone number.</span>
+            </div>
+
+            <div class="field">
+              <label for="f-location">Location or town <span class="optional">(optional)</span></label>
+              <input id="f-location" name="location" type="text" autocomplete="address-level2">
+            </div>
+
+            <div class="field">
+              <label for="f-service">What can we help with? <span class="optional">(optional)</span></label>
+              <select id="f-service" name="service">
+                <option value="">Please choose&hellip;</option>
+                <option>Accounts and tax</option>
+                <option>Bookkeeping</option>
+                <option>Payroll</option>
+                <option>Management accounts</option>
+                <option>New business support</option>
+                <option>Business advisory</option>
+                <option>Changing accountant</option>
+                <option>Not sure</option>
+              </select>
+            </div>
+
+            <div class="field field-full">
+              <label for="f-message">Short message</label>
+              <textarea id="f-message" name="message" required aria-describedby="e-message"
+                        placeholder="A line or two about your business and what you need."></textarea>
+              <span class="error-msg" id="e-message">Please tell us a little about your business.</span>
+            </div>
+
+            <fieldset class="field field-full" style="border:0; padding:0; margin:0">
+              <legend style="font-weight:600; font-size:0.95rem; padding:0">Preferred contact method <span class="optional">(optional)</span></legend>
+              <div class="cta-row" style="gap:1.5rem; margin-top:0.35rem">
+                <label style="font-weight:400"><input type="radio" name="contact-method" value="phone"> Phone</label>
+                <label style="font-weight:400"><input type="radio" name="contact-method" value="email"> Email</label>
+              </div>
+            </fieldset>
+
+            <!-- Honeypot spam trap: humans never see or fill this field -->
+            <div class="hp-field" aria-hidden="true">
+              <label for="f-website">Website</label>
+              <input id="f-website" name="website" type="text" tabindex="-1" autocomplete="off">
+            </div>
+          </div>
+
+          <div class="cta-row mt-2">
+            <button class="btn btn-primary" type="submit" data-cta="form-submit">Book a free consultation</button>
+          </div>
+
+          <p class="form-note">We only use your details to respond to your enquiry. See our
+            <a href="privacy.html">Privacy Notice</a>.</p>
+
+          <p class="form-status" id="form-status" role="status" aria-live="polite"></p>
+        </form>
+      </div>
+
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  <div class="container footer-grid">
+    <div>
+      <h2>Liffey Accountancy</h2>
+      <p>Accounts, tax and business advice for businesses across North Kildare. Based in Maynooth, Co. Kildare.</p>
+      <p>Office hours: Monday&ndash;Friday, 09:00&ndash;17:30</p>
+    </div>
+    <div>
+      <h2>Explore</h2>
+      <ul>
+        <li><a href="services.html">Services</a></li>
+        <li><a href="who-we-help.html">Who We Help</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+    </div>
+    <div>
+      <h2>Contact</h2>
+      <ul>
+        <li><a href="tel:+353000000000" data-cta="footer-call">+353 00 000 0000</a></li>
+        <li><a href="mailto:hello@liffeyaccountancy.example" data-cta="footer-email">hello@liffeyaccountancy.example</a></li>
+        <li><a href="#consultation-form" data-cta="footer-consultation">Book a free consultation</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="container footer-bottom">
+    <span>&copy; 2026 Liffey Accountancy</span>
+    <span><a href="privacy.html">Privacy Notice</a> &middot; <a href="cookies.html">Cookie Notice</a></span>
+  </div>
+</footer>
+
+<script>
+(function () {
+  var toggle = document.querySelector('.nav-toggle');
+  var nav = document.getElementById('site-nav');
+  if (toggle && nav) {
+    toggle.addEventListener('click', function () {
+      var open = nav.classList.toggle('open');
+      toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+    });
+  }
+
+  /* Consultation form: inline validation, honeypot, async submit.
+     Values are preserved on validation errors because validation happens
+     client-side without a page reload. If JavaScript fails, the form falls
+     back to a native POST with browser-level `required` validation. */
+  var form = document.getElementById('consultation-form');
+  if (!form) return;
+  var status = document.getElementById('form-status');
+  var started = false;
+
+  form.addEventListener('input', function () {
+    if (!started) {
+      started = true;
+      /* Analytics hook: consultation_form_start (PRD §37). Fire the event
+         here once an analytics tool is wired up. */
+    }
+  });
+
+  function validateField(input) {
+    var field = input.closest('.field');
+    if (!field || !input.willValidate) return true;
+    var ok = input.checkValidity();
+    field.classList.toggle('invalid', !ok);
+    input.setAttribute('aria-invalid', ok ? 'false' : 'true');
+    return ok;
+  }
+
+  form.addEventListener('submit', function (event) {
+    event.preventDefault();
+
+    var ok = true;
+    var firstBad = null;
+    form.querySelectorAll('input[required], textarea[required], input[type=email]').forEach(function (input) {
+      if (!validateField(input) && ok !== false) { /* keep checking all */ }
+      if (!input.checkValidity()) { ok = false; if (!firstBad) firstBad = input; }
+    });
+    if (!ok) {
+      status.dataset.state = 'error';
+      status.textContent = 'Please fix the highlighted fields above.';
+      if (firstBad) firstBad.focus();
+      return;
+    }
+
+    /* Honeypot: silently drop obvious bot submissions */
+    if (form.querySelector('[name=website]').value) {
+      status.dataset.state = 'success';
+      status.textContent = 'Thank you — we have received your enquiry.';
+      return;
+    }
+
+    status.textContent = 'Sending…';
+    status.removeAttribute('data-state');
+
+    fetch(form.action, {
+      method: 'POST',
+      body: new FormData(form),
+      headers: { 'Accept': 'application/json' }
+    }).then(function (res) {
+      if (!res.ok) throw new Error('HTTP ' + res.status);
+      form.reset();
+      status.dataset.state = 'success';
+      status.textContent = 'Thank you — your enquiry has been sent. We will be in touch to arrange your free 20-minute call.';
+      /* Analytics hook: consultation_form_submit (PRD §37). Count the enquiry
+         only here, after a successful submission — never on button click. */
+    }).catch(function () {
+      status.dataset.state = 'error';
+      status.textContent = 'Sorry — something went wrong sending your enquiry. Please try again, or call us on +353 00 000 0000 or email hello@liffeyaccountancy.example.';
+    });
+  });
+
+  form.querySelectorAll('input, textarea').forEach(function (input) {
+    input.addEventListener('blur', function () { validateField(input); });
+  });
+})();
+</script>
+</body>
+</html>

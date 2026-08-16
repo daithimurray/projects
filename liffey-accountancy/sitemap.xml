@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- TODO before launch: replace https://example.ie with the confirmed domain
+     (PRD §57 Q1/Q2). Privacy, cookies and 404 are intentionally excluded:
+     the drafts carry noindex until the business approves them. -->
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url><loc>https://example.ie/</loc></url>
+  <url><loc>https://example.ie/services.html</loc></url>
+  <url><loc>https://example.ie/who-we-help.html</loc></url>
+  <url><loc>https://example.ie/about.html</loc></url>
+  <url><loc>https://example.ie/contact.html</loc></url>
+</urlset>

@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en-IE">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cookie Notice | Liffey Accountancy</title>
+<meta name="description" content="How the Liffey Accountancy website uses cookies.">
+<meta name="robots" content="noindex">
+<!-- The noindex above is intentional only while this page is a draft.
+     TODO before launch: have the business approve the final Cookie Notice
+     (PRD §38), then remove the noindex tag and the DRAFT banner below. -->
+<link rel="stylesheet" href="styles.css">
+<script>document.documentElement.classList.add('js');</script>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to main content</a>
+
+<header class="site-header">
+  <div class="container header-inner">
+    <a class="brand" href="index.html">Liffey Accountancy</a>
+    <button class="nav-toggle" aria-expanded="false" aria-controls="site-nav">Menu</button>
+    <nav class="site-nav" id="site-nav" aria-label="Main">
+      <ul>
+        <li><a href="services.html">Services</a></li>
+        <li><a href="who-we-help.html">Who We Help</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="contact.html">Contact</a></li>
+        <li><a class="nav-tel" href="tel:+353000000000" data-cta="header-call">Call us</a></li>
+        <li><a class="nav-cta" href="contact.html" data-cta="header-consultation">Book a free consultation</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+  <div class="hero container">
+    <div class="hero-card">
+      <span class="section-label">Legal</span>
+      <h1>Cookie Notice</h1>
+      <p class="lede"><strong>DRAFT — for review by Liffey Accountancy before launch.</strong></p>
+    </div>
+  </div>
+
+  <section class="section measure container" style="padding-top:0">
+    <h2>This website does not currently use cookies</h2>
+    <p>This website sets no cookies and loads no third-party tracking scripts. Because there are no non-essential cookies, no cookie consent banner is required under current Irish Data Protection Commission guidance.</p>
+
+    <h2>If that changes</h2>
+    <p>If analytics or other non-essential cookies are added in the future, this notice will be updated, a consent control will be shown before any such cookies are set, and you will be able to change your choice at any time.</p>
+    <!-- TODO: if a cookie-based analytics tool is chosen (PRD §57 Q13), add a
+         consent banner that blocks the tool until consent is given, list the
+         cookies here, and provide a way to change the choice (PRD §38). A
+         cookieless, privacy-compliant analytics tool avoids all of this. -->
+
+    <h2>Questions</h2>
+    <p>Contact us at <a href="mailto:hello@liffeyaccountancy.example">hello@liffeyaccountancy.example</a> <em>(placeholder — confirm before launch)</em>.</p>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="container footer-grid">
+    <div>
+      <h2>Liffey Accountancy</h2>
+      <p>Accounts, tax and business advice for businesses across North Kildare. Based in Maynooth, Co. Kildare.</p>
+      <p>Office hours: Monday&ndash;Friday, 09:00&ndash;17:30</p>
+    </div>
+    <div>
+      <h2>Explore</h2>
+      <ul>
+        <li><a href="services.html">Services</a></li>
+        <li><a href="who-we-help.html">Who We Help</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+    </div>
+    <div>
+      <h2>Contact</h2>
+      <ul>
+        <li><a href="tel:+353000000000" data-cta="footer-call">+353 00 000 0000</a></li>
+        <li><a href="mailto:hello@liffeyaccountancy.example" data-cta="footer-email">hello@liffeyaccountancy.example</a></li>
+        <li><a href="contact.html" data-cta="footer-consultation">Book a free consultation</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="container footer-bottom">
+    <span>&copy; 2026 Liffey Accountancy</span>
+    <span><a href="privacy.html">Privacy Notice</a> &middot; <a href="cookies.html">Cookie Notice</a></span>
+  </div>
+</footer>
+
+<script>
+(function () {
+  var toggle = document.querySelector('.nav-toggle');
+  var nav = document.getElementById('site-nav');
+  if (toggle && nav) {
+    toggle.addEventListener('click', function () {
+      var open = nav.classList.toggle('open');
+      toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+    });
+  }
+})();
+</script>
+</body>
+</html>
