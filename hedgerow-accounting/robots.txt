@@ -1,0 +1,4 @@
+User-agent: *
+Disallow: /
+
+# Hedgerow Accounting is a fictional demo site and should not be indexed.
