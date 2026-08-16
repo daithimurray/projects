@@ -1,0 +1,358 @@
+<!doctype html>
+<html lang="en-IE">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Alder &amp; Frost — Accounting &amp; Advisory for Growth Companies</title>
+<meta name="description" content="Boutique accounting, tax strategy and CFO advisory for founders and growth companies. A fictional demo practice.">
+<!-- Alder & Frost is an entirely FICTIONAL company created as a design demo.
+     All names, figures and claims on this page are invented. -->
+<meta property="og:type" content="website">
+<meta property="og:title" content="Alder &amp; Frost — Accounting &amp; Advisory">
+<meta property="og:description" content="Boutique accounting, tax strategy and CFO advisory for founders and growth companies.">
+<style>
+/* Alder & Frost — design system
+   Based on design-reference.md #3 "Dark Modern Accountant — Premium Dark Mode"
+   (rich black bg, deep-green glass cards, emerald accent, elegant light serif
+   headings, subtle green glow), with the scrolling marquee from #8 and the
+   centred pull-quote pattern from #6. */
+
+:root {
+  --bg: #0a0a0a;
+  --bg-raised: #111311;
+  --surface: #0d3b2e;
+  --surface-elevated: #14503d;
+  --accent: #34d399;
+  --accent-dim: #2bb885;
+  --text: #ffffff;
+  --muted: #b8bdb8;
+  --muted-on-green: #b9d6c8;
+  --line: rgba(255, 255, 255, 0.08);
+  --glow: 0 0 80px rgba(52, 211, 153, 0.12);
+  --radius: 20px;
+  --font-serif: Georgia, 'Times New Roman', 'Noto Serif', serif;
+  --font-sans: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  --max: 1140px;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-sans);
+  font-size: 1.0625rem;
+  font-weight: 300;
+  line-height: 1.7;
+  -webkit-text-size-adjust: 100%;
+}
+
+h1, h2, h3 { font-family: var(--font-serif); font-weight: 400; line-height: 1.12; margin: 0 0 0.5em; text-wrap: balance; }
+h1 { font-size: clamp(2.6rem, 7vw, 4.4rem); letter-spacing: -0.01em; }
+h2 { font-size: clamp(1.9rem, 4.5vw, 2.9rem); }
+h3 { font-size: 1.25rem; }
+p  { margin: 0 0 1em; }
+p:last-child { margin-bottom: 0; }
+
+a { color: var(--accent); text-underline-offset: 3px; }
+a:hover { color: var(--text); }
+
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; border-radius: 2px; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { transition: none !important; animation: none !important; }
+}
+
+.skip-link {
+  position: absolute; left: -9999px; top: 0; z-index: 100;
+  background: var(--accent); color: #06251a; font-weight: 600;
+  padding: 0.75rem 1.25rem; border-radius: 0 0 8px 0;
+}
+.skip-link:focus { left: 0; }
+
+.wrap { max-width: var(--max); margin-inline: auto; padding-inline: clamp(1.1rem, 4vw, 2rem); }
+
+/* ---------- Header ---------- */
+
+.site-header {
+  position: sticky; top: 0; z-index: 50;
+  background: rgba(10, 10, 10, 0.85);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--line);
+}
+.header-inner { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding-block: 1rem; flex-wrap: wrap; }
+
+.brand { font-family: var(--font-serif); font-size: 1.25rem; color: var(--text); text-decoration: none; letter-spacing: 0.02em; white-space: nowrap; }
+.brand .amp { color: var(--accent); }
+.brand:hover { color: var(--text); }
+
+.site-nav ul { list-style: none; display: flex; flex-wrap: wrap; gap: 0.3rem 1.8rem; align-items: center; margin: 0; padding: 0; }
+.site-nav a {
+  color: var(--muted); text-decoration: none;
+  font-size: 0.82rem; font-weight: 400; letter-spacing: 0.14em; text-transform: uppercase;
+  padding-block: 0.4rem; display: inline-block;
+}
+.site-nav a:hover { color: var(--text); }
+
+.btn {
+  display: inline-block; font-family: var(--font-sans); font-size: 0.95rem; font-weight: 500;
+  line-height: 1; padding: 0.95rem 1.6rem; border-radius: 12px; text-decoration: none;
+  transition: transform 0.15s ease, background-color 0.15s ease, color 0.15s ease;
+}
+.btn-accent { background: var(--accent); color: #06251a; }
+.btn-accent:hover { background: var(--accent-dim); color: #06251a; transform: translateY(-1px); }
+.btn-ghost { color: var(--text); border: 1px solid rgba(255, 255, 255, 0.25); }
+.btn-ghost:hover { border-color: var(--accent); color: var(--accent); }
+
+.site-nav .nav-cta { padding: 0.7rem 1.2rem; letter-spacing: 0.05em; text-transform: none; font-size: 0.9rem; }
+
+/* ---------- Hero ---------- */
+
+.hero { position: relative; padding-block: clamp(5rem, 13vw, 9.5rem) clamp(4rem, 9vw, 6.5rem); overflow: hidden; }
+.hero::before {
+  content: ""; position: absolute; inset: auto -20% -60% -20%; height: 130%;
+  background: radial-gradient(ellipse at 30% 100%, rgba(52, 211, 153, 0.14), transparent 55%);
+  pointer-events: none;
+}
+.hero .wrap { position: relative; }
+
+.kicker {
+  display: block; font-size: 0.78rem; font-weight: 500; letter-spacing: 0.22em;
+  text-transform: uppercase; color: var(--accent); margin-bottom: 1.4rem;
+}
+.hero h1 { max-width: 15em; }
+.hero h1 em { font-style: italic; color: var(--accent); }
+.hero .sub { color: var(--muted); font-size: clamp(1.05rem, 2vw, 1.25rem); max-width: 36em; margin-block: 1.4rem 2.2rem; }
+.cta-row { display: flex; flex-wrap: wrap; gap: 0.9rem; align-items: center; }
+
+/* ---------- Marquee ---------- */
+
+.marquee { border-block: 1px solid var(--line); padding-block: 1.1rem; overflow: hidden; }
+.marquee-track { display: flex; gap: 3.5rem; width: max-content; animation: scroll 36s linear infinite; }
+.marquee span {
+  font-size: 0.8rem; letter-spacing: 0.2em; text-transform: uppercase;
+  color: var(--muted); white-space: nowrap;
+}
+.marquee span::after { content: "·"; color: var(--accent); margin-left: 3.5rem; }
+@keyframes scroll { to { transform: translateX(-50%); } }
+@media (prefers-reduced-motion: reduce) {
+  .marquee-track { animation: none; flex-wrap: wrap; width: auto; justify-content: center; }
+}
+
+/* ---------- Sections ---------- */
+
+section { padding-block: clamp(4rem, 9vw, 7rem); }
+.section-head { max-width: 34em; margin-bottom: clamp(2rem, 5vw, 3.2rem); }
+.section-head h2 em { font-style: italic; color: var(--accent); }
+.section-head p { color: var(--muted); }
+
+/* ---------- Services: green glass cards ---------- */
+
+.cards { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.1rem; }
+@media (max-width: 1000px) { .cards { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 560px)  { .cards { grid-template-columns: 1fr; } }
+
+.card {
+  background: linear-gradient(160deg, var(--surface-elevated), var(--surface) 65%);
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  border-radius: var(--radius);
+  padding: 1.8rem 1.6rem;
+  box-shadow: var(--glow);
+}
+.card .glyph {
+  width: 2.6rem; height: 2.6rem; border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  display: grid; place-items: center;
+  font-family: var(--font-serif); font-size: 1.15rem; color: var(--accent);
+  margin-bottom: 1.2rem;
+}
+.card h3 { margin-bottom: 0.45rem; }
+.card p { color: var(--muted-on-green); font-size: 0.95rem; font-weight: 300; }
+
+/* ---------- Numbers ---------- */
+
+.numbers { border-block: 1px solid var(--line); background: var(--bg-raised); }
+.numbers-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 2rem; text-align: left; }
+@media (max-width: 800px) { .numbers-grid { grid-template-columns: repeat(2, 1fr); } }
+
+.num { font-family: var(--font-serif); font-size: clamp(2.4rem, 5vw, 3.4rem); line-height: 1; color: var(--accent); display: block; margin-bottom: 0.5rem; }
+.num-label { color: var(--muted); font-size: 0.92rem; max-width: 14em; }
+
+/* ---------- Principles ---------- */
+
+.principles { display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(1.5rem, 4vw, 3rem); counter-reset: p; }
+@media (max-width: 800px) { .principles { grid-template-columns: 1fr; } }
+.principle { counter-increment: p; border-top: 1px solid var(--line); padding-top: 1.4rem; }
+.principle::before {
+  content: "0" counter(p);
+  font-family: var(--font-serif); font-style: italic; font-size: 1.1rem; color: var(--accent);
+  display: block; margin-bottom: 0.8rem;
+}
+.principle h3 { margin-bottom: 0.4rem; }
+.principle p { color: var(--muted); font-size: 0.98rem; }
+
+/* ---------- Pull quote ---------- */
+
+.quote { background: linear-gradient(160deg, #0f4534, var(--surface)); text-align: center; }
+.quote blockquote { margin: 0 auto; max-width: 21em; }
+.quote blockquote p { font-family: var(--font-serif); font-style: italic; font-size: clamp(1.5rem, 3.6vw, 2.3rem); line-height: 1.35; color: var(--text); }
+.quote cite { display: block; margin-top: 1.6rem; font-style: normal; font-size: 0.85rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted-on-green); }
+
+/* ---------- Contact ---------- */
+
+.contact-inner { display: grid; grid-template-columns: 1.2fr 1fr; gap: clamp(2rem, 6vw, 5rem); align-items: start; }
+@media (max-width: 800px) { .contact-inner { grid-template-columns: 1fr; } }
+.contact h2 em { font-style: italic; color: var(--accent); }
+.contact-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 1.1rem; }
+.contact-list li { border-top: 1px solid var(--line); padding-top: 1rem; }
+.contact-list .label { display: block; font-size: 0.75rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted); margin-bottom: 0.2rem; }
+.contact-list a { font-size: 1.15rem; text-decoration: none; }
+.contact-list a:hover { text-decoration: underline; }
+
+/* ---------- Footer ---------- */
+
+.site-footer { border-top: 1px solid var(--line); padding-block: 2rem; }
+.footer-inner { display: flex; flex-wrap: wrap; gap: 0.8rem 2.5rem; justify-content: space-between; align-items: center; color: var(--muted); font-size: 0.88rem; }
+.footer-inner a { color: var(--muted); text-decoration: none; }
+.footer-inner a:hover { color: var(--text); }
+</style>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to main content</a>
+
+<header class="site-header">
+  <div class="wrap header-inner">
+    <a class="brand" href="#top">Alder <span class="amp">&amp;</span> Frost</a>
+    <nav class="site-nav" aria-label="Main">
+      <ul>
+        <li><a href="#services">Services</a></li>
+        <li><a href="#approach">Approach</a></li>
+        <li><a href="#contact">Contact</a></li>
+        <li><a class="btn btn-accent nav-cta" href="#contact">Start a conversation</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+
+  <div class="hero" id="top">
+    <div class="wrap">
+      <span class="kicker">Accounting &amp; Advisory · Dublin</span>
+      <h1>Financial clarity for <em>ambitious</em> companies.</h1>
+      <p class="sub">Alder &amp; Frost is a boutique accounting practice for founders and growth companies. Compliance handled quietly, strategy argued loudly — and a finance function that scales with you.</p>
+      <div class="cta-row">
+        <a class="btn btn-accent" href="#contact">Start a conversation</a>
+        <a class="btn btn-ghost" href="#services">Explore services</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="marquee" aria-hidden="true">
+    <div class="marquee-track">
+      <span>Software &amp; SaaS</span><span>E-commerce</span><span>Life sciences</span><span>Professional services</span><span>Venture-backed startups</span><span>Family enterprises</span>
+      <span>Software &amp; SaaS</span><span>E-commerce</span><span>Life sciences</span><span>Professional services</span><span>Venture-backed startups</span><span>Family enterprises</span>
+    </div>
+  </div>
+
+  <section id="services">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>Four disciplines. <em>One</em> finance partner.</h2>
+        <p>Everything a growing company needs from its numbers — from statutory basics to the decisions that shape the next three years.</p>
+      </div>
+      <div class="cards">
+        <div class="card">
+          <div class="glyph" aria-hidden="true">I</div>
+          <h3>Compliance &amp; reporting</h3>
+          <p>Statutory accounts, audits coordinated, filings on time. The foundation, done quietly and correctly.</p>
+        </div>
+        <div class="card">
+          <div class="glyph" aria-hidden="true">II</div>
+          <h3>Tax strategy</h3>
+          <p>Corporate and founder tax planned as one picture — reliefs claimed, surprises engineered out.</p>
+        </div>
+        <div class="card">
+          <div class="glyph" aria-hidden="true">III</div>
+          <h3>CFO advisory</h3>
+          <p>A fractional CFO in your corner: board packs, forecasts, unit economics and the hard conversations.</p>
+        </div>
+        <div class="card">
+          <div class="glyph" aria-hidden="true">IV</div>
+          <h3>Fundraising support</h3>
+          <p>Data rooms, models and diligence prep that hold up when investors start asking real questions.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="numbers">
+    <div class="wrap numbers-grid">
+      <div><span class="num">2015</span><span class="num-label">Founded in Dublin</span></div>
+      <div><span class="num">140+</span><span class="num-label">Growth companies advised</span></div>
+      <div><span class="num">€380m</span><span class="num-label">Client funding supported through diligence</span></div>
+      <div><span class="num">14</span><span class="num-label">Specialists, one office, no call centres</span></div>
+    </div>
+  </section>
+
+  <section id="approach">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>How we <em>work</em></h2>
+      </div>
+      <div class="principles">
+        <div class="principle">
+          <h3>Forward, not backward</h3>
+          <p>Statutory reporting looks at last year. Every engagement here is built around the decisions in front of you.</p>
+        </div>
+        <div class="principle">
+          <h3>Partners, not portals</h3>
+          <p>You get named people who know your business — not a ticket queue. Senior eyes on every file.</p>
+        </div>
+        <div class="principle">
+          <h3>Candour over comfort</h3>
+          <p>If the numbers say the plan doesn't work, we say so early — while there is still time to change the plan.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="quote">
+    <div class="wrap">
+      <blockquote>
+        <p>&ldquo;Most firms report on the past. We help you decide the future.&rdquo;</p>
+        <cite>The Alder &amp; Frost principle</cite>
+      </blockquote>
+    </div>
+  </section>
+
+  <section id="contact" class="contact">
+    <div class="wrap contact-inner">
+      <div>
+        <h2>Let's talk about <em>your</em> numbers.</h2>
+        <p style="color: var(--muted); max-width: 30em">A 30-minute call, no charge and no pitch deck. Tell us where the business is going; we will tell you what the finance function needs to get there.</p>
+        <div class="cta-row" style="margin-top: 1.8rem">
+          <a class="btn btn-accent" href="mailto:hello@alderandfrost.example">Start a conversation</a>
+        </div>
+      </div>
+      <ul class="contact-list">
+        <li><span class="label">Email</span><a href="mailto:hello@alderandfrost.example">hello@alderandfrost.example</a></li>
+        <li><span class="label">Phone</span><a href="tel:+353000000001">+353 00 000 0001</a></li>
+        <li><span class="label">Office</span><span>The Loft, Grand Canal Dock, Dublin&nbsp;2</span></li>
+      </ul>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  <div class="wrap footer-inner">
+    <span>&copy; 2026 Alder &amp; Frost — a fictional practice, built as a design demo</span>
+    <span><a href="#top">Back to top ↑</a></span>
+  </div>
+</footer>
+
+</body>
+</html>
