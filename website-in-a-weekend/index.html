@@ -140,6 +140,30 @@ section{padding-block:var(--s6)}
 /* ---------- Hero ---------- */
 .hero{padding-block:var(--s6) var(--s5)}
 @media (min-width:820px){ .hero{padding-block:var(--s7) var(--s6)} }
+.hero .wrap{position:relative}
+/* weekend calendar card — the brand device, desktop only */
+.hero-cal{display:none}
+@media (min-width:1000px){
+  .hero-cal{
+    display:block;position:absolute;right:var(--s4);top:50%;
+    transform:translateY(-50%) rotate(2.5deg);
+    width:17.5rem;background:var(--paper-raised);border:1px solid var(--line);
+    border-radius:18px;box-shadow:0 24px 60px rgba(20,22,26,.16);
+    overflow:hidden;
+  }
+  .hero-cal .cal-head{background:var(--ink);color:#fff;font-family:var(--font-display);font-weight:800;padding:.75rem 1.2rem;font-size:.95rem}
+  .hero-cal .row{display:flex;align-items:center;gap:.6rem;padding:.95rem 1.2rem;border-top:1px solid var(--line)}
+  .hero-cal .row:first-of-type{border-top:0}
+  .hero-cal .dot{flex:none;width:.7rem;height:.7rem;border-radius:50%}
+  .hero-cal .fri .dot{background:var(--fri);border:1px solid var(--sat)}
+  .hero-cal .sat .dot{background:var(--sat)}
+  .hero-cal .sun .dot{background:#fff}
+  .hero-cal .d{font-family:var(--font-display);font-weight:800;font-size:1.05rem}
+  .hero-cal .s{font-size:.8rem;color:var(--ink-soft);margin-left:auto}
+  .hero-cal .row.sun{background:var(--accent);border-top-color:var(--accent)}
+  .hero-cal .row.sun .d{color:#fff}
+  .hero-cal .row.sun .s{color:#d6dcfa}
+}
 .hero .days{margin-bottom:var(--s4)}
 .hero .lede{font-size:clamp(1.15rem,2.4vw,1.35rem);color:var(--ink-soft);max-width:36rem;margin-block:var(--s4)}
 .price-line{font-family:var(--font-display);font-weight:800;font-size:clamp(1.3rem,3vw,1.7rem);letter-spacing:-0.01em;margin-bottom:var(--s4)}
@@ -233,6 +257,7 @@ section{padding-block:var(--s6)}
 .cmp h3{margin-bottom:var(--s3)}
 .cmp ul{list-style:none;margin:0;padding:0;display:grid;gap:.55rem}
 .cmp li{display:flex;gap:.55rem;align-items:flex-start}
+.cmp .mark,.notfor .mark{display:inline-flex;margin-top:.3rem;flex:none}
 .cmp-old{background:var(--paper-raised);color:var(--ink-soft)}
 .cmp-old .mark{color:#b9484f;font-weight:800}
 .cmp-new{background:var(--ink);color:#e8eaee;border-color:var(--ink)}
@@ -332,6 +357,7 @@ section{padding-block:var(--s6)}
   .hero .wrap>*:nth-child(4){animation-delay:.18s}
   .hero .wrap>*:nth-child(5){animation-delay:.24s}
   .hero .wrap>*:nth-child(6){animation-delay:.3s}
+  .hero .wrap>*:nth-child(7){animation-delay:.36s}
 }
 </style>
 </head>
@@ -372,6 +398,12 @@ section{padding-block:var(--s6)}
         <a class="btn btn-ghost" href="#work" data-event="cta_portfolio_click" data-location="hero">See our work</a>
       </div>
       <p class="cta-terms">Hosting, security and maintenance included. 12-month minimum.</p>
+      <div class="hero-cal" aria-hidden="true">
+        <div class="cal-head">One weekend</div>
+        <div class="row fri"><span class="dot"></span><span class="d">Friday</span><span class="s">Build begins</span></div>
+        <div class="row sat"><span class="dot"></span><span class="d">Saturday</span><span class="s">Design &amp; refine</span></div>
+        <div class="row sun"><span class="dot"></span><span class="d">Sunday</span><span class="s">Ready to review</span></div>
+      </div>
     </div>
   </section>
 
@@ -538,24 +570,24 @@ section{padding-block:var(--s6)}
         <div class="cmp cmp-old">
           <h3>The old way</h3>
           <ul>
-            <li><span class="mark" aria-hidden="true">✕</span>Thousands of euro upfront</li>
-            <li><span class="mark" aria-hidden="true">✕</span>Weeks or months of work</li>
-            <li><span class="mark" aria-hidden="true">✕</span>Discovery calls</li>
-            <li><span class="mark" aria-hidden="true">✕</span>Design meetings</li>
-            <li><span class="mark" aria-hidden="true">✕</span>Project plans</li>
-            <li><span class="mark" aria-hidden="true">✕</span>Separate hosting bills</li>
-            <li><span class="mark" aria-hidden="true">✕</span>Maintenance contracts</li>
+            <li><span class="mark" aria-hidden="true"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round"><path d="M5 5l14 14M19 5L5 19"/></svg></span>Thousands of euro upfront</li>
+            <li><span class="mark" aria-hidden="true"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round"><path d="M5 5l14 14M19 5L5 19"/></svg></span>Weeks or months of work</li>
+            <li><span class="mark" aria-hidden="true"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round"><path d="M5 5l14 14M19 5L5 19"/></svg></span>Discovery calls</li>
+            <li><span class="mark" aria-hidden="true"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round"><path d="M5 5l14 14M19 5L5 19"/></svg></span>Design meetings</li>
+            <li><span class="mark" aria-hidden="true"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round"><path d="M5 5l14 14M19 5L5 19"/></svg></span>Project plans</li>
+            <li><span class="mark" aria-hidden="true"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round"><path d="M5 5l14 14M19 5L5 19"/></svg></span>Separate hosting bills</li>
+            <li><span class="mark" aria-hidden="true"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round"><path d="M5 5l14 14M19 5L5 19"/></svg></span>Maintenance contracts</li>
           </ul>
         </div>
         <div class="cmp cmp-new">
           <h3>The weekend way</h3>
           <ul>
-            <li><span class="mark" aria-hidden="true">✓</span>€0 setup fee</li>
-            <li><span class="mark" aria-hidden="true">✓</span>€5/day + VAT</li>
-            <li><span class="mark" aria-hidden="true">✓</span>One simple brief</li>
-            <li><span class="mark" aria-hidden="true">✓</span>Ready to review on Sunday</li>
-            <li><span class="mark" aria-hidden="true">✓</span>Hosting included</li>
-            <li><span class="mark" aria-hidden="true">✓</span>Maintenance included</li>
+            <li><span class="mark" aria-hidden="true"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12.5 10 18.5 20 6"/></svg></span>€0 setup fee</li>
+            <li><span class="mark" aria-hidden="true"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12.5 10 18.5 20 6"/></svg></span>€5/day + VAT</li>
+            <li><span class="mark" aria-hidden="true"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12.5 10 18.5 20 6"/></svg></span>One simple brief</li>
+            <li><span class="mark" aria-hidden="true"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12.5 10 18.5 20 6"/></svg></span>Ready to review on Sunday</li>
+            <li><span class="mark" aria-hidden="true"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12.5 10 18.5 20 6"/></svg></span>Hosting included</li>
+            <li><span class="mark" aria-hidden="true"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12.5 10 18.5 20 6"/></svg></span>Maintenance included</li>
           </ul>
         </div>
       </div>
@@ -600,12 +632,12 @@ section{padding-block:var(--s6)}
       <h2 id="notfor-h">We don't build everything.</h2>
       <p class="kicker-note measure-n">Website in a Weekend is designed for professional business websites. The standard service is not intended for complex:</p>
       <ul>
-        <li><span class="mark" aria-hidden="true">✕</span>E-commerce systems</li>
-        <li><span class="mark" aria-hidden="true">✕</span>Marketplaces</li>
-        <li><span class="mark" aria-hidden="true">✕</span>Membership platforms</li>
-        <li><span class="mark" aria-hidden="true">✕</span>Customer portals</li>
-        <li><span class="mark" aria-hidden="true">✕</span>Custom software</li>
-        <li><span class="mark" aria-hidden="true">✕</span>Web applications</li>
+        <li><span class="mark" aria-hidden="true"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round"><path d="M5 5l14 14M19 5L5 19"/></svg></span>E-commerce systems</li>
+        <li><span class="mark" aria-hidden="true"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round"><path d="M5 5l14 14M19 5L5 19"/></svg></span>Marketplaces</li>
+        <li><span class="mark" aria-hidden="true"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round"><path d="M5 5l14 14M19 5L5 19"/></svg></span>Membership platforms</li>
+        <li><span class="mark" aria-hidden="true"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round"><path d="M5 5l14 14M19 5L5 19"/></svg></span>Customer portals</li>
+        <li><span class="mark" aria-hidden="true"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round"><path d="M5 5l14 14M19 5L5 19"/></svg></span>Custom software</li>
+        <li><span class="mark" aria-hidden="true"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round"><path d="M5 5l14 14M19 5L5 19"/></svg></span>Web applications</li>
       </ul>
       <p class="closing measure-n">If you need one of those, we are probably not the right company. But contact forms, map embeds, calendars, social links, analytics and external booking links? All perfectly normal parts of a business website.</p>
     </div>
