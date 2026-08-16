@@ -1,20 +1,21 @@
 /* Liffey Accountancy — design system
-   Based on design-reference.md #4 "Green Accountant Modern — Organic Minimalist"
-   (deep forest green + warm off-white + charcoal, serif headings, pill buttons),
-   with the FAQ accordion pattern from #10 and the dual-CTA pattern from #4/#10/#11.
-   Greens darkened slightly from the reference hexes to pass WCAG 2.2 AA contrast. */
+   Based on design-reference.md #9 "Navy White Accountant — Classic Financial
+   Authority" (deep navy + off-white, serif headings, understated colour use),
+   keeping the section rhythm and pill buttons of #4, the FAQ accordion from
+   #10 and the dual-CTA pattern from #4/#10/#11.
+   All colour pairs checked against WCAG 2.2 AA contrast. */
 
 :root {
-  --bg: #eceee6;
-  --surface: #f7f7f0;
-  --primary: #1b3b2a;
-  --primary-hover: #142e20;
-  --accent: #256b45;        /* 5.4:1 on --bg */
-  --text: #1f221e;
-  --text-muted: #565a50;    /* 5.8:1 on --bg */
+  --bg: #edf0f4;
+  --surface: #f8f9fb;
+  --primary: #1b2d4f;
+  --primary-hover: #13223d;
+  --accent: #2c5282;        /* 6.8:1 on --bg */
+  --text: #1b1f26;
+  --text-muted: #4f5866;    /* 6.2:1 on --bg */
   --on-dark: #ffffff;
-  --on-dark-muted: #c3d2c6; /* 7.5:1 on --primary */
-  --border: rgba(27, 59, 42, 0.16);
+  --on-dark-muted: #bccbde; /* 8:1 on --primary */
+  --border: rgba(27, 45, 79, 0.16);
   --radius-container: 24px;
   --radius-card: 16px;
   --radius-pill: 999px;
@@ -136,7 +137,7 @@ a:hover { color: var(--primary); }
 .btn-primary:hover { background: var(--primary-hover); border-color: var(--primary-hover); color: var(--on-dark); }
 
 .btn-secondary { background: transparent; color: var(--primary); }
-.btn-secondary:hover { background: rgba(27, 59, 42, 0.08); color: var(--primary); }
+.btn-secondary:hover { background: rgba(27, 45, 79, 0.08); color: var(--primary); }
 
 .on-dark .btn-primary { background: var(--on-dark); color: var(--primary); border-color: var(--on-dark); }
 .on-dark .btn-primary:hover { background: var(--surface); border-color: var(--surface); color: var(--primary); }
@@ -156,7 +157,7 @@ a:hover { color: var(--primary); }
   position: sticky;
   top: 0;
   z-index: 50;
-  background: rgba(236, 238, 230, 0.94);
+  background: rgba(237, 240, 244, 0.94);
   backdrop-filter: blur(8px);
   border-bottom: 1px solid var(--border);
 }

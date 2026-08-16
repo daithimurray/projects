@@ -4,12 +4,13 @@ Static multi-page marketing site for Liffey Accountancy (Maynooth,
 Co. Kildare), built to the PRD. No framework, no build step — deploy the
 folder to any static host.
 
-**Design:** based on `../design-reference.md` **#4 "Green Accountant Modern —
-Organic Minimalist"** (deep forest green + warm off-white + charcoal, serif
-headings, green section labels, pill buttons, rounded hero container), which
-matches the PRD §30 direction exactly. The FAQ accordion comes from reference
-#10 and the dual-CTA pattern from #4/#10/#11. Greens were darkened slightly
-from the reference hexes so all text passes WCAG 2.2 AA contrast.
+**Design:** based on `../design-reference.md` **#9 "Navy White Accountant —
+Classic Financial Authority"** (deep navy + off-white, serif headings,
+understated colour use), keeping the section rhythm, section labels, pill
+buttons and rounded hero container of #4, the FAQ accordion from #10 and the
+dual-CTA pattern from #4/#10/#11. All colour pairs pass WCAG 2.2 AA contrast.
+(Originally shipped in #4's dark-green palette; switched to navy on request —
+the palette lives entirely in the `:root` tokens of `styles.css`.)
 
 ## Pages
 
