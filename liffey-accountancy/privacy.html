@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="en-IE">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Privacy Notice | Liffey Accountancy</title>
+<meta name="description" content="How Liffey Accountancy handles personal information submitted through this website.">
+<meta name="robots" content="noindex">
+<!-- The noindex above is intentional only while this page is a draft.
+     TODO before launch: have the business approve the final Privacy Notice
+     (PRD §38), then remove the noindex tag and the DRAFT banner below. -->
+<link rel="stylesheet" href="styles.css">
+<script>document.documentElement.classList.add('js');</script>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to main content</a>
+
+<header class="site-header">
+  <div class="container header-inner">
+    <a class="brand" href="index.html">Liffey Accountancy</a>
+    <button class="nav-toggle" aria-expanded="false" aria-controls="site-nav">Menu</button>
+    <nav class="site-nav" id="site-nav" aria-label="Main">
+      <ul>
+        <li><a href="services.html">Services</a></li>
+        <li><a href="who-we-help.html">Who We Help</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="contact.html">Contact</a></li>
+        <li><a class="nav-tel" href="tel:+353000000000" data-cta="header-call">Call us</a></li>
+        <li><a class="nav-cta" href="contact.html" data-cta="header-consultation">Book a free consultation</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+  <div class="hero container">
+    <div class="hero-card">
+      <span class="section-label">Legal</span>
+      <h1>Privacy Notice</h1>
+      <p class="lede"><strong>DRAFT — for review by Liffey Accountancy before launch.</strong> This draft describes how the website is built to behave; the business must review and approve the final wording. It is not legal advice.</p>
+    </div>
+  </div>
+
+  <section class="section measure container" style="padding-top:0">
+    <h2>Who we are</h2>
+    <p>Liffey Accountancy, Maynooth, Co. Kildare. Contact: <a href="mailto:hello@liffeyaccountancy.example">hello@liffeyaccountancy.example</a> <em>(placeholder — confirm before launch)</em>.</p>
+
+    <h2>What information this website collects</h2>
+    <p>The only personal information this website collects is what you choose to send us through the consultation form: your name, contact details and the message you write, plus any optional fields you fill in (business name, location, service of interest, preferred contact method).</p>
+
+    <h2>How we use it</h2>
+    <p>We use the information you submit solely to respond to your enquiry and, if you become a client, to provide our services. We do not use the enquiry form to add you to a marketing list, and we do not sell or share your information with third parties for their own purposes.</p>
+
+    <h2>Where your enquiry goes</h2>
+    <p>Form submissions are delivered to Liffey Accountancy by our form-processing provider <em>(TODO: name the chosen provider and link to its privacy notice before launch — PRD §38 requires documenting third-party services)</em>.</p>
+
+    <h2>How long we keep it</h2>
+    <p>We keep enquiry details only as long as needed to handle your enquiry, unless you become a client <em>(TODO: business to confirm retention periods)</em>.</p>
+
+    <h2>Cookies</h2>
+    <p>See our <a href="cookies.html">Cookie Notice</a>. This website currently sets no non-essential cookies.</p>
+
+    <h2>Your rights</h2>
+    <p>Under data protection law you have rights over your personal information, including the right to access, correct or delete it. To exercise them, contact us using the details above. You can also lodge a complaint with the Data Protection Commission (<a href="https://www.dataprotection.ie" rel="external">dataprotection.ie</a>).</p>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="container footer-grid">
+    <div>
+      <h2>Liffey Accountancy</h2>
+      <p>Accounts, tax and business advice for businesses across North Kildare. Based in Maynooth, Co. Kildare.</p>
+      <p>Office hours: Monday&ndash;Friday, 09:00&ndash;17:30</p>
+    </div>
+    <div>
+      <h2>Explore</h2>
+      <ul>
+        <li><a href="services.html">Services</a></li>
+        <li><a href="who-we-help.html">Who We Help</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+    </div>
+    <div>
+      <h2>Contact</h2>
+      <ul>
+        <li><a href="tel:+353000000000" data-cta="footer-call">+353 00 000 0000</a></li>
+        <li><a href="mailto:hello@liffeyaccountancy.example" data-cta="footer-email">hello@liffeyaccountancy.example</a></li>
+        <li><a href="contact.html" data-cta="footer-consultation">Book a free consultation</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="container footer-bottom">
+    <span>&copy; 2026 Liffey Accountancy</span>
+    <span><a href="privacy.html">Privacy Notice</a> &middot; <a href="cookies.html">Cookie Notice</a></span>
+  </div>
+</footer>
+
+<script>
+(function () {
+  var toggle = document.querySelector('.nav-toggle');
+  var nav = document.getElementById('site-nav');
+  if (toggle && nav) {
+    toggle.addEventListener('click', function () {
+      var open = nav.classList.toggle('open');
+      toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+    });
+  }
+})();
+</script>
+</body>
+</html>
