@@ -9,6 +9,7 @@
 <!-- The noindex above is intentional only while this page is a draft.
      TODO before launch: have the business approve the final Cookie Notice
      (PRD §38), then remove the noindex tag and the DRAFT banner below. -->
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="stylesheet" href="styles.css">
 <script>document.documentElement.classList.add('js');</script>
 </head>
@@ -41,7 +42,7 @@
     </div>
   </div>
 
-  <section class="section measure container" style="padding-top:0">
+  <section class="section section--tight measure container">
     <h2>This website does not currently use cookies</h2>
     <p>This website sets no cookies and loads no third-party tracking scripts. Because there are no non-essential cookies, no cookie consent banner is required under current Irish Data Protection Commission guidance.</p>
 
@@ -60,12 +61,12 @@
 <footer class="site-footer">
   <div class="container footer-grid">
     <div>
-      <h2>Liffey Accountancy</h2>
+      <p class="footer-h">Liffey Accountancy</p>
       <p>Accounts, tax and business advice for businesses across North Kildare. Based in Maynooth, Co. Kildare.</p>
       <p>Office hours: Monday&ndash;Friday, 09:00&ndash;17:30</p>
     </div>
     <div>
-      <h2>Explore</h2>
+      <p class="footer-h">Explore</p>
       <ul>
         <li><a href="services.html">Services</a></li>
         <li><a href="who-we-help.html">Who We Help</a></li>
@@ -74,7 +75,7 @@
       </ul>
     </div>
     <div>
-      <h2>Contact</h2>
+      <p class="footer-h">Contact</p>
       <ul>
         <li><a href="tel:+353000000000" data-cta="footer-call">+353 00 000 0000</a></li>
         <li><a href="mailto:hello@liffeyaccountancy.example" data-cta="footer-email">hello@liffeyaccountancy.example</a></li>
@@ -93,9 +94,19 @@
   var toggle = document.querySelector('.nav-toggle');
   var nav = document.getElementById('site-nav');
   if (toggle && nav) {
-    toggle.addEventListener('click', function () {
-      var open = nav.classList.toggle('open');
+    var setNav = function (open) {
+      nav.classList.toggle('open', open);
       toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+      toggle.textContent = open ? 'Close' : 'Menu';
+    };
+    toggle.addEventListener('click', function () {
+      setNav(!nav.classList.contains('open'));
+    });
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && nav.classList.contains('open')) {
+        setNav(false);
+        toggle.focus();
+      }
     });
   }
 })();
