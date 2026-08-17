@@ -47,9 +47,13 @@ update internal links and the sitemap if you enable that.
 5. **Legal pages** — have the business approve `privacy.html` and
    `cookies.html`, name the form provider in the Privacy Notice, then remove
    the `noindex` tags and DRAFT banners.
-6. **Photography** — none supplied yet. The design works without photos, but
-   the PRD prefers real founder/team photography (§12.1, §16, §30.5); TODO
-   comments in `about.html` mark the slots. Never use stock finance imagery.
+6. **Photography** — the image system is built and five slots are wired; see
+   **`IMAGES.md`** for the shot list, ratios and direction. Two slots
+   (`founder-portrait`, `team-group`) are **RESERVED** and show an "Awaiting
+   approved photograph" badge: they require *real* photographs of Aoife and the
+   team (PRD §16, §30.5, §44). Never substitute stock or generated imagery for
+   a named real person. Swap files in with
+   `python3 ../tools/swap-images.py liffey-accountancy <your-image-dir>`.
 7. **OG image** — create a social sharing image and wire up `og:image`
    (PRD §35).
 8. **Search Console** — connect and submit the sitemap after launch.
@@ -96,6 +100,10 @@ if a cookie-based tool is chosen, add a blocking consent control first.
   form fields with inline errors, keyboard-operable nav (with a no-JS
   fallback where links simply wrap), `:focus-visible` styles,
   `prefers-reduced-motion` respected, AA-checked palette.
-- Fonts are system stacks (Georgia serif headings / system-ui body) — zero
-  network requests, no GDPR exposure from remote font CDNs. Swap in a
-  self-hosted brand face later if desired.
+- Headings are set in **Source Serif 4**, self-hosted from `fonts/` (latin
+  subset, 600 + 600 italic, ~21 KB each, `font-display: swap`); body text uses
+  the system stack. Nothing loads from a font CDN, so there is no third-party
+  request and no GDPR exposure.
+- Photography lives in `images/` with the brief in `IMAGES.md`; ratios are
+  reserved in CSS so swapping placeholders for real files causes no layout
+  shift.

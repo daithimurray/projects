@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2400 900" width="2400" height="900" role="img" aria-label="Placeholder: Local band">
+  <rect width="2400" height="900" fill="#e4e9f0"/>
+  <rect x="40" y="40" width="2320" height="820" fill="none" stroke="rgba(27,45,79,0.45)" stroke-width="1.5" stroke-dasharray="7 7"/>
+  <g font-family="Georgia, serif" text-anchor="middle">
+    <text x="50%" y="396" font-size="27" letter-spacing="4.9" fill="#1b2d4f">LOCAL BAND</text>
+  </g>
+  <g font-family="system-ui, sans-serif" text-anchor="middle" fill="#1b2d4f" opacity="0.72">
+    <text x="50%" y="491" font-size="19"><tspan x="50%" dy="0">Wide North Kildare landscape or town edge.</tspan><tspan x="50%" dy="29">Sits behind the "Where we work" section as a</tspan><tspan x="50%" dy="29">quiet full-width band.</tspan></text>
+    <text x="50%" y="824" font-size="19" opacity="0.8">8:3  ·  local-north-kildare</text>
+  </g>
+</svg>

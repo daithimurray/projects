@@ -157,6 +157,46 @@ a:hover { color: var(--sage); }
 .trust-line .stars { color: var(--olive); letter-spacing: 0.1em; }
 .trust-line strong { color: var(--ink); font-weight: 600; }
 
+/* ---------- Photography ----------
+   Editorial nature leads with images. Ratios are reserved up front so nothing
+   shifts as files load; swap the .svg plates in images/ for real .jpg/.webp at
+   the same names. The warm grade keeps every photograph inside the palette. */
+
+.fig { position: relative; margin: 0; overflow: hidden; background: var(--surface); border-radius: 3px; }
+.fig img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: var(--focal, 50% 50%); }
+.fig-4x5 { aspect-ratio: 4 / 5; }
+.fig-4x3 { aspect-ratio: 4 / 3; }
+.fig-3x2 { aspect-ratio: 3 / 2; }
+.fig-1x1 { aspect-ratio: 1 / 1; }
+
+/* Warm editorial grade: a whisper of the paper colour over every photograph */
+.fig-graded::after {
+  content: "";
+  position: absolute; inset: 0;
+  background: linear-gradient(180deg, rgba(61,74,44,0.05), rgba(61,74,44,0.14));
+  mix-blend-mode: multiply;
+  pointer-events: none;
+}
+
+/* Hero: an asymmetric pair, the way the reference lays out its mosaic */
+.hero-figs {
+  display: grid;
+  grid-template-columns: 1.35fr 1fr;
+  gap: clamp(0.8rem, 2vw, 1.4rem);
+  align-items: end;
+  margin-top: clamp(2.5rem, 6vw, 4rem);
+}
+.hero-figs .fig:last-child { margin-bottom: clamp(1.5rem, 4vw, 3rem); }
+@media (max-width: 700px) {
+  .hero-figs { grid-template-columns: 1fr; }
+  .hero-figs .fig:last-child { display: none; }
+}
+
+/* Seasons gain a photograph each: the signature section earns the imagery */
+.season .fig { margin-bottom: 1rem; }
+
+.about-fig { margin-top: clamp(2rem, 5vw, 3rem); }
+
 /* ---------- Sections ---------- */
 
 section { padding-block: clamp(3.5rem, 8vw, 6rem); }
@@ -300,6 +340,18 @@ html:not(.js) .tabpanel { border-top: 1px solid var(--line); }
         <a class="btn btn-line" href="#services">What we do</a>
       </div>
       <p class="trust-line"><span class="stars" aria-hidden="true">★★★★★</span> <strong>4.9</strong> from 80+ farm and food clients across the south-east</p>
+
+      <div class="hero-figs">
+        <figure class="fig fig-4x5 fig-graded">
+          <!-- LCP image: not lazy-loaded. Swap for images/hero-field.jpg -->
+          <img src="images/hero-field.svg" alt="Farmland and hedgerow in Co. Kilkenny"
+               width="1400" height="1750" fetchpriority="high" decoding="async">
+        </figure>
+        <figure class="fig fig-4x3 fig-graded">
+          <img src="images/hero-hands.svg" alt="A farm ledger open on a kitchen table"
+               width="1200" height="900" loading="lazy" decoding="async">
+        </figure>
+      </div>
     </div>
   </div>
 
@@ -391,18 +443,30 @@ html:not(.js) .tabpanel { border-top: 1px solid var(--line); }
       <h2>The year, handled</h2>
       <div class="seasons-grid">
         <div class="season">
+          <figure class="fig fig-1x1 fig-graded">
+            <img src="images/season-spring.svg" alt="Bare fields drying out in early spring" width="900" height="900" loading="lazy" decoding="async">
+          </figure>
           <span class="s-name">Spring</span>
           <p>Year-end accounts drafted while the fields are still drying out. You see last year clearly before this one takes over.</p>
         </div>
         <div class="season">
+          <figure class="fig fig-1x1 fig-graded">
+            <img src="images/season-summer.svg" alt="Full summer growth in the evening light" width="900" height="900" loading="lazy" decoding="async">
+          </figure>
           <span class="s-name">Summer</span>
           <p>A mid-year look at the numbers: what the busy season needs to earn, and what it is safe to spend.</p>
         </div>
         <div class="season">
+          <figure class="fig fig-1x1 fig-graded">
+            <img src="images/season-autumn.svg" alt="Harvest colour across a Kilkenny field" width="900" height="900" loading="lazy" decoding="async">
+          </figure>
           <span class="s-name">Autumn</span>
           <p>Tax deadline season. Returns filed early, liabilities known well in advance, and no envelopes you are afraid to open.</p>
         </div>
         <div class="season">
+          <figure class="fig fig-1x1 fig-graded">
+            <img src="images/season-winter.svg" alt="Frost on a bare hedgerow" width="900" height="900" loading="lazy" decoding="async">
+          </figure>
           <span class="s-name">Winter</span>
           <p>Planning at the kitchen table: next year's budget, the big purchases, and the conversations worth having early.</p>
         </div>
@@ -428,6 +492,10 @@ html:not(.js) .tabpanel { border-top: 1px solid var(--line); }
       <div>
         <p>Hedgerow Accounting works from Thomastown, Co. Kilkenny, for clients across the south-east. The practice was built around one observation: most accountancy is designed for businesses with twelve even months, and most of our clients don't have one of those.</p>
         <p>So we work the way the land works: around the seasons, in plain language, with the kettle on. Site visits are normal here; you shouldn't have to leave the farm to see your accountant.</p>
+        <figure class="fig fig-3x2 fig-graded about-fig">
+          <img src="images/about-thomastown.svg" alt="Thomastown, Co. Kilkenny"
+               width="1800" height="1200" loading="lazy" decoding="async">
+        </figure>
       </div>
     </div>
   </section>
