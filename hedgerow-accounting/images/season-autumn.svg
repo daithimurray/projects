@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 900" width="900" height="900" role="img" aria-label="Placeholder: Autumn">
+  <rect width="900" height="900" fill="#eceadf"/>
+  <rect x="40" y="40" width="820" height="820" fill="none" stroke="rgba(61,74,44,0.45)" stroke-width="1.5" stroke-dasharray="7 7"/>
+  <g font-family="Georgia, serif" text-anchor="middle">
+    <text x="50%" y="396" font-size="27" letter-spacing="4.9" fill="#3d4a2c">AUTUMN</text>
+  </g>
+  <g font-family="system-ui, sans-serif" text-anchor="middle" fill="#3d4a2c" opacity="0.72">
+    <text x="50%" y="491" font-size="19"><tspan x="50%" dy="0">Harvest, gold and brown, low sun.</tspan></text>
+    <text x="50%" y="824" font-size="19" opacity="0.8">1:1  ·  season-autumn</text>
+  </g>
+</svg>

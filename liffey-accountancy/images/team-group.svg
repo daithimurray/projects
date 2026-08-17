@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1800 1200" width="1800" height="1200" role="img" aria-label="Placeholder: RESERVED · team">
+  <rect width="1800" height="1200" fill="#e4e9f0"/>
+  <rect x="54" y="54" width="1692" height="1092" fill="none" stroke="rgba(27,45,79,0.45)" stroke-width="1.5" stroke-dasharray="7 7"/>
+  <g font-family="Georgia, serif" text-anchor="middle">
+    <text x="50%" y="528" font-size="36" letter-spacing="6.5" fill="#1b2d4f">RESERVED · TEAM</text>
+  </g>
+  <g font-family="system-ui, sans-serif" text-anchor="middle" fill="#1b2d4f" opacity="0.72">
+    <text x="50%" y="654" font-size="25"><tspan x="50%" dy="0">REAL photograph of the five-person team.</tspan><tspan x="50%" dy="39">Unposed, in the office. Do not substitute</tspan><tspan x="50%" dy="39">stock.</tspan></text>
+    <text x="50%" y="1097" font-size="25" opacity="0.8">3:2  ·  team-group</text>
+  </g>
+</svg>

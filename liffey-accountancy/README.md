@@ -47,9 +47,13 @@ update internal links and the sitemap if you enable that.
 5. **Legal pages** — have the business approve `privacy.html` and
    `cookies.html`, name the form provider in the Privacy Notice, then remove
    the `noindex` tags and DRAFT banners.
-6. **Photography** — none supplied yet. The design works without photos, but
-   the PRD prefers real founder/team photography (§12.1, §16, §30.5); TODO
-   comments in `about.html` mark the slots. Never use stock finance imagery.
+6. **Photography** — the image system is built and five slots are wired; see
+   **`IMAGES.md`** for the shot list, ratios and direction. Two slots
+   (`founder-portrait`, `team-group`) are **RESERVED** and show an "Awaiting
+   approved photograph" badge: they require *real* photographs of Aoife and the
+   team (PRD §16, §30.5, §44). Never substitute stock or generated imagery for
+   a named real person. Swap files in with
+   `python3 ../tools/swap-images.py liffey-accountancy <your-image-dir>`.
 7. **OG image** — create a social sharing image and wire up `og:image`
    (PRD §35).
 8. **Search Console** — connect and submit the sitemap after launch.

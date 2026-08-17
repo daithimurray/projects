@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1200" width="1600" height="1200" role="img" aria-label="Placeholder: Working detail">
+  <rect width="1600" height="1200" fill="#0f1512"/>
+  <rect x="54" y="54" width="1492" height="1092" fill="none" stroke="rgba(52,211,153,0.45)" stroke-width="1.5" stroke-dasharray="7 7"/>
+  <g font-family="Georgia, serif" text-anchor="middle">
+    <text x="50%" y="528" font-size="36" letter-spacing="6.5" fill="#cfe8dc">WORKING DETAIL</text>
+  </g>
+  <g font-family="system-ui, sans-serif" text-anchor="middle" fill="#cfe8dc" opacity="0.72">
+    <text x="50%" y="654" font-size="25"><tspan x="50%" dy="0">Low-key detail: hands, documents, a table edge</tspan><tspan x="50%" dy="39">in shadow. Moody, expensive, no faces needed.</tspan></text>
+    <text x="50%" y="1097" font-size="25" opacity="0.8">4:3  ·  boardroom-detail</text>
+  </g>
+</svg>

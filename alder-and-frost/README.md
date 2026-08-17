@@ -19,6 +19,13 @@ Deliberately the opposite of the Liffey Accountancy site in this repo:
 dark vs light, single-page vs multi-page, premium-boutique vs local-practice,
 emerald-on-black vs navy-on-offwhite, punchy copy vs full brochure.
 
+## Photography
+
+Two image slots only — restraint is the brand. See **`IMAGES.md`** for the shot
+list. Both are graded into the palette (black + emerald gradients), so source
+low-key, near-monochrome frames. Swap placeholders with
+`python3 ../tools/swap-images.py alder-and-frost <your-image-dir>`.
+
 ## Structure
 
 - `index.html` — the whole site: markup and inline CSS, zero JavaScript.

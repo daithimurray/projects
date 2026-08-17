@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 1500" width="1200" height="1500" role="img" aria-label="Placeholder: Hero · place">
+  <rect width="1200" height="1500" fill="#e4e9f0"/>
+  <rect x="54" y="54" width="1092" height="1392" fill="none" stroke="rgba(27,45,79,0.45)" stroke-width="1.5" stroke-dasharray="7 7"/>
+  <g font-family="Georgia, serif" text-anchor="middle">
+    <text x="50%" y="660" font-size="36" letter-spacing="6.5" fill="#1b2d4f">HERO · PLACE</text>
+  </g>
+  <g font-family="system-ui, sans-serif" text-anchor="middle" fill="#1b2d4f" opacity="0.72">
+    <text x="50%" y="818" font-size="25"><tspan x="50%" dy="0">Maynooth street or canal, early light. Real</tspan><tspan x="50%" dy="39">location, no stock offices. Warm, calm,</tspan><tspan x="50%" dy="39">unpeopled or distant figures.</tspan></text>
+    <text x="50%" y="1397" font-size="25" opacity="0.8">4:5  ·  hero-maynooth</text>
+  </g>
+</svg>

@@ -20,6 +20,15 @@ The concept is chosen to fit the style: an editorial, seasonal, countryside
 practice — third in the set after Liffey Accountancy (navy classic,
 multi-page) and Alder & Frost (premium dark, single-page).
 
+## Photography
+
+The image-led site of the three: seven slots covering an asymmetric hero pair,
+a photograph for each of the four seasons, and a place image. See
+**`IMAGES.md`** for the shot list. The four season images should be sourced as
+a set so they read as one year. Every image carries a warm multiply grade to
+hold it inside the cream/olive palette. Swap placeholders with
+`python3 ../tools/swap-images.py hedgerow-accounting <your-image-dir>`.
+
 ## Structure
 
 - `index.html` — the whole site: markup, inline CSS and one small script for

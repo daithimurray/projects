@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900" width="1200" height="900" role="img" aria-label="Placeholder: Hero · inset">
+  <rect width="1200" height="900" fill="#eceadf"/>
+  <rect x="40" y="40" width="1120" height="820" fill="none" stroke="rgba(61,74,44,0.45)" stroke-width="1.5" stroke-dasharray="7 7"/>
+  <g font-family="Georgia, serif" text-anchor="middle">
+    <text x="50%" y="396" font-size="27" letter-spacing="4.9" fill="#3d4a2c">HERO · INSET</text>
+  </g>
+  <g font-family="system-ui, sans-serif" text-anchor="middle" fill="#3d4a2c" opacity="0.72">
+    <text x="50%" y="491" font-size="19"><tspan x="50%" dy="0">Hands with produce, a gate latch, a ledger on</tspan><tspan x="50%" dy="29">a kitchen table. Small, warm, human.</tspan></text>
+    <text x="50%" y="824" font-size="19" opacity="0.8">4:3  ·  hero-hands</text>
+  </g>
+</svg>

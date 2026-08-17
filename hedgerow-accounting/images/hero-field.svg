@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 1750" width="1400" height="1750" role="img" aria-label="Placeholder: Hero · tall">
+  <rect width="1400" height="1750" fill="#eceadf"/>
+  <rect x="63" y="63" width="1274" height="1624" fill="none" stroke="rgba(61,74,44,0.45)" stroke-width="1.5" stroke-dasharray="7 7"/>
+  <g font-family="Georgia, serif" text-anchor="middle">
+    <text x="50%" y="770" font-size="42" letter-spacing="7.6" fill="#3d4a2c">HERO · TALL</text>
+  </g>
+  <g font-family="system-ui, sans-serif" text-anchor="middle" fill="#3d4a2c" opacity="0.72">
+    <text x="50%" y="954" font-size="29"><tspan x="50%" dy="0">Kilkenny farmland, hedgerow in the foreground,</tspan><tspan x="50%" dy="45">soft overcast light. Editorial, unhurried, no</tspan><tspan x="50%" dy="45">machinery hero shots.</tspan></text>
+    <text x="50%" y="1630" font-size="29" opacity="0.8">4:5  ·  hero-field</text>
+  </g>
+</svg>

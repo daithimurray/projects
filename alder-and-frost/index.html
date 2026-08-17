@@ -268,6 +268,42 @@ section { padding-block: clamp(4rem, 9vw, 7rem); }
 .quote blockquote p { font-family: var(--font-serif); font-style: italic; font-size: clamp(1.5rem, 3.6vw, 2.3rem); line-height: 1.35; color: var(--text); }
 .quote cite { display: block; margin-top: 1.6rem; font-style: normal; font-size: 0.85rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted-on-green); }
 
+/* ---------- Photography ----------
+   Dark premium uses imagery sparingly: two moments only, both graded into the
+   palette so a photograph never breaks the near-monochrome discipline. Swap
+   the .svg plates in images/ for real .jpg/.webp at the same names. */
+
+.fig { position: relative; margin: 0; overflow: hidden; border-radius: var(--radius); background: var(--bg-raised); }
+.fig img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: var(--focal, 50% 50%); }
+.fig-4x3 { aspect-ratio: 4 / 3; }
+
+/* Emerald grade: darkens and cools the image into the brand's colour world */
+.fig-graded::after {
+  content: "";
+  position: absolute; inset: 0;
+  background:
+    linear-gradient(180deg, rgba(10,10,10,0.30), rgba(10,10,10,0.62)),
+    linear-gradient(150deg, rgba(52,211,153,0.20), transparent 65%);
+  pointer-events: none;
+}
+
+/* The quote band sits on a photograph rather than a flat gradient */
+.quote-figure { position: absolute; inset: 0; overflow: hidden; }
+.quote-figure img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 55%; }
+.quote-figure::after {
+  content: "";
+  position: absolute; inset: 0;
+  background:
+    linear-gradient(160deg, rgba(15,69,52,0.86), rgba(13,59,46,0.94)),
+    linear-gradient(180deg, rgba(10,10,10,0.25), rgba(10,10,10,0.45));
+}
+.quote { position: relative; overflow: hidden; }
+.quote .wrap { position: relative; z-index: 1; }
+
+/* Approach section pairs the principles with one low-key working detail */
+.approach-grid { display: grid; grid-template-columns: 1fr 0.62fr; gap: clamp(1.8rem, 5vw, 3.5rem); align-items: start; }
+@media (max-width: 900px) { .approach-grid { grid-template-columns: 1fr; } .approach-grid .fig { display: none; } }
+
 /* ---------- Contact ---------- */
 
 .contact-inner { display: grid; grid-template-columns: 1.2fr 1fr; gap: clamp(2rem, 6vw, 5rem); align-items: start; }
@@ -439,6 +475,8 @@ section { padding-block: clamp(4rem, 9vw, 7rem); }
       <div class="section-head">
         <h2>How we <em>work</em></h2>
       </div>
+      <div class="approach-grid">
+      <div>
       <div class="principles">
         <div class="principle">
           <h3>Forward, not backward</h3>
@@ -458,10 +496,19 @@ section { padding-block: clamp(4rem, 9vw, 7rem); }
         <p>They told us our burn plan didn't survive contact with the forecast. Nobody else had said it, and it saved us two quarters.</p>
         <cite>Founder &amp; CEO · Series B software · Dublin</cite>
       </blockquote>
+      </div>
+      <figure class="fig fig-4x3 fig-graded">
+        <img src="images/boardroom-detail.svg" alt="Documents and a table edge in low light"
+             width="1600" height="1200" loading="lazy" decoding="async">
+      </figure>
+      </div>
     </div>
   </section>
 
   <section class="quote">
+    <div class="quote-figure" aria-hidden="true">
+      <img src="images/atmosphere-city.svg" alt="" width="2400" height="1000" loading="lazy" decoding="async">
+    </div>
     <div class="wrap">
       <blockquote>
         <p>&ldquo;Most firms report on the past. We help you decide the future.&rdquo;</p>
