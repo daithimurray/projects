@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="robots" content="noindex"><!-- staging deploy only: remove on the production domain -->
+<meta name="robots" content="noindex"><!-- staging deploy only -->
 <title>Who We Help — Trades, Local Businesses &amp; Directors | Liffey Accountancy</title>
 <meta name="description" content="Liffey Accountancy works with trades and construction, professional services, local businesses, company directors and new business owners across North Kildare.">
 <!-- TODO before launch: set canonical + og:url once the domain is confirmed -->
@@ -11,6 +11,7 @@
 <meta property="og:site_name" content="Liffey Accountancy">
 <meta property="og:title" content="Who We Help | Liffey Accountancy">
 <meta property="og:description" content="Trades and construction, professional services, local businesses, company directors and new business owners across North Kildare.">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="stylesheet" href="styles.css">
 <script>document.documentElement.classList.add('js');</script>
 </head>
@@ -40,21 +41,21 @@
     <div class="hero-card">
       <span class="section-label">Who we help</span>
       <h1>Accountants for businesses <span class="hl">like yours</span></h1>
-      <p class="lede">We work with small businesses across North Kildare — typically with 1 to 30 employees. If you recognise yourself below, we should talk.</p>
+      <p class="lede">We work with small businesses across North Kildare, typically with 1 to 30 employees. If you recognise yourself below, we should talk.</p>
     </div>
   </div>
 
-  <section class="section" style="padding-top:0">
+  <section class="section section--tight">
     <div class="container">
 
-      <div class="split" id="trades" style="padding-block:2.5rem; border-top:1px solid var(--border)">
+      <div class="split split-row" id="trades">
         <div>
           <span class="section-label">Trades &amp; construction</span>
           <h2>Trades and construction</h2>
           <p>Builders, electricians, plumbers, landscapers, engineers and small construction firms.</p>
         </div>
         <div>
-          <p>You are on site all day — the last thing you need is paperwork in the evening. We handle:</p>
+          <p>You are on site all day; the last thing you need is paperwork in the evening. We handle:</p>
           <ul class="checklist">
             <li>Payroll for a growing team</li>
             <li>VAT returns done on time</li>
@@ -69,14 +70,14 @@
         </div>
       </div>
 
-      <div class="split" id="professional-services" style="padding-block:2.5rem; border-top:1px solid var(--border)">
+      <div class="split split-row" id="professional-services">
         <div>
           <span class="section-label">Professional services</span>
           <h2>Professional services</h2>
           <p>Consultants, architects, surveyors, designers, IT contractors and marketing consultants.</p>
         </div>
         <div>
-          <p>Your time is what you sell — time spent on accounts is revenue lost. We take care of:</p>
+          <p>Your time is what you sell, and time spent on accounts is revenue lost. We take care of:</p>
           <ul class="checklist">
             <li>Company accounts kept in order</li>
             <li>Contractor income handled correctly</li>
@@ -91,7 +92,7 @@
         </div>
       </div>
 
-      <div class="split" id="local-businesses" style="padding-block:2.5rem; border-top:1px solid var(--border)">
+      <div class="split split-row" id="local-businesses">
         <div>
           <span class="section-label">Local businesses</span>
           <h2>Local businesses</h2>
@@ -113,7 +114,7 @@
         </div>
       </div>
 
-      <div class="split" id="company-directors" style="padding-block:2.5rem; border-top:1px solid var(--border)">
+      <div class="split split-row" id="company-directors">
         <div>
           <span class="section-label">Company directors</span>
           <h2>Company directors</h2>
@@ -124,7 +125,7 @@
           <ul class="checklist">
             <li>Company accounts</li>
             <li>Corporation tax</li>
-            <li>Payroll — including directors' payroll</li>
+            <li>Payroll, including directors' payroll</li>
             <li>Personal and company tax administration</li>
             <li>Financial reporting</li>
           </ul>
@@ -134,7 +135,7 @@
         </div>
       </div>
 
-      <div class="split" id="new-businesses" style="padding-block:2.5rem; border-top:1px solid var(--border)">
+      <div class="split split-row" id="new-businesses">
         <div>
           <span class="section-label">New businesses</span>
           <h2>New business owners</h2>
@@ -143,7 +144,7 @@
         <div>
           <p>The decisions you make at the start shape everything after. We help you get them right first time:</p>
           <ul class="checklist">
-            <li>Business structure — sole trader or limited company</li>
+            <li>Business structure: sole trader or limited company</li>
             <li>Registrations with Revenue and the CRO</li>
             <li>Accounting software that fits the business</li>
             <li>Bookkeeping setup you can actually maintain</li>
@@ -174,12 +175,12 @@
 <footer class="site-footer">
   <div class="container footer-grid">
     <div>
-      <h2>Liffey Accountancy</h2>
+      <p class="footer-h">Liffey Accountancy</p>
       <p>Accounts, tax and business advice for businesses across North Kildare. Based in Maynooth, Co. Kildare.</p>
       <p>Office hours: Monday&ndash;Friday, 09:00&ndash;17:30</p>
     </div>
     <div>
-      <h2>Explore</h2>
+      <p class="footer-h">Explore</p>
       <ul>
         <li><a href="services.html">Services</a></li>
         <li><a href="who-we-help.html">Who We Help</a></li>
@@ -188,7 +189,7 @@
       </ul>
     </div>
     <div>
-      <h2>Contact</h2>
+      <p class="footer-h">Contact</p>
       <ul>
         <li><a href="tel:+353000000000" data-cta="footer-call">+353 00 000 0000</a></li>
         <li><a href="mailto:hello@liffeyaccountancy.example" data-cta="footer-email">hello@liffeyaccountancy.example</a></li>
@@ -207,9 +208,19 @@
   var toggle = document.querySelector('.nav-toggle');
   var nav = document.getElementById('site-nav');
   if (toggle && nav) {
-    toggle.addEventListener('click', function () {
-      var open = nav.classList.toggle('open');
+    var setNav = function (open) {
+      nav.classList.toggle('open', open);
       toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+      toggle.textContent = open ? 'Close' : 'Menu';
+    };
+    toggle.addEventListener('click', function () {
+      setNav(!nav.classList.contains('open'));
+    });
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && nav.classList.contains('open')) {
+        setNav(false);
+        toggle.focus();
+      }
     });
   }
 })();
