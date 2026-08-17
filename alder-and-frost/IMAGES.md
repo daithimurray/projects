@@ -1,11 +1,19 @@
-# Alder & Frost — photography brief
+# Alder &amp; Frost — artwork
 
-Fictional demo — licensed stock is fine. Restraint is the point: two images only.
+The site ships with **authored SVG artwork**, not stock photography: an
+architectural night study (building masses, window light, long-exposure
+streaks) behind the pull-quote, and a low-key document study in the approach
+section. Both are drawn in the brand's emerald-on-black and total about 28 KB.
 
-Drop real files into `images/` using **the same base name** as the placeholder,
-in `.jpg` or `.webp`. Then update the `src` in the markup (or run the swap
-helper from the repo root — see below). Ratios are already reserved in CSS, so
-nothing on the page shifts when the real image loads.
+Regenerate with `python3 ../tools/make-artwork.py`.
+
+## What each slot contains
+
+Every slot below is filled with artwork today. The table doubles as the brief
+if you ever replace a slot with a real photograph: drop a `.jpg`/`.webp` into
+`images/` using the same base name and run
+`python3 ../tools/swap-images.py <site-folder> <your-image-dir>`. Ratios are
+reserved in CSS, so swapping causes no layout shift.
 
 ## Shot list
 

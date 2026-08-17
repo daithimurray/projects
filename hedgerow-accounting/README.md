@@ -20,14 +20,12 @@ The concept is chosen to fit the style: an editorial, seasonal, countryside
 practice — third in the set after Liffey Accountancy (navy classic,
 multi-page) and Alder & Frost (premium dark, single-page).
 
-## Photography
+## Artwork
 
-The image-led site of the three: seven slots covering an asymmetric hero pair,
-a photograph for each of the four seasons, and a place image. See
-**`IMAGES.md`** for the shot list. The four season images should be sourced as
-a set so they read as one year. Every image carries a warm multiply grade to
-hold it inside the cream/olive palette. Swap placeholders with
-`python3 ../tools/swap-images.py hedgerow-accounting <your-image-dir>`.
+Seven slots, all **authored SVG** rather than stock: an asymmetric hero pair,
+a landscape drawn once per season so the four squares read as one year, and a
+view of Thomastown with the River Nore (~88 KB total). See `IMAGES.md`;
+regenerate with `python3 ../tools/make-artwork.py`.
 
 ## Structure
 

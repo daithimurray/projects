@@ -1,11 +1,25 @@
-# Liffey Accountancy — photography brief
+# Liffey Accountancy — artwork &amp; photography
 
-Real client site — photography rules are strict (PRD §16, §30.5, §42, §44).
+The site now ships with **authored SVG artwork** rather than stock photography:
+an engraved cartography of the firm's actual service area — the Royal Canal
+drawn as a map line, contour work, and the towns the copy names. It is
+licence-free, ownable, and about 50 KB for the whole set.
 
-Drop real files into `images/` using **the same base name** as the placeholder,
-in `.jpg` or `.webp`. Then update the `src` in the markup (or run the swap
-helper from the repo root — see below). Ratios are already reserved in CSS, so
-nothing on the page shifts when the real image loads.
+Regenerate any time with `python3 ../tools/make-artwork.py` (deterministic —
+the same output every run). Edit `tools/make-artwork.py` to change it.
+
+Two slots remain **RESERVED for real photographs** and are not artwork:
+`founder-portrait` and `team-group`. The PRD requires genuine photographs of
+Aoife and the team (§16, §30.5, §44), and no drawing or stock image may stand
+in for a named real person.
+
+## What each slot contains
+
+Every slot below is filled with artwork today. The table doubles as the brief
+if you ever replace a slot with a real photograph: drop a `.jpg`/`.webp` into
+`images/` using the same base name and run
+`python3 ../tools/swap-images.py <site-folder> <your-image-dir>`. Ratios are
+reserved in CSS, so swapping causes no layout shift.
 
 ## Shot list
 

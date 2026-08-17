@@ -19,12 +19,12 @@ Deliberately the opposite of the Liffey Accountancy site in this repo:
 dark vs light, single-page vs multi-page, premium-boutique vs local-practice,
 emerald-on-black vs navy-on-offwhite, punchy copy vs full brochure.
 
-## Photography
+## Artwork
 
-Two image slots only — restraint is the brand. See **`IMAGES.md`** for the shot
-list. Both are graded into the palette (black + emerald gradients), so source
-low-key, near-monochrome frames. Swap placeholders with
-`python3 ../tools/swap-images.py alder-and-frost <your-image-dir>`.
+Two slots, both **authored SVG** rather than stock: an architectural night
+study behind the pull-quote and a low-key document study in the approach
+section, drawn in the brand's emerald-on-black (~28 KB total). See `IMAGES.md`;
+regenerate with `python3 ../tools/make-artwork.py`.
 
 ## Structure
 

@@ -1,11 +1,20 @@
-# Hedgerow Accounting — photography brief
+# Hedgerow Accounting — artwork
 
-Fictional demo — licensed stock is fine. This is the image-led site of the three.
+The site ships with **authored SVG artwork**, not stock photography: layered
+fields with a hedgerow line and a low sun, drawn once per season so the four
+squares read as one year passing, plus an engraved seed-head study and a view
+of Thomastown with the River Nore. About 88 KB for the whole set.
 
-Drop real files into `images/` using **the same base name** as the placeholder,
-in `.jpg` or `.webp`. Then update the `src` in the markup (or run the swap
-helper from the repo root — see below). Ratios are already reserved in CSS, so
-nothing on the page shifts when the real image loads.
+Regenerate with `python3 ../tools/make-artwork.py`. The seasonal palettes live
+in the `SEASONS` dict at the top of that file.
+
+## What each slot contains
+
+Every slot below is filled with artwork today. The table doubles as the brief
+if you ever replace a slot with a real photograph: drop a `.jpg`/`.webp` into
+`images/` using the same base name and run
+`python3 ../tools/swap-images.py <site-folder> <your-image-dir>`. Ratios are
+reserved in CSS, so swapping causes no layout shift.
 
 ## Shot list
 
