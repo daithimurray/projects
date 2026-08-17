@@ -31,6 +31,32 @@ nothing on the page shifts when the real image loads.
 - Alt text is already written for each slot; update it if the subject changes.
 - The two RESERVED slots carry a visible badge and empty alt text so assistive tech skips them until real photography lands.
 
+## Sourcing: what to search for
+
+**Licence first.** Only use files you have a commercial licence for. Free and
+commercially usable without attribution: **Unsplash**, **Pexels**. Paid and
+usually better for Irish specificity: **Stocksy**, **Gallery Stock**, or a local
+photographer. Never publish a watermarked comp.
+
+**The trap to avoid.** Searching "accountant" or "accounting" on any stock site
+returns calculators, coins, handshakes and glass-tower boardrooms — the exact
+list PRD §30.5 bans. Search for the *place and the situation* instead of the
+profession.
+
+| Slot | Search instead for |
+|------|--------------------|
+| `hero-maynooth` | "Maynooth", "Royal Canal Kildare", "Irish market town street", "Irish town evening light" |
+| `local-north-kildare` | "Kildare countryside", "Irish farmland hedgerow", "Leixlip", "Irish canal towpath" |
+| `office-detail` | "notebook desk daylight", "paperwork close up warm", "small office interior daylight" — no calculators, no stacked coins |
+| `founder-portrait` | **Do not search.** Commission a real portrait of Aoife. |
+| `team-group` | **Do not search.** Commission the real team photograph. |
+
+**Strong recommendation for the two reserved slots:** a half-day with a local
+photographer in Maynooth covers the founder portrait, the team shot and the
+office details in one session, and gives you images no competitor can have.
+That is the single biggest credibility upgrade available to this site, and the
+PRD requires real photography for them regardless.
+
 ## Preparing files
 
 - Export at the min size above (2× that if you want retina headroom), sRGB.

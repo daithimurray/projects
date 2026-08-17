@@ -24,6 +24,26 @@ nothing on the page shifts when the real image loads.
 - Both images are graded into the palette, so anything too warm or too bright will fight the brand.
 - Do not add people-heavy 'team' imagery: this brand's confidence comes from restraint and typography.
 
+## Sourcing: what to search for
+
+**Licence first.** Unsplash and Pexels are free for commercial use without
+attribution; Stocksy is paid but far less recognisable. Never publish a
+watermarked comp.
+
+**Avoid** anything that says "business meeting", "finance", "accountant" or
+"teamwork" — that search returns smiling stock people at laptops, which would
+destroy this brand's restraint instantly. This site wants *atmosphere*, not
+people.
+
+| Slot | Search instead for |
+|------|--------------------|
+| `atmosphere-city` | "Dublin docklands night", "city dusk long exposure", "architecture reflection dark", "night water city lights" |
+| `boardroom-detail` | "documents low light", "hands writing shadow", "dark table edge minimal", "chiaroscuro still life paper" |
+
+Both images sit under heavy black-and-emerald gradients, so choose frames that
+are already dark and near-monochrome. A bright, warm, cheerful photograph will
+fight the grade and look wrong no matter how it is treated.
+
 ## Preparing files
 
 - Export at the min size above (2× that if you want retina headroom), sRGB.
