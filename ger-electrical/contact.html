@@ -1,0 +1,374 @@
+<!doctype html>
+<html lang="en-IE">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#14171c">
+<title>Contact Ger | Electrician in North Kildare</title>
+<meta name="description" content="Call Ger, or send the details of the job and he will come back to you. Electrician for Leixlip, Celbridge, Maynooth and North Kildare.">
+<!-- TODO: set once the domain is confirmed
+<link rel="canonical" href="https://example.ie/contact">
+<meta property="og:url" content="https://example.ie/contact">
+-->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Ger Electrical">
+<meta property="og:title" content="Contact Ger | Electrician in North Kildare">
+<meta property="og:description" content="Call Ger, or send the details of the job through the quote form.">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="styles.css">
+<script>document.documentElement.classList.add('js');</script>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to main content</a>
+
+<header class="site-header">
+  <div class="container header-inner">
+    <a class="brand" href="index.html">
+      <svg class="brand-mark" width="26" height="26" viewBox="0 0 26 26" aria-hidden="true" focusable="false">
+        <rect x="1" y="1" width="24" height="24" fill="none" stroke="#e8a33d" stroke-width="1.5"/>
+        <path d="M6 7 h7 v11 h7" fill="none" stroke="#ffffff" stroke-width="1.5"/>
+        <circle cx="13" cy="12.5" r="2.4" fill="#e8a33d"/>
+      </svg>
+      <span>Ger Electrical<span class="brand-sub">Electrician · North Kildare</span></span>
+    </a>
+    <button class="nav-toggle" aria-expanded="false" aria-controls="site-nav">Menu</button>
+    <a class="header-call" href="tel:+353000000000" data-cta="header-call">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+        <path d="M21 16.9v2.6a1.7 1.7 0 0 1-1.9 1.7 17 17 0 0 1-7.4-2.6 16.6 16.6 0 0 1-5.1-5.1A17 17 0 0 1 4 6.1 1.7 1.7 0 0 1 5.7 4.2h2.6a1.7 1.7 0 0 1 1.7 1.5c.1.9.3 1.7.6 2.5a1.7 1.7 0 0 1-.4 1.8l-1.1 1.1a13.6 13.6 0 0 0 5.1 5.1l1.1-1.1a1.7 1.7 0 0 1 1.8-.4c.8.3 1.6.5 2.5.6a1.7 1.7 0 0 1 1.4 1.6z"/>
+      </svg>
+      Call Ger
+    </a>
+    <nav class="site-nav" id="site-nav" aria-label="Main">
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="services.html">Services</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="contact.html" aria-current="page">Contact</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+
+  <section class="section">
+    <div class="container split">
+      <div>
+        <span class="section-label">Contact</span>
+        <h1>Call Ger</h1>
+        <p class="body-lg">The quickest way to get an answer about an electrical job is a phone call. Describe what is happening and you will know straight away whether it is something Ger can do.</p>
+
+        <div class="contact-card mt-2">
+          <p class="mini-label" style="color:#a8b0bc">Phone</p>
+          <a class="contact-number" href="tel:+353000000000" data-cta="contact-number">+353 00 000 0000</a>
+          <div class="cta-row">
+            <a class="btn btn-primary" href="tel:+353000000000" data-cta="contact-call">Call Ger</a>
+          </div>
+        </div>
+
+        <ul class="contact-list mt-2">
+          <li>
+            <p class="mini-label">Areas covered</p>
+            <p>Leixlip, Celbridge, Maynooth and the surrounding parts of North Kildare. Not sure if your area is covered? Call Ger and ask.</p>
+          </li>
+          <!-- Opening hours go here once confirmed (PRD §19.2, §43 Q13).
+               Nothing about hours or out-of-hours availability is published
+               until Ger states them.
+          <li>
+            <p class="mini-label">Hours</p>
+            <p>[Confirmed opening hours]</p>
+          </li>
+          -->
+        </ul>
+      </div>
+
+      <div>
+        <h2 id="quote">Request a Quote</h2>
+        <p class="body-lg">Would rather not ring? Send the details and Ger will come back to you.</p>
+
+        <div class="form-card mt-2">
+          <p class="form-status" id="form-status" role="status" aria-live="polite" tabindex="-1"></p>
+
+          <!-- TODO before launch: point action at the chosen form service or
+               serverless function, and confirm where submissions are delivered
+               (PRD §35, §43 Q15). Without JS this posts natively. -->
+          <form id="quote-form"
+                method="post"
+                action="https://example.com/REPLACE-WITH-FORM-ENDPOINT"
+                novalidate>
+            <div class="form-grid">
+              <div class="field field-full">
+                <label for="name">Your name</label>
+                <input type="text" id="name" name="name" autocomplete="name" required>
+                <span class="error-msg" id="name-error">Please enter your name.</span>
+              </div>
+
+              <div class="field">
+                <label for="phone">Phone number</label>
+                <input type="tel" id="phone" name="phone" autocomplete="tel" inputmode="tel" required>
+                <span class="error-msg" id="phone-error">Please enter a phone number Ger can reach you on.</span>
+              </div>
+
+              <div class="field">
+                <div class="label-row">
+                  <label for="email">Email</label>
+                  <span class="optional" id="email-optional">Optional</span>
+                </div>
+                <input type="email" id="email" name="email" autocomplete="email" aria-describedby="email-optional email-error">
+                <span class="error-msg" id="email-error">Please check the email address, or leave it blank.</span>
+              </div>
+
+              <div class="field field-full">
+                <label for="location">Town or area</label>
+                <input type="text" id="location" name="location" autocomplete="address-level2" required>
+                <span class="error-msg" id="location-error">Please tell Ger where the job is.</span>
+              </div>
+
+              <div class="field field-full">
+                <label for="work">What work do you need?</label>
+                <select id="work" name="work" required>
+                  <option value="">Choose one</option>
+                  <option>Electrical repair</option>
+                  <option>Fault finding</option>
+                  <option>New sockets</option>
+                  <option>Lighting</option>
+                  <option>Electrical upgrade</option>
+                  <option>Electrical maintenance</option>
+                  <option>Small installation</option>
+                  <option>Something else</option>
+                </select>
+                <span class="error-msg" id="work-error">Please choose the closest option.</span>
+              </div>
+
+              <div class="field field-full">
+                <div class="label-row">
+                  <label for="message">Tell Ger about the job</label>
+                  <span class="optional" id="message-optional">Optional</span>
+                </div>
+                <textarea id="message" name="message" aria-describedby="message-optional message-hint"></textarea>
+                <span class="hint" id="message-hint">A sentence or two is plenty. What is happening, and in which room or part of the building?</span>
+              </div>
+
+              <!-- Honeypot: hidden from people, tempting to bots (PRD §38.6) -->
+              <div class="hp-field" aria-hidden="true">
+                <label for="website">Leave this field empty</label>
+                <input type="text" id="website" name="website" tabindex="-1" autocomplete="off">
+              </div>
+            </div>
+
+            <div class="cta-row mt-2">
+              <button class="btn btn-primary" type="submit">Send to Ger</button>
+            </div>
+            <p class="form-note">Your details are used to answer your enquiry and nothing else. See the <a href="privacy.html">Privacy Policy</a>.</p>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section-tint">
+    <div class="container">
+      <span class="section-label">What happens next</span>
+      <h2>After you get in touch</h2>
+      <ul class="steps">
+        <li>
+          <h3>Ger hears what the job is</h3>
+          <p>By phone, or from the details you send through the form.</p>
+        </li>
+        <li>
+          <h3>He tells you what is involved</h3>
+          <p>What the work means and what it takes. If it is not a job for him, you will be told that instead of being sent a quote.</p>
+        </li>
+        <li>
+          <h3>The work gets arranged</h3>
+          <p>A time that suits, and the job done properly when he gets there.</p>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <span class="section-label">Common questions</span>
+      <h2>Before you ring</h2>
+      <div class="faq">
+        <details>
+          <summary>Do you cover my area?</summary>
+          <p>The work is based around Leixlip, Celbridge, Maynooth and the surrounding parts of North Kildare. If you are not sure whether your area is covered, call Ger and ask &mdash; it takes a moment.</p>
+        </details>
+        <details>
+          <summary>How do I get a price?</summary>
+          <p>Describe the job on the phone. Ger will tell you what is involved and what happens next. Some jobs need a look in person before anyone can give you a sensible figure.</p>
+        </details>
+        <details>
+          <summary>Can I send the details instead of calling?</summary>
+          <p>Yes. Use the quote form above. Include the town and a sentence about what is happening, and leave a phone number so Ger can come back to you.</p>
+        </details>
+        <details>
+          <summary>Who actually does the work?</summary>
+          <p>Ger. He takes the call, looks at the job and does or manages the work himself.</p>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section-dark on-dark">
+    <div class="container center">
+      <span class="section-label" style="margin-inline:auto">Ready when you are</span>
+      <h2>Call Ger</h2>
+      <p class="hero-phone" style="justify-content:center"><span>Phone</span> <a href="tel:+353000000000" data-cta="contact-final-number">+353 00 000 0000</a></p>
+      <div class="cta-row mt-2">
+        <a class="btn btn-primary" href="tel:+353000000000" data-cta="contact-final-call">Call Ger</a>
+      </div>
+      <p class="body-lg" style="margin:1.75rem auto 0">Leixlip &middot; Celbridge &middot; Maynooth &middot; North Kildare</p>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  <div class="container footer-grid">
+    <div>
+      <p class="footer-name">Ger Electrical</p>
+      <p>Independent local electrician for homes and businesses across North Kildare.</p>
+    </div>
+    <div>
+      <p class="footer-h">Pages</p>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="services.html">Services</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+    </div>
+    <div>
+      <p class="footer-h">Contact</p>
+      <ul>
+        <li><a href="tel:+353000000000" data-cta="footer-call">+353 00 000 0000</a></li>
+        <li><a href="#quote" data-cta="footer-quote">Request a Quote</a></li>
+        <li>Leixlip &middot; Celbridge &middot; Maynooth &middot; North Kildare</li>
+      </ul>
+    </div>
+  </div>
+  <div class="container footer-bottom">
+    <span>&copy; 2026 Ger Electrical</span>
+    <span><a href="privacy.html">Privacy Policy</a></span>
+  </div>
+</footer>
+
+<!-- No sticky call bar on this page: the number is already the first thing
+     here, and the bar must never sit over form controls (PRD §8.3). -->
+
+<script>
+(function () {
+  var toggle = document.querySelector('.nav-toggle');
+  var nav = document.getElementById('site-nav');
+  if (toggle && nav) {
+    var setNav = function (open) {
+      nav.classList.toggle('open', open);
+      toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+      toggle.textContent = open ? 'Close' : 'Menu';
+    };
+    toggle.addEventListener('click', function () {
+      setNav(!nav.classList.contains('open'));
+    });
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && nav.classList.contains('open')) {
+        setNav(false);
+        toggle.focus();
+      }
+    });
+  }
+})();
+
+(function () {
+  var form = document.getElementById('quote-form');
+  var status = document.getElementById('form-status');
+  if (!form || !status) return;
+
+  var required = ['name', 'phone', 'location', 'work'];
+
+  function fieldOf(input) { return input.closest('.field'); }
+
+  function setInvalid(input, invalid) {
+    var field = fieldOf(input);
+    if (!field) return;
+    field.classList.toggle('invalid', invalid);
+    input.setAttribute('aria-invalid', invalid ? 'true' : 'false');
+    var msg = document.getElementById(input.id + '-error');
+    if (msg) {
+      var described = (input.getAttribute('aria-describedby') || '')
+        .split(' ').filter(function (t) { return t && t !== msg.id; });
+      if (invalid) described.push(msg.id);
+      if (described.length) input.setAttribute('aria-describedby', described.join(' '));
+      else input.removeAttribute('aria-describedby');
+    }
+  }
+
+  function validateField(input) {
+    var value = (input.value || '').trim();
+    var ok = true;
+    if (required.indexOf(input.name) !== -1 && !value) ok = false;
+    if (input.name === 'phone' && value && value.replace(/[^0-9]/g, '').length < 7) ok = false;
+    if (input.name === 'email' && value && !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(value)) ok = false;
+    setInvalid(input, !ok);
+    return ok;
+  }
+
+  // Validate on the way out of a field, and clear the error as it is fixed.
+  Array.prototype.forEach.call(form.elements, function (el) {
+    if (!el.name || el.name === 'website' || el.type === 'submit') return;
+    el.addEventListener('blur', function () { validateField(el); });
+    el.addEventListener('input', function () {
+      if (fieldOf(el) && fieldOf(el).classList.contains('invalid')) validateField(el);
+    });
+  });
+
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+
+    var firstBad = null;
+    Array.prototype.forEach.call(form.elements, function (el) {
+      if (!el.name || el.name === 'website' || el.type === 'submit') return;
+      if (!validateField(el) && !firstBad) firstBad = el;
+    });
+
+    if (firstBad) {
+      status.setAttribute('data-state', 'error');
+      status.textContent = 'Some details are missing. The fields below are marked.';
+      firstBad.focus();
+      return;
+    }
+
+    // Silently drop anything that filled the honeypot.
+    if ((form.elements.website.value || '').trim()) return;
+
+    var button = form.querySelector('button[type="submit"]');
+    button.disabled = true;
+    button.textContent = 'Sending…';
+    status.removeAttribute('data-state');
+    status.textContent = '';
+
+    fetch(form.action, {
+      method: 'POST',
+      body: new FormData(form),
+      headers: { Accept: 'application/json' }
+    }).then(function (res) {
+      if (!res.ok) throw new Error('Bad response');
+      // ANALYTICS HOOK: form_submit — count here, after a successful post,
+      // never on button click (PRD §29).
+      form.hidden = true;
+      status.setAttribute('data-state', 'success');
+      status.textContent = 'Sent. Ger has your details and will come back to you. If you would rather talk it through now, his number is at the top of this page.';
+      status.focus();
+    }).catch(function () {
+      button.disabled = false;
+      button.textContent = 'Send to Ger';
+      status.setAttribute('data-state', 'error');
+      status.textContent = 'That did not send. Please try again, or ring Ger on +353 00 000 0000.';
+    });
+  });
+})();
+</script>
+</body>
+</html>

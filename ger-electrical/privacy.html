@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="en-IE">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#14171c">
+<meta name="robots" content="noindex">
+<title>Privacy Policy | Ger Electrical</title>
+<meta name="description" content="How enquiry details submitted through this website are used.">
+<meta property="og:title" content="Privacy Policy | Ger Electrical">
+<meta property="og:description" content="How enquiry details submitted through this website are used.">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="styles.css">
+<script>document.documentElement.classList.add('js');</script>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to main content</a>
+
+<div class="draft-banner">
+  <div class="container">
+    <strong>Draft.</strong> This policy is a starting point, not legal advice. It must be reviewed and approved before launch, and the form provider named, at which point the <code>noindex</code> tag and this banner come off.
+  </div>
+</div>
+
+<header class="site-header">
+  <div class="container header-inner">
+    <a class="brand" href="index.html">
+      <svg class="brand-mark" width="26" height="26" viewBox="0 0 26 26" aria-hidden="true" focusable="false">
+        <rect x="1" y="1" width="24" height="24" fill="none" stroke="#e8a33d" stroke-width="1.5"/>
+        <path d="M6 7 h7 v11 h7" fill="none" stroke="#ffffff" stroke-width="1.5"/>
+        <circle cx="13" cy="12.5" r="2.4" fill="#e8a33d"/>
+      </svg>
+      <span>Ger Electrical<span class="brand-sub">Electrician · North Kildare</span></span>
+    </a>
+    <button class="nav-toggle" aria-expanded="false" aria-controls="site-nav">Menu</button>
+    <a class="header-call" href="tel:+353000000000" data-cta="header-call">Call Ger</a>
+    <nav class="site-nav" id="site-nav" aria-label="Main">
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="services.html">Services</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+  <section class="section">
+    <div class="container measure">
+      <span class="section-label">Legal</span>
+      <h1>Privacy Policy</h1>
+
+      <h2>What this website collects</h2>
+      <p>This website has one form: the quote request on the contact page. It collects your name, phone number, the town or area the job is in, the type of work you need, and &mdash; if you choose to give them &mdash; your email address and a description of the job.</p>
+      <p>Nothing else is collected. There are no accounts, no payments and no tracking cookies set by this website.</p>
+
+      <h2>Why it is collected</h2>
+      <p>So that Ger can answer your enquiry and, if you go ahead, carry out the work. That is the only purpose.</p>
+
+      <h2>How it is used and stored</h2>
+      <p>Your details are sent to Ger by [FORM PROVIDER TO BE NAMED BEFORE LAUNCH] and are used to contact you about your enquiry. They are not sold, and they are not used for marketing unless you ask to be contacted that way.</p>
+
+      <h2>How long it is kept</h2>
+      <p>Enquiry details are kept for as long as they are needed to deal with your enquiry and any work that follows, and for as long as tax and business records require. [CONFIRM THE RETENTION PERIOD BEFORE LAUNCH.]</p>
+
+      <h2>Your rights</h2>
+      <p>You can ask what information is held about you, ask for it to be corrected, or ask for it to be deleted. To make a request, ring the number on this website or write to [CONTACT ADDRESS FOR PRIVACY REQUESTS].</p>
+      <p>If you are not satisfied with the response, you can contact the Data Protection Commission (<a href="https://www.dataprotection.ie">dataprotection.ie</a>).</p>
+
+      <h2>Cookies</h2>
+      <p>This website sets no cookies of its own and loads no third-party trackers. If analytics is added later, this section &mdash; and the need for a consent control &mdash; must be reviewed first.</p>
+
+      <div class="cta-row mt-2">
+        <a class="btn btn-secondary" href="index.html">Back to the homepage</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="container footer-grid">
+    <div>
+      <p class="footer-name">Ger Electrical</p>
+      <p>Independent local electrician for homes and businesses across North Kildare.</p>
+    </div>
+    <div>
+      <p class="footer-h">Pages</p>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="services.html">Services</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+    </div>
+    <div>
+      <p class="footer-h">Contact</p>
+      <ul>
+        <li><a href="tel:+353000000000" data-cta="footer-call">+353 00 000 0000</a></li>
+        <li><a href="contact.html" data-cta="footer-quote">Request a Quote</a></li>
+        <li>Leixlip &middot; Celbridge &middot; Maynooth &middot; North Kildare</li>
+      </ul>
+    </div>
+  </div>
+  <div class="container footer-bottom">
+    <span>&copy; 2026 Ger Electrical</span>
+    <span><a href="privacy.html">Privacy Policy</a></span>
+  </div>
+</footer>
+
+<script>
+(function () {
+  var toggle = document.querySelector('.nav-toggle');
+  var nav = document.getElementById('site-nav');
+  if (!toggle || !nav) return;
+  var setNav = function (open) {
+    nav.classList.toggle('open', open);
+    toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+    toggle.textContent = open ? 'Close' : 'Menu';
+  };
+  toggle.addEventListener('click', function () {
+    setNav(!nav.classList.contains('open'));
+  });
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && nav.classList.contains('open')) {
+      setNav(false);
+      toggle.focus();
+    }
+  });
+})();
+</script>
+</body>
+</html>
