@@ -1,11 +1,20 @@
-# Hedgerow Accounting — photography brief
+# Hedgerow Accounting — artwork
 
-Fictional demo — licensed stock is fine. This is the image-led site of the three.
+The site ships with **authored SVG artwork**, not stock photography: layered
+fields with a hedgerow line and a low sun, drawn once per season so the four
+squares read as one year passing, plus an engraved seed-head study and a view
+of Thomastown with the River Nore. About 88 KB for the whole set.
 
-Drop real files into `images/` using **the same base name** as the placeholder,
-in `.jpg` or `.webp`. Then update the `src` in the markup (or run the swap
-helper from the repo root — see below). Ratios are already reserved in CSS, so
-nothing on the page shifts when the real image loads.
+Regenerate with `python3 ../tools/make-artwork.py`. The seasonal palettes live
+in the `SEASONS` dict at the top of that file.
+
+## What each slot contains
+
+Every slot below is filled with artwork today. The table doubles as the brief
+if you ever replace a slot with a real photograph: drop a `.jpg`/`.webp` into
+`images/` using the same base name and run
+`python3 ../tools/swap-images.py <site-folder> <your-image-dir>`. Ratios are
+reserved in CSS, so swapping causes no layout shift.
 
 ## Shot list
 
@@ -30,6 +39,29 @@ nothing on the page shifts when the real image loads.
 - The four season images are the signature moment — shoot or source them as a set so they read as one year, not four stock photos.
 - Every image carries a warm multiply grade to hold it inside the cream/olive palette.
 - Avoid glossy agri-machinery hero shots; this brand is quiet and human.
+
+## Sourcing: what to search for
+
+**Licence first.** Unsplash and Pexels are free for commercial use without
+attribution. Never publish a watermarked comp.
+
+**Avoid** "farmer", "agriculture business", "farm accounting" — those return
+glossy machinery and posed people with clipboards. Search the *land and the
+season*.
+
+| Slot | Search instead for |
+|------|--------------------|
+| `hero-field` | "Irish hedgerow field", "Kilkenny countryside overcast", "green field stone wall Ireland" |
+| `hero-hands` | "hands vegetables harvest", "farm gate latch", "notebook kitchen table daylight" |
+| `season-spring` | "bare field early spring", "ploughed field green shoots" |
+| `season-summer` | "summer field evening light", "hay meadow golden hour" |
+| `season-autumn` | "autumn harvest field", "hedgerow berries October" |
+| `season-winter` | "frost field morning", "bare hedgerow winter light" |
+| `about-thomastown` | "Thomastown Kilkenny", "River Nore", "Irish village lane" |
+
+**Source the four season images as a set** — ideally from one photographer or
+one location — so they read as one year passing rather than four unrelated
+stock photos. That coherence is what makes the section work.
 
 ## Preparing files
 

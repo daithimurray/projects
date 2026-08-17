@@ -47,12 +47,12 @@ update internal links and the sitemap if you enable that.
 5. **Legal pages** — have the business approve `privacy.html` and
    `cookies.html`, name the form provider in the Privacy Notice, then remove
    the `noindex` tags and DRAFT banners.
-6. **Photography** — the image system is built and five slots are wired; see
-   **`IMAGES.md`** for the shot list, ratios and direction. Two slots
-   (`founder-portrait`, `team-group`) are **RESERVED** and show an "Awaiting
-   approved photograph" badge: they require *real* photographs of Aoife and the
-   team (PRD §16, §30.5, §44). Never substitute stock or generated imagery for
-   a named real person. Swap files in with
+6. **Imagery** — three slots ship with **authored SVG artwork** (an engraved
+   map of the firm's North Kildare service area); see `IMAGES.md` and
+   `../tools/make-artwork.py`. Two slots are **RESERVED** and show an
+   "Awaiting approved photograph" badge: they need *real* photographs of Aoife
+   and the team (PRD §16, §30.5, §44). Never substitute stock or generated
+   imagery for a named real person. To swap in real files:
    `python3 ../tools/swap-images.py liffey-accountancy <your-image-dir>`.
 7. **OG image** — create a social sharing image and wire up `og:image`
    (PRD §35).

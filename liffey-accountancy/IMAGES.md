@@ -1,11 +1,25 @@
-# Liffey Accountancy — photography brief
+# Liffey Accountancy — artwork &amp; photography
 
-Real client site — photography rules are strict (PRD §16, §30.5, §42, §44).
+The site now ships with **authored SVG artwork** rather than stock photography:
+an engraved cartography of the firm's actual service area — the Royal Canal
+drawn as a map line, contour work, and the towns the copy names. It is
+licence-free, ownable, and about 50 KB for the whole set.
 
-Drop real files into `images/` using **the same base name** as the placeholder,
-in `.jpg` or `.webp`. Then update the `src` in the markup (or run the swap
-helper from the repo root — see below). Ratios are already reserved in CSS, so
-nothing on the page shifts when the real image loads.
+Regenerate any time with `python3 ../tools/make-artwork.py` (deterministic —
+the same output every run). Edit `tools/make-artwork.py` to change it.
+
+Two slots remain **RESERVED for real photographs** and are not artwork:
+`founder-portrait` and `team-group`. The PRD requires genuine photographs of
+Aoife and the team (§16, §30.5, §44), and no drawing or stock image may stand
+in for a named real person.
+
+## What each slot contains
+
+Every slot below is filled with artwork today. The table doubles as the brief
+if you ever replace a slot with a real photograph: drop a `.jpg`/`.webp` into
+`images/` using the same base name and run
+`python3 ../tools/swap-images.py <site-folder> <your-image-dir>`. Ratios are
+reserved in CSS, so swapping causes no layout shift.
 
 ## Shot list
 
@@ -30,6 +44,32 @@ nothing on the page shifts when the real image loads.
 - Avoid entirely (PRD §30.5): coins, calculators, handshakes, generic charts, skyscrapers, stock office teams, people pointing at graphs.
 - Alt text is already written for each slot; update it if the subject changes.
 - The two RESERVED slots carry a visible badge and empty alt text so assistive tech skips them until real photography lands.
+
+## Sourcing: what to search for
+
+**Licence first.** Only use files you have a commercial licence for. Free and
+commercially usable without attribution: **Unsplash**, **Pexels**. Paid and
+usually better for Irish specificity: **Stocksy**, **Gallery Stock**, or a local
+photographer. Never publish a watermarked comp.
+
+**The trap to avoid.** Searching "accountant" or "accounting" on any stock site
+returns calculators, coins, handshakes and glass-tower boardrooms — the exact
+list PRD §30.5 bans. Search for the *place and the situation* instead of the
+profession.
+
+| Slot | Search instead for |
+|------|--------------------|
+| `hero-maynooth` | "Maynooth", "Royal Canal Kildare", "Irish market town street", "Irish town evening light" |
+| `local-north-kildare` | "Kildare countryside", "Irish farmland hedgerow", "Leixlip", "Irish canal towpath" |
+| `office-detail` | "notebook desk daylight", "paperwork close up warm", "small office interior daylight" — no calculators, no stacked coins |
+| `founder-portrait` | **Do not search.** Commission a real portrait of Aoife. |
+| `team-group` | **Do not search.** Commission the real team photograph. |
+
+**Strong recommendation for the two reserved slots:** a half-day with a local
+photographer in Maynooth covers the founder portrait, the team shot and the
+office details in one session, and gives you images no competitor can have.
+That is the single biggest credibility upgrade available to this site, and the
+PRD requires real photography for them regardless.
 
 ## Preparing files
 

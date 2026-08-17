@@ -1,11 +1,19 @@
-# Alder & Frost — photography brief
+# Alder &amp; Frost — artwork
 
-Fictional demo — licensed stock is fine. Restraint is the point: two images only.
+The site ships with **authored SVG artwork**, not stock photography: an
+architectural night study (building masses, window light, long-exposure
+streaks) behind the pull-quote, and a low-key document study in the approach
+section. Both are drawn in the brand's emerald-on-black and total about 28 KB.
 
-Drop real files into `images/` using **the same base name** as the placeholder,
-in `.jpg` or `.webp`. Then update the `src` in the markup (or run the swap
-helper from the repo root — see below). Ratios are already reserved in CSS, so
-nothing on the page shifts when the real image loads.
+Regenerate with `python3 ../tools/make-artwork.py`.
+
+## What each slot contains
+
+Every slot below is filled with artwork today. The table doubles as the brief
+if you ever replace a slot with a real photograph: drop a `.jpg`/`.webp` into
+`images/` using the same base name and run
+`python3 ../tools/swap-images.py <site-folder> <your-image-dir>`. Ratios are
+reserved in CSS, so swapping causes no layout shift.
 
 ## Shot list
 
@@ -23,6 +31,26 @@ nothing on the page shifts when the real image loads.
 
 - Both images are graded into the palette, so anything too warm or too bright will fight the brand.
 - Do not add people-heavy 'team' imagery: this brand's confidence comes from restraint and typography.
+
+## Sourcing: what to search for
+
+**Licence first.** Unsplash and Pexels are free for commercial use without
+attribution; Stocksy is paid but far less recognisable. Never publish a
+watermarked comp.
+
+**Avoid** anything that says "business meeting", "finance", "accountant" or
+"teamwork" — that search returns smiling stock people at laptops, which would
+destroy this brand's restraint instantly. This site wants *atmosphere*, not
+people.
+
+| Slot | Search instead for |
+|------|--------------------|
+| `atmosphere-city` | "Dublin docklands night", "city dusk long exposure", "architecture reflection dark", "night water city lights" |
+| `boardroom-detail` | "documents low light", "hands writing shadow", "dark table edge minimal", "chiaroscuro still life paper" |
+
+Both images sit under heavy black-and-emerald gradients, so choose frames that
+are already dark and near-monochrome. A bright, warm, cheerful photograph will
+fight the grade and look wrong no matter how it is treated.
 
 ## Preparing files
 
