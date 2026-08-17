@@ -10,6 +10,8 @@ a graphic language drawn from its own subject:
                streaks, in the brand's emerald-on-black.
   Hedgerow   — seasonal landscape: layered fields, a hedgerow line and a low sun,
                with the palette shifting through the four seasons.
+  Ger        — the drawing board: a domestic wiring plan and a service-area map,
+               drawn the way a working sheet is drawn. No lightning bolts.
 
 Deterministic: same input always produces identical files.
 
@@ -55,6 +57,7 @@ def svg(w, h, body, title):
 
 def write(site, name, content):
     p = Path(site) / 'images' / f'{name}.svg'
+    p.parent.mkdir(parents=True, exist_ok=True)
     p.write_text(content)
     return f"{p}  ({len(content)/1024:.1f} KB)"
 
@@ -440,6 +443,214 @@ def hedgerow_place(w=1800, h=1200):
     return svg(w, h, body, 'Thomastown and the River Nore')
 
 
+# ---------------------------------------------------------------- Ger: the drawing board
+
+# The electrician's graphic language is the drawing, not the trade cliché:
+# a wiring plan and a service-area map, drawn the way a working sheet is
+# drawn. No lightning bolts anywhere (PRD §10.5, §22.4).
+
+INK, INK_SOFT, COPPER, AMBER, PAPER_E = '#14171c', '#2b313b', '#b4531b', '#e8a33d', '#f4f2ef'
+MONO = 'ui-monospace, SFMono-Regular, Menlo, Consolas, monospace'
+
+
+def e_socket(x, y, colour=AMBER):
+    """Outlet symbol: the half-disc used on wiring plans."""
+    return (f'<g stroke="{colour}" stroke-width="2.4" fill="none">'
+            f'<path d="M {x-15} {y} a 15 15 0 0 1 30 0 z" fill="{colour}" opacity="0.9" stroke="none"/>'
+            f'<line x1="{x-15}" y1="{y}" x2="{x+15}" y2="{y}"/>'
+            f'<line x1="{x}" y1="{y}" x2="{x}" y2="{y+14}"/></g>')
+
+
+def e_light(x, y, colour='#ffffff'):
+    """Luminaire symbol: circle crossed through."""
+    r = 15
+    d = r * 0.72
+    return (f'<g stroke="{colour}" stroke-width="2.2" fill="none" opacity="0.85">'
+            f'<circle cx="{x}" cy="{y}" r="{r}"/>'
+            f'<line x1="{x-d:.0f}" y1="{y-d:.0f}" x2="{x+d:.0f}" y2="{y+d:.0f}"/>'
+            f'<line x1="{x-d:.0f}" y1="{y+d:.0f}" x2="{x+d:.0f}" y2="{y-d:.0f}"/></g>')
+
+
+def e_switch(x, y, colour='#ffffff'):
+    return (f'<g stroke="{colour}" stroke-width="2.2" opacity="0.8">'
+            f'<circle cx="{x}" cy="{y}" r="5" fill="{colour}"/>'
+            f'<line x1="{x}" y1="{y}" x2="{x+15}" y2="{y-15}"/></g>')
+
+
+def e_run(points, colour=AMBER, width=2.4, opacity=0.75):
+    """A circuit run: orthogonal, the way a real sheet draws cable."""
+    d = f'M {points[0][0]} {points[0][1]}' + ''.join(
+        f' L {p[0]} {p[1]}' for p in points[1:])
+    return (f'<path d="{d}" fill="none" stroke="{colour}" stroke-width="{width}" '
+            f'stroke-linecap="square" stroke-linejoin="miter" opacity="{opacity}"/>')
+
+
+def e_label(x, y, text, size=17, colour='#ffffff', opacity=0.55, anchor='start'):
+    return (f'<text x="{x}" y="{y}" font-family="{MONO}" font-size="{size}" '
+            f'letter-spacing="{size*0.16:.1f}" fill="{colour}" opacity="{opacity}" '
+            f'text-anchor="{anchor}">{text}</text>')
+
+
+def ger_plan(w=1200, h=1500):
+    """Hero plate: a domestic wiring plan on a dark sheet."""
+    walls = [
+        # outer envelope
+        (120, 250, 1080, 250), (1080, 250, 1080, 1250), (1080, 1250, 120, 1250),
+        (120, 1250, 120, 250),
+        # partitions, with door gaps left open
+        (620, 250, 620, 560), (620, 700, 620, 830),
+        (120, 830, 470, 830), (600, 830, 1080, 830),
+        (830, 830, 830, 1080), (830, 1180, 830, 1250),
+    ]
+    wall_svg = "".join(
+        f'<line x1="{a}" y1="{b}" x2="{c}" y2="{d}" stroke="#ffffff" '
+        f'stroke-width="3" opacity="0.42"/>' for (a, b, c, d) in walls)
+
+    runs = [
+        e_run([(215, 960), (215, 1160), (960, 1160)]),                       # sockets, ground
+        e_run([(245, 900), (245, 640), (760, 640), (760, 400)], AMBER, 2.2, 0.6),
+        e_run([(215, 890), (215, 470), (470, 470)], AMBER, 2.2, 0.55),
+        e_run([(950, 1160), (950, 950), (1010, 950)], AMBER, 2.0, 0.5),
+    ]
+
+    symbols = [
+        e_socket(400, 1160), e_socket(640, 1160), e_socket(940, 1160),
+        e_socket(470, 470),
+        e_light(470, 640), e_light(760, 400), e_light(900, 640),
+        e_switch(560, 760), e_switch(300, 1060),
+    ]
+
+    # distribution board: the origin of every run on the sheet
+    board = (f'<g><rect x="180" y="880" width="70" height="100" fill="{INK_SOFT}" '
+             f'stroke="{AMBER}" stroke-width="2.6"/>'
+             + "".join(f'<line x1="192" y1="{900 + i*18}" x2="238" y2="{900 + i*18}" '
+                       f'stroke="{AMBER}" stroke-width="2" opacity="0.7"/>' for i in range(4))
+             + e_label(268, 940, 'BOARD', 16, AMBER, 0.85) + '</g>')
+
+    # title block, bottom of the sheet
+    tb_y = 1330
+    title = (f'<g><rect x="120" y="{tb_y}" width="960" height="120" fill="none" '
+             f'stroke="#ffffff" stroke-width="1.6" opacity="0.30"/>'
+             f'<line x1="620" y1="{tb_y}" x2="620" y2="{tb_y+120}" stroke="#ffffff" '
+             f'stroke-width="1.2" opacity="0.22"/>'
+             f'<line x1="850" y1="{tb_y}" x2="850" y2="{tb_y+120}" stroke="#ffffff" '
+             f'stroke-width="1.2" opacity="0.22"/>'
+             + e_label(150, tb_y + 50, 'DOMESTIC INSTALLATION', 19, '#ffffff', 0.8)
+             + e_label(150, tb_y + 88, 'CIRCUIT LAYOUT &#183; PLAN', 15, '#ffffff', 0.45)
+             + e_label(650, tb_y + 50, 'NORTH KILDARE', 15, AMBER, 0.85)
+             + e_label(650, tb_y + 88, 'LEIXLIP &#183; CELBRIDGE', 13, '#ffffff', 0.4)
+             + e_label(880, tb_y + 50, 'SHEET', 13, '#ffffff', 0.4)
+             + e_label(880, tb_y + 92, '01', 30, '#ffffff', 0.75)
+             + '</g>')
+
+    # scale bar: the small honest detail that makes a drawing read as a drawing
+    scale = (f'<g stroke="#ffffff" opacity="0.35">'
+             f'<line x1="120" y1="{tb_y-40}" x2="360" y2="{tb_y-40}" stroke-width="2"/>'
+             + "".join(f'<line x1="{120+i*60}" y1="{tb_y-50}" x2="{120+i*60}" '
+                       f'y2="{tb_y-30}" stroke-width="2"/>' for i in range(5))
+             + '</g>' + e_label(376, tb_y - 34, 'SCALE', 13, '#ffffff', 0.35))
+
+    body = f'''  <rect width="{w}" height="{h}" fill="{INK}"/>
+  {graticule(w, h, 60, '#ffffff', 0.055)}
+  <rect x="120" y="250" width="960" height="1000" fill="#ffffff" opacity="0.02"/>
+  {wall_svg}
+  {"".join(runs)}
+  {board}
+  {"".join(symbols)}
+  {e_label(150, 210, 'CIRCUITS &#183; SOCKETS &#183; LIGHTING', 17, AMBER, 0.9)}
+  {scale}
+  {title}'''
+    return svg(w, h, body, 'Line drawing of a house wiring plan: circuits running from a '
+                           'distribution board to sockets and lights')
+
+
+def ger_areas(w=2400, h=900):
+    """Service-area band: the three towns, drawn as a working map."""
+    g = rnd(97)
+    # river/canal line running west to east through the band
+    water = [(-60, 470), (380, 505), (820, 455), (1250, 500), (1700, 440), (2140, 480), (2460, 440)]
+    wd = smooth(water)
+
+    # low relief behind the map: contour edges, not fog. Quiet enough that
+    # body copy can sit over the band.
+    ridges = []
+    for layer in range(3):
+        pts, y0 = [], 660 + layer * 80
+        for i in range(11):
+            x = -100 + i * (w + 200) / 10
+            pts.append((x, y0 - 70 * math.sin(i * 0.6 + layer) - 30 * (next(g) - 0.5)))
+        edge = smooth(pts)
+        closed = smooth(pts + [(w + 100, h + 60), (-100, h + 60)], True)
+        ridges.append(f'<path d="{closed}" fill="{INK}" opacity="{0.025 + layer * 0.02:.3f}"/>')
+        ridges.append(f'<path d="{edge}" fill="none" stroke="{INK}" stroke-width="1.4" '
+                      f'opacity="{0.16 - layer * 0.04:.2f}"/>')
+
+    def marker(x, y, name, size=30):
+        return (f'<g><circle cx="{x}" cy="{y}" r="7" fill="{INK}"/>'
+                f'<circle cx="{x}" cy="{y}" r="17" fill="none" stroke="{COPPER}" stroke-width="2"/>'
+                f'<line x1="{x}" y1="{y-40}" x2="{x}" y2="{y-20}" stroke="{COPPER}" stroke-width="2"/>'
+                f'<text x="{x}" y="{y+58}" font-family="{MONO}" font-size="{size}" '
+                f'letter-spacing="{size*0.16:.1f}" fill="{INK}" text-anchor="middle" '
+                f'opacity="0.85">{name}</text></g>')
+
+    body = f'''  <rect width="{w}" height="{h}" fill="{PAPER_E}"/>
+  {graticule(w, h, 80, INK, 0.05)}
+  {"".join(ridges)}
+  <path d="{wd}" fill="none" stroke="{COPPER}" stroke-width="9" opacity="0.16" stroke-linecap="round"/>
+  <path d="{wd}" fill="none" stroke="{COPPER}" stroke-width="2.4" stroke-linecap="round"/>
+  {marker(560, 430, 'CELBRIDGE')}
+  {marker(1180, 380, 'MAYNOOTH')}
+  {marker(1820, 415, 'LEIXLIP')}
+  <text x="80" y="120" font-family="{MONO}" font-size="26" letter-spacing="6"
+        fill="{INK}" opacity="0.6">NORTH KILDARE</text>
+  <text x="80" y="164" font-family="{MONO}" font-size="18" letter-spacing="3"
+        fill="{INK}" opacity="0.4">SERVICE AREA &#183; TOWNS AND THE COUNTRY BETWEEN THEM</text>'''
+    return svg(w, h, body, 'Map of North Kildare marking Leixlip, Celbridge and Maynooth')
+
+
+def ger_og(w=1200, h=630):
+    """Default social-sharing card (PRD §28). Convert to PNG for platforms
+    that will not render SVG: see ger-electrical/README.md."""
+    runs = [
+        e_run([(720, 250), (720, 470), (1080, 470)], AMBER, 3, 0.55),
+        e_run([(800, 180), (1010, 180), (1010, 330)], AMBER, 3, 0.4),
+    ]
+    body = f'''  <rect width="{w}" height="{h}" fill="{INK}"/>
+  {graticule(w, h, 60, '#ffffff', 0.06)}
+  {"".join(runs)}
+  {e_socket(1080, 470)}{e_light(1010, 330)}
+  <g>
+    <rect x="80" y="76" width="46" height="46" fill="none" stroke="{AMBER}" stroke-width="3"/>
+    <path d="M92 88 h13 v21 h13" fill="none" stroke="#ffffff" stroke-width="3"/>
+    <circle cx="105" cy="99" r="4.5" fill="{AMBER}"/>
+  </g>
+  <text x="146" y="112" font-family="system-ui, Helvetica, Arial, sans-serif"
+        font-size="34" font-weight="700" fill="#ffffff">Ger Electrical</text>
+  <text x="80" y="300" font-family="system-ui, Helvetica, Arial, sans-serif"
+        font-size="76" font-weight="700" fill="#ffffff">Local Electrician</text>
+  <text x="80" y="384" font-family="system-ui, Helvetica, Arial, sans-serif"
+        font-size="76" font-weight="700" fill="#ffffff">in North Kildare</text>
+  <text x="80" y="452" font-family="system-ui, Helvetica, Arial, sans-serif"
+        font-size="30" fill="#a8b0bc">Professional electrical work for homes and businesses.</text>
+  <line x1="80" y1="516" x2="1120" y2="516" stroke="#ffffff" stroke-width="1.5" opacity="0.2"/>
+  <text x="80" y="566" font-family="{MONO}" font-size="22" letter-spacing="3.5"
+        fill="{AMBER}">LEIXLIP &#183; CELBRIDGE &#183; MAYNOOTH</text>'''
+    return svg(w, h, body, 'Ger Electrical — local electrician in North Kildare')
+
+
+def ger_reserved(w, h, note):
+    """A reserved slot: an empty frame, never a stand-in image of a person."""
+    body = f'''  <rect width="{w}" height="{h}" fill="{PAPER_E}"/>
+  {graticule(w, h, 60, INK, 0.05)}
+  <rect x="{w*0.08:.0f}" y="{h*0.08:.0f}" width="{w*0.84:.0f}" height="{h*0.84:.0f}"
+        fill="none" stroke="{COPPER}" stroke-width="2" stroke-dasharray="12 10" opacity="0.35"/>
+  <line x1="{w/2}" y1="{h/2-40}" x2="{w/2}" y2="{h/2+40}" stroke="{COPPER}" stroke-width="2" opacity="0.5"/>
+  <line x1="{w/2-40}" y1="{h/2}" x2="{w/2+40}" y2="{h/2}" stroke="{COPPER}" stroke-width="2" opacity="0.5"/>
+  <text x="{w/2}" y="{h/2+90}" font-family="{MONO}" font-size="{max(16, w//90)}"
+        letter-spacing="3" fill="{INK}" opacity="0.45" text-anchor="middle">{note}</text>'''
+    return svg(w, h, body, '')
+
+
 # ---------------------------------------------------------------- run
 
 def main():
@@ -456,6 +667,14 @@ def main():
     for s in SEASONS:
         made.append(write('hedgerow-accounting', f'season-{s}', hedgerow_season(s)))
     made.append(write('hedgerow-accounting', 'about-thomastown', hedgerow_place()))
+
+    made.append(write('ger-electrical', 'hero-circuit-plan', ger_plan()))
+    made.append(write('ger-electrical', 'areas-north-kildare', ger_areas()))
+    made.append(write('ger-electrical', 'og-image', ger_og()))
+    made.append(write('ger-electrical', 'ger-portrait',
+                      ger_reserved(1200, 1500, 'PHOTOGRAPH OF GER')))
+    made.append(write('ger-electrical', 'work-detail',
+                      ger_reserved(2400, 900, 'PHOTOGRAPH OF THE WORK')))
 
     for m in made:
         print('  ' + m)
