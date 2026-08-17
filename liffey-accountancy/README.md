@@ -100,6 +100,10 @@ if a cookie-based tool is chosen, add a blocking consent control first.
   form fields with inline errors, keyboard-operable nav (with a no-JS
   fallback where links simply wrap), `:focus-visible` styles,
   `prefers-reduced-motion` respected, AA-checked palette.
-- Fonts are system stacks (Georgia serif headings / system-ui body) — zero
-  network requests, no GDPR exposure from remote font CDNs. Swap in a
-  self-hosted brand face later if desired.
+- Headings are set in **Source Serif 4**, self-hosted from `fonts/` (latin
+  subset, 600 + 600 italic, ~21 KB each, `font-display: swap`); body text uses
+  the system stack. Nothing loads from a font CDN, so there is no third-party
+  request and no GDPR exposure.
+- Photography lives in `images/` with the brief in `IMAGES.md`; ratios are
+  reserved in CSS so swapping placeholders for real files causes no layout
+  shift.
