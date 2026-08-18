@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+
+# Update the host below when the real domain is confirmed.
+Sitemap: https://example.ie/sitemap.xml
