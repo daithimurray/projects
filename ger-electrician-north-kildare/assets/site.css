@@ -303,9 +303,14 @@ ol {
   border-radius: var(--r-plate);
   isolation: isolate;
   overflow: hidden;
+  /* The roll where fired enamel thickens over the steel edge: light catches
+     the top lip, the bottom lip falls into shadow. */
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.16),
+    inset 0 -1px 0 rgb(0 0 0 / 0.28);
 }
 
-/* The keyline, set in from the edge the way an enamel sign is struck. */
+/* The keyline, struck in from the edge, with a fixing boss at each corner
+   where a real plate is bolted to the wall. */
 .plate::before {
   content: "";
   position: absolute;
@@ -314,6 +319,55 @@ ol {
   border-radius: 4px;
   pointer-events: none;
   z-index: 1;
+  background-image: radial-gradient(
+      circle at 11px 11px,
+      rgb(255 255 255 / 0.34) 0 1.6px,
+      rgb(0 0 0 / 0.22) 2.1px 2.7px,
+      transparent 3px
+    ),
+    radial-gradient(
+      circle at calc(100% - 11px) 11px,
+      rgb(255 255 255 / 0.34) 0 1.6px,
+      rgb(0 0 0 / 0.22) 2.1px 2.7px,
+      transparent 3px
+    ),
+    radial-gradient(
+      circle at 11px calc(100% - 11px),
+      rgb(255 255 255 / 0.34) 0 1.6px,
+      rgb(0 0 0 / 0.22) 2.1px 2.7px,
+      transparent 3px
+    ),
+    radial-gradient(
+      circle at calc(100% - 11px) calc(100% - 11px),
+      rgb(255 255 255 / 0.34) 0 1.6px,
+      rgb(0 0 0 / 0.22) 2.1px 2.7px,
+      transparent 3px
+    );
+}
+
+/* On paper the fixings read as printer's registration marks, so they are
+   drawn in ink rather than highlight. */
+.plate--paper::before {
+  background-image: radial-gradient(
+      circle at 11px 11px,
+      rgb(12 17 15 / 0.3) 0 1.6px,
+      transparent 2.2px
+    ),
+    radial-gradient(
+      circle at calc(100% - 11px) 11px,
+      rgb(12 17 15 / 0.3) 0 1.6px,
+      transparent 2.2px
+    ),
+    radial-gradient(
+      circle at 11px calc(100% - 11px),
+      rgb(12 17 15 / 0.3) 0 1.6px,
+      transparent 2.2px
+    ),
+    radial-gradient(
+      circle at calc(100% - 11px) calc(100% - 11px),
+      rgb(12 17 15 / 0.3) 0 1.6px,
+      transparent 2.2px
+    );
 }
 
 /* The specular roll where fired enamel curves over the steel edge. */
@@ -346,6 +400,8 @@ ol {
 .plate--paper {
   background: var(--paper);
   color: var(--text-on-paper);
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.9),
+    inset 0 -1px 0 rgb(12 17 15 / 0.14);
 }
 .plate--paper::before {
   border-color: rgb(12 17 15 / 0.18);
@@ -543,7 +599,7 @@ ol {
 .hdr__links a {
   text-decoration: none;
   color: var(--text-dim);
-  padding-block: 0.25rem;
+  padding-block: 0.55rem;
 }
 .hdr__links a[aria-current="page"] {
   color: var(--text);
@@ -784,12 +840,15 @@ ol {
   aspect-ratio: 3 / 2;
 }
 
+/* Service icons label a topic, they do not report a status, so they are
+   tinted from the foreground rather than taking the accent. Signal orange
+   stays with actions and with the credential register. */
 .svc__icon {
-  color: var(--signal);
+  color: rgb(244 245 242 / 0.55);
 }
 
 .svc__cell--lead .svc__icon {
-  color: var(--text);
+  color: rgb(244 245 242 / 0.8);
 }
 
 .svc__name {
@@ -831,6 +890,22 @@ ol {
   }
   .split--flip > :first-child {
     order: 2;
+  }
+}
+
+/* Grid and flex children default to min-width:auto, which lets wide content
+   push past its track instead of shrinking. */
+.split > *,
+.svc > *,
+.register__item > * {
+  min-width: 0;
+}
+
+/* The contact page leads with the supporting detail and gives the form the
+   wider track, so the form is never the narrow column. */
+@media (min-width: 900px) {
+  .form-col {
+    grid-template-columns: 0.78fr 1.22fr;
   }
 }
 
@@ -971,9 +1046,28 @@ ol {
 }
 
 .entry__head svg {
-  color: var(--signal);
+  color: var(--text-on-paper-dim);
   flex: none;
   margin-top: 0.15rem;
+}
+
+/* Long-form reading sits on a paper panel, the printed notice against the
+   enamel. Body text this long is hard work on the dark ground, and the
+   audience for this site skews older than a typical marketing audience. */
+.on-paper .entry {
+  border-top-color: var(--hair-paper);
+}
+.on-paper .entry:first-child {
+  border-top: 0;
+  padding-top: 0;
+}
+.on-paper .entry:last-child {
+  padding-bottom: 0;
+}
+.on-paper .prose h1,
+.on-paper .prose h2,
+.on-paper .prose h3 {
+  color: var(--text-on-paper);
 }
 
 .entry__cta {
@@ -989,12 +1083,13 @@ ol {
   gap: var(--s4);
 }
 
-@media (min-width: 640px) {
-  .form__row {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: var(--s4);
-  }
+/* Pairs up on the width the form actually has, not the width the window
+   has. The form sits inside a grid column, so a viewport media query here
+   would split it into two columns that its own panel cannot hold. */
+.form__row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: var(--s4);
 }
 
 .field {
