@@ -1051,6 +1051,14 @@ ol {
   margin-top: 0.15rem;
 }
 
+/* A paper panel holding a single column of prose is capped to that column
+   plus its padding. Left full width it leaves a bright empty field beside
+   the text, which is invisible on the dark ground and glaring on paper.
+   The services panel needs no cap: its two-column entries fill it. */
+.plate--reading {
+  max-width: 46rem;
+}
+
 /* Long-form reading sits on a paper panel, the printed notice against the
    enamel. Body text this long is hard work on the dark ground, and the
    audience for this site skews older than a typical marketing audience. */

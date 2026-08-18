@@ -156,15 +156,15 @@ components:
 
 The whole system is one object rendered at web scale: the enamelled steel notice bolted to an ESB kiosk in an Irish town. A saturated green field, a rounded rectangle, a hairline keyline struck in from the edge, white grotesque lettering, and a single orange used only where something must be done. Those plates are made to stay legible outdoors for fifty years without maintenance, which is exactly the claim the business makes about its work — the material is the argument, so the site does not need to make it in words.
 
-The register is quiet, dense and utilitarian rather than promotional. Copy sits close to its rules; there is almost no ornament and no decorative colour at all. Depth is achieved with a single hairline and one specular gradient, never a drop shadow, so surfaces read as things that were *fired and bolted on*, not as cards floating over a page. Type is large by marketing-site standards (body runs 17–19px) because the audience skews older and the site is often read one-handed while standing in a room with a fault in it.
+The register is quiet, dense and utilitarian rather than promotional. Copy sits close to its rules; there is almost no ornament and no decorative colour at all. Every shadow in the system is drawn *inside* an element's own box — an edge roll on the plate, a keyline on the wordmark — so surfaces read as things that were fired and bolted on, never as cards floating over a page. Type is large by marketing-site standards (body runs 17–19px) because the audience skews older and the site is often read one-handed while standing in a room with a fault in it. Sustained reading moves off the graphite ground onto a paper panel for the same reason.
 
-The build refuses two defaults deliberately and visibly. It refuses the trade-site look — van livery, hi-vis yellow, an electrical bolt as identity — and it refuses the startup look — a blue gradient, a soft shadow stack, a rounded pill everywhere. The wordmark mark is a socket faceplate drawn in the same 24px stroke grammar as the rest of the icon set, not a bolt. Nothing on the site is glossy except the 34%-stop highlight that a real enamel edge actually has.
+The build refuses two defaults deliberately and visibly. It refuses the trade-site look — van livery, hi-vis yellow, an electrical bolt as identity — and it refuses the startup look — a blue gradient, a soft shadow stack, a rounded pill everywhere. The wordmark mark is a socket faceplate drawn in the same 24px stroke grammar as the rest of the icon set, not a bolt. The only two flourishes anywhere are ones a real enamel plate actually has: the 34%-stop highlight rolling over its top edge, and four fixing bosses at the corners of its keyline where it would be bolted to the wall.
 
 **Key Characteristics:**
-- One dark commitment: a graphite ground with no light-mode variant, and light surfaces supplied as a *material* (paper panels) rather than a theme.
-- Exactly three background roles — ink ground, enamel brand field, paper reading panel — and nothing else is ever a field.
+- One dark commitment: a graphite ground with no light-mode variant, and light surfaces supplied as a *material* (paper panels for reading and writing) rather than a theme.
+- Exactly three background roles — ink ground, enamel brand field, paper panel — and nothing else is ever a field.
 - One accent, one family, two corner radii.
-- Flat by construction: no outer box-shadow exists anywhere in the stylesheet.
+- Nothing floats: every `box-shadow` in the stylesheet is inset, and no element casts an outer shadow.
 - One authored entrance animation on the whole site; every other movement is a hover or focus transition.
 
 ## Colors
@@ -213,7 +213,7 @@ A three-field palette on a near-black graphite ground, with a single high-chroma
 - **Lead** (400, `clamp(1.15rem, 1.05rem + 0.5vw, 1.375rem)`, line-height 1.5, `max-width: 46ch`): The single supporting line under a display heading. Dimmed on the ground; tinted on a plate; widened to 52–58ch only in the centred call band and via the wide modifier.
 - **Body** (400, `clamp(1.0625rem, 0.98rem + 0.35vw, 1.1875rem)`, line-height 1.6, `max-width: 68ch`): All running copy. `<strong>` inside body copy brightens to the full text colour at weight 600 rather than changing colour.
 - **Small** (400, 0.9375rem, line-height 1.55): Captions, form notes, footer blurb, the areas line under a call band. Service descriptions and register notes sit here too (0.9375rem / 0.875rem).
-- **Telephone** (700, `clamp(1.5rem, 1.2rem + 1.4vw, 2.125rem)`, tracking −0.02em, `tabular-nums`): The written-out number, treated as a type role of its own. It appears as itself — selectable text that is also a `tel:` link — beside every primary button, and at a fixed 1.375rem in the footer.
+- **Telephone** (700, `clamp(1.5rem, 1.2rem + 1.4vw, 2.125rem)`, tracking −0.02em, `tabular-nums`): The written-out number, treated as a type role of its own. It appears as itself — selectable text that is also a `tel:` link — at every call point on the site: in the home hero plate between the lead line and the CTA row, in the closing call band, in the contact page's opening plate, and at a fixed 1.375rem in the footer.
 
 ### Named Rules
 
@@ -221,7 +221,7 @@ A three-field palette on a near-black graphite ground, with a single high-chroma
 
 **The Negative Tracking Rule.** Tracking tightens as size grows: −0.035em at display, −0.028em at H2, −0.02em at H3 and the phone number, −0.01em on buttons, normal at body. The only positive tracking on the site is the footer's small headings (+0.02em) and the wordmark sub-line (+0.01em). Never letterspace a heading open.
 
-**The Number Is Type Rule.** The phone number is never only inside a button. Every place a call is offered, the digits also appear as selectable text at the telephone role, so someone can read them off the screen and dial by hand.
+**The Number Is Type Rule.** The phone number is never only inside a button. Every place a call is offered — the first viewport included — the digits also appear as selectable text at the telephone role, so someone can read them off the screen and dial by hand, or copy them, or check them against a note. A `tel:` button alone assumes a device that dials; the printed digits assume nothing.
 
 ## Layout
 
@@ -250,19 +250,27 @@ A three-field palette on a near-black graphite ground, with a single high-chroma
 
 ## Elevation & Depth
 
-**There are no drop shadows in this system.** The stylesheet contains exactly two `box-shadow` declarations and both are inset lines, not lift: the wordmark mark's `inset 0 0 0 1px rgb(255 255 255 / 0.22)` keyline, and the mobile nav's current-page underline `inset 0 -2px 0 var(--signal)`. Nothing is elevated above the page.
+**No element in this system casts an outer shadow.** There are four `box-shadow` declarations in the stylesheet and every one of them is `inset` — they draw *on* the surface, they never lift it off the page. Nothing floats, and there is no elevation ladder.
 
-Depth is instead built from three devices, in this order of strength:
+Depth is built from four devices, in this order of strength:
 
 1. **Tonal step.** Ink → ink-2 → ink-3 is the entire surface ladder on the dark ground. A raised surface is a lighter graphite, not a shadowed one.
-2. **Hairline.** A 1px rule at 14% white separates structures; 28% white marks something interactive. The trust register is *ruled*, not carded, precisely because a rule is flatter than a card.
-3. **The plate's own optics.** An inset keyline and a short specular gradient, described below. This is the only place the system simulates a physical surface, and it is reserved for the identity element.
+2. **Hairline.** A 1px rule at 14% white separates structures on the ground; 28% white marks something interactive; 16% ink does the same job inside a paper panel. The trust register is *ruled*, not carded, precisely because a rule is flatter than a card.
+3. **The plate's edge roll.** The identity element carries `inset 0 1px 0 rgb(255 255 255 / 0.16), inset 0 -1px 0 rgb(0 0 0 / 0.28)` — a lit top lip and a shadowed bottom lip, the way fired enamel thickens where it rolls over the steel edge. Paper flips the pair to `inset 0 1px 0 rgb(255 255 255 / 0.9), inset 0 -1px 0 rgb(12 17 15 / 0.14)`, which is the same optic read as a printed card rather than a fired sign. This is object-making, not elevation: the plate does not sit above the page, it is *thicker* than the page.
+4. **The plate's specular gradient and fixing bosses.** Described in full under Components. These simulate a physical surface and are reserved for the identity element alone.
 
 The one translucent surface is the mobile call bar: `rgb(12 17 15 / 0.96)` with `backdrop-filter: blur(8px)` and a hairline top border. It is the only blur on the site.
 
+### Shadow Vocabulary
+
+- **Plate edge roll** (`box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.16), inset 0 -1px 0 rgb(0 0 0 / 0.28)`): the enamel plate's thickness. Only on `.plate`.
+- **Paper edge roll** (`box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.9), inset 0 -1px 0 rgb(12 17 15 / 0.14)`): the same, read as printed stock. Only on `.plate--paper`.
+- **Mark keyline** (`box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.22)`): the wordmark's enamel chip, which is too small for a real keyline pseudo-element.
+- **Current-page underline** (`box-shadow: inset 0 -2px 0 var(--signal)`): the compact mobile nav's active marker, drawn as a shadow so it does not disturb the link's box.
+
 ### Named Rules
 
-**The Flat-Ground Rule.** No element casts a shadow. If something needs to read as separate, give it a tonal step and a hairline. If it needs to read as an object, make it a plate.
+**The Inset-Only Rule.** Every shadow in this system is drawn inside the element's own box. If a new component seems to need an outer `box-shadow`, it does not — give it a tonal step and a hairline to read as separate, or make it a plate to read as an object. A drop shadow instantly reads as the startup default this world was built to refuse, and it is the one addition that would break the material illusion, because a plate bolted to a wall does not float.
 
 ## Shapes
 
@@ -283,19 +291,32 @@ Borders are 1px throughout. The only 2px border in the system is the invalid-fie
 
 ### The Plate (signature component)
 
-The identity element. Everything else in the system defers to it. A plate is a positioned box with `isolation: isolate` and `overflow: hidden`, filled with enamel green at a 12px radius, plus two pseudo-elements that together make the enamel read as fired onto steel:
+The identity element. Everything else in the system defers to it. A plate is a positioned box with `isolation: isolate` and `overflow: hidden`, filled with enamel green at a 12px radius, carrying an inset edge roll and two pseudo-elements that together make the enamel read as fired onto steel and bolted to a wall:
 
+- **The edge roll** (`box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.16), inset 0 -1px 0 rgb(0 0 0 / 0.28)`): a lit top lip and a shadowed bottom lip, giving the plate thickness without lifting it off the page.
 - **The keyline** (`::before`): absolutely positioned at `inset: 10px` — a full 10px in from every edge, the way the border is struck on a real enamel sign rather than drawn at the edge. 1px solid `rgb(255 255 255 / 0.26)`, radius 4px, `pointer-events: none`, `z-index: 1`.
+- **The fixing bosses** (also `::before`, as `background-image`): four `radial-gradient`s, one at each corner of the keyline box, positioned at `11px 11px` / `calc(100% - 11px) 11px` / `11px calc(100% - 11px)` / `calc(100% - 11px) calc(100% - 11px)`. Each boss is a lit core of `rgb(255 255 255 / 0.34)` out to 1.6px, a dark seating ring of `rgb(0 0 0 / 0.22)` from 2.1px to 2.7px, then transparent at 3px — a bolt head with a shadow under its rim, at roughly 5–6px across. They sit just inside the keyline's corners, which is where a real plate is actually fixed. This is the single most identifying detail in the system: it is what makes the plate a *bolted object* rather than a rounded rectangle with a border.
 - **The specular roll** (`::after`): fills the box, inherits the outer radius, and paints `linear-gradient(176deg, rgb(255 255 255 / 0.12) 0%, rgb(255 255 255 / 0) 34%)`. The 176° tilt and the short 34% stop are what make it read as light rolling over a curved enamel edge rather than as a generic "glass" gradient. `pointer-events: none`, `z-index: 1`.
 - **Content** sits at `z-index: 2` via `.plate > *`, above both pseudo-elements.
 - **Padding** comes from `.plate__body` at `clamp(1.5rem, 4vw, 2.75rem)`, or from a purpose-built body class — `.hero__body` at `clamp(1.75rem, 4vw, 3rem)`, `.callband__body` at `clamp(2rem, 5vw, 3.5rem)`.
 
-Two variants re-skin the same construction:
+Two variants re-skin the same construction. Both keep the geometry exactly — same inset, same 11px boss positions, same radii — and change only what the material would change:
 
-- **`.plate--paper`** — paper field, graphite ink, keyline flipped to `rgb(12 17 15 / 0.18)`, and the specular gradient raised to a 70%-white / 30%-stop roll, because a light enamel catches more of the highlight. Pair it with the `.on-paper` context class on the same element so descendants (body copy, small print, links, chips, the secondary button) re-point to their paper values.
-- **`.plate--ink`** — graphite-raised field with a 14%-white keyline. Defined and available, but not used on any of the five pages; treat it as the sanctioned quiet plate, not as a pattern with an established precedent.
+- **`.plate--paper`** — paper field, graphite ink, keyline flipped to `rgb(12 17 15 / 0.18)`, edge roll flipped to `inset 0 1px 0 rgb(255 255 255 / 0.9), inset 0 -1px 0 rgb(12 17 15 / 0.14)`, and the specular gradient raised to a 70%-white / 30%-stop roll because a light surface catches more of the highlight. The four bosses become **printer's registration marks**: a flat `rgb(12 17 15 / 0.3)` dot to 1.6px, transparent at 2.2px, with no seating ring — paper is printed, not bolted, so the fixing becomes a press mark. Always pair it with the `.on-paper` context class on the same element so descendants (body copy, headings, small print, links, chips, entry rules and the secondary button) re-point to their paper values.
+- **`.plate--ink`** — graphite-raised field with a 14%-white keyline, inheriting the enamel edge roll and highlight bosses. Defined and available, but not used on any of the five pages; treat it as the sanctioned quiet plate, not as a pattern with an established precedent.
 
-**The Plate Restraint Rule.** A plate is the H1's surface, the closing call, and the form. It is not a card system. There is at most one enamel plate per screenful; the services grid gets exactly one enamel cell out of seven. Making everything a plate makes nothing one.
+**The Plate Restraint Rule.** An *enamel* plate is the H1's surface and the closing call — nothing else. A *paper* plate is the form and the long-form reading. It is not a card system in either material. There is at most one enamel plate per screenful; the services grid gets exactly one enamel cell out of seven; and a page carries at most one paper panel. Making everything a plate makes nothing one.
+
+### The Paper Reading Panel
+
+The paper plate doing its second job: a `.plate.plate--paper.on-paper` wrapping a `.plate__body` that holds long-form content instead of a form. It carries the seven `.entry` blocks on the services page and the `.prose` block on the about page.
+
+**Width is part of the pattern.** A paper panel holding one column of prose also takes `.plate--reading` (`max-width: 46rem`), which caps it to roughly the measure plus its padding. Without it the panel runs the full 1240px wrap while the text stops at 68ch, leaving a bright empty field beside the copy — invisible when that space is graphite ground, glaring when it is paper. The services panel is the exception and needs no cap, because its 260px / 1fr entry layout fills the width with real content. The rule generalises: cap a paper panel to its content, or give it a second column.
+
+- Inside it, `.on-paper .prose h1/h2/h3` take the full paper ink while paragraphs and list items take the dim paper ink, so the heading-to-body contrast on paper mirrors the near-white-to-dim relationship on the ground.
+- Service entries separate with `--hair-paper` rather than the ground's white hairline.
+- The panel absorbs its own outer rules: `.on-paper .entry:first-child` drops its top border and top padding, and `:last-child` drops its bottom padding, so the entries read as one document rather than as a stack of ruled blocks floating inside a box with a gap at each end. Any new list of blocks placed inside a paper panel needs the same first/last reset.
+- Entry icons are 26px at stroke 1.5 in `--text-on-paper-dim` — they name a topic, so they take the dim ink, not orange.
 
 ### Buttons
 
@@ -325,7 +346,7 @@ Seven cells, deliberately unequal (see Layout for the placement map). Each cell 
 - **Plain cell:** graphite-raised fill, 1px 14%-white border, 12px radius, `clamp(1.25rem, 3vw, 1.75rem)` padding, column flex with `--s3` gaps. Hover moves the border to 28% white and the fill to graphite-hover, over 0.18s.
 - **Lead cell (`--lead`):** the enamel field, border at 20% white, its icon in near-white rather than signal (the field is already the emphasis), its name stepped up to `clamp(1.35rem, 1.1rem + 1vw, 1.75rem)` and its description to 1rem at 80% white. It spans both columns at 680px and takes columns 1–5 at 1000px. Exactly one cell in the grid is the lead.
 - **Figure cell (`--figure`):** padding removed, `overflow: hidden`, `min-height: 200px`, a 3:2 cover image, and a `.svc__figcap` block supplying the padding back to the caption only. From 1000px the image releases its aspect ratio and fills its two-row column.
-- Icons are 28px (34px in the lead cell), stroke 1.5, in signal.
+- Icons are 28px (34px in the lead cell), stroke 1.5, tinted from the foreground at `rgb(244 245 242 / 0.55)` — lifted to `/ 0.8` in the lead cell so it holds against the enamel field. They are deliberately **not** orange: a service icon names a topic, and orange is reserved for actions and checkable status.
 
 ### Town Chips
 
@@ -333,12 +354,13 @@ Areas served, and reused as the services-page jump list. Flex-wrapped, `--s2` ga
 
 ### The Split Band
 
-Photograph beside text. A grid with `--s6` gap that becomes `0.85fr / 1.15fr` at 900px with a `clamp(2rem, 5vw, 4.5rem)` gap — the narrower column is the photograph, so the text always gets the larger share. `.split--flip` reorders the first child to second, which is how the contact page puts the form on the right. The figure is a 12px-radius, `overflow: hidden` frame with a graphite-raised backing and a 4:5 cover image. Text sits in a `.stack`: column flex, `--s5` gap, left-aligned, with a `--tight` variant at `--s4`.
+Photograph beside text. A grid with `--s6` gap that becomes `0.85fr / 1.15fr` at 900px with a `clamp(2rem, 5vw, 4.5rem)` gap — the narrower column is the photograph, so the text always gets the larger share. `.split--flip` reorders the first child to second, which is how the contact page leads with the supporting detail and puts the form on the right. `.form-col` is the contact page's modifier on the same band: `align-items: start` always, plus a `0.78fr / 1.22fr` override at 900px so the form takes the wider track and is never the narrow column. Direct children carry `min-width: 0`. The figure is a 12px-radius, `overflow: hidden` frame with a graphite-raised backing and a 4:5 cover image. Text sits in a `.stack`: column flex, `--s5` gap, left-aligned, with a `--tight` variant at `--s4`.
 
 ### Inputs and the Form
 
 The quote form lives inside a paper plate — the only light surface on the site, chosen so a form reads as a document to fill in rather than a widget on a dark page.
 
+- **Row:** `.form__row` pairs fields with `repeat(auto-fit, minmax(210px, 1fr))` and `--s4` gap, and carries **no media query** — it measures the panel it sits in, not the window. See the container rule in Layout.
 - **Field:** column flex with a 0.4rem gap. Label at 1rem/600 in paper ink; an optional hint at 0.875rem in dim paper ink, wired through `aria-describedby`.
 - **Control:** pure white fill (a step brighter than the paper panel, so the input is visibly the writable part), 1px `rgb(12 17 15 / 0.32)` border, 6px radius, `0.7rem 0.85rem` padding, `min-height: 52px` — the same 52px target as a button. Textarea 130px minimum, vertical resize only. Placeholder `#5a635e`.
 - **Hover:** border darkens to 55% black. **Focus:** a 3px `--signal-deep` outline at 1px offset *and* the border switches to the same colour — the deep variant rather than the ground's signal, because the light panel needs the darker orange to hold contrast.
@@ -352,7 +374,7 @@ The header carries **two navigation elements at once**, and which is visible is 
 
 - **Bar row (always):** wordmark on the left (34px enamel mark with an inset 22%-white keyline and a socket-faceplate glyph, name at 1.0625rem/800, sub-line at 0.75rem/500 in dim text), `margin-right: auto`, then the horizontal nav, then a compact call button (46px tall, 1.1em inline padding). `min-height: 68px`.
 - **Horizontal nav (900px and up):** links at 1rem/600, `clamp(1rem, 2vw, 2rem)` gap, each with a transparent 2px bottom border that goes 28%-white on hover and **signal on the current page**.
-- **Compact link row (below 900px):** the same four links laid out in the open beneath the bar, at 0.9375rem/600 in dim text, `clamp(1rem, 5vw, 2rem)` gap. The current page brightens to full text colour and gets a 2px signal underline drawn with an inset box-shadow. This row exists so nobody has to open a menu to reach the phone.
+- **Compact link row (below 900px):** the same four links laid out in the open beneath the bar, at 0.9375rem/600 in dim text, `clamp(1rem, 5vw, 2rem)` gap. Each link takes `padding-block: 0.55rem`, which brings the tap target to roughly 42px — sized for a thumb, not for a cursor. The current page brightens to full text colour and gets a 2px signal underline drawn with an inset box-shadow. This row exists so nobody has to open a menu to reach the phone.
 - The header is sticky only at 900px and up; on mobile the sticky element is the call bar instead, so the two never occupy screen at once.
 
 ### The Sticky Call Bar (mobile only)
@@ -382,7 +404,7 @@ Everything else that moves is a state transition on hover, focus or press: 0.18s
 - **Do** print the phone number as selectable text at the telephone role beside every primary button. The digits are a type role, not just a link target.
 - **Do** hold interactive targets at 52px minimum (46px for the compact header button), and keep body copy at the full clamped 17–19px; the audience is older than a typical marketing audience and the site is read one-handed in a room.
 - **Do** signal an error with border weight, an icon and a plain-English sentence together, never with colour alone.
-- **Do** add a media query where a specific component actually breaks, at whatever width that is. The seven existing breakpoints each exist for one named reason.
+- **Do** add a media query where a specific component actually breaks, at whatever width that is. The six existing breakpoints each exist for one named reason.
 - **Do** extend the seven-cell services grid by extending its explicit `grid-column` / `grid-row` map at 1000px.
 - **Do** keep every colour resolvable from `assets/site.css`. No page carries an inline style; that is why the small utility set exists.
 
