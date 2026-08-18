@@ -119,6 +119,35 @@ under Areas Served is a map of the service area. Both are ours, licence-free,
 and about 15 KB together. Regenerate after changing the trading name so the
 social card matches.
 
+## Craft rules this site is held to
+
+Beyond the PRD, the site was audited against the repo's `taste-skill` and now
+holds to these:
+
+- **Zero em-dashes** anywhere, including HTML comments. Sentences are
+  restructured with a full stop, comma or colon instead.
+- **One label per CTA intent.** Every phone CTA on every page reads exactly
+  **Call Ger**; every form CTA reads **Request a Quote**. The service pages
+  previously said "Call Ger about a repair", "Call Ger about lighting" and so
+  on, which broke both the taste rule and PRD §21.1.
+- **Eyebrow budget.** At most one small uppercase label per three sections,
+  counting the hero's. Section headings carry their own meaning instead.
+- **No ornamental numbering.** Card indices, area numbers and service numbers
+  were removed; they told the reader nothing they could not count. The
+  numbered steps on About and Contact stay, because sequence is real
+  information there.
+- **Hero holds four elements**: place line, headline, one line of supporting
+  copy, two CTAs. Nothing else goes above the fold.
+- **Icons come from a real icon set** (see Credits), not hand-drawn paths, at
+  one stroke width across the site.
+
+## Credits
+
+Icons are [Tabler Icons](https://tabler.io/icons) (MIT), inlined as SVG paths
+so the site keeps its zero-request, zero-dependency build. The `circuit-*`
+glyphs in that set are drawn as schematic symbols, which is why they suit this
+site. Retain the MIT notice if you redistribute the markup.
+
 ## Structure notes
 
 - **Conversion hierarchy** (PRD §21.3) is enforced by the design: **Call Ger**
