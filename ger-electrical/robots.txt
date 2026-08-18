@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+Disallow: /privacy.html
+
+# TODO before launch: replace example.ie with the real domain, and remove the
+# Disallow line above once the Privacy Policy has been approved (it also
+# carries a noindex tag until then).
+Sitemap: https://example.ie/sitemap.xml
