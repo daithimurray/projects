@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" role="img" aria-label="Ger, Electrician">
+  <rect width="32" height="32" rx="3" fill="#b8271c"/>
+  <g fill="none" stroke="#f0efea" stroke-width="2.6" stroke-linecap="round">
+    <path d="M4 21h4M24 21h4"/>
+    <path d="M8 21 20 12"/>
+  </g>
+  <g fill="#f0efea">
+    <circle cx="8" cy="21" r="2.4"/>
+    <circle cx="24" cy="21" r="2.4"/>
+  </g>
+</svg>

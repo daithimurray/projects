@@ -1,0 +1,634 @@
+<!doctype html>
+<html lang="en-IE">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#f0efea" />
+
+    <!-- ============================================================
+         NOT READY TO PUBLISH. See README.md.
+
+         Placeholders to replace (they appear on every page):
+           087 000 0000 / +353870000000   telephone
+           enquiries@example.ie           email
+           www.example.ie                 domain (canonical, OG, sitemap)
+           "Ger, Electrician"             trading name
+
+         Claims Ger must confirm before this goes live are tagged in the
+         markup with data-unverified. Find them with:
+           grep -rn 'data-unverified' .
+         ============================================================ -->
+
+    <title>Electrician in North Kildare — Ger | Leixlip, Celbridge, Maynooth</title>
+    <meta
+      name="description"
+      content="Local electrician for Leixlip, Celbridge, Maynooth and North Kildare. Repairs, fault finding, sockets, lighting and upgrades. Call Ger on 087 000 0000."
+    />
+    <link rel="canonical" href="https://www.example.ie/" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Ger, Electrician" />
+    <meta property="og:locale" content="en_IE" />
+    <meta property="og:url" content="https://www.example.ie/" />
+    <meta property="og:title" content="Electrician in North Kildare — Ger" />
+    <meta
+      property="og:description"
+      content="Repairs, fault finding, sockets, lighting and upgrades for homes in Leixlip, Celbridge, Maynooth and across North Kildare."
+    />
+    <meta property="og:image" content="https://www.example.ie/assets/img/og-default.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png" />
+
+    <link
+      rel="preload"
+      href="assets/fonts/ibm-plex-sans-latin-400-normal.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      href="assets/fonts/ibm-plex-sans-latin-700-normal.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link rel="stylesheet" href="assets/site.css" />
+  </head>
+
+  <body>
+    <a class="skip" href="#main">Skip to content</a>
+
+    <header class="head">
+      <div class="wrap head__bar">
+        <a class="mark" href="./" aria-label="Ger, Electrician — home">
+          <span class="mark__glyph" aria-hidden="true">
+            <svg viewBox="0 0 24 24" role="presentation">
+              <path d="M2 15h4M18 15h4M6 15l8-6" />
+              <circle cx="6" cy="15" r="1.6" />
+              <circle cx="18" cy="15" r="1.6" />
+            </svg>
+          </span>
+          <span>
+            <span class="mark__name">Ger, Electrician</span>
+            <span class="mark__sub">North Kildare</span>
+          </span>
+        </a>
+
+        <div class="head__right">
+          <nav class="nav" aria-label="Main">
+            <a href="./" aria-current="page">Home</a>
+            <a href="services/">Services</a>
+            <a href="about/">About</a>
+            <a href="contact/">Contact</a>
+          </nav>
+          <a
+            class="head__tel"
+            href="tel:+353870000000"
+            data-cta="call"
+            data-cta-location="header"
+            >087 000 0000</a
+          >
+          <a
+            class="btn btn--call"
+            href="tel:+353870000000"
+            data-cta="call"
+            data-cta-location="header"
+          >
+            <svg class="btn__icon" viewBox="0 0 24 24" aria-hidden="true">
+              <path
+                d="M6.5 3h3l1.5 4-2 1.5a12 12 0 0 0 6.5 6.5L17 13l4 1.5v3a2 2 0 0 1-2.2 2A16.5 16.5 0 0 1 4 6.2 2 2 0 0 1 6 4z"
+              />
+            </svg>
+            Call Ger
+          </a>
+        </div>
+      </div>
+
+      <nav class="subnav" aria-label="Pages">
+        <div class="wrap">
+          <ul>
+            <li><a href="./" aria-current="page">Home</a></li>
+            <li><a href="services/">Services</a></li>
+            <li><a href="about/">About</a></li>
+            <li><a href="contact/">Contact</a></li>
+          </ul>
+        </div>
+      </nav>
+    </header>
+
+    <main id="main">
+      <!-- ── Hero ────────────────────────────────────────────────────
+           The trust strip sits directly under the hero (PRD 11) rather
+           than further down the page, so registration, insurance,
+           experience and service area are all in the first screen
+           alongside the phone number. -->
+      <section class="hero">
+        <div class="wrap hero__grid hero__grid--centre">
+          <div>
+            <h1 class="display">Local electrician in North Kildare</h1>
+            <p class="lead hero__lead">
+              Repairs, fault finding, sockets, lighting and upgrades for homes in
+              Leixlip, Celbridge, Maynooth and the surrounding area.
+            </p>
+
+            <div class="hero__call">
+              <a
+                class="tel-type"
+                href="tel:+353870000000"
+                data-cta="call"
+                data-cta-location="hero"
+                >087 000 0000</a
+              >
+              <div class="actions">
+                <a
+                  class="btn btn--call"
+                  href="tel:+353870000000"
+                  data-cta="call"
+                  data-cta-location="hero"
+                >
+                  <svg class="btn__icon" viewBox="0 0 24 24" aria-hidden="true">
+                    <path
+                      d="M6.5 3h3l1.5 4-2 1.5a12 12 0 0 0 6.5 6.5L17 13l4 1.5v3a2 2 0 0 1-2.2 2A16.5 16.5 0 0 1 4 6.2 2 2 0 0 1 6 4z"
+                    />
+                  </svg>
+                  Call Ger
+                </a>
+                <a
+                  class="btn btn--quote"
+                  href="contact/"
+                  data-cta="quote"
+                  data-cta-location="hero"
+                  >Request a Quote</a
+                >
+              </div>
+            </div>
+
+            <p class="small hero__note">
+              Small jobs and large jobs. If you are not sure whether it is worth
+              a call, it is.
+            </p>
+          </div>
+
+          <!-- A drawn schematic rather than a photograph or a stock image.
+               Decorative, so it is hidden from assistive technology; the
+               hero says everything it needs to in text. -->
+          <figure class="fig hero__fig" aria-hidden="true">
+            <div class="fig__frame" style="padding: 1.25rem 1.15rem">
+              <svg viewBox="0 0 470 350" role="presentation" focusable="false">
+                <g fill="none" stroke="currentColor" stroke-width="1" opacity="0.3">
+                  <!-- sheet dimension line -->
+                  <path d="M14 44v244M7 44h14M7 288h14" />
+                </g>
+
+                <g fill="none" stroke="currentColor" stroke-width="1.4" opacity="0.55">
+                  <!-- consumer unit -->
+                  <rect x="46" y="44" width="176" height="58" />
+                  <path
+                    d="M70 60v26M94 60v26M118 60v26M142 60v26M166 60v26M190 60v26"
+                  />
+                  <!-- bus and the three runs -->
+                  <path d="M134 102v172" />
+                  <path d="M134 142h242M134 208h242M134 274h242" />
+                </g>
+
+                <g fill="currentColor" opacity="0.55">
+                  <circle cx="134" cy="142" r="4" />
+                  <circle cx="134" cy="208" r="4" />
+                  <circle cx="134" cy="274" r="4" />
+                </g>
+
+                <g fill="none" stroke="currentColor" stroke-width="1.4" opacity="0.72">
+                  <!-- socket outlet -->
+                  <circle cx="392" cy="142" r="16" />
+                  <path d="M386 135v14M398 135v14" />
+                  <!-- luminaire -->
+                  <circle cx="392" cy="208" r="16" />
+                  <path d="M381 197l22 22M403 197l-22 22" />
+                  <!-- switch -->
+                  <path d="M376 274h4M408 274h-4M380 274l20-13" />
+                </g>
+                <g fill="currentColor" opacity="0.72">
+                  <circle cx="378" cy="274" r="4" />
+                  <circle cx="406" cy="274" r="4" />
+                </g>
+
+                <g
+                  fill="currentColor"
+                  opacity="0.5"
+                  font-family="'IBM Plex Mono', ui-monospace, monospace"
+                  font-size="14"
+                  font-weight="500"
+                  letter-spacing="1.4"
+                >
+                  <text x="46" y="32">CONSUMER UNIT</text>
+                  <text x="150" y="132">01 · RING</text>
+                  <text x="150" y="198">02 · LIGHTING</text>
+                  <text x="150" y="264">03 · SWITCHED</text>
+                </g>
+              </svg>
+            </div>
+            <figcaption class="fig__cap">
+              Fig. 01 — Typical domestic installation
+            </figcaption>
+          </figure>
+        </div>
+      </section>
+
+      <!-- ── Trust strip ─────────────────────────────────────────── -->
+      <section class="trust" aria-labelledby="credentials-h">
+        <div class="wrap">
+          <h2 class="vh" id="credentials-h">Credentials</h2>
+          <dl class="trust__grid">
+            <div class="trust__item" data-unverified="rec-status">
+              <dt>Registration</dt>
+              <dd>Registered Electrical Contractor, Safe Electric scheme</dd>
+            </div>
+            <div class="trust__item" data-unverified="insurance">
+              <dt>Insurance</dt>
+              <dd>Public liability insured</dd>
+            </div>
+            <div class="trust__item" data-unverified="years">
+              <dt>Experience</dt>
+              <dd>Around 30 years in the trade</dd>
+            </div>
+            <div class="trust__item" data-unverified="areas">
+              <dt>Area</dt>
+              <dd>Leixlip, Celbridge, Maynooth and around North Kildare</dd>
+            </div>
+          </dl>
+        </div>
+      </section>
+
+      <!-- ── 01 The work ─────────────────────────────────────────── -->
+      <section class="section" aria-labelledby="work-h">
+        <div class="wrap">
+          <div class="sechead">
+            <div class="sechead__line"><span class="ref">01</span></div>
+            <h2 class="headline" id="work-h">The work Ger does</h2>
+            <p class="lead sechead__note">
+              Most calls are one of these. If yours is not, ring and ask.
+            </p>
+          </div>
+
+          <ol class="schedule" data-unverified="service-list">
+            <li class="schedule__row">
+              <a class="schedule__link" href="services/#repairs">
+                <span class="schedule__ref">01.1</span>
+                <h3 class="schedule__name">Electrical repairs</h3>
+                <p class="schedule__desc">
+                  Something has stopped working — a socket, a switch, an
+                  immersion, a shower, an outside light.
+                </p>
+              </a>
+            </li>
+            <li class="schedule__row">
+              <a class="schedule__link" href="services/#fault-finding">
+                <span class="schedule__ref">01.2</span>
+                <h3 class="schedule__name">Fault finding</h3>
+                <p class="schedule__desc">
+                  A breaker that keeps tripping, a dead circuit, lights that
+                  flicker. Finding the cause before anything is replaced.
+                </p>
+              </a>
+            </li>
+            <li class="schedule__row">
+              <a class="schedule__link" href="services/#sockets">
+                <span class="schedule__ref">01.3</span>
+                <h3 class="schedule__name">Sockets and switches</h3>
+                <p class="schedule__desc">
+                  Extra sockets where you actually need them, damaged ones
+                  replaced, outdoor points.
+                </p>
+              </a>
+            </li>
+            <li class="schedule__row">
+              <a class="schedule__link" href="services/#lighting">
+                <span class="schedule__ref">01.4</span>
+                <h3 class="schedule__name">Lighting</h3>
+                <p class="schedule__desc">
+                  Ceiling and wall lights, kitchen and under-unit lighting,
+                  outdoor and security lights.
+                </p>
+              </a>
+            </li>
+            <li class="schedule__row">
+              <a class="schedule__link" href="services/#upgrades">
+                <span class="schedule__ref">01.5</span>
+                <h3 class="schedule__name">Upgrades</h3>
+                <p class="schedule__desc">
+                  An old fuse board replaced, or a circuit that is no longer up
+                  to the job it is being asked to do.
+                </p>
+              </a>
+            </li>
+            <li class="schedule__row">
+              <a class="schedule__link" href="services/#maintenance">
+                <span class="schedule__ref">01.6</span>
+                <h3 class="schedule__name">Maintenance</h3>
+                <p class="schedule__desc">
+                  Checks and repairs for owners and landlords keeping a property
+                  in good order.
+                </p>
+              </a>
+            </li>
+            <li class="schedule__row">
+              <a class="schedule__link" href="services/#installations">
+                <span class="schedule__ref">01.7</span>
+                <h3 class="schedule__name">Small installations</h3>
+                <p class="schedule__desc">
+                  A new circuit for an extension, a garden room, an oven or a
+                  shower.
+                </p>
+              </a>
+            </li>
+          </ol>
+
+          <div class="schedule__after">
+            <p class="title">Need help with something else?</p>
+            <a
+              class="btn btn--call"
+              href="tel:+353870000000"
+              data-cta="call"
+              data-cta-location="services-section"
+            >
+              <svg class="btn__icon" viewBox="0 0 24 24" aria-hidden="true">
+                <path
+                  d="M6.5 3h3l1.5 4-2 1.5a12 12 0 0 0 6.5 6.5L17 13l4 1.5v3a2 2 0 0 1-2.2 2A16.5 16.5 0 0 1 4 6.2 2 2 0 0 1 6 4z"
+                />
+              </svg>
+              Call Ger
+            </a>
+            <a class="link" href="services/">See what each job involves</a>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── 02 Ger ──────────────────────────────────────────────── -->
+      <section class="section" aria-labelledby="ger-h">
+        <div class="wrap">
+          <div class="sechead">
+            <div class="sechead__line"><span class="ref">02</span></div>
+            <h2 class="headline" id="ger-h">The person who turns up</h2>
+          </div>
+
+          <div class="split">
+            <figure class="fig">
+              <div class="fig__frame ratio-4x5">
+                <!-- Replace this whole .fig__slot div with:
+                     <img src="assets/img/ger-portrait.jpg" width="800"
+                          height="1000" alt="Ger, the electrician" /> -->
+                <div class="fig__slot">
+                  <span>Photograph required</span>
+                  <strong>Ger, on a job — portrait, 4:5</strong>
+                </div>
+              </div>
+              <figcaption class="fig__cap">Fig. 02 — Ger</figcaption>
+            </figure>
+
+            <div>
+              <p class="body">
+                Ger is a one-man operation. He quotes the job, he does the job,
+                and he is the person you ring afterwards if something is not
+                right. There is no call centre and no rotating crew.
+              </p>
+              <p class="body" data-unverified="years">
+                He has been wiring and repairing houses in this part of Kildare
+                for around thirty years, which means most faults he meets are
+                ones he has met before.
+              </p>
+              <p class="body">
+                Work is left tidy and tested, and he will tell you plainly if a
+                job is bigger than you were expecting — or smaller.
+              </p>
+
+              <dl class="spec" style="margin-top: 2rem">
+                <div class="spec__item" data-unverified="customers">
+                  <dt>Works for</dt>
+                  <dd>Homeowners, landlords, property managers</dd>
+                </div>
+              </dl>
+
+              <p class="body" style="margin-top: 1.5rem">
+                <a class="link" href="about/">More about Ger</a>
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── 03 Areas served ─────────────────────────────────────── -->
+      <section class="section band-ink on-ink" aria-labelledby="areas-h">
+        <div class="wrap">
+          <div class="sechead">
+            <div class="sechead__line"><span class="ref">03</span></div>
+            <h2 class="headline" id="areas-h">Where Ger works</h2>
+            <p class="lead sechead__note">
+              North Kildare, and close enough to it that he can get to you the
+              same week rather than the same month.
+            </p>
+          </div>
+
+          <ul class="towns" data-unverified="areas">
+            <li>
+              <span class="towns__ref">01</span>
+              <span class="towns__name">Leixlip</span>
+            </li>
+            <li>
+              <span class="towns__ref">02</span>
+              <span class="towns__name">Celbridge</span>
+            </li>
+            <li>
+              <span class="towns__ref">03</span>
+              <span class="towns__name">Maynooth</span>
+            </li>
+          </ul>
+
+          <div class="areas__ask">
+            <p>Not sure if your area is covered? Call Ger and ask.</p>
+            <a
+              class="btn btn--call"
+              href="tel:+353870000000"
+              data-cta="call"
+              data-cta-location="areas"
+            >
+              <svg class="btn__icon" viewBox="0 0 24 24" aria-hidden="true">
+                <path
+                  d="M6.5 3h3l1.5 4-2 1.5a12 12 0 0 0 6.5 6.5L17 13l4 1.5v3a2 2 0 0 1-2.2 2A16.5 16.5 0 0 1 4 6.2 2 2 0 0 1 6 4z"
+                />
+              </svg>
+              Call Ger
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <!--
+        ── Customer reviews ──────────────────────────────────────────
+        Intentionally absent. PRD 15.2 forbids inventing reviews and says
+        to remove the section rather than fill it. When Ger has real
+        testimonials, with permission to publish the customer's first name
+        and town, the section belongs here — between Areas and the closing
+        call band, using the .schedule rule pattern rather than cards.
+      -->
+
+      <!-- ── 04 Contact ──────────────────────────────────────────── -->
+      <section class="section" aria-labelledby="call-h">
+        <div class="wrap">
+          <div class="sechead">
+            <div class="sechead__line"><span class="ref">04</span></div>
+            <h2 class="headline" id="call-h">Tell Ger what has gone wrong</h2>
+          </div>
+
+          <div class="callband__grid">
+            <div>
+              <p class="lead">
+                A phone call is the quickest way to get an answer. If it is
+                easier to write it down, send the details instead.
+              </p>
+              <a
+                class="tel-type callband__tel"
+                href="tel:+353870000000"
+                data-cta="call"
+                data-cta-location="final-band"
+                >087 000 0000</a
+              >
+              <div class="actions callband__actions">
+                <a
+                  class="btn btn--call"
+                  href="tel:+353870000000"
+                  data-cta="call"
+                  data-cta-location="final-band"
+                >
+                  <svg class="btn__icon" viewBox="0 0 24 24" aria-hidden="true">
+                    <path
+                      d="M6.5 3h3l1.5 4-2 1.5a12 12 0 0 0 6.5 6.5L17 13l4 1.5v3a2 2 0 0 1-2.2 2A16.5 16.5 0 0 1 4 6.2 2 2 0 0 1 6 4z"
+                    />
+                  </svg>
+                  Call Ger
+                </a>
+                <a
+                  class="btn btn--quote"
+                  href="contact/"
+                  data-cta="quote"
+                  data-cta-location="final-band"
+                  >Request a Quote</a
+                >
+              </div>
+            </div>
+
+            <div class="callband__aside">
+              <p class="label">Covering</p>
+              <p class="small" style="margin-top: 0.5rem" data-unverified="areas">
+                Leixlip, Celbridge, Maynooth and the surrounding North Kildare
+                area.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="foot on-ink">
+      <div class="wrap">
+        <div class="foot__grid">
+          <div>
+            <p class="mark__name" style="font-size: 1.125rem">Ger, Electrician</p>
+            <p class="small" style="margin-top: 0.5rem" data-unverified="areas">
+              Electrical repairs, fault finding and installations across North
+              Kildare.
+            </p>
+            <p style="margin-top: 1.25rem">
+              <a
+                class="foot__tel"
+                href="tel:+353870000000"
+                data-cta="call"
+                data-cta-location="footer"
+                >087 000 0000</a
+              >
+            </p>
+          </div>
+
+          <div>
+            <h2>Pages</h2>
+            <ul class="foot__links">
+              <li><a href="./">Home</a></li>
+              <li><a href="services/">Services</a></li>
+              <li><a href="about/">About</a></li>
+              <li><a href="contact/">Contact</a></li>
+            </ul>
+          </div>
+
+          <div>
+            <h2>Detail</h2>
+            <ul class="foot__links">
+              <li><a href="privacy/">Privacy Policy</a></li>
+              <li>
+                <a href="mailto:enquiries@example.ie">enquiries@example.ie</a>
+              </li>
+            </ul>
+            <!-- Safe Electric registration number goes here once Ger
+                 confirms the number and permission to publish it. -->
+          </div>
+        </div>
+
+        <div class="foot__base">
+          <p>&copy; <span data-year>2026</span> Ger, Electrician.</p>
+          <p data-unverified="areas">Leixlip · Celbridge · Maynooth · North Kildare</p>
+        </div>
+      </div>
+    </footer>
+
+    <div class="callbar">
+      <a
+        class="callbar__num"
+        href="tel:+353870000000"
+        data-cta="call"
+        data-cta-location="sticky"
+      >
+        <span>Ring Ger</span>
+        087 000 0000
+      </a>
+      <a
+        class="btn btn--call"
+        href="tel:+353870000000"
+        data-cta="call"
+        data-cta-location="sticky"
+      >
+        <svg class="btn__icon" viewBox="0 0 24 24" aria-hidden="true">
+          <path
+            d="M6.5 3h3l1.5 4-2 1.5a12 12 0 0 0 6.5 6.5L17 13l4 1.5v3a2 2 0 0 1-2.2 2A16.5 16.5 0 0 1 4 6.2 2 2 0 0 1 6 4z"
+          />
+        </svg>
+        Call Ger
+      </a>
+    </div>
+
+    <!-- Structured data. Only fields that are visible on the page and
+         confirmed belong here (PRD 27). openingHours, priceRange and any
+         registration number are deliberately absent. -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Electrician",
+        "name": "Ger, Electrician",
+        "url": "https://www.example.ie/",
+        "telephone": "+353870000000",
+        "email": "enquiries@example.ie",
+        "description": "Local electrician covering Leixlip, Celbridge, Maynooth and the surrounding North Kildare area. Repairs, fault finding, sockets, lighting, upgrades and small installations.",
+        "areaServed": [
+          { "@type": "City", "name": "Leixlip" },
+          { "@type": "City", "name": "Celbridge" },
+          { "@type": "City", "name": "Maynooth" },
+          { "@type": "AdministrativeArea", "name": "North Kildare" }
+        ]
+      }
+    </script>
+
+    <script src="assets/site.js" defer></script>
+  </body>
+</html>
