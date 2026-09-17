@@ -1,0 +1,1171 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content">
+<meta name="theme-color" content="#0b1017">
+<title>Crisis Command</title>
+<style>
+/* ============ tokens ============ */
+:root {
+  --bg: #0b1017;
+  --panel: #111823;
+  --panel-2: #18212e;
+  --line: #223041;
+  --line-soft: #1a2634;
+  --ink: #c9d4df;
+  --ink-dim: #7c8b9a;
+  --ink-faint: #55636f;
+  --amber: #d9a441;
+  --amber-ink: #14100a;
+  --red: #c25b4e;
+  --green: #5fa97d;
+  --focus: #7db1e8;
+  --mono: ui-monospace, "SF Mono", "Cascadia Mono", "Roboto Mono", Menlo, Consolas, monospace;
+  --sans: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --radius: 6px;
+  color-scheme: dark;
+}
+
+/* ============ base ============ */
+* { box-sizing: border-box; }
+html, body { height: 100%; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--sans);
+  font-size: 15px;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+}
+button { font: inherit; color: inherit; background: none; border: 0; cursor: pointer; }
+button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visible, select:focus-visible, summary:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+}
+[hidden] { display: none !important; }
+input, textarea, select {
+  font: inherit;
+  color: var(--ink);
+  background: var(--panel-2);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 10px 12px;
+  width: 100%;
+}
+input::placeholder, textarea::placeholder { color: var(--ink-faint); }
+label { display: block; font-family: var(--mono); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-dim); margin-bottom: 6px; }
+
+.app { height: 100%; display: flex; flex-direction: column; }
+
+/* ============ classification strip ============ */
+.strip {
+  background: var(--amber);
+  color: var(--amber-ink);
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 0.16em;
+  text-align: center;
+  padding: 3px 16px;
+  text-transform: uppercase;
+  user-select: none;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+/* ============ header ============ */
+.topbar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 16px;
+  border-bottom: 1px solid var(--line);
+  background: var(--panel);
+  flex: none;
+}
+.topbar .wordmark {
+  font-family: var(--mono);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  white-space: nowrap;
+}
+.topbar .wordmark .cc-slash { color: var(--amber); }
+.topbar .meta {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  color: var(--ink-dim);
+  white-space: nowrap;
+}
+.turnpill {
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 2px 10px;
+  color: var(--amber);
+}
+.iconbtn {
+  padding: 6px 10px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  color: var(--ink-dim);
+}
+.iconbtn:active { background: var(--panel-2); }
+
+/* ============ setup screen ============ */
+.setup {
+  flex: 1;
+  overflow-y: auto;
+  padding: 32px 16px 48px;
+}
+.setup-inner { max-width: 520px; margin: 0 auto; display: flex; flex-direction: column; gap: 24px; }
+.masthead { text-align: left; padding-top: 8px; }
+.masthead .kicker {
+  font-family: var(--mono); font-size: 11px; letter-spacing: 0.28em;
+  color: var(--ink-dim); text-transform: uppercase;
+}
+.masthead h1 {
+  font-family: var(--mono);
+  font-size: clamp(30px, 9vw, 44px);
+  letter-spacing: 0.08em;
+  line-height: 1.05;
+  margin: 8px 0 10px;
+}
+.masthead h1 .accent { color: var(--amber); }
+.masthead p { color: var(--ink-dim); margin: 0; max-width: 44ch; }
+
+.fieldset { display: flex; flex-direction: column; gap: 16px; }
+.hint { font-size: 12.5px; color: var(--ink-faint); margin: 6px 0 0; }
+.hint a { color: var(--ink-dim); }
+
+.btn {
+  display: block;
+  width: 100%;
+  text-align: center;
+  font-family: var(--mono);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  font-size: 13px;
+  font-weight: 700;
+  padding: 14px 16px;
+  border-radius: var(--radius);
+}
+.btn-primary { background: var(--amber); color: var(--amber-ink); }
+.btn-primary:active { filter: brightness(0.92); }
+.btn-primary:disabled { background: var(--line); color: var(--ink-faint); cursor: not-allowed; }
+.btn-ghost { border: 1px solid var(--line); color: var(--ink-dim); }
+.btn-ghost:active { background: var(--panel-2); }
+
+.or-rule {
+  display: flex; align-items: center; gap: 12px;
+  color: var(--ink-faint); font-family: var(--mono); font-size: 11px; letter-spacing: 0.2em;
+}
+.or-rule::before, .or-rule::after { content: ""; flex: 1; height: 1px; background: var(--line-soft); }
+
+details.config { border: 1px solid var(--line); border-radius: var(--radius); background: var(--panel); }
+details.config summary {
+  cursor: pointer; list-style: none; padding: 12px 14px;
+  font-family: var(--mono); font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-dim);
+  display: flex; align-items: center; gap: 8px;
+}
+details.config summary::-webkit-details-marker { display: none; }
+details.config summary::after { content: "+"; margin-left: auto; color: var(--ink-faint); }
+details.config[open] summary::after { content: "–"; }
+.keystate { color: var(--green); }
+.keystate.missing { color: var(--red); }
+details.config .config-body { padding: 0 14px 16px; display: flex; flex-direction: column; gap: 14px; }
+
+.resume-card {
+  border: 1px solid var(--line);
+  border-left: 3px solid var(--amber);
+  border-radius: var(--radius);
+  background: var(--panel);
+  padding: 14px;
+}
+.resume-card .rc-label { font-family: var(--mono); font-size: 10px; letter-spacing: 0.2em; color: var(--amber); text-transform: uppercase; }
+.resume-card p { margin: 6px 0 12px; color: var(--ink-dim); font-size: 13.5px; }
+.resume-card .rc-actions { display: flex; gap: 10px; }
+.resume-card .rc-actions .btn { padding: 10px 12px; font-size: 12px; }
+
+/* ============ game feed ============ */
+.feed {
+  flex: 1;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 16px 16px 8px;
+}
+.feed-inner { max-width: 640px; margin: 0 auto; display: flex; flex-direction: column; gap: 14px; }
+
+.msg-briefing {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-left: 3px solid var(--amber);
+  border-radius: var(--radius);
+  padding: 4px 16px 14px;
+  overflow-wrap: break-word;
+}
+.msg-order { align-self: flex-end; max-width: 88%; }
+.msg-order .order-label {
+  font-family: var(--mono); font-size: 9px; letter-spacing: 0.2em;
+  color: var(--ink-faint); text-transform: uppercase; text-align: right; margin: 0 2px 3px;
+}
+.msg-order .order-body {
+  background: var(--panel-2);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 10px 14px;
+  white-space: pre-wrap;
+  overflow-wrap: break-word;
+}
+
+.msg-error {
+  border: 1px solid var(--red);
+  border-radius: var(--radius);
+  background: color-mix(in srgb, var(--red) 10%, var(--bg));
+  padding: 12px 14px;
+  font-size: 13.5px;
+}
+.msg-error .e-label { font-family: var(--mono); font-size: 10px; letter-spacing: 0.2em; color: var(--red); text-transform: uppercase; margin-bottom: 4px; }
+.msg-error button { margin-top: 8px; border: 1px solid var(--red); border-radius: var(--radius); padding: 6px 12px; font-family: var(--mono); font-size: 11px; letter-spacing: 0.1em; color: var(--ink); }
+
+/* briefing markdown */
+.md h1 {
+  font-family: var(--mono);
+  font-size: 15px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink);
+  border-bottom: 1px solid var(--line);
+  padding: 12px 0 10px;
+  margin: 0 0 4px;
+}
+.md h2 {
+  font-family: var(--mono);
+  font-size: 11.5px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--amber);
+  margin: 18px 0 6px;
+}
+.md h3, .md h4 {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-dim);
+  margin: 14px 0 4px;
+}
+.md p { margin: 8px 0; }
+.md ul, .md ol { margin: 8px 0; padding-left: 22px; }
+.md li { margin: 4px 0; }
+.md hr { border: 0; border-top: 1px solid var(--line-soft); margin: 14px 0; }
+.md blockquote {
+  margin: 10px 0; padding: 6px 12px;
+  border-left: 2px solid var(--line);
+  color: var(--ink-dim);
+  font-style: italic;
+}
+.md code { font-family: var(--mono); font-size: 0.9em; background: var(--panel-2); border-radius: 4px; padding: 1px 5px; }
+.md strong { color: #e8eef4; }
+.badge {
+  display: inline-block;
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  border-radius: 3px;
+  padding: 1px 6px;
+  vertical-align: 1px;
+  white-space: nowrap;
+}
+.badge-high { background: var(--amber); color: var(--amber-ink); }
+.badge-med { border: 1px solid var(--amber); color: var(--amber); }
+.badge-low { border: 1px solid var(--ink-faint); color: var(--ink-dim); }
+
+.caret {
+  display: inline-block; width: 8px; height: 15px;
+  background: var(--amber); vertical-align: -2px; margin-left: 2px;
+  animation: blink 1s steps(2) infinite;
+}
+@keyframes blink { 50% { opacity: 0; } }
+@media (prefers-reduced-motion: reduce) { .caret { animation: none; } }
+
+/* ============ composer ============ */
+.composer {
+  flex: none;
+  border-top: 1px solid var(--line);
+  background: var(--panel);
+  padding: 10px 16px calc(10px + env(safe-area-inset-bottom, 0px));
+}
+.composer-inner { max-width: 640px; margin: 0 auto; }
+.chips {
+  display: flex; gap: 8px;
+  overflow-x: auto;
+  padding-bottom: 10px;
+  scrollbar-width: none;
+}
+.chips::-webkit-scrollbar { display: none; }
+.chip {
+  flex: none;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 7px 14px;
+  color: var(--ink-dim);
+}
+.chip:active { background: var(--panel-2); }
+.chip:disabled { opacity: 0.4; cursor: not-allowed; }
+.chip-endturn { border-color: var(--amber); color: var(--amber); font-weight: 700; }
+.chip-endturn.confirm { background: var(--amber); color: var(--amber-ink); }
+.inputrow { display: flex; gap: 8px; align-items: flex-end; }
+.inputrow textarea {
+  resize: none;
+  min-height: 44px;
+  max-height: 132px;
+  line-height: 1.45;
+}
+.sendbtn {
+  flex: none;
+  height: 44px;
+  padding: 0 16px;
+  border-radius: var(--radius);
+  background: var(--amber);
+  color: var(--amber-ink);
+  font-family: var(--mono);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+}
+.sendbtn:disabled { background: var(--line); color: var(--ink-faint); cursor: not-allowed; }
+.statusline {
+  display: flex; align-items: center; gap: 10px;
+  font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.14em;
+  text-transform: uppercase; color: var(--amber);
+  padding: 8px 2px 0;
+}
+.statusline .dot {
+  width: 6px; height: 6px; border-radius: 50%; background: var(--amber);
+  animation: blink 1s steps(2) infinite;
+}
+.statusline button { margin-left: auto; color: var(--ink-faint); font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.1em; text-decoration: underline; }
+
+/* ============ dialogs ============ */
+dialog {
+  background: var(--panel);
+  color: var(--ink);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 0;
+  width: min(92vw, 440px);
+  max-height: 85dvh;
+}
+dialog::backdrop { background: rgba(4, 8, 12, 0.7); }
+.dlg-head {
+  display: flex; align-items: center;
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--line);
+  font-family: var(--mono); font-size: 12px; letter-spacing: 0.16em; text-transform: uppercase;
+}
+.dlg-head button { margin-left: auto; color: var(--ink-dim); font-size: 18px; line-height: 1; padding: 2px 6px; }
+.dlg-body { padding: 16px; display: flex; flex-direction: column; gap: 14px; overflow-y: auto; }
+.menu-item {
+  display: block; width: 100%; text-align: left;
+  padding: 12px 14px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  font-family: var(--mono); font-size: 12px; letter-spacing: 0.1em;
+}
+.menu-item:active { background: var(--panel-2); }
+.menu-item.danger { border-color: color-mix(in srgb, var(--red) 55%, var(--line)); color: var(--red); }
+
+.sr-only {
+  position: absolute; width: 1px; height: 1px;
+  padding: 0; margin: -1px; overflow: hidden;
+  clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+}
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="strip" aria-hidden="true">Exercise&thinsp;&middot;&thinsp;Exercise&thinsp;&middot;&thinsp;Exercise — Simulation Only</div>
+
+  <header class="topbar">
+    <div class="wordmark">CRISIS<span class="cc-slash">//</span>COMMAND</div>
+    <div class="meta">
+      <span id="zulu" aria-label="Current time, Zulu"></span>
+      <span class="turnpill" id="turnPill" hidden>TURN 1</span>
+      <button class="iconbtn" id="menuBtn" aria-label="Open menu" hidden>MENU</button>
+    </div>
+  </header>
+
+  <!-- ============ SETUP ============ -->
+  <main class="setup" id="setupScreen">
+    <div class="setup-inner">
+      <div class="masthead">
+        <div class="kicker">Single-player geopolitical wargame</div>
+        <h1>SITUATION<br><span class="accent">DEVELOPING</span></h1>
+        <p>You take one seat at the table. Claude runs every other government, general, spy, market and mob — independently, under uncertainty, with hidden information. Issue orders in plain language. Live with the consequences.</p>
+      </div>
+
+      <div class="resume-card" id="resumeCard" hidden>
+        <div class="rc-label">Simulation in progress</div>
+        <p id="resumeDesc"></p>
+        <div class="rc-actions">
+          <button class="btn btn-primary" id="resumeBtn">Resume</button>
+          <button class="btn btn-ghost" id="discardBtn">Discard</button>
+        </div>
+      </div>
+
+      <div class="fieldset">
+        <div>
+          <label for="scenarioInput">Scenario</label>
+          <textarea id="scenarioInput" rows="3" placeholder="e.g. A naval standoff escalates in the South China Sea after a collision at sea…"></textarea>
+        </div>
+        <div>
+          <label for="roleInput">Your role</label>
+          <input id="roleInput" type="text" placeholder="e.g. President of the United States / Taoiseach of Ireland…">
+        </div>
+        <button class="btn btn-primary" id="startBtn">Begin Simulation</button>
+        <div class="or-rule">or</div>
+        <button class="btn btn-ghost" id="surpriseBtn">Surprise Me</button>
+      </div>
+
+      <details class="config" id="configDetails">
+        <summary>
+          Connection
+          <span id="keyState" class="keystate missing">· no key</span>
+        </summary>
+        <div class="config-body">
+          <div>
+            <label for="apiKeyInput">Anthropic API key</label>
+            <input id="apiKeyInput" type="password" autocomplete="off" placeholder="sk-ant-…">
+            <p class="hint">Stored only in this browser. Calls go directly from your device to the Claude API — there is no server. Get a key at console.anthropic.com.</p>
+          </div>
+          <div>
+            <label for="modelSelect">Simulation engine</label>
+            <select id="modelSelect">
+              <option value="claude-opus-5" selected>Claude Opus 5 — best simulation</option>
+              <option value="claude-sonnet-5">Claude Sonnet 5 — faster, cheaper</option>
+              <option value="claude-haiku-4-5">Claude Haiku 4.5 — cheapest</option>
+            </select>
+            <p class="hint">A long game can cost a few dollars on Opus. API usage is billed to your key.</p>
+          </div>
+        </div>
+      </details>
+    </div>
+  </main>
+
+  <!-- ============ GAME ============ -->
+  <main class="feed" id="gameScreen" hidden>
+    <div class="feed-inner" id="feedInner"></div>
+  </main>
+
+  <div class="composer" id="composer" hidden>
+    <div class="composer-inner">
+      <div class="chips" id="chips">
+        <button class="chip chip-endturn" id="endTurnChip">End Turn</button>
+        <button class="chip" data-ask="Give me each adviser's current recommendation, and where they disagree.">Advisers</button>
+        <button class="chip" data-ask="Summarise our latest intelligence assessments, with confidence levels.">Intel</button>
+        <button class="chip" data-ask="Give me a risk assessment of my current options, including second-order effects.">Risks</button>
+        <button class="chip" data-ask="What is the biggest risk if we do nothing this turn?">If we wait?</button>
+      </div>
+      <div class="inputrow">
+        <textarea id="orderInput" rows="1" placeholder="Issue orders…" aria-label="Orders"></textarea>
+        <button class="sendbtn" id="sendBtn" aria-label="Transmit orders">SEND</button>
+      </div>
+      <div class="statusline" id="statusLine" hidden aria-live="polite">
+        <span class="dot" aria-hidden="true"></span>
+        <span id="statusText">Simulating</span>
+        <button id="cancelBtn">cancel</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ MENU DIALOG ============ -->
+<dialog id="menuDialog" aria-label="Menu">
+  <div class="dlg-head">Command Menu <button data-close aria-label="Close">&times;</button></div>
+  <div class="dlg-body">
+    <button class="menu-item" id="aarBtn">End simulation → after-action review</button>
+    <button class="menu-item" id="copyBtn">Copy transcript</button>
+    <button class="menu-item" id="settingsBtn">Connection settings</button>
+    <button class="menu-item danger" id="abandonBtn">Abandon game</button>
+  </div>
+</dialog>
+
+<!-- ============ SETTINGS DIALOG (in-game) ============ -->
+<dialog id="settingsDialog" aria-label="Connection settings">
+  <div class="dlg-head">Connection <button data-close aria-label="Close">&times;</button></div>
+  <div class="dlg-body">
+    <div>
+      <label for="apiKeyInput2">Anthropic API key</label>
+      <input id="apiKeyInput2" type="password" autocomplete="off" placeholder="sk-ant-…">
+    </div>
+    <div>
+      <label for="modelSelect2">Simulation engine</label>
+      <select id="modelSelect2">
+        <option value="claude-opus-5">Claude Opus 5 — best simulation</option>
+        <option value="claude-sonnet-5">Claude Sonnet 5 — faster, cheaper</option>
+        <option value="claude-haiku-4-5">Claude Haiku 4.5 — cheapest</option>
+      </select>
+    </div>
+    <button class="btn btn-primary" id="saveSettingsBtn">Save</button>
+  </div>
+</dialog>
+
+<script>
+"use strict";
+
+/* ================= system prompt ================= */
+const SYSTEM_PROMPT = `You are CRISIS COMMAND, a single-player geopolitical crisis simulation engine.
+
+Your job is to run a serious, realistic, turn-based geopolitical war game for one human player, inside a mobile app.
+
+The player controls one country, government, or senior decision-maker.
+
+You control: all other countries, political leaders, military leadership, intelligence agencies, diplomats, advisers, international organizations, financial markets, media, public opinion, relevant non-state actors, random external events, and the underlying simulation state.
+
+The goal is not to tell a predetermined story. The goal is to simulate how a geopolitical crisis could develop as different actors make decisions under uncertainty.
+
+## CORE PRINCIPLES
+
+Always follow these rules.
+
+1. Do not make events happen only because they are dramatic.
+2. Every important outcome must result from: previous actions, actor objectives, capabilities, constraints, incentives, relationships, intelligence, uncertainty, and probability.
+3. Other actors must act independently of the player.
+4. Other actors can misunderstand the player.
+5. The player can misunderstand other actors.
+6. Actors can bluff, deceive, hesitate, overreact, or make mistakes.
+7. Do not make the player automatically succeed.
+8. Do not make the player automatically fail.
+9. Do not protect the player from the consequences of poor decisions.
+10. Do not change hidden facts retroactively to fit the narrative.
+11. Maintain continuity between turns.
+12. Avoid unrealistic precision when information would be uncertain.
+13. Keep the simulation at the strategic geopolitical level. Do not provide detailed real-world tactical attack instructions, targeting instructions, weapons employment procedures, or operational attack plans.
+
+## INFORMATION MODEL
+
+Maintain two separate information layers.
+
+### TRUE WORLD STATE
+
+This contains what is actually happening: actual actor intentions, secret plans, private communications, hidden capabilities, real military readiness, true economic conditions, covert actions, actual red lines, internal political disagreements, and future plans already decided by actors.
+
+Never show the TRUE WORLD STATE directly to the player during the game.
+
+### PLAYER KNOWLEDGE
+
+This contains only what the player's government could reasonably know, received through: intelligence reports, diplomatic messages, public statements, media, allies, military observation, economic indicators, and advisers.
+
+Information can be correct, incomplete, delayed, uncertain, misleading, or deliberately false.
+
+Use confidence levels where useful: HIGH CONFIDENCE, MEDIUM CONFIDENCE, LOW CONFIDENCE (write them in caps exactly like that).
+
+Do not tell the player whether an intelligence assessment is actually correct.
+
+## ACTORS
+
+Treat each major actor as an independent decision-maker. For every major actor, maintain: strategic objectives and their priority, current leadership position, domestic political pressure, economic pressure, military position, alliances, relationships, risk tolerance, escalation tolerance, red lines, current strategy, private beliefs, and the intelligence available to that actor.
+
+An actor must only make decisions using information it could reasonably possess. Do not let secret player information leak to another actor.
+
+## PLAYER
+
+At the start of the game, define: the player's role, country, authority, strategic objectives, major constraints, available capabilities, and key advisers.
+
+The player issues free-text instructions. Interpret the player's intent reasonably. Do not force the player to select from predefined actions.
+
+## ADVISERS
+
+Give the player access to advisers when relevant (National Security Adviser, Foreign Minister, Defense Minister, Intelligence Director, Finance Minister, Political Adviser, Economic Adviser, or local equivalents). Advisers must have different priorities. They can disagree. They must not always recommend the same action. The player can question them at any time before ending the turn; answer from the perspective and knowledge of that adviser.
+
+## TURN STRUCTURE
+
+Run the simulation in turns. A turn can represent several hours, one day, or several days — choose based on the scenario.
+
+### PHASE 1 — BRIEFING
+
+Start each turn with a heading line like:
+
+# DAY 3 — TURN 3
+
+Then these sections, using ## headings exactly:
+
+## Situation
+A concise summary of the current crisis.
+
+## Developments
+The important events since the previous turn.
+
+## Intelligence
+Relevant intelligence assessments, separated by confidence where useful.
+
+## Messages
+Important diplomatic or secure messages received from other actors (include only when there are any).
+
+## Domestic
+Political, economic, public, or institutional pressures (include only when relevant).
+
+## Advisers
+Short recommendations from the most relevant advisers.
+
+End every briefing with:
+
+**What are your orders?**
+
+### PHASE 2 — PLAYER DELIBERATION
+
+The player can ask questions, speak with advisers, request intelligence, examine options, send messages, issue orders, and revise orders. Do not advance the simulation during this phase unless the player explicitly takes an action that logically causes time to pass. Answers during deliberation should be short and functional — no new turn heading.
+
+### PHASE 3 — END TURN
+
+Do not resolve the turn until the player sends END TURN or clearly instructs you to proceed. Before resolution, treat the player's latest instructions as their final orders.
+
+### PHASE 4 — SECRET SIMULATION
+
+When the player ends the turn: record the player's actions; determine what each major actor knows about them; independently determine each actor's actions; resolve interactions; apply economic, political, diplomatic, military, and public consequences; resolve uncertain outcomes using probability; update the TRUE WORLD STATE; update each actor's beliefs; determine what information becomes available to the player; advance time. Do not show this reasoning to the player.
+
+### PHASE 5 — NEXT BRIEFING
+
+Generate the player's next briefing using only PLAYER KNOWLEDGE. Then begin the next turn.
+
+## PROBABILITY
+
+Use uncertainty when outcomes are not deterministic. For important uncertain events: estimate a reasonable probability from the game state, resolve the event against it, and record the result in the hidden game state. Do not reveal the exact probability during the game. Avoid excessive random events — most developments should result from decisions and existing conditions.
+
+## GAME VARIABLES
+
+Maintain roughly 10–15 hidden variables where useful (crisis escalation, player public support, opponent domestic pressure, alliance cohesion, international support, market stress, trade disruption, military readiness, diplomatic relations, economic pressure, intelligence confidence, government stability, risk of major conflict). Use a 0–100 scale internally. Do not routinely show raw values — describe their observable effects.
+
+## ESCALATION
+
+Treat escalation as multidimensional: military, diplomatic, economic, domestic political, alliance pressure, and nuclear risk where relevant. An action can increase one form of pressure while reducing another. Do not assume every aggressive action causes war or every conciliatory action prevents it. Actors interpret actions through their own beliefs and incentives.
+
+## SECOND-ORDER EFFECTS
+
+Always consider consequences beyond the immediate target — for the player's own economy, allies, markets, domestic politics, and the opponent's internal dynamics. Use these interactions consistently.
+
+## MEMORY AND CONTINUITY
+
+Maintain the hidden simulation record across turns: date, turn number, true world state, actor objectives and beliefs and strategies, ongoing and secret actions, player orders, promises, threats, messages, intelligence, relationships, unresolved events, and important consequences. Never forget a major player action without a logical reason. Previous statements and commitments affect credibility.
+
+## ENDING THE GAME
+
+Do not end the simulation only because a war starts — continue while meaningful strategic decisions remain. A scenario can end because the crisis resolves, negotiations succeed, one side achieves its primary objective, the player's government collapses, major war fundamentally changes the scenario, the player sends END SIMULATION, or a natural endpoint is reached.
+
+At the end, provide an AFTER-ACTION REVIEW with a heading line:
+
+# AFTER-ACTION REVIEW
+
+and these ## sections: Outcome; Player Objectives (each: achieved / partly achieved / failed); Major Consequences; Key Decisions (the 3–5 player decisions with the largest effect); Turning Point; What Worked; What Hurt; Other Actors (their actual objectives and strategies — you may now reveal important hidden information); Intelligence Assessment (which major reports were correct, partly correct, incorrect); Counterfactuals (2–4 credible alternative paths, never claimed as certain).
+
+## STYLE
+
+The experience should feel like a presidential daily briefing, a national security meeting, a serious simulation. Use clear, concise language. No long fictional scenes. No dialogue unless it adds decision value. Focus on information that helps the player decide.
+
+This is a phone screen. Keep briefings tight — roughly 250–500 words. Short paragraphs. Bold the names of key actors on first mention in a briefing. Use only the markdown described above (headings, bold, lists, horizontal rules).
+
+## STARTING A NEW GAME
+
+The first player message begins with NEW GAME and includes a scenario and role, or says SURPRISE ME. If the scenario is broad or missing details, create plausible details yourself. If SURPRISE ME: invent a plausible fictional near-future geopolitical crisis and assign the player an appropriate senior decision-making role.
+
+In your first response: briefly show the scenario, date, the player's role, the player's strategic objectives, and the known starting situation (never hidden actor information) — then start Turn 1 with its full briefing, all in that same response.`;
+
+/* ================= state ================= */
+const API_URL = "https://api.anthropic.com/v1/messages";
+const LS_SETTINGS = "crisis-command.settings";
+const LS_SAVE = "crisis-command.save";
+
+let settings = { apiKey: "", model: "claude-opus-5" };
+let game = null;          // { messages: [{role, content}], turn, label, over }
+let streaming = false;
+let abortCtrl = null;
+
+const $ = (id) => document.getElementById(id);
+const els = {
+  setup: $("setupScreen"), gameScreen: $("gameScreen"), composer: $("composer"),
+  feed: $("feedInner"), zulu: $("zulu"), turnPill: $("turnPill"), menuBtn: $("menuBtn"),
+  scenario: $("scenarioInput"), role: $("roleInput"), startBtn: $("startBtn"), surpriseBtn: $("surpriseBtn"),
+  apiKey: $("apiKeyInput"), model: $("modelSelect"), keyState: $("keyState"), configDetails: $("configDetails"),
+  resumeCard: $("resumeCard"), resumeDesc: $("resumeDesc"), resumeBtn: $("resumeBtn"), discardBtn: $("discardBtn"),
+  orderInput: $("orderInput"), sendBtn: $("sendBtn"), endTurnChip: $("endTurnChip"), chips: $("chips"),
+  statusLine: $("statusLine"), statusText: $("statusText"), cancelBtn: $("cancelBtn"),
+  menuDialog: $("menuDialog"), settingsDialog: $("settingsDialog"),
+  apiKey2: $("apiKeyInput2"), model2: $("modelSelect2"),
+};
+
+/* ================= storage ================= */
+function loadJSON(key) { try { return JSON.parse(localStorage.getItem(key)); } catch { return null; } }
+function saveJSON(key, val) { try { localStorage.setItem(key, JSON.stringify(val)); } catch { /* storage unavailable */ } }
+function removeKey(key) { try { localStorage.removeItem(key); } catch { /* ignore */ } }
+
+/* ================= markdown (subset) ================= */
+function escapeHtml(s) {
+  return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+}
+function inlineMd(s) {
+  let out = escapeHtml(s);
+  out = out.replace(/`([^`]+)`/g, "<code>$1</code>");
+  out = out.replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>");
+  out = out.replace(/(^|[\s(])\*([^*\n]+)\*(?=[\s).,;:!?]|$)/g, "$1<em>$2</em>");
+  out = out.replace(/\bHIGH CONFIDENCE\b/g, '<span class="badge badge-high">HIGH CONFIDENCE</span>');
+  out = out.replace(/\bMEDIUM CONFIDENCE\b/g, '<span class="badge badge-med">MEDIUM CONFIDENCE</span>');
+  out = out.replace(/\bLOW CONFIDENCE\b/g, '<span class="badge badge-low">LOW CONFIDENCE</span>');
+  return out;
+}
+function renderMd(src) {
+  const lines = src.split(/\r?\n/);
+  let html = "", list = null, para = [];
+  const flushPara = () => {
+    if (para.length) { html += "<p>" + inlineMd(para.join(" ")) + "</p>"; para = []; }
+  };
+  const flushList = () => { if (list) { html += list === "ul" ? "</ul>" : "</ol>"; list = null; } };
+  for (const raw of lines) {
+    const line = raw.trimEnd();
+    const t = line.trim();
+    let m;
+    if (!t) { flushPara(); flushList(); continue; }
+    if ((m = t.match(/^(#{1,4})\s+(.*)$/))) {
+      flushPara(); flushList();
+      const level = Math.min(m[1].length, 4);
+      html += `<h${level}>` + inlineMd(m[2]) + `</h${level}>`;
+    } else if (/^(-{3,}|\*{3,}|_{3,})$/.test(t)) {
+      flushPara(); flushList(); html += "<hr>";
+    } else if ((m = t.match(/^[-*•]\s+(.*)$/))) {
+      flushPara();
+      if (list !== "ul") { flushList(); html += "<ul>"; list = "ul"; }
+      html += "<li>" + inlineMd(m[1]) + "</li>";
+    } else if ((m = t.match(/^\d+[.)]\s+(.*)$/))) {
+      flushPara();
+      if (list !== "ol") { flushList(); html += "<ol>"; list = "ol"; }
+      html += "<li>" + inlineMd(m[1]) + "</li>";
+    } else if ((m = t.match(/^>\s?(.*)$/))) {
+      flushPara(); flushList();
+      html += "<blockquote>" + inlineMd(m[1]) + "</blockquote>";
+    } else {
+      flushList(); para.push(t);
+    }
+  }
+  flushPara(); flushList();
+  return html;
+}
+
+/* ================= feed rendering ================= */
+function briefingEl(text, live) {
+  const div = document.createElement("div");
+  div.className = "msg-briefing md";
+  div.innerHTML = renderMd(text) + (live ? '<span class="caret" aria-hidden="true"></span>' : "");
+  return div;
+}
+function orderEl(text, stamp) {
+  const wrap = document.createElement("div");
+  wrap.className = "msg-order";
+  const label = document.createElement("div");
+  label.className = "order-label";
+  label.textContent = stamp ? "Orders transmitted " + stamp : "Orders";
+  const body = document.createElement("div");
+  body.className = "order-body";
+  body.textContent = text;
+  wrap.append(label, body);
+  return wrap;
+}
+function errorEl(message, retryFn) {
+  const div = document.createElement("div");
+  div.className = "msg-error";
+  const label = document.createElement("div");
+  label.className = "e-label";
+  label.textContent = "Transmission failed";
+  const p = document.createElement("div");
+  p.textContent = message;
+  div.append(label, p);
+  if (retryFn) {
+    const b = document.createElement("button");
+    b.textContent = "RETRY";
+    b.addEventListener("click", () => { div.remove(); retryFn(); });
+    div.append(b);
+  }
+  return div;
+}
+function renderFeed() {
+  els.feed.replaceChildren();
+  if (!game) return;
+  for (const m of game.messages) {
+    if (m.role === "assistant") els.feed.append(briefingEl(m.content, false));
+    else els.feed.append(orderEl(m.content));
+  }
+  scrollFeed(true);
+}
+function nearBottom() {
+  const el = els.gameScreen;
+  return el.scrollHeight - el.scrollTop - el.clientHeight < 160;
+}
+function scrollFeed(force) {
+  if (force || nearBottom()) els.gameScreen.scrollTop = els.gameScreen.scrollHeight;
+}
+
+/* ================= zulu clock ================= */
+function zuluNow() {
+  const d = new Date();
+  return String(d.getUTCHours()).padStart(2, "0") + String(d.getUTCMinutes()).padStart(2, "0") + "Z";
+}
+function tickClock() { els.zulu.textContent = zuluNow(); }
+tickClock();
+setInterval(tickClock, 20000);
+
+/* ================= API ================= */
+async function callClaude(messages, onDelta) {
+  abortCtrl = new AbortController();
+  const headers = {
+    "content-type": "application/json",
+    "x-api-key": settings.apiKey,
+    "anthropic-version": "2023-06-01",
+    "anthropic-dangerous-direct-browser-access": "true",
+  };
+  const body = {
+    model: settings.model,
+    max_tokens: 16000,
+    stream: true,
+    system: [{ type: "text", text: SYSTEM_PROMPT, cache_control: { type: "ephemeral", ttl: "1h" } }],
+    messages,
+  };
+  if (settings.model === "claude-opus-5") {
+    // Safety-refusal fallback: rerun a declined request on a fallback model server-side.
+    headers["anthropic-beta"] = "server-side-fallback-2026-07-01";
+    body.fallbacks = "default";
+  }
+  const res = await fetch(API_URL, {
+    method: "POST",
+    headers,
+    body: JSON.stringify(body),
+    signal: abortCtrl.signal,
+  });
+  if (!res.ok) {
+    let msg = "HTTP " + res.status;
+    try {
+      const err = await res.json();
+      if (err && err.error && err.error.message) msg = err.error.message;
+    } catch { /* non-JSON error body */ }
+    const e = new Error(msg);
+    e.status = res.status;
+    throw e;
+  }
+  const reader = res.body.getReader();
+  const decoder = new TextDecoder();
+  let buf = "", text = "", stopReason = null;
+  for (;;) {
+    const { done, value } = await reader.read();
+    if (done) break;
+    buf += decoder.decode(value, { stream: true });
+    const parts = buf.split("\n");
+    buf = parts.pop();
+    for (const line of parts) {
+      if (!line.startsWith("data: ")) continue;
+      let ev;
+      try { ev = JSON.parse(line.slice(6)); } catch { continue; }
+      if (ev.type === "content_block_delta" && ev.delta && ev.delta.type === "text_delta") {
+        text += ev.delta.text;
+        onDelta(text);
+      } else if (ev.type === "message_delta" && ev.delta && ev.delta.stop_reason) {
+        stopReason = ev.delta.stop_reason;
+      } else if (ev.type === "error") {
+        throw new Error(ev.error && ev.error.message ? ev.error.message : "Stream error");
+      }
+    }
+  }
+  return { text, stopReason };
+}
+
+/* ================= game flow ================= */
+function setStreaming(on, label) {
+  streaming = on;
+  els.statusLine.hidden = !on;
+  if (on) els.statusText.textContent = label || "Simulating";
+  els.sendBtn.disabled = on;
+  els.orderInput.disabled = on;
+  for (const c of els.chips.querySelectorAll("button")) c.disabled = on;
+}
+
+async function transmit(text, opts = {}) {
+  if (streaming || !game) return;
+  if (!settings.apiKey) { openSettings(); return; }
+
+  const msgs = game.messages.concat([{ role: "user", content: text }]);
+  const orderNode = orderEl(text, zuluNow());
+  els.feed.append(orderNode);
+  scrollFeed(true);
+  setStreaming(true, opts.status || "Simulating");
+
+  let liveNode = null;
+  try {
+    const { text: reply, stopReason } = await callClaude(msgs, (soFar) => {
+      if (!liveNode) { liveNode = briefingEl(soFar, true); els.feed.append(liveNode); }
+      else liveNode.innerHTML = renderMd(soFar) + '<span class="caret" aria-hidden="true"></span>';
+      scrollFeed(false);
+    });
+    if (!reply.trim()) throw new Error(stopReason === "refusal"
+      ? "The engine declined this request. Try rephrasing your order."
+      : "Empty response from the engine.");
+    if (liveNode) liveNode.remove();
+    game.messages = msgs.concat([{ role: "assistant", content: reply }]);
+    if (opts.endTurn) game.turn += 1;
+    if (opts.endGame) game.over = true;
+    els.feed.append(briefingEl(reply, false));
+    if (stopReason === "refusal") {
+      els.feed.append(errorEl("The engine declined to continue part of that response. You can rephrase and carry on.", null));
+    } else if (stopReason === "max_tokens") {
+      els.feed.append(errorEl("Briefing cut off at the length limit — send “continue” to get the rest.", null));
+    }
+    saveGame();
+    updateHud();
+    scrollFeed(false);
+  } catch (err) {
+    if (liveNode) liveNode.remove();
+    orderNode.remove();
+    if (err.name === "AbortError") {
+      els.orderInput.value = text;
+      autosize();
+    } else {
+      let msg = err.message || "Network error.";
+      if (err.status === 401) msg = "API key rejected. Check it in connection settings.";
+      if (err.status === 429) msg = "Rate limited by the API. Wait a moment, then retry.";
+      if (err.status === 529) msg = "The API is overloaded. Retry in a few seconds.";
+      els.feed.append(errorEl(msg, () => transmit(text, opts)));
+      if (err.status === 401) openSettings();
+      scrollFeed(true);
+    }
+  } finally {
+    setStreaming(false);
+    abortCtrl = null;
+  }
+}
+
+function startGame(firstMessage, label) {
+  game = { messages: [], turn: 1, label, over: false };
+  showGame();
+  renderFeed();
+  updateHud();
+  // Seed message is sent as the player's first transmission.
+  transmit(firstMessage, { status: "Building scenario" });
+}
+
+function saveGame() { if (game) saveJSON(LS_SAVE, game); }
+
+function updateHud() {
+  if (!game) { els.turnPill.hidden = true; return; }
+  els.turnPill.hidden = false;
+  els.turnPill.textContent = game.over ? "COMPLETE" : "TURN " + game.turn;
+}
+
+function showGame() {
+  els.setup.hidden = true;
+  els.gameScreen.hidden = false;
+  els.composer.hidden = false;
+  els.menuBtn.hidden = false;
+}
+function showSetup() {
+  els.setup.hidden = false;
+  els.gameScreen.hidden = true;
+  els.composer.hidden = true;
+  els.menuBtn.hidden = true;
+  els.turnPill.hidden = true;
+  refreshResumeCard();
+}
+
+/* ================= setup wiring ================= */
+function refreshKeyState() {
+  const has = !!settings.apiKey;
+  els.keyState.textContent = has ? "· key set" : "· no key";
+  els.keyState.classList.toggle("missing", !has);
+  if (!has) els.configDetails.open = true;
+}
+function refreshResumeCard() {
+  const save = loadJSON(LS_SAVE);
+  const ok = save && Array.isArray(save.messages) && save.messages.length > 0;
+  els.resumeCard.hidden = !ok;
+  if (ok) {
+    els.resumeDesc.textContent = (save.label || "Saved simulation") +
+      " — " + (save.over ? "complete" : "turn " + save.turn);
+  }
+}
+function persistSettings() { saveJSON(LS_SETTINGS, settings); }
+
+function requireKey() {
+  if (settings.apiKey) return true;
+  els.configDetails.open = true;
+  els.apiKey.focus();
+  return false;
+}
+
+els.apiKey.addEventListener("change", () => {
+  settings.apiKey = els.apiKey.value.trim();
+  persistSettings(); refreshKeyState();
+});
+els.model.addEventListener("change", () => {
+  settings.model = els.model.value;
+  persistSettings();
+});
+
+els.startBtn.addEventListener("click", () => {
+  if (!requireKey()) return;
+  const scenario = els.scenario.value.trim();
+  const role = els.role.value.trim();
+  let msg = "NEW GAME";
+  if (scenario) msg += "\nScenario: " + scenario;
+  if (role) msg += "\nI want to play: " + role;
+  if (!scenario && !role) msg += "\nSURPRISE ME";
+  startGame(msg, scenario ? scenario.slice(0, 80) : "Surprise scenario");
+});
+els.surpriseBtn.addEventListener("click", () => {
+  if (!requireKey()) return;
+  startGame("NEW GAME\nSURPRISE ME", "Surprise scenario");
+});
+
+els.resumeBtn.addEventListener("click", () => {
+  const save = loadJSON(LS_SAVE);
+  if (!save) { refreshResumeCard(); return; }
+  game = save;
+  showGame(); renderFeed(); updateHud();
+});
+els.discardBtn.addEventListener("click", () => {
+  removeKey(LS_SAVE);
+  refreshResumeCard();
+});
+
+/* ================= composer wiring ================= */
+function autosize() {
+  const t = els.orderInput;
+  t.style.height = "auto";
+  t.style.height = Math.min(t.scrollHeight, 132) + "px";
+}
+els.orderInput.addEventListener("input", autosize);
+els.orderInput.addEventListener("keydown", (e) => {
+  if (e.key === "Enter" && (e.metaKey || e.ctrlKey)) { e.preventDefault(); sendCurrent(); }
+});
+function sendCurrent() {
+  const text = els.orderInput.value.trim();
+  if (!text) return;
+  els.orderInput.value = "";
+  autosize();
+  transmit(text);
+}
+els.sendBtn.addEventListener("click", sendCurrent);
+
+let endTurnArmed = null;
+els.endTurnChip.addEventListener("click", () => {
+  if (streaming) return;
+  if (endTurnArmed) {
+    clearTimeout(endTurnArmed); endTurnArmed = null;
+    els.endTurnChip.classList.remove("confirm");
+    els.endTurnChip.textContent = "End Turn";
+    const pending = els.orderInput.value.trim();
+    els.orderInput.value = ""; autosize();
+    transmit(pending ? pending + "\n\nEND TURN" : "END TURN", { endTurn: true, status: "Resolving turn" });
+  } else {
+    els.endTurnChip.classList.add("confirm");
+    els.endTurnChip.textContent = "Confirm?";
+    endTurnArmed = setTimeout(() => {
+      endTurnArmed = null;
+      els.endTurnChip.classList.remove("confirm");
+      els.endTurnChip.textContent = "End Turn";
+    }, 3000);
+  }
+});
+els.chips.addEventListener("click", (e) => {
+  const chip = e.target.closest("[data-ask]");
+  if (chip && !streaming) transmit(chip.getAttribute("data-ask"), { status: "Consulting" });
+});
+els.cancelBtn.addEventListener("click", () => { if (abortCtrl) abortCtrl.abort(); });
+
+/* ================= menu / dialogs ================= */
+for (const dlg of [els.menuDialog, els.settingsDialog]) {
+  dlg.querySelector("[data-close]").addEventListener("click", () => dlg.close());
+  dlg.addEventListener("click", (e) => { if (e.target === dlg) dlg.close(); });
+}
+els.menuBtn.addEventListener("click", () => els.menuDialog.showModal());
+
+$("aarBtn").addEventListener("click", () => {
+  els.menuDialog.close();
+  if (game && !game.over) {
+    transmit("END SIMULATION — provide the After-Action Review.", { endGame: true, status: "Compiling review" });
+  }
+});
+$("copyBtn").addEventListener("click", async () => {
+  els.menuDialog.close();
+  if (!game) return;
+  const txt = game.messages
+    .map((m) => (m.role === "user" ? "> " + m.content : m.content))
+    .join("\n\n---\n\n");
+  try { await navigator.clipboard.writeText(txt); } catch { /* clipboard unavailable */ }
+});
+$("settingsBtn").addEventListener("click", () => {
+  els.menuDialog.close();
+  openSettings();
+});
+let abandonArmed = false;
+$("abandonBtn").addEventListener("click", (e) => {
+  if (!abandonArmed) {
+    abandonArmed = true;
+    e.target.textContent = "Tap again to abandon — save will be deleted";
+    setTimeout(() => { abandonArmed = false; e.target.textContent = "Abandon game"; }, 3000);
+    return;
+  }
+  abandonArmed = false;
+  e.target.textContent = "Abandon game";
+  if (abortCtrl) abortCtrl.abort();
+  removeKey(LS_SAVE);
+  game = null;
+  els.menuDialog.close();
+  showSetup();
+});
+
+function openSettings() {
+  els.apiKey2.value = settings.apiKey;
+  els.model2.value = settings.model;
+  els.settingsDialog.showModal();
+}
+$("saveSettingsBtn").addEventListener("click", () => {
+  settings.apiKey = els.apiKey2.value.trim();
+  settings.model = els.model2.value;
+  persistSettings();
+  els.apiKey.value = settings.apiKey;
+  els.model.value = settings.model;
+  refreshKeyState();
+  els.settingsDialog.close();
+});
+
+/* ================= boot ================= */
+function boot(hotData) {
+  const stored = loadJSON(LS_SETTINGS);
+  if (stored && typeof stored === "object") {
+    settings = { apiKey: stored.apiKey || "", model: stored.model || "claude-opus-5" };
+  }
+  els.apiKey.value = settings.apiKey;
+  els.model.value = settings.model;
+  refreshKeyState();
+
+  const hotGame = hotData && hotData.game;
+  if (hotGame && Array.isArray(hotGame.messages) && hotGame.messages.length) {
+    game = hotGame;
+    showGame(); renderFeed(); updateHud();
+  } else {
+    showSetup();
+  }
+}
+try { window.claude?.hot?.snapshot?.(() => ({ game })); } catch { /* not in artifact runtime */ }
+if (window.claude?.hot?.ready) window.claude.hot.ready(boot);
+else boot(null);
+</script>
+</body>
+</html>
