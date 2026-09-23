@@ -1,0 +1,24 @@
+:root {
+  /* 8px base. Half-step 4 and 12 exist for inline/compact rhythm only. */
+  --space-0:  0;
+  --space-1:  4px;
+  --space-2:  8px;
+  --space-3:  12px;
+  --space-4:  16px;
+  --space-5:  24px;
+  --space-6:  32px;
+  --space-7:  40px;
+  --space-8:  48px;
+  --space-9:  64px;
+  --space-10: 80px;
+  --space-11: 96px;
+  --space-12: 128px;
+  --space-13: 160px;
+
+  /* Semantic */
+  --space-inline:   var(--space-2);   /* icon↔label */
+  --space-stack:    var(--space-4);   /* between text blocks */
+  --space-inset:    var(--space-5);   /* card padding */
+  --space-section:  var(--space-11);  /* between page sections (desktop) */
+  --space-section-sm: var(--space-9); /* mobile */
+}

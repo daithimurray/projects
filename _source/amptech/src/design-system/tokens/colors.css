@@ -1,0 +1,140 @@
+:root {
+  /* ── Primitive: Navy (brand) ── */
+  --navy-50:  #EEF3F8;
+  --navy-100: #D6E1EC;
+  --navy-200: #AEC3D9;
+  --navy-300: #7FA0C0;
+  --navy-400: #4F7BA3;
+  --navy-500: #2D5A85;
+  --navy-600: #1B4269;
+  --navy-700: #0F2F4F;
+  --navy-800: #0A2340;
+  --navy-900: #061729;
+  --navy-950: #030D1A;
+
+  /* ── Primitive: Warm neutral (stone) ── */
+  --stone-0:   #FFFFFF;
+  --stone-25:  #FCFBF9;
+  --stone-50:  #F7F5F1;
+  --stone-100: #EFECE6;
+  --stone-200: #E2DED6;
+  --stone-300: #CBC6BC;
+  --stone-400: #A39D92;
+  --stone-500: #7A756B;
+  --stone-600: #5B564E;
+  --stone-700: #423E38;
+  --stone-800: #2B2825;
+  --stone-900: #1B1917;
+  --stone-950: #121110;
+
+  /* ── Primitive: Semantic hues (matched lightness/chroma) ── */
+  --green-100: #DDF2E4; --green-500: #1F7A4A; --green-600: #16603A; --green-700: #0F4A2C;
+  --amber-100: #FBEBD0; --amber-500: #B26A00; --amber-600: #8F5500; --amber-700: #6B4000;
+  --red-100:   #FADCDC; --red-500:   #B3261E; --red-600:   #931C16; --red-700:   #6E140F;
+  --blue-100:  #DCE9F7; --blue-500:  #1F5FAF; --blue-600:  #174A8B; --blue-700:  #113869;
+
+  /* ── Semantic: surfaces ── */
+  --surface-page:     var(--stone-25);
+  --surface-default:  var(--stone-0);
+  --surface-raised:   var(--stone-0);
+  --surface-sunken:   var(--stone-50);
+  --surface-muted:    var(--stone-100);
+  --surface-inverse:  var(--navy-800);
+  --surface-brand:    var(--navy-700);
+  --surface-brand-subtle: var(--navy-50);
+  --surface-overlay:  rgba(6, 23, 41, 0.56);
+
+  /* ── Semantic: text ── */
+  --text-primary:   var(--stone-900);
+  --text-secondary: var(--stone-600);
+  --text-tertiary:  var(--stone-500);
+  --text-disabled:  var(--stone-400);
+  --text-inverse:   var(--stone-25);
+  --text-brand:     var(--navy-700);
+  --text-link:      var(--navy-600);
+  --text-link-hover:var(--navy-800);
+  --text-on-brand:  #FFFFFF;
+
+  /* ── Semantic: borders ── */
+  --border-subtle:  var(--stone-100);
+  --border-default: var(--stone-200);
+  --border-strong:  var(--stone-300);
+  --border-brand:   var(--navy-600);
+  --border-focus:   var(--navy-500);
+
+  /* ── Semantic: interactive (brand) ── */
+  --action-primary:         var(--navy-700);
+  --action-primary-hover:   var(--navy-800);
+  --action-primary-active:  var(--navy-900);
+  --action-secondary:       var(--stone-0);
+  --action-secondary-hover: var(--stone-50);
+  --action-secondary-active:var(--stone-100);
+  --action-ghost-hover:     var(--navy-50);
+  --action-ghost-active:    var(--navy-100);
+  --action-disabled-bg:     var(--stone-100);
+  --action-disabled-fg:     var(--stone-400);
+
+  /* ── Semantic: status ── */
+  --status-success:        var(--green-500);
+  --status-success-strong: var(--green-700);
+  --status-success-bg:     var(--green-100);
+  --status-warning:        var(--amber-500);
+  --status-warning-strong: var(--amber-700);
+  --status-warning-bg:     var(--amber-100);
+  --status-danger:         var(--red-500);
+  --status-danger-strong:  var(--red-700);
+  --status-danger-bg:      var(--red-100);
+  --status-info:           var(--blue-500);
+  --status-info-strong:    var(--blue-700);
+  --status-info-bg:        var(--blue-100);
+
+  /* ── Focus ring ── */
+  --focus-ring: 0 0 0 2px var(--surface-default), 0 0 0 4px var(--border-focus);
+  color-scheme: light;
+}
+
+/* ── Dark mode: same semantic names, remapped. Brand shifts to lighter navy for contrast. ── */
+[data-theme="dark"] {
+  --surface-page:     var(--navy-950);
+  --surface-default:  var(--navy-900);
+  --surface-raised:   var(--navy-800);
+  --surface-sunken:   #02090F;
+  --surface-muted:    var(--navy-800);
+  --surface-inverse:  var(--stone-25);
+  --surface-brand:    var(--navy-600);
+  --surface-brand-subtle: rgba(127, 160, 192, 0.14);
+  --surface-overlay:  rgba(0, 0, 0, 0.64);
+
+  --text-primary:   var(--stone-50);
+  --text-secondary: var(--stone-300);
+  --text-tertiary:  var(--stone-400);
+  --text-disabled:  var(--stone-600);
+  --text-inverse:   var(--navy-900);
+  --text-brand:     var(--navy-200);
+  --text-link:      var(--navy-200);
+  --text-link-hover:var(--navy-100);
+  --text-on-brand:  #FFFFFF;
+
+  --border-subtle:  rgba(255,255,255,0.06);
+  --border-default: rgba(255,255,255,0.12);
+  --border-strong:  rgba(255,255,255,0.22);
+  --border-brand:   var(--navy-300);
+  --border-focus:   var(--navy-300);
+
+  --action-primary:         var(--navy-500);
+  --action-primary-hover:   var(--navy-400);
+  --action-primary-active:  var(--navy-600);
+  --action-secondary:       var(--navy-900);
+  --action-secondary-hover: var(--navy-800);
+  --action-secondary-active:var(--navy-700);
+  --action-ghost-hover:     rgba(255,255,255,0.06);
+  --action-ghost-active:    rgba(255,255,255,0.10);
+  --action-disabled-bg:     var(--navy-800);
+  --action-disabled-fg:     var(--stone-600);
+
+  --status-success:        #4FB37C; --status-success-strong: #9BDDB6; --status-success-bg: rgba(31,122,74,0.22);
+  --status-warning:        #E0A24A; --status-warning-strong: #F3CF8F; --status-warning-bg: rgba(178,106,0,0.22);
+  --status-danger:         #E6675F; --status-danger-strong: #F5AFAA; --status-danger-bg: rgba(179,38,30,0.22);
+  --status-info:           #6FA3E6; --status-info-strong: #B5D0F3; --status-info-bg: rgba(31,95,175,0.22);
+  color-scheme: dark;
+}

@@ -1,0 +1,24 @@
+:root {
+  /* 12-column grid */
+  --grid-columns: 12;
+  --grid-gutter: 24px;
+  --grid-margin: 24px;
+  --container-max: 1200px;
+  --container-narrow: 760px;
+  --container-wide: 1440px;
+
+  --bp-sm: 640px;
+  --bp-md: 768px;
+  --bp-lg: 1024px;
+  --bp-xl: 1280px;
+
+  --nav-height: 72px;
+  --z-dropdown: 100;
+  --z-sticky: 200;
+  --z-drawer: 300;
+  --z-dialog: 400;
+  --z-toast: 500;
+  --z-tooltip: 600;
+}
+@media (min-width: 768px)  { :root { --grid-gutter: 24px; --grid-margin: 40px; } }
+@media (min-width: 1024px) { :root { --grid-gutter: 32px; --grid-margin: 64px; } }
