@@ -5,44 +5,94 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Everyday Accountancy Services · Galway &amp; Dublin</title>
   <meta name="description" content="Accountancy, tax and outsourced financial control for owner-managed businesses in Galway and Dublin. The first meeting is free and every fee is agreed in advance.">
-  <meta name="theme-color" content="#F7F4EE">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,500;0,8..60,600;1,8..60,400&family=Work+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
   <link rel="canonical" href="https://getawebsite.ie/eas/">
+  <meta name="theme-color" content="#F7F4EE">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Everyday Accountancy Services">
+  <meta property="og:title" content="Your own financial controller, a few days a month.">
+  <meta property="og:description" content="Accountancy, tax and outsourced financial control for owner-managed businesses in Galway and Dublin. The first meeting is free and every fee is agreed in advance.">
+  <meta property="og:url" content="https://getawebsite.ie/eas/">
+  <meta property="og:locale" content="en_IE">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%231F4D3E'/%3E%3Ctext x='32' y='44' font-family='Georgia,serif' font-size='32' fill='%23F7F4EE' text-anchor='middle'%3EE%3C/text%3E%3C/svg%3E">
+  <link rel="preload" href="/eas/fonts/source-serif-4-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "AccountingService",
+    "name": "Everyday Accountancy Services",
+    "legalName": "Everyday Accountancy Services Limited",
+    "url": "https://getawebsite.ie/eas/",
+    "email": "info@everydayaccountancy.ie",
+    "foundingDate": "2017",
+    "areaServed": ["Galway", "Dublin", "Ireland"],
+    "location": [
+      {
+        "@type": "Place",
+        "name": "Galway office",
+        "telephone": "+353 91 547 525",
+        "address": { "@type": "PostalAddress", "streetAddress": "Unit 8, Liosbán Business Centre, Tuam Road", "addressLocality": "Galway", "addressCountry": "IE" }
+      },
+      {
+        "@type": "Place",
+        "name": "Dublin office",
+        "telephone": "+353 1 541 5412",
+        "address": { "@type": "PostalAddress", "streetAddress": "13 Adelaide Road", "addressLocality": "Dublin 2", "postalCode": "D02 P950", "addressCountry": "IE" }
+      }
+    ]
+  }
+  </script>
   <style>
-/* Everyday Accountancy Services — website v2
-   Tokens from project/tokens.css, plus the v2 editorial palette (paper, sand, rules). */
+@font-face {
+  font-family: 'Source Serif 4';
+  font-style: normal;
+  font-weight: 400 500;
+  font-display: swap;
+  src: url(/eas/fonts/source-serif-4-latin.woff2) format('woff2');
+}
+@font-face {
+  font-family: 'Work Sans';
+  font-style: normal;
+  font-weight: 400 500;
+  font-display: swap;
+  src: url(/eas/fonts/work-sans-latin.woff2) format('woff2');
+}
+
+/* Everyday Accountancy Services, website v2.
+   Palette pinned by the brief: pine, one amber accent, cream paper. */
 
 :root {
   --pine: #1F4D3E;
   --pine-hover: #163A2F;
-  --amber: #C97A3D;
-  --amber-light: #E0A06E;
+  --amber: #C97A3D;          /* fills, rules, buttons only; never small text */
+  --amber-text: #955625;     /* amber for text on light grounds: 5.3:1 paper, 4.8:1 sand */
+  --amber-on-dark: #E8B084;  /* amber for text on pine/ink: 5.0:1 on pine */
   --ink: #14120F;
   --gray-700: #4C483F;
-  --gray-600: #6B665C;
-  --gray-500: #8F897C;
+  --gray-600: #6B665C;       /* smallest text tone allowed: 4.8:1 on sand */
   --paper: #F7F4EE;
   --paper-raised: #FFFDF9;
   --sand: #EFEAE1;
 
+  --on-dark: rgba(247, 244, 238, 0.85);
+  --on-dark-muted: rgba(247, 244, 238, 0.72);
+  --on-dark-quiet: rgba(247, 244, 238, 0.62);
+
   --rule: rgba(20, 18, 15, 0.14);
-  --rule-soft: rgba(20, 18, 15, 0.12);
   --rule-dark: rgba(247, 244, 238, 0.22);
 
-  --font-display: 'Source Serif 4', serif;
-  --font-body: 'Work Sans', sans-serif;
+  --font-display: 'Source Serif 4', Georgia, serif;
+  --font-body: 'Work Sans', system-ui, sans-serif;
 
   --max: 1280px;
   --gutter: 40px;
+  --nav-h: 84px;
 }
 
 /* ---------- Base ---------- */
 
 *, *::before, *::after { box-sizing: border-box; }
 
-html { scroll-behavior: smooth; }
+html { scroll-behavior: smooth; scroll-padding-top: calc(var(--nav-h) + 16px); }
 
 body {
   margin: 0;
@@ -56,9 +106,11 @@ body {
 ::selection { background: var(--pine); color: var(--paper); }
 
 a { color: var(--pine); }
-a:hover { color: var(--amber); }
+a:hover { color: var(--amber-text); }
 
-h1, h2, p, figure, blockquote { margin: 0; }
+h1, h2, h3, p, figure, blockquote { margin: 0; }
+
+main:focus { outline: none; }
 
 .container {
   max-width: var(--max);
@@ -70,29 +122,23 @@ h1, h2, p, figure, blockquote { margin: 0; }
 .skip-link {
   position: absolute;
   left: 16px;
-  top: -48px;
+  top: -64px;
   z-index: 100;
   background: var(--ink);
   color: var(--paper);
-  padding: 10px 16px;
+  padding: 15px 20px;
   border-radius: 999px;
-  font: 500 13px/1 var(--font-body);
+  font: 500 14px/1 var(--font-body);
   text-decoration: none;
 }
-.skip-link:focus { top: 16px; color: var(--paper); }
+.skip-link:focus, .skip-link:hover { top: 16px; color: var(--paper); }
 
-:focus-visible { outline: 2px solid var(--amber); outline-offset: 3px; }
+:focus-visible { outline: 2px solid var(--amber-text); outline-offset: 3px; }
+.statement :focus-visible,
+.contact :focus-visible,
+.footer :focus-visible { outline-color: var(--amber-on-dark); }
 
 /* ---------- Shared type ---------- */
-
-.eyebrow {
-  font: 500 11px/1 var(--font-body);
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-  color: var(--amber);
-  margin-bottom: 24px;
-}
-.eyebrow--on-dark { color: var(--amber-light); margin-bottom: 32px; }
 
 .h2 {
   font: 400 clamp(34px, 3.6vw, 52px)/1.08 var(--font-display);
@@ -105,42 +151,41 @@ h1, h2, p, figure, blockquote { margin: 0; }
   color: var(--gray-600);
 }
 
-.numeral {
-  font: 400 13px/1 var(--font-display);
-  color: var(--amber);
-}
-
-/* ---------- Buttons ---------- */
+/* ---------- Buttons and links ---------- */
 
 .btn {
-  display: inline-block;
-  font: 500 14px/1 var(--font-body);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 52px;
+  font: 500 15px/1.2 var(--font-body);
   letter-spacing: 0.01em;
   border-radius: 999px;
-  padding: 18px 32px;
+  padding: 16px 32px;
   text-decoration: none;
   border: none;
   cursor: pointer;
-  transition: background 0.2s, color 0.2s;
+  transition: background-color 0.2s, color 0.2s, transform 0.12s;
 }
+.btn:active { transform: scale(0.98); }
 .btn--primary { background: var(--pine); color: var(--paper); }
 .btn--primary:hover { background: var(--pine-hover); color: var(--paper); }
 .btn--amber { background: var(--amber); color: var(--ink); }
-.btn--amber:hover { background: var(--amber-light); color: var(--ink); }
-.btn--block { display: block; text-align: center; padding: 18px; margin-top: 32px; }
+.btn--amber:hover { background: var(--amber-on-dark); color: var(--ink); }
+.btn--block { display: flex; width: 100%; margin-top: 32px; }
 
 .text-link {
-  font: 500 14px/1 var(--font-body);
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  font: 500 15px/1.2 var(--font-body);
   color: var(--ink);
-  text-decoration: none;
-  border-bottom: 1px solid var(--amber);
-  padding-bottom: 4px;
+  text-decoration: underline;
+  text-decoration-color: var(--amber);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 6px;
 }
-
-/* ---------- Grids ---------- */
-
-.grid-2, .grid-3 { display: grid; }
-.grid-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 40px; }
+.text-link:hover { color: var(--amber-text); }
 
 /* ---------- Nav ---------- */
 
@@ -148,14 +193,11 @@ h1, h2, p, figure, blockquote { margin: 0; }
   position: sticky;
   top: 0;
   z-index: 50;
-  background: rgba(247, 244, 238, 0.86);
-  -webkit-backdrop-filter: blur(14px);
-  backdrop-filter: blur(14px);
+  background: var(--paper);
   border-bottom: 1px solid rgba(20, 18, 15, 0.08);
 }
 .nav__inner {
-  padding-top: 22px;
-  padding-bottom: 22px;
+  min-height: var(--nav-h);
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -165,45 +207,57 @@ h1, h2, p, figure, blockquote { margin: 0; }
   display: flex;
   align-items: baseline;
   gap: 10px;
+  min-height: 44px;
   text-decoration: none;
   color: var(--ink);
 }
 .nav__brand:hover { color: var(--ink); }
 .nav__name {
-  font: 500 21px/1 var(--font-display);
+  font: 500 21px/44px var(--font-display);
   letter-spacing: -0.01em;
+  white-space: nowrap;
 }
 .nav__est {
-  font: 500 10px/1 var(--font-body);
-  letter-spacing: 0.22em;
+  font: 500 11px/1 var(--font-body);
+  letter-spacing: 0.16em;
   text-transform: uppercase;
-  color: var(--gray-500);
+  color: var(--gray-600);
 }
-.nav__links { display: flex; gap: 32px; }
+.nav__links { display: flex; gap: 8px; }
 .nav__links a {
-  font: 500 13px/1 var(--font-body);
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 0 12px;
+  font: 500 14px/1 var(--font-body);
   color: var(--gray-700);
   text-decoration: none;
-  letter-spacing: 0.01em;
 }
-.nav__links a:hover { color: var(--amber); }
+.nav__links a:hover { color: var(--amber-text); }
 .nav__cta {
-  font: 500 13px/1 var(--font-body);
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  font: 500 14px/1.2 var(--font-body);
   color: var(--ink);
   border: 1px solid var(--ink);
   border-radius: 999px;
-  padding: 12px 22px;
+  padding: 10px 22px;
   text-decoration: none;
-  white-space: nowrap;
-  transition: all 0.2s;
+  text-align: center;
+  transition: background-color 0.2s, color 0.2s;
 }
 .nav__cta:hover { background: var(--ink); color: var(--paper); }
+.nav__cta-short { display: none; }
+
+/* Mobile section links: shown only below 960px */
+.subnav { display: none; }
 
 /* ---------- Hero ---------- */
 
 .hero {
-  padding-top: 128px;
-  padding-bottom: 104px;
+  padding-top: 96px;
+  padding-bottom: 96px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -213,9 +267,9 @@ h1, h2, p, figure, blockquote { margin: 0; }
   display: flex;
   align-items: center;
   gap: 14px;
-  margin-bottom: 40px;
-  font: 500 11px/1 var(--font-body);
-  letter-spacing: 0.22em;
+  margin-bottom: 36px;
+  font: 500 12px/1.4 var(--font-body);
+  letter-spacing: 0.18em;
   text-transform: uppercase;
   color: var(--gray-700);
 }
@@ -228,57 +282,46 @@ h1, h2, p, figure, blockquote { margin: 0; }
   flex: none;
 }
 .hero__title {
-  font: 400 clamp(48px, 7vw, 104px)/0.98 var(--font-display);
+  font: 400 clamp(44px, 6.2vw, 92px)/1.02 var(--font-display);
   letter-spacing: -0.03em;
-  margin-bottom: 40px;
-  max-width: 16ch;
+  margin-bottom: 36px;
+  max-width: 24ch;
   text-wrap: balance;
 }
 .hero__sub {
   font: 400 clamp(19px, 1.6vw, 23px)/1.5 var(--font-display);
   color: var(--gray-700);
   max-width: 48ch;
-  margin-bottom: 48px;
+  margin-bottom: 44px;
   text-wrap: pretty;
 }
 .hero__actions {
   display: flex;
-  gap: 28px;
+  gap: 16px 28px;
   align-items: center;
   justify-content: center;
   flex-wrap: wrap;
 }
+.hero__call { display: none; }
 
-/* ---------- Credentials strip ---------- */
-
-.creds {
+.proof {
   border-top: 1px solid var(--rule);
   border-bottom: 1px solid var(--rule);
-  padding: 32px 0;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 24px;
-}
-.creds__value {
-  font: 400 30px/1 var(--font-display);
-  letter-spacing: -0.02em;
-}
-.creds__label {
-  font: 500 11px/1.4 var(--font-body);
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--gray-500);
-  margin-top: 10px;
+  padding: 22px 0;
+  font: 400 15px/1.6 var(--font-body);
+  color: var(--gray-700);
+  text-align: center;
+  text-wrap: balance;
 }
 
 /* ---------- Sections ---------- */
 
-.section { padding-top: 136px; padding-bottom: 120px; }
-.section--even { padding-top: 128px; padding-bottom: 128px; }
+.section { padding-top: 128px; padding-bottom: 120px; }
+.section--even { padding-top: 120px; padding-bottom: 120px; }
 
+.grid-2 { display: grid; }
 .split-4-8 { grid-template-columns: minmax(0, 4fr) minmax(0, 8fr); gap: 64px; }
 .split-7-5 { grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: 80px; align-items: start; }
-.split-8-4 { grid-template-columns: minmax(0, 8fr) minmax(0, 4fr); gap: 64px; align-items: end; }
 .split-6-5 { grid-template-columns: minmax(0, 6fr) minmax(0, 5fr); gap: 96px; align-items: start; }
 
 /* ---------- Services ---------- */
@@ -286,50 +329,31 @@ h1, h2, p, figure, blockquote { margin: 0; }
 .services__intro .h2 { margin-bottom: 24px; }
 .services__intro .lede { max-width: 38ch; }
 
-.ruled-list { border-top: 1px solid var(--rule); }
-
+.service-list { list-style: none; margin: 0; padding: 0; }
 .service {
-  display: grid;
-  grid-template-columns: 56px minmax(0, 1fr) auto;
-  gap: 24px;
-  padding: 34px 0;
+  padding: 30px 0;
   border-bottom: 1px solid var(--rule);
-  text-decoration: none;
-  color: var(--ink);
-  align-items: baseline;
-  transition: padding-left 0.25s;
 }
-.service:hover { padding-left: 12px; color: var(--ink); }
+.service:first-child { padding-top: 0; }
 .service__title {
-  display: block;
   font: 400 26px/1.2 var(--font-display);
   letter-spacing: -0.015em;
   margin-bottom: 8px;
 }
 .service__desc {
-  display: block;
   font: 400 15px/1.6 var(--font-body);
   color: var(--gray-600);
-  max-width: 52ch;
-}
-.service__arrow {
-  font: 400 20px/1 var(--font-display);
-  color: var(--amber);
+  max-width: 56ch;
 }
 
 /* ---------- Statement (dark) ---------- */
 
 .statement { background: var(--pine); color: var(--paper); }
 .statement__quote {
-  font: 400 clamp(30px, 3.4vw, 48px)/1.18 var(--font-display);
+  font: 400 clamp(28px, 3.2vw, 44px)/1.24 var(--font-display);
   letter-spacing: -0.02em;
+  max-width: 30ch;
   text-wrap: balance;
-}
-.statement__aside {
-  border-left: 1px solid rgba(247, 244, 238, 0.25);
-  padding-left: 32px;
-  font: 400 15px/1.7 var(--font-body);
-  color: rgba(247, 244, 238, 0.78);
 }
 
 /* ---------- Fees ---------- */
@@ -339,52 +363,55 @@ h1, h2, p, figure, blockquote { margin: 0; }
   font: 400 17px/1.65 var(--font-body);
   color: var(--gray-700);
   max-width: 50ch;
-  margin-bottom: 56px;
+  margin-bottom: 48px;
   text-wrap: pretty;
 }
-.steps { list-style: none; margin: 0; padding: 0; }
+.steps { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--rule); }
 .step {
   display: grid;
-  grid-template-columns: 56px minmax(0, 1fr);
-  gap: 24px;
-  padding: 26px 0;
+  grid-template-columns: 48px minmax(0, 1fr);
+  gap: 20px;
+  padding: 24px 0;
   border-bottom: 1px solid var(--rule);
   align-items: baseline;
   font: 400 19px/1.4 var(--font-display);
 }
-.step .numeral { font-size: 13px; line-height: 1; }
+.step__num {
+  font: 500 14px/1 var(--font-body);
+  color: var(--amber-text);
+}
 
 .fee-card {
   background: var(--paper-raised);
-  border: 1px solid var(--rule-soft);
+  border: 1px solid var(--rule);
   padding: 44px 40px;
   box-shadow: 0 30px 60px -40px rgba(20, 18, 15, 0.35);
 }
 .fee-card__label {
-  font: 500 11px/1 var(--font-body);
-  letter-spacing: 0.22em;
+  font: 500 12px/1 var(--font-body);
+  letter-spacing: 0.16em;
   text-transform: uppercase;
-  color: var(--gray-500);
+  color: var(--gray-600);
   margin-bottom: 20px;
 }
 .fee-card__price {
   font: 400 40px/1.05 var(--font-display);
   letter-spacing: -0.025em;
   color: var(--pine);
-  margin-bottom: 8px;
+  margin-bottom: 10px;
 }
 .fee-card__note {
-  font: italic 400 15px/1.5 var(--font-display);
+  font: 400 15px/1.5 var(--font-body);
   color: var(--gray-600);
-  margin-bottom: 32px;
+  margin-bottom: 28px;
 }
-.fee-card__terms { border-top: 1px solid var(--rule-soft); margin: 0; }
+.fee-card__terms { border-top: 1px solid var(--rule); margin: 0; }
 .fee-card__row {
   display: flex;
   justify-content: space-between;
   gap: 16px;
   padding: 14px 0;
-  border-bottom: 1px solid var(--rule-soft);
+  border-bottom: 1px solid var(--rule);
   font: 400 14px/1.4 var(--font-body);
 }
 .fee-card__row dt { color: var(--gray-600); }
@@ -392,20 +419,20 @@ h1, h2, p, figure, blockquote { margin: 0; }
 
 /* ---------- People ---------- */
 
-.people { padding-top: 40px; padding-bottom: 136px; }
+.people { padding-top: 0; padding-bottom: 128px; }
 .people__head {
-  display: flex;
-  justify-content: space-between;
-  align-items: end;
-  gap: 32px;
-  flex-wrap: wrap;
-  margin-bottom: 64px;
   border-top: 1px solid var(--rule);
-  padding-top: 64px;
+  padding-top: 88px;
+  margin-bottom: 56px;
+  max-width: 760px;
 }
-.people__head .h2 { max-width: 22ch; }
-.people__head .lede { max-width: 34ch; }
-
+.people__head .h2 { margin-bottom: 20px; }
+.people__head .lede { max-width: 52ch; }
+.people__grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 48px;
+}
 .person__photo {
   width: 120px;
   height: 120px;
@@ -427,13 +454,12 @@ h1, h2, p, figure, blockquote { margin: 0; }
 .person__name {
   font: 400 22px/1.2 var(--font-display);
   letter-spacing: -0.01em;
-  margin: 0;
 }
 .person__role {
-  font: 500 11px/1 var(--font-body);
-  letter-spacing: 0.16em;
+  font: 500 12px/1 var(--font-body);
+  letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: var(--gray-500);
+  color: var(--gray-600);
 }
 .person__bio {
   font: 400 14px/1.6 var(--font-body);
@@ -443,41 +469,47 @@ h1, h2, p, figure, blockquote { margin: 0; }
 /* ---------- Clients ---------- */
 
 .clients { background: var(--sand); }
-.clients__head {
-  display: flex;
-  justify-content: space-between;
-  align-items: baseline;
-  gap: 24px;
-  flex-wrap: wrap;
-  margin-bottom: 72px;
-}
-.clients__head .eyebrow { margin-bottom: 0; }
-.clients__where { font: 400 13px/1 var(--font-body); color: var(--gray-600); }
-.clients .grid-3 { column-gap: 56px; row-gap: 72px; }
+.clients__head { margin-bottom: 64px; }
+.clients__head .h2 { margin-bottom: 14px; }
+.clients__where { font: 400 15px/1.5 var(--font-body); color: var(--gray-600); }
 
-.quote { border-top: 1px solid var(--ink); padding-top: 28px; }
-.quote blockquote {
+.quote-feature {
+  border-top: 1px solid var(--ink);
+  padding-top: 36px;
+  margin-bottom: 72px;
+  max-width: 980px;
+}
+.quote-feature blockquote {
+  font: 400 clamp(26px, 2.8vw, 38px)/1.3 var(--font-display);
+  letter-spacing: -0.02em;
   margin-bottom: 28px;
-  font: 400 22px/1.4 var(--font-display);
+  text-wrap: balance;
+}
+.quote-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 56px 72px;
+}
+.quote { border-top: 1px solid var(--rule); padding-top: 24px; }
+.quote blockquote {
+  margin-bottom: 20px;
+  font: 400 20px/1.45 var(--font-display);
   letter-spacing: -0.01em;
   text-wrap: pretty;
 }
-.quote__name { font: 500 13px/1 var(--font-body); }
+.quote__name { font: 500 14px/1.3 var(--font-body); }
 .quote__org {
-  font: 400 12px/1 var(--font-body);
-  color: var(--gray-500);
-  margin-top: 6px;
+  font: 400 14px/1.4 var(--font-body);
+  color: var(--gray-600);
+  margin-top: 4px;
 }
 
 /* ---------- FAQ ---------- */
 
-.faq__title {
-  font: 400 clamp(30px, 3vw, 42px)/1.1 var(--font-display);
-  letter-spacing: -0.02em;
-}
+.faq__list { border-top: 1px solid var(--rule); }
 .faq__item { border-bottom: 1px solid var(--rule); }
 .faq__item summary {
-  padding: 26px 0;
+  padding: 24px 0;
   font: 400 20px/1.3 var(--font-display);
   cursor: pointer;
   list-style: none;
@@ -487,13 +519,26 @@ h1, h2, p, figure, blockquote { margin: 0; }
   align-items: center;
 }
 .faq__item summary::-webkit-details-marker { display: none; }
-.faq__plus {
-  font: 300 24px/1 var(--font-body);
-  color: var(--amber);
-  transition: transform 0.25s ease;
+.faq__icon {
   flex: none;
+  width: 20px;
+  height: 20px;
+  position: relative;
+  transition: transform 0.25s ease;
 }
-.faq__item[open] .faq__plus { transform: rotate(45deg); }
+.faq__icon::before,
+.faq__icon::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 16px;
+  height: 1.5px;
+  background: var(--amber-text);
+  transform: translate(-50%, -50%);
+}
+.faq__icon::after { transform: translate(-50%, -50%) rotate(90deg); }
+.faq__item[open] .faq__icon { transform: rotate(45deg); }
 .faq__item p {
   padding: 0 0 26px;
   font: 400 15px/1.65 var(--font-body);
@@ -504,43 +549,63 @@ h1, h2, p, figure, blockquote { margin: 0; }
 /* ---------- Contact ---------- */
 
 .contact { background: var(--ink); color: var(--paper); }
-.contact__inner { padding-top: 128px; padding-bottom: 96px; }
-.contact__title {
-  font: 400 clamp(40px, 5vw, 72px)/1 var(--font-display);
-  letter-spacing: -0.03em;
+.contact__inner { padding-top: 120px; padding-bottom: 104px; }
+.contact__who {
+  display: flex;
+  align-items: center;
+  gap: 16px;
   margin-bottom: 32px;
+}
+.contact__who img {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  object-fit: cover;
+  background: var(--gray-700);
+}
+.contact__who-name { font: 500 15px/1.3 var(--font-body); }
+.contact__who-role { font: 400 14px/1.4 var(--font-body); color: var(--on-dark-muted); }
+.contact__title {
+  font: 400 clamp(40px, 5vw, 68px)/1.02 var(--font-display);
+  letter-spacing: -0.03em;
+  margin-bottom: 28px;
   text-wrap: balance;
 }
 .contact__body {
   font: 400 17px/1.65 var(--font-body);
-  color: rgba(247, 244, 238, 0.72);
+  color: var(--on-dark-muted);
   max-width: 44ch;
-  margin-bottom: 64px;
+  margin-bottom: 56px;
 }
-.offices { grid-template-columns: 1fr 1fr; gap: 40px; max-width: 560px; }
+.offices { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; max-width: 560px; }
 .office { border-top: 1px solid var(--rule-dark); padding-top: 20px; }
 .office__city,
 .field__label {
   display: block;
-  font: 500 11px/1 var(--font-body);
-  letter-spacing: 0.18em;
+  font: 500 12px/1.2 var(--font-body);
+  letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: rgba(247, 244, 238, 0.55);
+  color: var(--on-dark-quiet);
 }
-.office__city { margin-bottom: 14px; }
+.office__city { margin-bottom: 12px; }
 .office address {
   font: normal 400 15px/1.6 var(--font-body);
-  margin: 0 0 12px;
-  color: rgba(247, 244, 238, 0.85);
+  margin: 0 0 8px;
+  color: var(--on-dark);
 }
 .dark-link {
-  font: 400 17px/1 var(--font-display);
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  font: 400 18px/1.2 var(--font-display);
   color: var(--paper);
-  text-decoration: none;
-  border-bottom: 1px solid var(--amber);
-  padding-bottom: 3px;
+  text-decoration: underline;
+  text-decoration-color: var(--amber);
+  text-underline-offset: 6px;
+  overflow-wrap: anywhere;
 }
-.dark-link:hover { color: var(--amber-light); }
+.dark-link:hover { color: var(--amber-on-dark); }
+.contact__email { margin-top: 28px; }
 
 .form { display: flex; flex-direction: column; border-top: 1px solid var(--rule-dark); }
 .field {
@@ -549,6 +614,7 @@ h1, h2, p, figure, blockquote { margin: 0; }
   padding: 22px 0 14px;
 }
 .field__label { margin-bottom: 10px; }
+.field__hint { text-transform: none; letter-spacing: 0; font-weight: 400; }
 .field input,
 .field textarea {
   width: 100%;
@@ -557,181 +623,220 @@ h1, h2, p, figure, blockquote { margin: 0; }
   outline: none;
   color: var(--paper);
   font: 400 20px/1.3 var(--font-display);
-  padding: 0;
+  padding: 4px 0;
 }
-.field textarea { line-height: 1.35; resize: none; }
-.field:focus-within { border-bottom-color: var(--amber); }
-.form .btn { align-self: flex-start; margin-top: 36px; }
-.form__status {
-  margin-top: 20px;
+.field textarea { line-height: 1.35; resize: vertical; min-height: 84px; }
+.field:focus-within { border-bottom: 2px solid var(--amber-on-dark); padding-bottom: 13px; }
+.field--invalid { border-bottom-color: #F2A38F; }
+.field__error {
+  display: block;
+  margin-top: 8px;
+  font: 500 14px/1.4 var(--font-body);
+  color: #F2A38F;
+}
+.field__error:empty { display: none; }
+.form .btn { align-self: flex-start; margin-top: 32px; }
+.form__note {
+  margin-top: 16px;
   font: 400 14px/1.5 var(--font-body);
-  color: rgba(247, 244, 238, 0.72);
+  color: var(--on-dark-quiet);
+}
+.form__note a { color: var(--on-dark); text-underline-offset: 3px; }
+.form__status {
+  margin-top: 16px;
+  font: 400 15px/1.55 var(--font-body);
+  color: var(--on-dark);
 }
 .form__status:empty { display: none; }
+.form__status a { color: var(--paper); text-decoration-color: var(--amber); text-underline-offset: 3px; }
 
-.contact__email { margin-top: 40px; max-width: 560px; }
-
-.footer {
+.footer { background: var(--ink); color: var(--on-dark-quiet); }
+.footer__inner {
   border-top: 1px solid rgba(247, 244, 238, 0.16);
-  margin-top: 112px;
-  padding-top: 32px;
+  padding-top: 24px;
+  padding-bottom: 32px;
   display: flex;
   justify-content: space-between;
-  gap: 24px;
+  align-items: center;
+  gap: 8px 24px;
   flex-wrap: wrap;
-  font: 400 12px/1.6 var(--font-body);
-  color: rgba(247, 244, 238, 0.5);
+  font: 400 13px/1.6 var(--font-body);
 }
-.footer__links { display: flex; gap: 24px; }
-.footer__links a { color: rgba(247, 244, 238, 0.5); text-decoration: none; }
-.footer__links a:hover { color: var(--paper); }
+.footer a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  color: var(--on-dark);
+  text-underline-offset: 3px;
+}
+.footer a:hover { color: var(--paper); }
+.contact a:hover, .footer a:hover { color: var(--amber-on-dark); }
 
 /* ---------- Responsive ---------- */
 
 @media (max-width: 960px) {
-  .grid-2, .grid-3,
-  .split-4-8, .split-7-5, .split-8-4, .split-6-5, .offices {
-    grid-template-columns: 1fr;
+  :root { --nav-h: 72px; }
+  .split-4-8, .split-7-5, .split-6-5 { grid-template-columns: 1fr; gap: 48px; }
+  .people__grid { grid-template-columns: 1fr; gap: 56px; }
+  .quote-grid { grid-template-columns: 1fr; gap: 40px; }
+  .nav__links, .nav__est { display: none; }
+  .subnav {
+    display: flex;
+    gap: 4px;
+    overflow-x: auto;
+    border-top: 1px solid rgba(20, 18, 15, 0.08);
+    padding: 0 var(--gutter);
+    scrollbar-width: none;
   }
-  .hide-m { display: none !important; }
-  .statement__aside { display: none; }
+  .subnav::-webkit-scrollbar { display: none; }
+  .subnav a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    padding: 0 12px;
+    font: 500 14px/1 var(--font-body);
+    color: var(--gray-700);
+    text-decoration: none;
+    white-space: nowrap;
+  }
+  .subnav a:first-child { padding-left: 0; }
+  .hero__call { display: inline-flex; }
 }
 
 @media (max-width: 600px) {
-  :root { --gutter: 20px; }
+  :root { --gutter: 20px; --nav-h: 64px; }
+  .nav__name { font-size: 18px; }
   .nav__cta { padding: 10px 16px; }
-  .hero { padding-top: 88px; padding-bottom: 72px; }
-  .section, .section--even { padding-top: 96px; padding-bottom: 88px; }
-  .contact__inner { padding-top: 96px; }
-  .service { grid-template-columns: 32px minmax(0, 1fr) auto; gap: 16px; }
-  .step { grid-template-columns: 32px minmax(0, 1fr); gap: 16px; }
+  .nav__cta-long { display: none; }
+  .nav__cta-short { display: inline; }
+  .hero { padding-top: 64px; padding-bottom: 64px; }
+  .hero__kicker { letter-spacing: 0.14em; gap: 10px; }
+  .hero__kicker::before, .hero__kicker::after { width: 20px; }
+  .section, .section--even { padding-top: 88px; padding-bottom: 80px; }
+  .people { padding-bottom: 88px; }
+  .people__head { padding-top: 64px; }
+  .contact__inner { padding-top: 88px; padding-bottom: 72px; }
+  .offices { grid-template-columns: 1fr; gap: 24px; }
+  .step { grid-template-columns: 32px minmax(0, 1fr); gap: 14px; }
   .fee-card { padding: 32px 24px; }
   .fee-card__row { flex-direction: column; gap: 4px; }
   .fee-card__row dd { text-align: left; }
+  .hero__actions .btn { width: 100%; }
+}
+
+@media (max-width: 380px) {
+  .nav__inner { gap: 12px; }
+  .nav__name { font-size: 17px; line-height: 1.1; white-space: normal; max-width: 7.5em; }
+  .nav__brand { align-items: center; }
+  .nav__cta { padding: 8px 14px; }
 }
 
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
-  * { transition: none !important; }
+  .btn, .nav__cta, .faq__icon { transition: none; }
+  .btn:active { transform: none; }
 }
-
   </style>
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
 
-  <!-- NAV -->
   <header class="nav">
     <div class="container nav__inner">
-      <a class="nav__brand" href="#top">
+      <a class="nav__brand" href="#top" aria-label="Everyday Accountancy Services, back to top">
         <span class="nav__name">Everyday Accountancy</span>
-        <span class="nav__est hide-m">Est. 2017</span>
+        <span class="nav__est">Est. 2017</span>
       </a>
-      <nav class="nav__links hide-m" aria-label="Primary">
+      <nav class="nav__links" aria-label="Primary">
         <a href="#services">Services</a>
         <a href="#fees">Fees</a>
         <a href="#team">People</a>
         <a href="#reviews">Clients</a>
       </nav>
-      <a class="nav__cta" href="#contact">Arrange a consultation</a>
+      <a class="nav__cta" href="#contact"><span class="nav__cta-long">Arrange a free consultation</span><span class="nav__cta-short">Free consultation</span></a>
     </div>
+    <nav class="subnav" aria-label="Sections">
+      <a href="#services">Services</a>
+      <a href="#fees">Fees</a>
+      <a href="#team">People</a>
+      <a href="#reviews">Clients</a>
+      <a href="#questions">Questions</a>
+      <a href="#contact">Contact</a>
+    </nav>
   </header>
 
-  <main id="main">
+  <main id="main" tabindex="-1">
 
-    <!-- HERO -->
-    <section id="top" class="container hero">
-      <p class="hero__kicker">Galway &amp; Dublin · info@everydayaccountancy.ie</p>
-      <h1 class="hero__title">Your own financial controller, a few days a month.</h1>
+    <section id="top" class="container hero" aria-labelledby="hero-title">
+      <p class="hero__kicker">Galway &amp; Dublin</p>
+      <h1 id="hero-title" class="hero__title">Your own financial controller, a few days a month.</h1>
       <p class="hero__sub">Accountancy, tax and outsourced financial control for owner-managed businesses in Galway and Dublin. The first meeting is free and every fee is agreed in advance.</p>
       <div class="hero__actions">
         <a class="btn btn--primary" href="#contact">Arrange a free consultation</a>
-        <a class="text-link" href="#fees">How our fees work</a>
+        <a class="text-link" href="#fees">How fees are agreed</a>
+        <a class="text-link hero__call" href="tel:+35391547525">Call (091) 547 525</a>
       </div>
     </section>
 
-    <!-- CREDENTIALS -->
     <div class="container">
-      <div class="creds">
-        <div><div class="creds__value">Free</div><div class="creds__label">First consultation, always</div></div>
-        <div><div class="creds__value">2017</div><div class="creds__label">Trading since · Filings current</div></div>
-        <div><div class="creds__value">606041</div><div class="creds__label">Registered company, Ireland</div></div>
-        <div><div class="creds__value">1 – 2</div><div class="creds__label">People deliver your service</div></div>
-      </div>
+      <p class="proof">Qualified through the Association of Financial Accountants, ACCA and the Institute of Accounting Technicians in Ireland. Trading since 2017.</p>
     </div>
 
-    <!-- SERVICES -->
     <section id="services" class="container section" aria-labelledby="services-title">
       <div class="grid-2 split-4-8">
         <div class="services__intro">
-          <p class="eyebrow">01 · Services</p>
           <h2 id="services-title" class="h2">The attention of a finance director, at the scale of your business.</h2>
           <p class="lede">Your services are always delivered by no more than two individuals, and usually one. You are always sure of who exactly is dealing with your requirements.</p>
         </div>
-        <div class="ruled-list">
-          <a class="service" href="#fees">
-            <span class="numeral">I.</span>
-            <span><span class="service__title">Financial Outsourcing</span><span class="service__desc">A Financial Controller for a few days a month on an agreed monthly fee. Contracts run month to month. Switch on or switch off as you see fit. With the financial control function outsourced, you are always in control.</span></span>
-            <span class="service__arrow" aria-hidden="true">→</span>
-          </a>
-          <a class="service" href="#contact">
-            <span class="numeral">II.</span>
-            <span><span class="service__title">Everyday Bookkeeping</span><span class="service__desc">VAT, PAYE, payroll and filing. A part-time bookkeeper for a day or two a week or a month. Cancel at a day's notice.</span></span>
-            <span class="service__arrow" aria-hidden="true">→</span>
-          </a>
-          <a class="service" href="#contact">
-            <span class="numeral">III.</span>
-            <span><span class="service__title">Accounts Preparation</span><span class="service__desc">Sole trader, partnership and limited company accounts, including farmers and landlords, in any sector.</span></span>
-            <span class="service__arrow" aria-hidden="true">→</span>
-          </a>
-          <a class="service" href="#contact">
-            <span class="numeral">IV.</span>
-            <span><span class="service__title">Taxation</span><span class="service__desc">VAT, PAYE, RCT and VIES returns; Capital Gains and Corporation Tax; farmers' and landlords' tax; Irish contractors working in the UK.</span></span>
-            <span class="service__arrow" aria-hidden="true">→</span>
-          </a>
-          <a class="service" href="#contact">
-            <span class="numeral">V.</span>
-            <span><span class="service__title">Company Services</span><span class="service__desc">Formation, business name registration, company secretarial, and support with bank funding and business plans.</span></span>
-            <span class="service__arrow" aria-hidden="true">→</span>
-          </a>
-        </div>
+        <ul class="service-list">
+          <li class="service">
+            <h3 class="service__title">Financial Outsourcing</h3>
+            <p class="service__desc">A Financial Controller for a few days a month on an agreed monthly fee. Contracts run month to month, so you can switch the service on or off as you see fit.</p>
+          </li>
+          <li class="service">
+            <h3 class="service__title">Everyday Bookkeeping</h3>
+            <p class="service__desc">VAT, PAYE, payroll and filing. A part-time bookkeeper for a day or two a week or a month. Cancel at a day's notice.</p>
+          </li>
+          <li class="service">
+            <h3 class="service__title">Accounts Preparation</h3>
+            <p class="service__desc">Sole trader, partnership and limited company accounts, including farmers and landlords, in any sector.</p>
+          </li>
+          <li class="service">
+            <h3 class="service__title">Taxation</h3>
+            <p class="service__desc">VAT and PAYE returns, Relevant Contracts Tax (RCT) and EU sales (VIES) returns, Capital Gains and Corporation Tax, farmers' and landlords' tax, and Irish contractors working in the UK.</p>
+          </li>
+          <li class="service">
+            <h3 class="service__title">Company Services</h3>
+            <p class="service__desc">Formation, business name registration, company secretarial, and support with bank funding and business plans.</p>
+          </li>
+        </ul>
       </div>
     </section>
 
-    <!-- STATEMENT -->
     <section class="statement" aria-label="Who we act for">
       <div class="container section--even">
-        <div class="grid-2 split-8-4">
-          <div>
-            <p class="eyebrow eyebrow--on-dark">Who we act for</p>
-            <p class="statement__quote">The smallest businesses in any sector, including sole traders, landlords, farmers, start-ups, small companies and Irish contractors in the UK. We give them the same standard of service that larger firms reserve for their largest clients.</p>
-          </div>
-          <p class="statement__aside">A professional service for even the smallest of businesses, sole traders or personal clients, irrespective of sector, delivered in a personalised manner. We are also well informed on the issues that arise for Irish contractors moving between the UK and Irish tax jurisdictions.</p>
-        </div>
+        <p class="statement__quote">We act for the smallest businesses in any sector, including sole traders, landlords, farmers, start-ups, small companies and Irish contractors in the UK. Each gets the standard of service larger firms reserve for their largest clients.</p>
       </div>
     </section>
 
-    <!-- FEES -->
     <section id="fees" class="container section" aria-labelledby="fees-title">
       <div class="grid-2 split-7-5">
         <div class="fees__intro">
-          <p class="eyebrow">02 · Fees</p>
           <h2 id="fees-title" class="h2">Fees agreed before work begins</h2>
           <p class="fees__body">At the first meeting, which is free, we seek to understand your business, the range of services you require, and the most appropriate solutions. Fees are then agreed in advance for a specific set of services over a specified period of time.</p>
-          <ol class="ruled-list steps">
-            <li class="step"><span class="numeral">01</span><span>A free first meeting. We learn how your business works.</span></li>
-            <li class="step"><span class="numeral">02</span><span>A fixed fee, agreed in writing for a defined scope and period.</span></li>
-            <li class="step"><span class="numeral">03</span><span>Work begins, month to month. You may stop whenever you wish.</span></li>
+          <ol class="steps">
+            <li class="step"><span class="step__num" aria-hidden="true">01</span><span>A first meeting, at no charge. We learn how your business works.</span></li>
+            <li class="step"><span class="step__num" aria-hidden="true">02</span><span>A fixed fee, agreed in writing for a defined scope and period.</span></li>
+            <li class="step"><span class="step__num" aria-hidden="true">03</span><span>Work begins, month to month. You may stop whenever you wish.</span></li>
           </ol>
         </div>
-        <aside class="fee-card" aria-label="Financial Controller terms">
-          <p class="fee-card__label">Financial Controller</p>
+        <aside class="fee-card" aria-labelledby="fee-card-title">
+          <p class="fee-card__label" id="fee-card-title">Financial Controller service</p>
           <p class="fee-card__price">A fixed monthly fee</p>
-          <p class="fee-card__note">agreed after your first, complimentary meeting</p>
+          <p class="fee-card__note">Agreed with you after the first meeting.</p>
           <dl class="fee-card__terms">
             <div class="fee-card__row"><dt>Commitment</dt><dd>1, 2 or 3 days a month</dd></div>
             <div class="fee-card__row"><dt>Term</dt><dd>Month to month</dd></div>
-            <div class="fee-card__row"><dt>Switch on / switch off</dt><dd>As you see fit</dd></div>
             <div class="fee-card__row"><dt>Employment contract, holiday pay, employer PRSI</dt><dd>None</dd></div>
           </dl>
           <a class="btn btn--primary btn--block" href="#contact">Arrange a free consultation</a>
@@ -739,18 +844,14 @@ h1, h2, p, figure, blockquote { margin: 0; }
       </div>
     </section>
 
-    <!-- PEOPLE -->
     <section id="team" class="container people" aria-labelledby="team-title">
       <div class="people__head">
-        <div>
-          <p class="eyebrow">03 · People</p>
-          <h2 id="team-title" class="h2">You will always know exactly who is handling your affairs.</h2>
-        </div>
+        <h2 id="team-title" class="h2">You will always know exactly who is handling your affairs.</h2>
         <p class="lede">Your work is delivered by no more than two of these three people, and usually one.</p>
       </div>
-      <div class="grid-3">
+      <div class="people__grid">
         <article>
-          <img class="person__photo" src="https://everydayaccountancy.ie/wp-content/uploads/2017/08/richard.jpg" alt="Richard Walsh" width="120" height="120" loading="lazy">
+          <img class="person__photo" src="https://everydayaccountancy.ie/wp-content/uploads/2017/08/richard.jpg" alt="" width="120" height="120" loading="lazy">
           <div class="person__head">
             <h3 class="person__name">Richard Walsh</h3>
             <span class="person__role">Principal</span>
@@ -758,7 +859,7 @@ h1, h2, p, figure, blockquote { margin: 0; }
           <p class="person__bio">B.Comm (NUIG), Diploma in Financial Trading (DBS), member of the Association of Financial Accountants. Financial Controller to companies across property, food production and security; formerly Chief Property Analyst with an Irish-owned UK property group of 800 staff.</p>
         </article>
         <article>
-          <img class="person__photo" src="https://everydayaccountancy.ie/wp-content/uploads/2017/10/DSC0460.jpg" alt="Sean Hoare" width="120" height="120" loading="lazy">
+          <img class="person__photo" src="https://everydayaccountancy.ie/wp-content/uploads/2017/10/DSC0460.jpg" alt="" width="120" height="120" loading="lazy">
           <div class="person__head">
             <h3 class="person__name">Sean Hoare</h3>
             <span class="person__role">Associate</span>
@@ -766,89 +867,82 @@ h1, h2, p, figure, blockquote { margin: 0; }
           <p class="person__bio">Fellow of the Institute of Accounting Technicians in Ireland; Diploma in Financial Trading (DBS). Works closely with companies and sole traders on their bookkeeping, accountancy and payroll needs.</p>
         </article>
         <article>
-          <img class="person__photo" src="https://everydayaccountancy.ie/wp-content/uploads/2017/08/timney.jpg" alt="Shane Timony" width="120" height="120" loading="lazy">
+          <img class="person__photo" src="https://everydayaccountancy.ie/wp-content/uploads/2017/08/timney.jpg" alt="" width="120" height="120" loading="lazy">
           <div class="person__head">
             <h3 class="person__name">Shane Timony</h3>
             <span class="person__role">Associate</span>
           </div>
-          <p class="person__bio">Member of the Association of Chartered Certified Accountants; ICE-accredited NEC ECC Project Manager. Many years providing audit, accountancy and taxation services to SMEs, sole traders, partnerships and personal taxpayers.</p>
+          <p class="person__bio">Member of the Association of Chartered Certified Accountants (ACCA); ICE-accredited project manager for NEC engineering and construction contracts. Many years providing audit, accountancy and taxation services to SMEs, sole traders, partnerships and personal taxpayers.</p>
         </article>
       </div>
     </section>
 
-    <!-- CLIENTS -->
     <section id="reviews" class="clients" aria-labelledby="reviews-title">
       <div class="container section--even">
         <div class="clients__head">
-          <h2 id="reviews-title" class="eyebrow">04 · In their words</h2>
-          <p class="clients__where">From clients in Galway, Limerick, Mayo and London</p>
+          <h2 id="reviews-title" class="h2">In their words</h2>
+          <p class="clients__where">Clients in Galway, Limerick, Mayo and London.</p>
         </div>
-        <div class="grid-3">
+        <figure class="quote-feature">
+          <blockquote>“I feel that I have a finance director working for my business. Always available on the phone, with good, clear advice that has made a real difference.”</blockquote>
+          <figcaption><div class="quote__name">Brian Fahy</div><div class="quote__org">B Fahy Building Contracts Ltd</div></figcaption>
+        </figure>
+        <div class="quote-grid">
           <figure class="quote">
-            <blockquote>Richard from EAS visits our business twice a month. The service has more than paid for itself in the past 20 months. We have greatly reduced our overheads and expenses.</blockquote>
+            <blockquote>“Richard from EAS visits our business twice a month. The service has more than paid for itself in the past 20 months. We have greatly reduced our overheads and expenses.”</blockquote>
             <figcaption><div class="quote__name">PJ Laffey</div><div class="quote__org">Ennis Mowers &amp; Cycles</div></figcaption>
           </figure>
           <figure class="quote">
-            <blockquote>I feel that I have a finance director working for my business. Always available on the phone, with good, clear advice that has made a real difference.</blockquote>
-            <figcaption><div class="quote__name">Brian Fahy</div><div class="quote__org">B Fahy Building Contracts Ltd</div></figcaption>
-          </figure>
-          <figure class="quote">
-            <blockquote>Our accountants since we commenced to trade. Very personable, and you get a response to all queries so quickly. We view them as our business partners.</blockquote>
-            <figcaption><div class="quote__name">Rob McManus</div><div class="quote__org">Mr Phonefix, Galway</div></figcaption>
-          </figure>
-          <figure class="quote">
-            <blockquote>From 2018 to 2020, year on year, we grew sales and significantly reduced overhead costs. Richard was culturally a perfect fit, operating as part of our senior leadership team.</blockquote>
-            <figcaption><div class="quote__name">Mark McLean</div><div class="quote__org">Managing Director, Team Horizon</div></figcaption>
-          </figure>
-          <figure class="quote">
-            <blockquote>We avail of the Financial Controller outsourcing service three days a month and this serves our needs perfectly. It has greatly improved our decision-making.</blockquote>
+            <blockquote>“We avail of the Financial Controller outsourcing service three days a month and this serves our needs perfectly. It has greatly improved our decision-making.”</blockquote>
             <figcaption><div class="quote__name">Robert Walsh</div><div class="quote__org">Cash Creators, Galway</div></figcaption>
           </figure>
           <figure class="quote">
-            <blockquote>A good idea for UK-based Irish contractors. They are very informed on the issues that arise when going from one tax jurisdiction to another.</blockquote>
+            <blockquote>“From 2018 to 2020, year on year, we grew sales and significantly reduced overhead costs. Richard was culturally a perfect fit, operating as part of our senior leadership team.”</blockquote>
+            <figcaption><div class="quote__name">Mark McLean</div><div class="quote__org">Managing Director, Team Horizon</div></figcaption>
+          </figure>
+          <figure class="quote">
+            <blockquote>“A good idea for UK-based Irish contractors. They are very informed on the issues that arise when going from one tax jurisdiction to another.”</blockquote>
             <figcaption><div class="quote__name">David Burke</div><div class="quote__org">Building Contractor, London</div></figcaption>
           </figure>
         </div>
       </div>
     </section>
 
-    <!-- FAQ -->
-    <section class="container section--even" aria-labelledby="faq-title">
+    <section id="questions" class="container section--even" aria-labelledby="faq-title">
       <div class="grid-2 split-4-8">
-        <div>
-          <p class="eyebrow">05 · Questions</p>
-          <h2 id="faq-title" class="faq__title">Before we meet</h2>
-        </div>
-        <div class="ruled-list">
+        <h2 id="faq-title" class="h2">Before we meet</h2>
+        <div class="faq__list">
           <details class="faq__item">
-            <summary>How does the free first consultation work?<span class="faq__plus" aria-hidden="true">+</span></summary>
-            <p>At this meeting we seek to understand your business, the range of services you require, and to identify the most appropriate solutions to your requirements. There is no charge.</p>
+            <summary>How does the free first consultation work?<span class="faq__icon" aria-hidden="true"></span></summary>
+            <p>We learn how your business works, the range of services you need, and which options suit you. There is no charge and no obligation.</p>
           </details>
           <details class="faq__item">
-            <summary>Can I end the Financial Controller service?<span class="faq__plus" aria-hidden="true">+</span></summary>
+            <summary>Can I end the Financial Controller service?<span class="faq__icon" aria-hidden="true"></span></summary>
             <p>Yes. Contracts operate on a month-to-month basis, so you can switch on or switch off your agreement with us as you see fit.</p>
           </details>
           <details class="faq__item">
-            <summary>Do you act for Irish contractors based in the UK?<span class="faq__plus" aria-hidden="true">+</span></summary>
-            <p>Yes. We are well informed on the issues that arise when moving from one tax jurisdiction to another, and act for clients whose affairs are dealt with by HMRC.</p>
+            <summary>Do you act for Irish contractors based in the UK?<span class="faq__icon" aria-hidden="true"></span></summary>
+            <p>Yes. We act for clients whose affairs are dealt with by HMRC, including Irish contractors moving between the UK and Irish tax systems.</p>
           </details>
           <details class="faq__item">
-            <summary>Why outsource rather than employ a Financial Controller?<span class="faq__plus" aria-hidden="true">+</span></summary>
+            <summary>Why outsource rather than employ a Financial Controller?<span class="faq__icon" aria-hidden="true"></span></summary>
             <p>Many small businesses need a Financial Controller for a few days a month but cannot justify a full-time hire. Outsourcing removes the employment contract, holiday pay and unfair-dismissal exposure, and saves the employer's PRSI contribution.</p>
           </details>
         </div>
       </div>
     </section>
 
-    <!-- CONTACT -->
     <section id="contact" class="contact" aria-labelledby="contact-title">
       <div class="container contact__inner">
         <div class="grid-2 split-6-5">
           <div>
-            <p class="eyebrow eyebrow--on-dark">06 · Begin</p>
-            <h2 id="contact-title" class="contact__title">Arrange your first meeting.</h2>
-            <p class="contact__body">We pride ourselves on offering the highest level of service. If you're looking for a professional, efficient service, why not get in touch today?</p>
-            <div class="grid-2 offices">
+            <div class="contact__who">
+              <img src="https://everydayaccountancy.ie/wp-content/uploads/2017/08/richard.jpg" alt="" width="56" height="56" loading="lazy">
+              <div><div class="contact__who-name">Richard Walsh</div><div class="contact__who-role">Principal</div></div>
+            </div>
+            <h2 id="contact-title" class="contact__title">Arrange a free consultation.</h2>
+            <p class="contact__body">Tell us a little about your business and we will arrange a time to meet in Galway, Dublin or by phone.</p>
+            <div class="offices">
               <div class="office">
                 <span class="office__city">Galway</span>
                 <address>Unit 8, Liosbán Business Centre<br>Tuam Road, Galway</address>
@@ -860,42 +954,66 @@ h1, h2, p, figure, blockquote { margin: 0; }
                 <a class="dark-link" href="tel:+35315415412">01 541 5412</a>
               </div>
             </div>
+            <div class="contact__email"><a class="dark-link" href="mailto:info@everydayaccountancy.ie">info@everydayaccountancy.ie</a></div>
           </div>
           <form class="form" id="enquiry" novalidate>
-            <label class="field"><span class="field__label">Name</span><input name="name" autocomplete="name" required></label>
-            <label class="field"><span class="field__label">Email</span><input name="email" type="email" autocomplete="email" required></label>
-            <label class="field"><span class="field__label">Your business, in a line or two</span><textarea name="business" rows="3"></textarea></label>
+            <label class="field" id="field-name"><span class="field__label">Name</span><input name="name" autocomplete="name" required aria-describedby="err-name"><span class="field__error" id="err-name"></span></label>
+            <label class="field" id="field-email"><span class="field__label">Email</span><input name="email" type="email" autocomplete="email" required aria-describedby="err-email"><span class="field__error" id="err-email"></span></label>
+            <label class="field"><span class="field__label">Phone <span class="field__hint">(optional)</span></span><input name="phone" type="tel" autocomplete="tel"></label>
+            <label class="field"><span class="field__label">About your business <span class="field__hint">(optional)</span></span><textarea name="business" rows="3" maxlength="1200"></textarea></label>
             <button class="btn btn--amber" type="submit">Send enquiry</button>
+            <p class="form__note">Sending opens your email app with the enquiry ready to send. <a href="/eas/privacy/">How we use your details</a>.</p>
             <p class="form__status" role="status" aria-live="polite"></p>
           </form>
         </div>
-        <div class="contact__email"><a class="dark-link" href="mailto:info@everydayaccountancy.ie">info@everydayaccountancy.ie</a></div>
-        <footer class="footer">
-          <div>Everyday Accountancy Services Limited · Company no. 606041 · Registered office: 8 Eglinton Street, Galway</div>
-          <div class="footer__links"><a href="#">Privacy</a><a href="#">Terms</a><a href="#">Cookies</a></div>
-        </footer>
       </div>
     </section>
 
   </main>
 
+  <footer class="footer">
+    <div class="container footer__inner">
+      <p>Everyday Accountancy Services Limited · Company no. 606041 · Registered office: 8 Eglinton Street, Galway</p>
+      <a href="/eas/privacy/">Privacy</a>
+    </div>
+  </footer>
+
   <script>
-    // No backend yet: the enquiry opens the visitor's email client, pre-filled.
-    document.getElementById('enquiry').addEventListener('submit', function (e) {
-      e.preventDefault();
-      var f = e.target, status = f.querySelector('.form__status');
-      var el = f.elements, name = el.name.value.trim(), email = el.email.value.trim(), business = el.business.value.trim();
-      if (!name || !email || !el.email.checkValidity()) {
-        status.textContent = 'Please add your name and a valid email address.';
-        (name ? el.email : el.name).focus();
-        return;
+    // No form backend yet: the enquiry opens the visitor's email app, pre-filled.
+    (function () {
+      var form = document.getElementById('enquiry');
+      var status = form.querySelector('.form__status');
+      var EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+
+      function setError(input, fieldId, errId, msg) {
+        document.getElementById(errId).textContent = msg;
+        input.setAttribute('aria-invalid', msg ? 'true' : 'false');
+        document.getElementById(fieldId).classList.toggle('field--invalid', !!msg);
       }
-      var body = 'Name: ' + name + '\nEmail: ' + email + '\n\n' + business;
-      window.location.href = 'mailto:info@everydayaccountancy.ie'
-        + '?subject=' + encodeURIComponent('Consultation enquiry from ' + name)
-        + '&body=' + encodeURIComponent(body);
-      status.textContent = 'Your email app should now open with the enquiry ready to send.';
-    });
+
+      form.addEventListener('submit', function (e) {
+        e.preventDefault();
+        var el = form.elements;
+        var name = el.name.value.trim(), email = el.email.value.trim();
+        var phone = el.phone.value.trim(), business = el.business.value.trim();
+
+        setError(el.name, 'field-name', 'err-name', name ? '' : 'Please add your name.');
+        setError(el.email, 'field-email', 'err-email',
+          !email ? 'Please add your email address.' :
+          EMAIL.test(email) ? '' : 'Please check your email address, for example name@business.ie.');
+
+        if (!name) { el.name.focus(); status.textContent = ''; return; }
+        if (!EMAIL.test(email)) { el.email.focus(); status.textContent = ''; return; }
+
+        var body = 'Name: ' + name + '\nEmail: ' + email + (phone ? '\nPhone: ' + phone : '') + '\n\n' + business;
+        window.location.href = 'mailto:info@everydayaccountancy.ie'
+          + '?subject=' + encodeURIComponent('Consultation enquiry from ' + name)
+          + '&body=' + encodeURIComponent(body);
+        status.innerHTML = 'Your email app should open with the enquiry ready to send. If nothing opened, email '
+          + '<a href="mailto:info@everydayaccountancy.ie">info@everydayaccountancy.ie</a> or call '
+          + '<a href="tel:+35391547525">(091) 547 525</a>.';
+      });
+    })();
   </script>
 </body>
 </html>
