@@ -13,7 +13,7 @@ Check: `curl -sS -H "Authorization: Bearer $VERCEL_TOKEN" https://api.vercel.com
 
 ## Facts
 
-- Site files: `errol/` at repo root (`index.html`, `styles.css`, `main.js`, `vercel.json`, `robots.txt`). No build step.
+- Site files: `errol/` at repo root (`index.html`, `styles.css`, `main.js`, `fonts/`, `vercel.json`, `robots.txt`). No build step.
 - **Relative assets.** `styles.css` and `main.js` are loaded relatively, so the page only renders
   with a trailing slash. The redirect in step 4 is required here, not cosmetic.
 - getawebsite.ie is its own Vercel project with no connected Git repo. DNS is already on Vercel.
@@ -84,7 +84,7 @@ npx vercel@latest deploy --prod --yes --token "$VERCEL_TOKEN"
 ### 6. Verify live
 
 - `https://getawebsite.ie/` unchanged.
-- `https://getawebsite.ie/errol` → 308 → `/errol/`, styled page, menu, slider and quote form work.
+- `https://getawebsite.ie/errol` → 308 → `/errol/`, styled page with Newsreader headings (`/errol/fonts/*.woff2` return 200), menu works, WhatsApp/Call/Text links correct.
 - `https://getawebsite.ie/everydayaccountancy/` and other routes unchanged.
 - Response carries `X-Robots-Tag: noindex` (intended until Errol confirms the facts).
 
