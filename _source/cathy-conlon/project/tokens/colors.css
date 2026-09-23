@@ -42,8 +42,11 @@
   --fg-muted: var(--ink-2);
   --fg-subtle: var(--ink-3);
   --fg-inverse: var(--paper-0);
-  --fg-inverse-secondary: #E4DDD1;
-  --fg-inverse-muted: #C9C1B4;
+  /* "chapter" surfaces: the inverse band and typographic covers; theme-aware, unlike --bg-inverse */
+  --bg-chapter: var(--ink-0);
+  --fg-chapter: var(--paper-0);
+  --fg-chapter-secondary: #E4DDD1;
+  --fg-chapter-muted: #C9C1B4;
   --border: var(--ink-5);
   --border-strong: var(--ink-4);
   --border-control: #8A8276;  /* form control edges, 3:1 against paper and white */
@@ -84,11 +87,13 @@
   --bg-raised: var(--paper-1);
   --bg-sunken: #121009;
   --bg-inset: var(--paper-2);
-  /* inverse sections become a deep sienna chapter rather than a cream slab */
-  --bg-inverse: #2B1B13;
-  --fg-inverse: var(--ink-0);
-  --fg-inverse-secondary: #DCCFC2;
-  --fg-inverse-muted: #C9B8A8;
+  --bg-inverse: var(--ink-0);
+  --fg-inverse: var(--paper-0);
+  /* chapter bands become deep sienna rather than a cream slab */
+  --bg-chapter: #2B1B13;
+  --fg-chapter: var(--ink-0);
+  --fg-chapter-secondary: #DCCFC2;
+  --fg-chapter-muted: #C9B8A8;
   --border-control: #756C62;
   --border-inverse: rgba(239,233,223,.16);
   --accent: #D08262;
@@ -113,7 +118,7 @@
     --paper-0: #161412; --paper-1: #1D1A17; --paper-2: #26221E; --paper-3: #302B26;
     --ink-0: #EFE9DF; --ink-1: #D8D0C4; --ink-2: #A99F92; --ink-3: #8E8579; --ink-4: #4B443D; --ink-5: #332E29;
     --bg: var(--paper-0); --bg-raised: var(--paper-1); --bg-sunken: #121009; --bg-inset: var(--paper-2);
-    --bg-inverse: #2B1B13; --fg-inverse: var(--ink-0); --fg-inverse-secondary: #DCCFC2; --fg-inverse-muted: #C9B8A8; --border-control: #756C62; --border-inverse: rgba(239,233,223,.16);
+    --bg-inverse: var(--ink-0); --fg-inverse: var(--paper-0); --bg-chapter: #2B1B13; --fg-chapter: var(--ink-0); --fg-chapter-secondary: #DCCFC2; --fg-chapter-muted: #C9B8A8; --border-control: #756C62; --border-inverse: rgba(239,233,223,.16);
     --accent: #D08262; --accent-hover: #DE9A7E; --accent-active: #B3623F; --accent-fg: #161412;
     --accent-soft: #3A2419; --accent-soft-fg: #E9B9A3; --link-hover: #DE9A7E; --focus-ring: #D08262; --selection: #3A2419;
     --success: #7FA97D; --success-soft: #1F2E1F; --success-fg: #B8D3B6;

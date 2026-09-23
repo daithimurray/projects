@@ -31,6 +31,8 @@ function ContactForm() {
   const [v, setV] = React.useState({ name: "", email: "", topic: "", message: "" });
   const [err, setErr] = React.useState({});
   const [status, setStatus] = React.useState("idle"); // idle | sending | sent | failed
+  // After a send, move focus to the outcome so keyboard and screen-reader users land on it.
+  React.useEffect(() => { if (status === "sent" || status === "failed") document.getElementById("cc-form-status")?.focus(); }, [status]);
   const set = (k) => (e) => setV((s) => ({ ...s, [k]: e.target.value }));
   const submit = async (e) => {
     e.preventDefault();
@@ -47,11 +49,11 @@ function ContactForm() {
       setStatus(res.ok ? "sent" : "failed");
     } catch { setStatus("failed"); }
   };
-  if (status === "sent") return <Alert tone="success" title="Message sent">Thank you. I'll reply within a week or two.</Alert>;
+  if (status === "sent") return <Alert id="cc-form-status" tabIndex={-1} tone="success" title="Message sent">Thank you. I'll reply within a week or two.</Alert>;
   const n = Object.keys(err).length;
   return <form onSubmit={submit} noValidate className="cc-form">
     {n > 0 && <Alert tone="error" title="A few things to fix">{n} field{n > 1 ? "s need" : " needs"} attention below.</Alert>}
-    {status === "failed" && <Alert tone="error" title="That didn't send">Please try again in a moment{CONTACT_EMAIL ? <>, or email <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a></> : ""}.</Alert>}
+    {status === "failed" && <Alert id="cc-form-status" tabIndex={-1} tone="error" title="That didn't send">Please try again in a moment{CONTACT_EMAIL ? <>, or email <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a></> : ""}.</Alert>}
     <div className="cc-form__row">
       <TextField id="cc-name" name="name" label="Name" value={v.name} onChange={set("name")} error={err.name} autoComplete="name" />
       <TextField id="cc-email" name="email" type="email" label="Email" value={v.email} onChange={set("email")} error={err.email} autoComplete="email" />
@@ -116,7 +118,7 @@ export function OnePage() {
           </a>
         </li>)}
       </ul>
-      <p className="cc-note cc-note--wide">Poems and stories have also appeared in {publications.slice(0, -1).join(", ")} and {publications.at(-1)}.</p>
+      <p className="cc-note">Poems and stories have also appeared in {publications.slice(0, -1).join(", ")} and {publications.at(-1)}.</p>
     </Section>
 
     <Section id="events" tone="sunken" title="Readings">

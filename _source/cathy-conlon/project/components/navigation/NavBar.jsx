@@ -14,6 +14,8 @@ export function NavBar({ brand = "Cathy Conlon", brandHref = "/", links = [], cu
   }, [variant]);
   React.useEffect(() => {
     if (!open) return;
+    // Opening the menu moves focus to its first link, so Tab continues through the menu, not the page behind it.
+    header.current?.querySelector(".ih-nav__links a")?.focus();
     const onKey = (e) => { if (e.key === "Escape") { setOpen(false); header.current?.querySelector(".ih-nav__toggle")?.focus(); } };
     const onDown = (e) => { if (header.current && !header.current.contains(e.target)) setOpen(false); };
     document.addEventListener("keydown", onKey);
