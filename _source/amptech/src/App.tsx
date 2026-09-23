@@ -1,34 +1,29 @@
-import { useEffect, useState } from "react";
-import { Footer, Navbar, Toast } from "./design-system";
-import type { ToastProps } from "./design-system/feedback/Toast";
-import { FOOTER_COLS, LEGAL, NAV } from "./content";
+import { Footer, Navbar } from "./design-system";
+import { FOOTER_COLS, LEGAL, NAV, PHONE_DISPLAY, PHONE_TEL, PSA_LICENCE } from "./content";
 import { go, useHashRoute } from "./router";
 import { Home } from "./pages/Home";
 import { Service } from "./pages/Service";
 import { Survey } from "./pages/Survey";
 
-export type ShowToast = (t: Omit<ToastProps, "onDismiss">) => void;
+function UrgentStrip() {
+  return (
+    <div className="urgent">
+      <p style={{ maxWidth: "var(--container-max)", margin: "0 auto", padding: "4px var(--grid-margin)", display: "flex", flexWrap: "wrap", alignItems: "center", gap: "0 8px" }}>
+        <span>Break-in, alarm fault or a siren that won't stop? Talk to an engineer:</span>
+        <a href={PHONE_TEL}>{PHONE_DISPLAY}</a>
+      </p>
+    </div>
+  );
+}
 
 export function App() {
   const { hash, page } = useHashRoute();
-  const [toast, setToast] = useState<Omit<ToastProps, "onDismiss"> | null>(null);
-
-  useEffect(() => {
-    if (!toast) return;
-    const t = setTimeout(() => setToast(null), 5000);
-    return () => clearTimeout(t);
-  }, [toast]);
-
   return (
     <div>
-      <Navbar links={NAV} activeHref={hash} sticky onCta={() => go("survey")} />
-      {page === "survey" ? <Survey toast={setToast} /> : page === "service" ? <Service /> : <Home />}
-      <Footer columns={FOOTER_COLS} legal={LEGAL} />
-      {toast && (
-        <div style={{ position: "fixed", left: 24, bottom: 24, zIndex: 500 }}>
-          <Toast {...toast} onDismiss={() => setToast(null)} />
-        </div>
-      )}
+      <UrgentStrip />
+      <Navbar links={NAV} activeHref={hash} phone={PHONE_DISPLAY} sticky onCta={() => go("survey")} />
+      {page === "survey" ? <Survey /> : page === "service" ? <Service /> : <Home />}
+      <Footer columns={FOOTER_COLS} legal={LEGAL} phone={PHONE_DISPLAY} licence={"PSA licence no. " + PSA_LICENCE} />
     </div>
   );
 }

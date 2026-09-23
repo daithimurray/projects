@@ -1,0 +1,61 @@
+/* Responsive layout primitives. Components keep their look inline; column structure lives here
+   because inline styles cannot carry media queries. Mobile first: everything stacks below 768px. */
+
+/* Two-part split. Set --cols on the element for the desktop ratio, e.g. "7fr 5fr". */
+.ds-split {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--split-gap-sm, 40px);
+  align-items: var(--split-align, start);
+}
+@media (min-width: 900px) {
+  .ds-split { grid-template-columns: var(--cols, 1fr 1fr); gap: var(--split-gap, 64px); }
+}
+
+/* Card grid that never forces a column wider than the screen. */
+.ds-grid {
+  display: grid;
+  gap: var(--grid-gap, 24px);
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, var(--min, 280px)), 1fr));
+}
+.ds-span-2 { grid-column: auto; }
+@media (min-width: 768px) {
+  .ds-grid-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .ds-span-2 { grid-column: span 2; }
+}
+@media (min-width: 1024px) {
+  .ds-grid-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+
+/* Paired form fields (first name / surname). */
+.ds-pair { display: grid; gap: 16px; grid-template-columns: minmax(0, 1fr); }
+@media (min-width: 560px) { .ds-pair { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+
+/* Description list columns collapse on phones. */
+.ds-dl { grid-template-columns: minmax(0, 1fr) !important; }
+@media (min-width: 560px) { .ds-dl { grid-template-columns: repeat(var(--dl-cols, 1), minmax(0, 1fr)) !important; } }
+
+/* Footer: brand block full width on phones, link columns side by side. */
+.ds-footer-grid { display: grid; gap: 40px 32px; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.ds-footer-grid > :first-child { grid-column: 1 / -1; }
+@media (min-width: 900px) {
+  .ds-footer-grid { grid-template-columns: minmax(0, 1.6fr) repeat(var(--footer-cols, 2), minmax(0, 1fr)); }
+  .ds-footer-grid > :first-child { grid-column: auto; }
+}
+
+/* Hero media: portrait on desktop, shorter landscape on phones so the CTA stays near the fold. */
+.ds-hero-media { aspect-ratio: 3 / 2; }
+@media (min-width: 900px) { .ds-hero-media { aspect-ratio: 4 / 5; } }
+
+/* Brand band padding scales down on phones. */
+.ds-band { padding: 40px 24px; }
+@media (min-width: 768px) { .ds-band { padding: 64px 56px; } }
+
+/* Sticky only where there is room for it. */
+@media (min-width: 900px) { .ds-sticky-lg { position: sticky; top: calc(var(--nav-height) + 24px); } }
+
+/* Anchored sections clear the sticky header. */
+[id] { scroll-margin-top: calc(var(--nav-height) + 16px); }
+
+/* Visually hidden, still announced. */
+.ds-sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }

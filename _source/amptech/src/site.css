@@ -1,0 +1,11 @@
+/* Site-level styles that don't belong in the design system. */
+
+/* Coverage plan: fields of view sweep in once, from a visible default. */
+.cp-fov { transition: opacity 700ms var(--ease-enter), transform 700ms var(--ease-enter); transform-box: fill-box; }
+.cp-armed .cp-fov { opacity: 0; }
+.cp-shown .cp-fov { opacity: 1; }
+
+/* Urgent-help strip: calm, one line, scrolls away above the sticky header. */
+.urgent { background: var(--navy-800); color: var(--stone-100); font-size: var(--text-body-sm); }
+.urgent a { color: #fff; font-weight: 600; text-decoration: underline; text-underline-offset: 0.2em; display: inline-flex; align-items: center; min-height: 40px; }
+.urgent a:hover { color: #fff; text-decoration-thickness: 2px; }

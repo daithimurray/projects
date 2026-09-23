@@ -8,19 +8,20 @@ export const PSA_LICENCE = "00000";
 export type Link = { label: string; href: string };
 
 export const NAV: Link[] = [
-  { label: "Intruder alarms", href: "#/alarms" },
+  { label: "Services", href: "#/services" },
   { label: "CCTV", href: "#/cctv" },
-  { label: "Fire detection", href: "#/fire" },
   { label: "Reviews", href: "#/reviews" },
-  { label: "About", href: "#/about" },
+  { label: "Questions", href: "#/questions" },
 ];
 
+// Only links to pages that exist. Add alarm and fire pages here once their content is written.
 export const FOOTER_COLS: { title: string; links: Link[] }[] = [
-  { title: "Services", links: [{ label: "Intruder alarms", href: "#/alarms" }, { label: "CCTV", href: "#/cctv" }, { label: "Fire detection", href: "#/fire" }, { label: "Upgrades & repairs", href: "#/upgrades" }, { label: "Maintenance", href: "#/maintenance" }] },
-  { title: "Company", links: [{ label: "About", href: "#/about" }, { label: "Reviews", href: "#/reviews" }, { label: "Areas covered", href: "#/areas" }, { label: "Contact", href: "#/contact" }] },
+  { title: "Services", links: [{ label: "All services", href: "#/services" }, { label: "CCTV", href: "#/cctv" }, { label: "Request a survey", href: "#/survey" }] },
+  { title: "Company", links: [{ label: "Reviews", href: "#/reviews" }, { label: "Questions", href: "#/questions" }, { label: "Call " + PHONE_DISPLAY, href: PHONE_TEL }] },
 ];
 
-export const LEGAL: Link[] = [{ label: "Privacy", href: "#" }, { label: "Terms", href: "#" }, { label: "Cookies", href: "#" }];
+// Legal pages don't exist yet. Kept out of the footer until they do (launch blocker, see README).
+export const LEGAL: Link[] = [];
 
 export type Review = { quote: string; name: string; location: string; service: string };
 

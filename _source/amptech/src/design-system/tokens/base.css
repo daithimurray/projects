@@ -16,3 +16,14 @@ a:hover { color: var(--text-link-hover); text-decoration: underline; }
 :focus-visible { outline: none; box-shadow: var(--focus-ring); border-radius: var(--radius-xs); }
 button, input, select, textarea { font: inherit; color: inherit; }
 img, svg { display: block; max-width: 100%; }
+::selection { background: var(--navy-100); color: var(--navy-900); }
+input, textarea { caret-color: var(--navy-700); }
+html { accent-color: var(--navy-700); }
+
+/* Shared component keyframes (previously injected per instance). */
+@keyframes amptech-spin { to { transform: rotate(360deg); } }
+@keyframes amptech-fade { from { opacity: 0; } }
+@keyframes amptech-pop { from { opacity: 0; transform: scale(.98) translateY(6px); } }
+@keyframes amptech-menu { from { opacity: 0; transform: translateY(-4px); } }
+@keyframes amptech-shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+@keyframes amptech-pulse { 0% { transform: scale(.7); opacity: .6; } 100% { transform: scale(1.6); opacity: 0; } }

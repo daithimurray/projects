@@ -18,7 +18,6 @@ export function Dialog({ open = false, title, description, children, footer, siz
       </div>
       {children && <div style={{ padding: 24, overflowY: "auto", flex: 1 }}>{children}</div>}
       {footer && <div style={{ display: "flex", justifyContent: "flex-end", gap: 8, padding: "16px 24px", borderTop: "1px solid var(--border-subtle)" }}>{footer}</div>}
-      <style>{"@keyframes amptech-fade{from{opacity:0}}@keyframes amptech-pop{from{opacity:0;transform:scale(.98) translateY(6px)}}"}</style>
     </div>
   </div>;
 }

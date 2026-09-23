@@ -47,7 +47,7 @@
   /* ── Semantic: text ── */
   --text-primary:   var(--stone-900);
   --text-secondary: var(--stone-600);
-  --text-tertiary:  var(--stone-500);
+  --text-tertiary:  #6E695F; /* ≥4.5:1 on every light surface incl. stone-100 */
   --text-disabled:  var(--stone-400);
   --text-inverse:   var(--stone-25);
   --text-brand:     var(--navy-700);

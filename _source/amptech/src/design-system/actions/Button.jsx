@@ -28,7 +28,6 @@ export function Button({ children, variant = "primary", size = "md", iconLeft, i
     {loading ? <span aria-hidden style={{ width: s.icon - 2, height: s.icon - 2, border: "2px solid currentColor", borderRightColor: "transparent", borderRadius: "50%", animation: "amptech-spin 0.8s linear infinite" }} /> : iconLeft && <Icon name={iconLeft} size={s.icon} />}
     <span>{children}</span>
     {iconRight && <Icon name={iconRight} size={s.icon} />}
-    <style>{"@keyframes amptech-spin{to{transform:rotate(360deg)}}"}</style>
   </>;
   if (href && !disabled) return <a href={href} style={base} onClick={onClick} {...it.handlers} {...rest}>{content}</a>;
   return <button type={type} disabled={disabled || loading} aria-busy={loading || undefined} onClick={onClick} style={base} {...it.handlers} {...rest}>{content}</button>;

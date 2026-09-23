@@ -5,7 +5,7 @@ const box = (it, { invalid, disabled, size }) => ({
   width: "100%", height: size === "sm" ? 36 : 44, padding: "0 12px", fontFamily: "var(--font-sans)", fontSize: "var(--text-body)", color: disabled ? "var(--text-disabled)" : "var(--text-primary)",
   background: disabled ? "var(--surface-muted)" : "var(--surface-default)", borderRadius: "var(--radius-md)", outline: "none",
   border: "1px solid " + (invalid ? "var(--status-danger)" : it.focus ? "var(--border-focus)" : it.hover ? "var(--border-strong)" : "var(--border-default)"),
-  boxShadow: it.focus ? (invalid ? "0 0 0 3px var(--status-danger-bg)" : "0 0 0 3px var(--navy-100)") : "none", ...transition("border-color, box-shadow"),
+  boxShadow: it.focus ? (invalid ? "0 0 0 3px var(--status-danger-bg)" : "var(--focus-ring)") : "none", ...transition("border-color, box-shadow"),
 });
 export function Input({ id, type = "text", value, defaultValue, placeholder, iconLeft, suffix, invalid = false, disabled = false, size = "md", onChange, style, ...rest }) {
   const it = useInteractive(disabled);

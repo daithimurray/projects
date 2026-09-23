@@ -7,7 +7,7 @@ export function TrustBar({ items = [], label, style }) {
     {label && <span style={{ fontSize: "var(--text-caption)", fontWeight: 600, letterSpacing: "var(--tracking-caps)", textTransform: "uppercase", color: "var(--text-tertiary)" }}>{label}</span>}
     {items.map(it => <span key={it.label} style={{ display: "inline-flex", alignItems: "center", gap: 10, color: "var(--text-secondary)", fontSize: "var(--text-body-sm)", fontWeight: 500 }}>
       {it.logo ? <span style={{ height: 28, display: "flex", alignItems: "center" }}>{it.logo}</span> : <Icon name={it.icon || "shield-check"} size={20} style={{ color: "var(--text-brand)" }} />}
-      <span>{it.label}{it.detail && <span style={{ color: "var(--text-tertiary)", fontWeight: 400 }}> · {it.detail}</span>}</span>
+      <span style={{ display: "flex", flexDirection: "column", lineHeight: 1.35 }}>{it.label}{it.detail && <span style={{ color: "var(--text-tertiary)", fontWeight: 400 }}>{it.detail}</span>}</span>
     </span>)}
   </div>;
 }

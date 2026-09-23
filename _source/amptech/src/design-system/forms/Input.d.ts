@@ -13,6 +13,9 @@ export interface InputProps {
   disabled?: boolean;
   size?: "sm" | "md";
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  /** Passed through to the <input> */
+  autoComplete?: string;
+  inputMode?: React.HTMLAttributes<HTMLInputElement>["inputMode"];
   style?: React.CSSProperties;
 }
 export declare function Input(props: InputProps): JSX.Element;

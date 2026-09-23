@@ -12,7 +12,7 @@ export function Testimonial({ quote, name, location, service, rating, variant = 
       <Avatar name={name} size={big ? 44 : 36} />
       <div style={{ display: "flex", flexDirection: "column" }}>
         <span style={{ fontWeight: 600, fontSize: "var(--text-body-sm)" }}>{name}</span>
-        <span style={{ fontSize: "var(--text-caption)", color: "var(--text-tertiary)" }}>{[location, service].filter(Boolean).join(" · ")}</span>
+        <span style={{ fontSize: "var(--text-caption)", color: "var(--text-tertiary)" }}>{[location, service].filter(Boolean).join(", ")}</span>
       </div>
     </figcaption>
   </figure>;

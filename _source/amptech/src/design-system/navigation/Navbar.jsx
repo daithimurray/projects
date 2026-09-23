@@ -15,20 +15,20 @@ export function Navbar({ brand = "Amptech", links = [], activeHref, phone = "+35
     let ro; if (window.ResizeObserver && ref.current) { ro = new ResizeObserver(measure); ro.observe(ref.current); }
     return () => { window.removeEventListener("resize", measure); ro && ro.disconnect(); };
   }, []);
-  const compact = w < 960, hidePhone = w < 1120;
+  const compact = w < 960, hidePhone = w < 1120, narrow = w < 440;
   const fg = inverse ? "var(--text-inverse)" : "var(--text-primary)";
   const tel = "tel:" + phone.replace(/\s/g, "");
   return <header ref={ref} style={{ position: sticky ? "sticky" : "relative", top: 0, zIndex: "var(--z-sticky)", background: inverse ? "var(--surface-brand)" : "rgba(252,251,249,0.85)", backdropFilter: "saturate(1.4) blur(12px)", borderBottom: "1px solid " + (inverse ? "rgba(255,255,255,0.1)" : "var(--border-subtle)"), ...style }}>
     <nav aria-label="Main" style={{ maxWidth: "var(--container-max)", margin: "0 auto", padding: "0 var(--grid-margin)", height: "var(--nav-height)", display: "flex", alignItems: "center", gap: 24 }}>
-      <a href="#/" style={{ fontWeight: 700, fontSize: 22, letterSpacing: "-0.03em", color: inverse ? "#fff" : "var(--navy-700)", textDecoration: "none", flex: "none" }}>{brand}</a>
+      <a href="#/" style={{ display: "inline-flex", alignItems: "center", minHeight: 44, fontWeight: 700, fontSize: 22, letterSpacing: "-0.03em", color: inverse ? "#fff" : "var(--navy-700)", textDecoration: "none", flex: "none" }}>{brand}</a>
       {!compact && <ul style={{ display: "flex", gap: 2, listStyle: "none", margin: 0, padding: 0, flex: 1, minWidth: 0 }}>
         {links.map(l => <NavLink key={l.href} {...l} active={l.href === activeHref} inverse={inverse} />)}
       </ul>}
-      <div style={{ display: "flex", alignItems: "center", gap: 12, flex: "none", marginLeft: compact ? "auto" : 0 }}>
-        {hidePhone ? <IconButton icon="phone" label={"Call " + phone} variant="ghost" size="sm" onClick={() => (location.href = tel)} style={{ color: fg }} />
-          : <a href={tel} style={{ display: "inline-flex", alignItems: "center", gap: 8, color: fg, fontWeight: 600, fontSize: "var(--text-body-sm)", textDecoration: "none", whiteSpace: "nowrap" }}><Icon name="phone" size={16} />{phone}</a>}
-        <Button size="sm" variant={inverse ? "inverse" : "primary"} onClick={onCta}>{cta}</Button>
-        {compact && <IconButton icon="menu" label="Open menu" variant="ghost" size="sm" onClick={() => setOpen(true)} style={{ color: fg }} />}
+      <div style={{ display: "flex", alignItems: "center", gap: narrow ? 4 : 12, flex: "none", marginLeft: compact ? "auto" : 0 }}>
+        {narrow ? null : hidePhone ? <IconButton icon="phone" label={"Call " + phone} variant="ghost" size="md" onClick={() => (location.href = tel)} style={{ color: fg }} />
+          : <a href={tel} style={{ display: "inline-flex", alignItems: "center", minHeight: 44, gap: 8, color: fg, fontWeight: 600, fontSize: "var(--text-body-sm)", textDecoration: "none", whiteSpace: "nowrap" }}><Icon name="phone" size={16} />{phone}</a>}
+        <Button size="md" variant={inverse ? "inverse" : "primary"} onClick={onCta}>{cta}</Button>
+        {compact && <IconButton icon="menu" label="Open menu" variant="ghost" size="md" onClick={() => setOpen(true)} style={{ color: fg }} />}
       </div>
     </nav>
     <Drawer open={open} onClose={() => setOpen(false)} title={brand} width={320}>
@@ -44,7 +44,7 @@ export function Navbar({ brand = "Amptech", links = [], activeHref, phone = "+35
 }
 function NavLink({ label, href, active, inverse }) {
   const it = useInteractive(false);
-  return <li><a href={href} aria-current={active ? "page" : undefined} {...it.handlers} style={{ display: "inline-flex", alignItems: "center", height: 36, padding: "0 12px", borderRadius: "var(--radius-sm)", fontSize: "var(--text-body-sm)", fontWeight: active ? 600 : 500, textDecoration: "none", outline: "none", whiteSpace: "nowrap",
+  return <li><a href={href} aria-current={active ? "page" : undefined} {...it.handlers} style={{ display: "inline-flex", alignItems: "center", height: 44, padding: "0 12px", borderRadius: "var(--radius-sm)", fontSize: "var(--text-body-sm)", fontWeight: active ? 600 : 500, textDecoration: "none", outline: "none", whiteSpace: "nowrap",
     color: inverse ? (active || it.hover ? "#fff" : "rgba(255,255,255,0.72)") : (active ? "var(--text-primary)" : it.hover ? "var(--text-primary)" : "var(--text-secondary)"),
     background: it.hover ? (inverse ? "rgba(255,255,255,0.08)" : "var(--surface-muted)") : "transparent", boxShadow: it.focus ? "var(--focus-ring)" : "none", ...transition() }}>{label}</a></li>;
 }

@@ -16,7 +16,6 @@ export function StatusDot({ status = "neutral", label, pulse = false, size = 8, 
     <span aria-hidden style={{ position: "relative", width: size, height: size, flex: "none" }}>
       <span style={{ position: "absolute", inset: 0, borderRadius: "50%", background: c.dot }} />
       {pulse && <span style={{ position: "absolute", inset: -3, borderRadius: "50%", border: "1.5px solid " + c.dot, opacity: 0.5, animation: "amptech-pulse 1.8s var(--ease-standard) infinite" }} />}
-      <style>{"@keyframes amptech-pulse{0%{transform:scale(.7);opacity:.6}100%{transform:scale(1.6);opacity:0}}"}</style>
     </span>
     {label && <span>{label}</span>}
     {!label && <span style={{ position: "absolute", width: 1, height: 1, overflow: "hidden", clip: "rect(0 0 0 0)" }}>{status}</span>}
