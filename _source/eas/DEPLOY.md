@@ -24,7 +24,7 @@ cd eas
 npx vercel@latest deploy --prod --yes --token "$VERCEL_TOKEN" --name getawebsite-eas
 ```
 
-Record the production URL it prints (e.g. `https://eas.vercel.app`). Check it loads with styles.
+Record the production URL it prints (e.g. `https://getawebsite-eas.vercel.app`). Check it loads with styles.
 
 ### 2. Snapshot getawebsite.ie before touching it
 
