@@ -1,25 +1,20 @@
 # Leixlip Tarmac site: source
 
 Single-page site for Leixlip Tarmac Enterprises (Kildare, Dublin & Meath), built from a Claude Design handoff.
+Intended URL: https://getawebsite.ie/leixliptarmac/
 
 - `site/` Astro app with React islands. The design-system components and tokens are copied into `site/src/ds` and `site/src/styles`. See `site/README.md`.
 - `DEPLOY.md` deploy runbook for a session with Vercel access.
-- `../../leixlip-tarmac/` prebuilt copy for `getawebsite.ie/leixlip-tarmac`, built with `BASE_PATH=/leixlip-tarmac`. It only goes live if a deployment serves this repo's root folders.
+- `../../leixliptarmac/` the compiled site, built for the `/leixliptarmac` path.
 
 Every build ships with `noindex`, so the demo doesn't compete with leixliptarmac.com in Google.
 
-## Own subdomain (same setup as Cathy Conlon)
+## Rebuild the compiled copy
 
-- In Vercel, import `daithimurray/projects`.
-- Root Directory: `_source/leixlip-tarmac/site`. `site/vercel.json` holds the rest of the config.
-- Domain: `leixlip-tarmac.getawebsite.ie`.
-
-## Rebuild the sub-path copy
-
-    cd _source/leixlip-tarmac/site
+    cd _source/leixliptarmac/site
     npm ci
-    SITE_URL=https://getawebsite.ie BASE_PATH=/leixlip-tarmac PUBLIC_NOINDEX=1 npm run build
-    rm -rf ../../../leixlip-tarmac && cp -r dist ../../../leixlip-tarmac
+    SITE_URL=https://getawebsite.ie BASE_PATH=/leixliptarmac PUBLIC_NOINDEX=1 npm run build
+    rm -rf ../../../leixliptarmac && cp -r dist ../../../leixliptarmac
 
 ## Before launch (blocking)
 
