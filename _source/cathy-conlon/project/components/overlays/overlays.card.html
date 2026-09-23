@@ -1,0 +1,18 @@
+<!-- @dsCard group="Components" viewport="700x380" name="Overlays" -->
+<!doctype html><html lang="en"><head><meta charset="utf-8"><title>Overlays</title>
+<link rel="stylesheet" href="../../styles.css">
+<style>body{margin:0;padding:24px;background:var(--bg);color:var(--fg)} .g{display:grid;gap:20px} .row{display:flex;gap:12px;flex-wrap:wrap;align-items:center} .lbl{font:400 11px/1.4 var(--font-mono);color:var(--fg-muted);margin-bottom:8px} .blk{display:flex;flex-direction:column}</style>
+<script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+<script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+<script src="../../guidelines/ds-loader.js"></script>
+</head><body><div id="root"></div>
+<script type="text/babel" data-presets="react">
+const el = document.getElementById("root");
+const paths = ["../actions/Button.jsx","../actions/IconButton.jsx","../overlays/Dialog.jsx","../overlays/Drawer.jsx","../overlays/Menu.jsx"];
+IHLoad(paths).then(NS => { const { Button, IconButton, Dialog, Drawer, Menu } = NS; ReactDOM.createRoot(el).render(<App/>); function App(){ return (<div style={{display:"grid",gridTemplateColumns:"1fr 220px 190px",gap:24,alignItems:"start"}}>
+  <Dialog staticPreview title="Leave the page?" description="Your message hasn't been sent." onClose={()=>{}} footer={<><Button variant="tertiary">Stay</Button><Button variant="danger">Discard</Button></>}><div style={{boxShadow:"var(--shadow-2)",borderRadius:12}}></div></Dialog>
+  <div style={{height:330}}><Drawer staticPreview title="Filter poems" onClose={()=>{}} footer={<Button block size="sm">Show 24 poems</Button>}><p className="type-caption text-muted">Themes, collections, forms.</p></Drawer></div>
+  <Menu staticPreview items={[{type:"label",label:"This poem"},{label:"Copy link",hint:"⌘C"},{label:"Share…"},{label:"Large type",checked:true},{type:"separator"},{label:"Report a typo",danger:true}]}/>
+</div>); } });
+</script></body></html>

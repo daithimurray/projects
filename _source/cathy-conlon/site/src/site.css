@@ -1,0 +1,14 @@
+/* Responsive column overrides from the prototype (ui_kits/website/index.html).
+   Cols carry inline grid-column styles, so these match on the style attribute. */
+@media (max-width: 64em) {
+  .ih-grid > [style*="span 3"] { grid-column: span 6 !important; }
+  .ih-grid > [style*="span 4"] { grid-column: span 6 !important; }
+  .ih-grid > [style*="span 8"],
+  .ih-grid > [style*="span 7"] { grid-column: span 12 !important; }
+  .ih-grid > [style*="9 / span 4"] { grid-column: span 12 !important; }
+  .ih-grid > [style*="3 / span 8"] { grid-column: span 12 !important; }
+}
+@media (max-width: 40em) {
+  .ih-grid > [style*="span 6"] { grid-column: span 12 !important; }
+  .ih-grid > [style*="span 3"] { grid-column: span 6 !important; }
+}

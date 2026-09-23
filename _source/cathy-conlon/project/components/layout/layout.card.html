@@ -1,0 +1,20 @@
+<!-- @dsCard group="Components" viewport="700x560" name="Layout" -->
+<!doctype html><html lang="en"><head><meta charset="utf-8"><title>Layout</title>
+<link rel="stylesheet" href="../../styles.css">
+<style>body{margin:0;padding:24px;background:var(--bg);color:var(--fg)} .g{display:grid;gap:20px} .row{display:flex;gap:12px;flex-wrap:wrap;align-items:center} .lbl{font:400 11px/1.4 var(--font-mono);color:var(--fg-muted);margin-bottom:8px} .blk{display:flex;flex-direction:column}</style>
+<script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+<script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+<script src="../../guidelines/ds-loader.js"></script>
+</head><body><div id="root"></div>
+<script type="text/babel" data-presets="react">
+const el = document.getElementById("root");
+const paths = ["../actions/Button.jsx","../actions/TextLink.jsx","../content/Figure.jsx","../layout/Container.jsx","../layout/Section.jsx","../layout/Hero.jsx","../layout/NewsletterSignup.jsx"];
+IHLoad(paths).then(NS => { const { Button, TextLink, Figure, Container, Grid, Col, Section, Hero, NewsletterSignup } = NS; ReactDOM.createRoot(el).render(<App/>); function App(){ return (<div style={{margin:-24}}>
+  <Hero layout="split" eyebrow="Cathyh writer · Celbridge" title={<>Memory, place, and the women <em>history overlooked.</em></>} lede="Cathy Conlon writes poetry, fiction and radio drama from Celbridge, Co. Kildare." actions={<><Button variant="accent">The new book</Button><Button variant="tertiary" iconEnd="→">Read a poem</Button></>} media={<Figure ratio="4/5" placeholder="author portrait" mono/>} style={{paddingTop:32,paddingBottom:32,fontSize:12}}/>
+  <Section id="s" tight bordered eyebrow="Books" title="Four collections" action={<TextLink variant="arrow" href="#">All books</TextLink>} style={{paddingTop:24,paddingBottom:24}}>
+    <Grid>{[3,3,3,3].map((s,i)=><Col key={i} span={3}><div className="ih-book__placeholder" style={{position:"static",aspectRatio:"2/3",borderRadius:2,fontSize:14}}>Cover {i+1}</div></Col>)}</Grid>
+  </Section>
+  <div style={{padding:"0 24px 24px"}}><NewsletterSignup variant="inline"/></div>
+</div>); } });
+</script></body></html>

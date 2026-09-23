@@ -1,0 +1,22 @@
+<!-- @dsCard group="Components" viewport="700x420" name="Navigation" -->
+<!doctype html><html lang="en"><head><meta charset="utf-8"><title>Navigation</title>
+<link rel="stylesheet" href="../../styles.css">
+<style>body{margin:0;padding:24px;background:var(--bg);color:var(--fg)} .g{display:grid;gap:20px} .row{display:flex;gap:12px;flex-wrap:wrap;align-items:center} .lbl{font:400 11px/1.4 var(--font-mono);color:var(--fg-muted);margin-bottom:8px} .blk{display:flex;flex-direction:column}</style>
+<script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+<script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+<script src="../../guidelines/ds-loader.js"></script>
+</head><body><div id="root"></div>
+<script type="text/babel" data-presets="react">
+const el = document.getElementById("root");
+const paths = ["../actions/Button.jsx","../navigation/NavBar.jsx","../navigation/Footer.jsx","../navigation/Breadcrumb.jsx","../navigation/Tabs.jsx","../navigation/Pagination.jsx","../navigation/SkipLink.jsx"];
+IHLoad(paths).then(NS => { const { Button, NavBar, Footer, Breadcrumb, Tabs, Pagination, SkipLink } = NS; ReactDOM.createRoot(el).render(<App/>); function App(){ return (<div className="g" style={{margin:-24}}>
+  <NavBar sticky={false} variant="bordered" current="/poems" links={[{label:"Poetry",href:"/poetry"},{label:"Books",href:"/books"},{label:"Events",href:"/events"},{label:"About",href:"/about"}]} actions={<Button size="sm" variant="secondary">Newsletter</Button>}/>
+  <div style={{padding:"0 24px"}} className="g">
+    <Breadcrumb items={[{label:"Poetry",href:"#"},{label:"The Light Dancing",href:"#"},{label:"The Light Dancing"}]}/>
+    <div className="row" style={{alignItems:"flex-start",gap:32}}><div style={{flex:1}}><Tabs id="t1" tabs={[{value:"up",label:"Upcoming",count:3},{value:"past",label:"Past"},{value:"x",label:"Workshops",disabled:true}]}/></div><Tabs id="t2" variant="pills" tabs={[{value:"all",label:"All"},{value:"p",label:"Poems"},{value:"e",label:"Essays"}]}/></div>
+    <div className="row" style={{justifyContent:"space-between"}}><Pagination page={4} total={12} hrefFor={p=>"#"+p}/><div style={{width:260}}><Pagination variant="simple" page={2} total={9} hrefFor={p=>"#"}/></div></div>
+  </div>
+  <Footer tagline="Cathyh writer, poetry, fiction, radio drama" columns={[{title:"Read",links:[{label:"Poetry",href:"#"},{label:"Books",href:"#"},{label:"Journal",href:"#"}]},{title:"Follow",links:[{label:"Newsletter",href:"#"},{label:"Instagram",href:"#"}]},{title:"Contact",links:[{label:"Readings",href:"#"},{label:"Press kit",href:"#"}]}]} bottomLinks={[{label:"Privacy",href:"#"},{label:"Colophon",href:"#"}]} style={{padding:"32px 24px 24px"}}/>
+</div>); } });
+</script></body></html>

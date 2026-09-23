@@ -1,0 +1,3 @@
+# Build sources, not part of the served site.
+_source
+.claude

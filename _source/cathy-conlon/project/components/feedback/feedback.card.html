@@ -1,0 +1,28 @@
+<!-- @dsCard group="Components" viewport="700x420" name="Feedback" -->
+<!doctype html><html lang="en"><head><meta charset="utf-8"><title>Feedback</title>
+<link rel="stylesheet" href="../../styles.css">
+<style>body{margin:0;padding:24px;background:var(--bg);color:var(--fg)} .g{display:grid;gap:20px} .row{display:flex;gap:12px;flex-wrap:wrap;align-items:center} .lbl{font:400 11px/1.4 var(--font-mono);color:var(--fg-muted);margin-bottom:8px} .blk{display:flex;flex-direction:column}</style>
+<script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+<script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+<script src="../../guidelines/ds-loader.js"></script>
+</head><body><div id="root"></div>
+<script type="text/babel" data-presets="react">
+const el = document.getElementById("root");
+const paths = ["../actions/Button.jsx","../actions/IconButton.jsx","../feedback/Alert.jsx","../feedback/Toast.jsx","../feedback/Badge.jsx","../feedback/Tag.jsx","../feedback/Tooltip.jsx","../feedback/Skeleton.jsx","../feedback/EmptyState.jsx"];
+IHLoad(paths).then(NS => { const { Button, IconButton, Alert, Toast, Badge, Tag, TagList, Tooltip, Skeleton, EmptyState } = NS; ReactDOM.createRoot(el).render(<App/>); function App(){ return (<div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:24}}>
+  <div className="g" style={{gap:12}}>
+    <Alert tone="warning" title="Venue changed" onDismiss={()=>{}}>The 14 October reading moves to Celbridge Library.</Alert>
+    <Alert tone="success">You're on the list. First letter arrives in October.</Alert>
+    <Alert tone="error" title="Couldn't send">Check your email address and try again.</Alert>
+    <Alert>Signed copies available at readings.</Alert>
+    <Toast tone="success" message="Link copied" onDismiss={()=>{}} style={{animation:"none",minWidth:0}}/>
+  </div>
+  <div className="g" style={{gap:16}}>
+    <div className="row"><Badge>Draft</Badge><Badge tone="accent">New</Badge><Badge tone="inverse">Signed</Badge><Badge tone="outline">Forthcoming</Badge><Badge tone="success" dot>On sale</Badge><Badge tone="warning" dot>Few left</Badge><Badge tone="error">Sold out</Badge><Badge count>12</Badge></div>
+    <TagList label="Themes"><Tag href="#">memory</Tag><Tag onClick={()=>{}} selected>grief</Tag><Tag onClick={()=>{}}>father</Tag><Tag onRemove={()=>{}}>farm</Tag><Tag size="sm">family</Tag></TagList>
+    <div className="row"><Tooltip content="Copy link"><IconButton label="Copy link" variant="outline">⎘</IconButton></Tooltip><span className="lbl" style={{margin:0}}>hover / focus →</span><div style={{display:"flex",gap:12,alignItems:"center",flex:1}}><Skeleton variant="circle" width={32} height={32}/><div style={{flex:1}}><Skeleton variant="title" style={{width:"50%"}}/><Skeleton lines={2}/></div></div></div>
+    <EmptyState compact glyph="¶" title="Nothing here yet" description="No poems match “memory” and “father”. Try one at a time." actions={<Button variant="secondary" size="sm">Clear filters</Button>}/>
+  </div>
+</div>); } });
+</script></body></html>

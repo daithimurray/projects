@@ -1,0 +1,21 @@
+<!-- @dsCard group="Components" viewport="700x470" name="Forms" -->
+<!doctype html><html lang="en"><head><meta charset="utf-8"><title>Forms</title>
+<link rel="stylesheet" href="../../styles.css">
+<style>body{margin:0;padding:24px;background:var(--bg);color:var(--fg)} .g{display:grid;gap:20px} .row{display:flex;gap:12px;flex-wrap:wrap;align-items:center} .lbl{font:400 11px/1.4 var(--font-mono);color:var(--fg-muted);margin-bottom:8px} .blk{display:flex;flex-direction:column}</style>
+<script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+<script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+<script src="../../guidelines/ds-loader.js"></script>
+</head><body><div id="root"></div>
+<script type="text/babel" data-presets="react">
+const el = document.getElementById("root");
+const paths = ["../forms/TextField.jsx","../forms/TextArea.jsx","../forms/Select.jsx","../forms/Checkbox.jsx","../forms/Radio.jsx","../forms/Switch.jsx","../forms/SearchField.jsx"];
+IHLoad(paths).then(NS => { const { TextField, TextArea, Select, Checkbox, Radio, RadioGroup, Switch, SearchField } = NS; ReactDOM.createRoot(el).render(<App/>); function SwitchDemo(){ const [on,setOn]=React.useState(true); return <Switch id="s1" label="Candlelight mode" checked={on} onChange={setOn}/>; }
+function App(){ return (<div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:24}}>
+  <div className="g"><TextField id="a" label="Email" help="One letter a month. No noise." placeholder="you@example.com"/><TextField id="b" label="Name" error="Please tell us what to call you." defaultValue="I"/><TextField id="c" label="Instagram" optional prefix="@"/><TextField id="d" label="Disabled" disabled defaultValue="Read only"/><Select id="e" label="Topic" placeholder="Choose one" defaultValue="" options={["Readings & events","Rights & permissions","Press","Other"]}/></div>
+  <div className="g"><SearchField shortcut="⌘K"/><TextArea id="f" label="Message" serif rows={3} placeholder="Dear Cathy,"/>
+  <div className="g" style={{gap:10}}><Checkbox id="g" label="Send me the monthly letter" description="Unsubscribe any time." defaultChecked/><Checkbox id="h" label="Select all" indeterminate/><Checkbox id="i" label="Disabled" disabled/></div>
+  <RadioGroup legend="Format" inline><Radio id="r1" name="fmt" label="Hardcover" defaultChecked/><Radio id="r2" name="fmt" label="Paperback"/><Radio id="r3" name="fmt" label="Ebook"/></RadioGroup>
+  <div className="row"><SwitchDemo/><Switch id="s2" label="Off" checked={false} size="sm"/><Switch id="s3" label="Disabled" checked disabled/></div></div>
+</div>); } });
+</script></body></html>

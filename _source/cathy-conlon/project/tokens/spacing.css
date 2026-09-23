@@ -1,0 +1,23 @@
+/* ── Spacing, 8px base, 4px half-step ── */
+:root {
+  --space-0: 0;
+  --space-1: 0.25rem;  /* 4  */
+  --space-2: 0.5rem;   /* 8  */
+  --space-3: 0.75rem;  /* 12 */
+  --space-4: 1rem;     /* 16 */
+  --space-5: 1.5rem;   /* 24 */
+  --space-6: 2rem;     /* 32 */
+  --space-7: 2.5rem;   /* 40 */
+  --space-8: 3rem;     /* 48 */
+  --space-9: 4rem;     /* 64 */
+  --space-10: 5rem;    /* 80 */
+  --space-11: 6rem;    /* 96 */
+  --space-12: 8rem;    /* 128 */
+  /* semantic */
+  --gap-inline: var(--space-2);
+  --gap-stack: var(--space-4);
+  --gap-section: clamp(var(--space-9), 6vw + 1rem, var(--space-12));
+  --pad-card: var(--space-5);
+  --pad-control-x: var(--space-4);
+  --pad-control-y: var(--space-2);
+}
