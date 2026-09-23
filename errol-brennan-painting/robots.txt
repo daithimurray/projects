@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+
+# TODO: add sitemap line once the subdomain is live, e.g.
+# Sitemap: https://errolbrennan.getawebsite.ie/sitemap.xml
