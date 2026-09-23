@@ -1,7 +1,7 @@
 # Everyday Accountancy Services: website
 
 Single-page static site for Everyday Accountancy Services (Galway & Dublin).
-Intended URL: https://getawebsite.ie/everydayaccountancy/
+Intended URL: https://getawebsite.ie/eas/
 
 One self-contained file (CSS inlined, fonts from Google Fonts). It uses no relative
 asset paths, so it works with or without a slash at the end of the URL.

@@ -1,4 +1,4 @@
-# Deploy: getawebsite.ie/everydayaccountancy
+# Deploy: getawebsite.ie/eas
 
 Runbook for a Claude session that has Vercel access. The user has asked Claude to do every step.
 
@@ -11,7 +11,7 @@ Check: `curl -sS -H "Authorization: Bearer $VERCEL_TOKEN" https://api.vercel.com
 
 ## Facts
 
-- Site files: `everydayaccountancy/` at repo root (`index.html` with CSS inlined, plus `robots.txt`). No build step.
+- Site files: `eas/` at repo root (`index.html` with CSS inlined, plus `robots.txt`). No build step.
 - getawebsite.ie is its own Vercel project with **no connected Git repo** (found by the Cathy Conlon session). Its source is not in any known repo, so it has to be redeployed from the files of its current production deployment.
 - The house pattern for other clients is subdomains (cathy-conlon.getawebsite.ie). The user explicitly chose the **path** for this client.
 
@@ -20,11 +20,11 @@ Check: `curl -sS -H "Authorization: Bearer $VERCEL_TOKEN" https://api.vercel.com
 ### 1. Deploy the EAS site as its own project
 
 ```sh
-cd everydayaccountancy
-npx vercel@latest deploy --prod --yes --token "$VERCEL_TOKEN" --name everydayaccountancy
+cd eas
+npx vercel@latest deploy --prod --yes --token "$VERCEL_TOKEN" --name getawebsite-eas
 ```
 
-Record the production URL it prints (e.g. `https://everydayaccountancy.vercel.app`). Check it loads with styles.
+Record the production URL it prints (e.g. `https://eas.vercel.app`). Check it loads with styles.
 
 ### 2. Snapshot getawebsite.ie before touching it
 
@@ -41,7 +41,7 @@ Stop and report back if either of these is true:
 ### 3. Download its files
 
 ```sh
-node _source/everydayaccountancy/pull-deployment.mjs <deploymentId> /tmp/getawebsite
+node _source/eas/pull-deployment.mjs <deploymentId> /tmp/getawebsite
 ```
 
 Compare the file list with what `https://getawebsite.ie/` serves: fetch the homepage and a few linked assets, and confirm they exist locally.
@@ -53,11 +53,11 @@ Merge into `/tmp/getawebsite/vercel.json`. Create the file if it's missing, and 
 ```json
 {
   "redirects": [
-    { "source": "/everydayaccountancy", "destination": "/everydayaccountancy/", "permanent": true }
+    { "source": "/eas", "destination": "/eas/", "permanent": true }
   ],
   "rewrites": [
-    { "source": "/everydayaccountancy/", "destination": "https://<EAS production host>/" },
-    { "source": "/everydayaccountancy/:path*", "destination": "https://<EAS production host>/:path*" }
+    { "source": "/eas/", "destination": "https://<EAS production host>/" },
+    { "source": "/eas/:path*", "destination": "https://<EAS production host>/:path*" }
   ]
 }
 ```
@@ -74,7 +74,7 @@ npx vercel@latest link --yes --token "$VERCEL_TOKEN" --project <getawebsite proj
 npx vercel@latest deploy --yes --token "$VERCEL_TOKEN"          # preview
 ```
 
-Check the preview: the homepage matches live getawebsite.ie, and `/everydayaccountancy/` shows the EAS site. Then promote:
+Check the preview: the homepage matches live getawebsite.ie, and `/eas/` shows the EAS site. Then promote:
 
 ```sh
 npx vercel@latest deploy --prod --yes --token "$VERCEL_TOKEN"
@@ -83,7 +83,7 @@ npx vercel@latest deploy --prod --yes --token "$VERCEL_TOKEN"
 ### 6. Verify live
 
 - `https://getawebsite.ie/` is unchanged.
-- `https://getawebsite.ie/everydayaccountancy` redirects to the version with a slash and renders the EAS site with styles and team photos.
+- `https://getawebsite.ie/eas` redirects to the version with a slash and renders the EAS site with styles and team photos.
 - `https://getawebsite.ie/cathy-conlon...` and other existing routes are unchanged.
 
 ### Rollback
