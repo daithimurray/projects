@@ -1,0 +1,59 @@
+/* Slide deck shared styles */
+:root {
+  --slide-font-display: 'Jost', 'Futura', 'Century Gothic', sans-serif;
+  --slide-font-body: 'Hanken Grotesk', 'Helvetica Neue', Helvetica, sans-serif;
+
+  /* Salesforce template tokens from the PDF color page */
+  --cloud-blue-90: #CFE9FE;
+  --cloud-blue-70: #00B3FF;
+  --electric-blue-50: #066AFE;
+  --electric-blue-30: #022AC0;
+  --electric-blue-20: #002775;
+  --ink: #002775;
+  --paper: #FFFFFF;
+
+  /* Slack brand flavoring for mixed decks */
+  --sl-aubergine: #4A154B;
+  --sl-yellow: #ECB22E;
+  --sl-green: #2EB67D;
+}
+section.slide {
+  font-family: var(--slide-font-body);
+  color: var(--ink);
+  background: var(--paper);
+  padding: 80px 120px;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+}
+section.slide .eyebrow {
+  font-family: var(--slide-font-display);
+  font-weight: 500;
+  text-transform: none;
+  font-size: 26px;
+  color: var(--electric-blue-50);
+  letter-spacing: -0.005em;
+}
+section.slide h1, section.slide h2 {
+  font-family: var(--slide-font-display);
+  font-weight: 500;
+  letter-spacing: -0.015em;
+  color: var(--ink);
+  line-height: 1.02;
+  margin: 0;
+}
+section.slide h1 { font-size: 110px; }
+section.slide h2 { font-size: 72px; }
+section.slide p { font-size: 30px; line-height: 1.35; font-weight: 400; margin: 0; }
+section.slide .footer {
+  position: absolute; left: 48px; bottom: 36px; font-size: 18px; color: var(--electric-blue-50);
+}
+section.slide .pagenum {
+  position: absolute; right: 48px; bottom: 36px; font-size: 18px; color: var(--electric-blue-50);
+}
+section.slide .logo-mark {
+  position: absolute; top: 36px; left: 48px; width: 44px; height: 44px;
+  background: var(--cloud-blue-70);
+  clip-path: path('M22 0c-3.3 0-6 2.7-6 6v4h-4a6 6 0 0 0 0 12h16c3.3 0 6-2.7 6-6v-4c3.3 0 6-2.7 6-6s-2.7-6-6-6H22z');
+}

@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&amp;family=Figtree:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
+<style>*{box-sizing:border-box}body{margin:0;background:#FAF8F5;color:#1A1816;font-family:Figtree,system-ui,sans-serif;-webkit-font-smoothing:antialiased}a{color:#34506A}a:hover{color:#1B2C3D}</style>
+</helmet>
+<nav style="position:sticky;top:0;z-index:50;background:rgba(250,248,245,0.96);border-bottom:1px solid #E6E1D9;">
+  <div style="max-width:1200px;margin:0 auto;padding:0 24px;min-height:64px;display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap;">
+    <a href="Index.dc.html" style="display:flex;align-items:baseline;gap:10px;text-decoration:none;color:#1B2C3D;"><span style="font-family:Newsreader,serif;font-size:22px;font-weight:500;">Errol Brennan Painting</span><span style="font-size:12px;letter-spacing:0.1em;text-transform:uppercase;font-weight:600;color:#5E5851;">Design system v1.0</span></a>
+    <div style="display:flex;gap:2px;flex-wrap:wrap;font-size:14px;font-weight:500;">
+      <a href="Index.dc.html" style="padding:8px 12px;border-radius:8px;text-decoration:none;color:#433F3A;" style-hover="background:#F3F0EB;">Overview</a>
+      <a href="Foundations.dc.html" style="padding:8px 12px;border-radius:8px;text-decoration:none;color:#433F3A;" style-hover="background:#F3F0EB;">Foundations</a>
+      <a href="Components-Forms.dc.html" style="padding:8px 12px;border-radius:8px;text-decoration:none;color:#433F3A;" style-hover="background:#F3F0EB;">Actions &amp; forms</a>
+      <a href="Components-Content.dc.html" style="padding:8px 12px;border-radius:8px;text-decoration:none;color:#433F3A;" style-hover="background:#F3F0EB;">Content &amp; layout</a>
+      <a href="Components-Feedback.dc.html" style="padding:8px 12px;border-radius:8px;text-decoration:none;color:#433F3A;" style-hover="background:#F3F0EB;">Feedback &amp; navigation</a>
+      <a href="Patterns.dc.html" style="padding:8px 12px;border-radius:8px;text-decoration:none;color:#111D29;background:#F3F0EB;">Patterns</a>
+      <a href="Tokens.dc.html" style="padding:8px 12px;border-radius:8px;text-decoration:none;color:#433F3A;" style-hover="background:#F3F0EB;">Tokens &amp; dev</a>
+    </div>
+  </div>
+</nav>
+
+<main style="max-width:1200px;margin:0 auto;padding:0 24px;">
+  <header style="padding:64px 0 32px;">
+    <p style="margin:0 0 12px;font-size:12px;letter-spacing:0.1em;text-transform:uppercase;font-weight:600;color:#9E6B19;">Patterns</p>
+    <h1 style="margin:0;font-family:Newsreader,serif;font-weight:500;font-size:clamp(36px,4.5vw,56px);line-height:1.1;letter-spacing:-0.02em;color:#111D29;">How the pieces go together</h1>
+    <p style="margin:16px 0 0;font-size:18px;line-height:1.6;color:#433F3A;max-width:720px;">Six recurring compositions. Each names the components it uses and the one decision it exists to make easy.</p>
+  </header>
+
+  <!-- QUOTE FLOW -->
+  <section id="quote" style="padding:48px 0;border-top:1px solid #E6E1D9;">
+    <h2 style="margin:0 0 8px;font-family:Newsreader,serif;font-weight:500;font-size:clamp(28px,3.2vw,40px);line-height:1.15;color:#111D29;">1 · Quote request flow</h2>
+    <p style="margin:0 0 24px;font-size:16px;line-height:1.6;color:#433F3A;max-width:720px;">Three screens, one question each. Progress steps on top, one primary button per screen, back is a ghost. Saves progress to local storage.</p>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:24px;">
+      <div style="background:#fff;border:1px solid #E6E1D9;border-radius:12px;padding:24px;display:flex;flex-direction:column;gap:16px;">
+        <div style="font-size:12px;letter-spacing:0.08em;text-transform:uppercase;font-weight:600;color:#5E5851;">Step 1 · The job</div>
+        <div style="display:flex;gap:6px;"><span style="flex:1;height:4px;background:#1B2C3D;border-radius:2px;"></span><span style="flex:1;height:4px;background:#E6E1D9;border-radius:2px;"></span><span style="flex:1;height:4px;background:#E6E1D9;border-radius:2px;"></span></div>
+        <h3 style="margin:0;font-family:Newsreader,serif;font-weight:500;font-size:24px;line-height:1.25;">What needs painting?</h3>
+        <div style="display:inline-flex;padding:4px;background:#F3F0EB;border-radius:8px;gap:2px;font-size:13px;font-weight:500;"><span style="padding:8px 12px;border-radius:6px;background:#fff;box-shadow:0 1px 2px rgba(26,24,22,0.08);font-weight:600;">Interior</span><span style="padding:8px 12px;color:#5E5851;">Exterior</span><span style="padding:8px 12px;color:#5E5851;">Both</span></div>
+        <div style="display:flex;flex-direction:column;gap:8px;font-size:14px;"><label style="display:flex;align-items:center;gap:10px;"><span style="width:18px;height:18px;border-radius:4px;background:#1B2C3D;"></span>Walls &amp; ceilings</label><label style="display:flex;align-items:center;gap:10px;"><span style="width:18px;height:18px;border-radius:4px;border:2px solid #7E776F;"></span>Woodwork</label><label style="display:flex;align-items:center;gap:10px;"><span style="width:18px;height:18px;border-radius:4px;border:2px solid #7E776F;"></span>Wallpaper</label></div>
+        <div style="display:flex;flex-direction:column;gap:6px;font-size:13px;color:#5E5851;">Rooms<div style="display:inline-flex;align-items:center;height:40px;border:1px solid #D1CAC0;border-radius:4px;overflow:hidden;width:140px;"><span style="width:40px;text-align:center;">−</span><span style="flex:1;text-align:center;font-weight:600;color:#1A1816;border-left:1px solid #D1CAC0;border-right:1px solid #D1CAC0;line-height:38px;">3</span><span style="width:40px;text-align:center;">+</span></div></div>
+        <div style="margin-top:auto;display:flex;justify-content:flex-end;"><span style="height:44px;padding:0 20px;border-radius:8px;background:#1B2C3D;color:#fff;font-weight:600;font-size:14px;display:inline-flex;align-items:center;">Next: photos</span></div>
+        <div style="font-size:12px;color:#5E5851;line-height:1.5;">Uses: Progress steps (compact), Segmented, Checkbox, Quantity stepper, Button</div>
+      </div>
+      <div style="background:#fff;border:1px solid #E6E1D9;border-radius:12px;padding:24px;display:flex;flex-direction:column;gap:16px;">
+        <div style="font-size:12px;letter-spacing:0.08em;text-transform:uppercase;font-weight:600;color:#5E5851;">Step 2 · Photos</div>
+        <div style="display:flex;gap:6px;"><span style="flex:1;height:4px;background:#1B2C3D;border-radius:2px;"></span><span style="flex:1;height:4px;background:#1B2C3D;border-radius:2px;"></span><span style="flex:1;height:4px;background:#E6E1D9;border-radius:2px;"></span></div>
+        <h3 style="margin:0;font-family:Newsreader,serif;font-weight:500;font-size:24px;line-height:1.25;">Show us the rooms</h3>
+        <p style="margin:0;font-size:14px;color:#5E5851;line-height:1.5;">A phone photo of each wall is plenty. Skip if you’d rather we visit.</p>
+        <div style="border:2px dashed #D1CAC0;border-radius:8px;padding:20px;text-align:center;font-size:14px;color:#5E5851;">Add photos</div>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;"><span style="aspect-ratio:1;background:#DCE3EA;border-radius:4px;"></span><span style="aspect-ratio:1;background:#E6E1D9;border-radius:4px;"></span><span style="aspect-ratio:1;background:#F3F0EB;border-radius:4px;border:1px solid #E6E1D9;"></span></div>
+        <div style="margin-top:auto;display:flex;justify-content:space-between;align-items:center;"><span style="font-size:14px;font-weight:600;color:#34506A;">Back</span><span style="height:44px;padding:0 20px;border-radius:8px;background:#1B2C3D;color:#fff;font-weight:600;font-size:14px;display:inline-flex;align-items:center;">Next: your details</span></div>
+        <div style="font-size:12px;color:#5E5851;line-height:1.5;">Uses: File upload, Progress bar, Toast (“Uploaded”), Button ghost</div>
+      </div>
+      <div style="background:#fff;border:1px solid #E6E1D9;border-radius:12px;padding:24px;display:flex;flex-direction:column;gap:16px;">
+        <div style="font-size:12px;letter-spacing:0.08em;text-transform:uppercase;font-weight:600;color:#5E5851;">Step 3 · Your details</div>
+        <div style="display:flex;gap:6px;"><span style="flex:1;height:4px;background:#1B2C3D;border-radius:2px;"></span><span style="flex:1;height:4px;background:#1B2C3D;border-radius:2px;"></span><span style="flex:1;height:4px;background:#1B2C3D;border-radius:2px;"></span></div>
+        <h3 style="margin:0;font-family:Newsreader,serif;font-weight:500;font-size:24px;line-height:1.25;">Where should we send it?</h3>
+        <div style="display:flex;flex-direction:column;gap:10px;font-size:13px;color:#5E5851;"><span>Name<span style="display:block;height:40px;border:1px solid #D1CAC0;border-radius:4px;margin-top:4px;"></span></span><span>Eircode<span style="display:block;height:40px;border:1px solid #D1CAC0;border-radius:4px;margin-top:4px;"></span></span><span>Email<span style="display:block;height:40px;border:1px solid #D1CAC0;border-radius:4px;margin-top:4px;"></span></span></div>
+        <div style="display:flex;gap:6px;flex-wrap:wrap;"><span style="font-size:12px;padding:4px 10px;border-radius:999px;background:#F1F4F7;color:#263D52;font-weight:500;">Interior</span><span style="font-size:12px;padding:4px 10px;border-radius:999px;background:#F1F4F7;color:#263D52;font-weight:500;">3 rooms</span><span style="font-size:12px;padding:4px 10px;border-radius:999px;background:#F1F4F7;color:#263D52;font-weight:500;">3 photos</span></div>
+        <div style="margin-top:auto;display:flex;justify-content:space-between;align-items:center;"><span style="font-size:14px;font-weight:600;color:#34506A;">Back</span><span style="height:44px;padding:0 20px;border-radius:8px;background:#D49A2C;color:#1A1816;font-weight:600;font-size:14px;display:inline-flex;align-items:center;">Send request</span></div>
+        <div style="font-size:12px;color:#5E5851;line-height:1.5;">Uses: Form field, Text input, Tag (summary), Alert (success → confirmation page)</div>
+      </div>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:24px;margin-top:24px;font-size:14px;line-height:1.6;color:#433F3A;">
+      <div><h4 style="margin:0 0 8px;font-size:12px;letter-spacing:0.08em;text-transform:uppercase;font-weight:600;color:#5E5851;">Rules</h4><ul style="margin:0;padding-left:20px;"><li>Details last: people give contact info once they’ve invested.</li><li>Every step skippable except the last; skipped items show as “We’ll ask” in the summary.</li><li>Final button is the only Ochre button in the flow.</li><li>Confirmation page repeats the summary and the reply time (“by Tuesday”).</li></ul></div>
+      <div><h4 style="margin:0 0 8px;font-size:12px;letter-spacing:0.08em;text-transform:uppercase;font-weight:600;color:#5E5851;">Validation</h4><ul style="margin:0;padding-left:20px;"><li>Inline on blur; summary Alert on submit with links to fields.</li><li>Eircode checked live against the service area; out-of-area shows an Info alert with the nearest we cover, not a dead end.</li><li>Draft saved to local storage; “Leave without sending?” Modal guards navigation.</li></ul></div>
+    </div>
+  </section>
+
+  <!-- SERVICE PAGE -->
+  <section id="service" style="padding:48px 0;border-top:1px solid #E6E1D9;">
+    <h2 style="margin:0 0 8px;font-family:Newsreader,serif;font-weight:500;font-size:clamp(28px,3.2vw,40px);line-height:1.15;color:#111D29;">2 · Service page</h2>
+    <p style="margin:0 0 24px;font-size:16px;line-height:1.6;color:#433F3A;max-width:720px;">One template for Interior, Exterior, Wallpaper, Commercial. Same order every time so returning visitors know where the price is.</p>
+    <div style="background:#fff;border:1px solid #E6E1D9;border-radius:12px;padding:24px;display:grid;grid-template-columns:minmax(0,2fr) minmax(0,1fr);gap:24px;">
+      <div style="display:flex;flex-direction:column;gap:12px;">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:0;border-radius:8px;overflow:hidden;min-height:120px;"><div style="background:#1B2C3D;color:#fff;padding:16px;font-size:12px;"><span style="color:#E1B04F;">Hero</span><br>H1 + lede + Get a quote / Call<br>Rating pill</div><div style="background:#DCE3EA;display:flex;align-items:center;justify-content:center;font-size:12px;color:#46627E;">Before / after compare</div></div>
+        <div style="border:1px dashed #D1CAC0;border-radius:8px;padding:12px 16px;font-size:12px;color:#5E5851;"><strong style="color:#1A1816;">Section header</strong> “What’s included” → 3-col checklist (Card filled ×3)</div>
+        <div style="border:1px dashed #D1CAC0;border-radius:8px;padding:12px 16px;font-size:12px;color:#5E5851;"><strong style="color:#1A1816;">Pricing table</strong> guide prices + footnote + Info alert “How we price”</div>
+        <div style="border:1px dashed #D1CAC0;border-radius:8px;padding:12px 16px;font-size:12px;color:#5E5851;"><strong style="color:#1A1816;">Project cards</strong> ×3 filtered to this service + arrow link “All interior projects”</div>
+        <div style="border:1px dashed #D1CAC0;border-radius:8px;padding:12px 16px;font-size:12px;color:#5E5851;"><strong style="color:#1A1816;">Testimonials</strong> ×2, this service only</div>
+        <div style="border:1px dashed #D1CAC0;border-radius:8px;padding:12px 16px;font-size:12px;color:#5E5851;"><strong style="color:#1A1816;">Accordion</strong> 5–7 FAQs</div>
+        <div style="background:#1B2C3D;border-radius:8px;padding:12px 16px;font-size:12px;color:#DCE3EA;"><strong style="color:#fff;">CTA band</strong> Ready for a quote?</div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:12px;">
+        <div style="position:sticky;top:88px;border:1px solid #E6E1D9;border-radius:8px;padding:16px;font-size:12px;color:#5E5851;display:flex;flex-direction:column;gap:8px;"><strong style="color:#1A1816;font-size:13px;">Sticky aside (≥1024px)</strong><span>From <strong style="color:#1A1816;font-size:18px;">€480</strong> / room</span><span style="height:40px;border-radius:8px;background:#1B2C3D;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:600;font-size:13px;">Get a quote</span><span style="height:40px;border-radius:8px;border:1px solid #D1CAC0;color:#1B2C3D;display:flex;align-items:center;justify-content:center;font-weight:600;font-size:13px;">Call 087 875 3433</span><span>Next available: w/c 12 Oct</span><span>Becomes the Sticky CTA bar on mobile.</span></div>
+      </div>
+    </div>
+    <ul style="margin:24px 0 0;padding-left:20px;font-size:14px;line-height:1.7;color:#433F3A;max-width:720px;"><li>Grid: content span 8, aside span 4. Aside collapses into the flow above FAQs on tablet.</li><li>Price appears three times: hero lede (“from €480”), pricing table, aside. Same number, same source.</li><li>Photography: hero compare + project cards. No other imagery.</li></ul>
+  </section>
+
+  <!-- PORTFOLIO -->
+  <section id="portfolio" style="padding:48px 0;border-top:1px solid #E6E1D9;">
+    <h2 style="margin:0 0 8px;font-family:Newsreader,serif;font-weight:500;font-size:clamp(28px,3.2vw,40px);line-height:1.15;color:#111D29;">3 · Portfolio browse</h2>
+    <p style="margin:0 0 24px;font-size:16px;line-height:1.6;color:#433F3A;max-width:720px;">Filter chips, a 3-column grid of Project cards, pagination. Filters update the URL so a “sage green hallways” search can be shared.</p>
+    <div style="background:#fff;border:1px solid #E6E1D9;border-radius:12px;padding:24px;display:flex;flex-direction:column;gap:16px;">
+      <div style="display:flex;justify-content:space-between;align-items:flex-end;gap:16px;flex-wrap:wrap;"><div><div style="font-size:12px;letter-spacing:0.1em;text-transform:uppercase;font-weight:600;color:#9E6B19;">Our work</div><div style="font-family:Newsreader,serif;font-size:28px;font-weight:500;color:#111D29;">42 projects</div></div><div style="display:flex;gap:6px;flex-wrap:wrap;"><span style="height:32px;padding:0 12px;border-radius:999px;background:#1B2C3D;color:#fff;font-size:13px;font-weight:500;display:inline-flex;align-items:center;">All</span><span style="height:32px;padding:0 12px;border-radius:999px;border:1px solid #D1CAC0;font-size:13px;font-weight:500;display:inline-flex;align-items:center;">Interior</span><span style="height:32px;padding:0 12px;border-radius:999px;border:1px solid #D1CAC0;font-size:13px;font-weight:500;display:inline-flex;align-items:center;">Exterior</span><span style="height:32px;padding:0 12px;border-radius:999px;border:1px solid #D1CAC0;font-size:13px;font-weight:500;display:inline-flex;align-items:center;">Wallpaper</span><span style="height:32px;padding:0 12px;border-radius:999px;border:1px solid #D1CAC0;font-size:13px;font-weight:500;display:inline-flex;align-items:center;">Commercial</span></div></div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:16px;"><div><div style="aspect-ratio:4/3;background:#DCE3EA;border-radius:8px;"></div><div style="font-size:13px;font-weight:600;margin-top:8px;">Title</div><div style="font-size:12px;color:#5E5851;">meta · meta · year</div></div><div><div style="aspect-ratio:4/3;background:#E6E1D9;border-radius:8px;"></div><div style="font-size:13px;font-weight:600;margin-top:8px;">Title</div><div style="font-size:12px;color:#5E5851;">meta · meta · year</div></div><div><div style="aspect-ratio:4/3;background:#F5E4BF;border-radius:8px;"></div><div style="font-size:13px;font-weight:600;margin-top:8px;">Title</div><div style="font-size:12px;color:#5E5851;">meta · meta · year</div></div><div><div style="aspect-ratio:4/3;background:#E6E1D9;border-radius:8px;"></div><div style="font-size:13px;font-weight:600;margin-top:8px;">Title</div><div style="font-size:12px;color:#5E5851;">meta · meta · year</div></div><div><div style="aspect-ratio:4/3;background:#DCE3EA;border-radius:8px;"></div><div style="font-size:13px;font-weight:600;margin-top:8px;">Title</div><div style="font-size:12px;color:#5E5851;">meta · meta · year</div></div><div><div style="aspect-ratio:4/3;background:#F3F0EB;border-radius:8px;"></div><div style="font-size:13px;font-weight:600;margin-top:8px;">Title</div><div style="font-size:12px;color:#5E5851;">meta · meta · year</div></div></div>
+      <div style="display:flex;justify-content:center;gap:4px;font-size:13px;"><span style="width:36px;height:36px;display:inline-flex;align-items:center;justify-content:center;">‹</span><span style="width:36px;height:36px;display:inline-flex;align-items:center;justify-content:center;border-radius:8px;background:#1B2C3D;color:#fff;font-weight:600;">1</span><span style="width:36px;height:36px;display:inline-flex;align-items:center;justify-content:center;">2</span><span style="width:36px;height:36px;display:inline-flex;align-items:center;justify-content:center;">3</span><span style="width:36px;height:36px;display:inline-flex;align-items:center;justify-content:center;">›</span></div>
+    </div>
+    <ul style="margin:24px 0 0;padding-left:20px;font-size:14px;line-height:1.7;color:#433F3A;max-width:720px;"><li>12 per page. Count in the heading updates with filters (“7 exterior projects”).</li><li>Skeleton grid while loading; Empty state with “Clear filters” when zero.</li><li>Project detail opens as a page (not a modal) with Breadcrumb, Compare hero, Swatch strip, Tabs (Photos / Colours / Details), and prev/next project links.</li></ul>
+  </section>
+
+  <!-- TRUST STACK -->
+  <section id="trust" style="padding:48px 0;border-top:1px solid #E6E1D9;">
+    <h2 style="margin:0 0 8px;font-family:Newsreader,serif;font-weight:500;font-size:clamp(28px,3.2vw,40px);line-height:1.15;color:#111D29;">4 · Trust stack</h2>
+    <p style="margin:0 0 24px;font-size:16px;line-height:1.6;color:#433F3A;max-width:720px;">Proof appears in a fixed order, from cheapest to read to most demanding: rating → stats → testimonials → accreditations. Never all in one block. Launch state for Errol: photos + pricing + free-quote promise only; rating and stats switch on when real numbers exist.</p>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;">
+      <div style="background:#fff;border:1px solid #E6E1D9;border-radius:12px;padding:20px;"><div style="font-size:12px;letter-spacing:0.08em;text-transform:uppercase;font-weight:600;color:#5E5851;margin-bottom:8px;">Hero · Rating pill</div><div style="font-size:14px;"><strong>4.9</strong> <span style="color:#D49A2C;">★</span> · Google reviews (sample)</div><p style="margin:8px 0 0;font-size:13px;color:#5E5851;line-height:1.5;">Under the hero buttons. One line.</p></div>
+      <div style="background:#fff;border:1px solid #E6E1D9;border-radius:12px;padding:20px;"><div style="font-size:12px;letter-spacing:0.08em;text-transform:uppercase;font-weight:600;color:#5E5851;margin-bottom:8px;">Below fold · Stats</div><div style="font-family:Newsreader,serif;font-size:28px;color:#111D29;">22 · 1,140 · 5yr</div><p style="margin:8px 0 0;font-size:13px;color:#5E5851;line-height:1.5;">Four numbers, one row, after services.</p></div>
+      <div style="background:#fff;border:1px solid #E6E1D9;border-radius:12px;padding:20px;"><div style="font-size:12px;letter-spacing:0.08em;text-transform:uppercase;font-weight:600;color:#5E5851;margin-bottom:8px;">Mid-page · Testimonials</div><div style="font-family:Newsreader,serif;font-style:italic;font-size:16px;color:#1A1816;">“…left the place cleaner than they found it.”</div><p style="margin:8px 0 0;font-size:13px;color:#5E5851;line-height:1.5;">Two or three, one featured inverse.</p></div>
+      <div style="background:#fff;border:1px solid #E6E1D9;border-radius:12px;padding:20px;"><div style="font-size:12px;letter-spacing:0.08em;text-transform:uppercase;font-weight:600;color:#5E5851;margin-bottom:8px;">Footer · Accreditations</div><div style="display:flex;gap:6px;flex-wrap:wrap;"><span style="font-size:11px;font-weight:600;padding:3px 6px;border-radius:4px;border:1px solid #D1CAC0;">Insured (confirm)</span><span style="font-size:11px;font-weight:600;padding:3px 6px;border-radius:4px;border:1px solid #D1CAC0;">Safe Pass (confirm)</span><span style="font-size:11px;font-weight:600;padding:3px 6px;border-radius:4px;border:1px solid #D1CAC0;">Free quotes</span></div><p style="margin:8px 0 0;font-size:13px;color:#5E5851;line-height:1.5;">Badges only in the footer and About page.</p></div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact" style="padding:48px 0;border-top:1px solid #E6E1D9;">
+    <h2 style="margin:0 0 8px;font-family:Newsreader,serif;font-weight:500;font-size:clamp(28px,3.2vw,40px);line-height:1.15;color:#111D29;">5 · Always-reachable contact</h2>
+    <p style="margin:0 0 24px;font-size:16px;line-height:1.6;color:#433F3A;max-width:720px;">Where “Get a quote” and the phone number live on every page, by breakpoint.</p>
+    <div style="background:#fff;border:1px solid #E6E1D9;border-radius:12px;overflow:hidden;">
+      <table style="width:100%;border-collapse:collapse;font-size:14px;line-height:1.5;">
+        <thead><tr style="background:#F3F0EB;font-size:12px;letter-spacing:0.08em;text-transform:uppercase;font-weight:600;color:#5E5851;text-align:left;"><th style="padding:12px 20px;font-weight:600;">Placement</th><th style="padding:12px 20px;font-weight:600;">Mobile &lt; 768</th><th style="padding:12px 20px;font-weight:600;">Tablet</th><th style="padding:12px 20px;font-weight:600;">Desktop ≥ 1024</th></tr></thead>
+        <tbody>
+          <tr style="border-top:1px solid #F3F0EB;"><td style="padding:12px 20px;font-weight:500;">Navbar</td><td style="padding:12px 20px;color:#433F3A;">Phone icon + menu</td><td style="padding:12px 20px;color:#433F3A;">Phone text + Quote button</td><td style="padding:12px 20px;color:#433F3A;">Phone text + Quote button</td></tr>
+          <tr style="border-top:1px solid #F3F0EB;"><td style="padding:12px 20px;font-weight:500;">Hero</td><td style="padding:12px 20px;color:#433F3A;">Quote + See work (stacked, full width)</td><td style="padding:12px 20px;color:#433F3A;">Quote + See work</td><td style="padding:12px 20px;color:#433F3A;">Quote + See work</td></tr>
+          <tr style="border-top:1px solid #F3F0EB;"><td style="padding:12px 20px;font-weight:500;">Sticky CTA bar</td><td style="padding:12px 20px;color:#433F3A;">Call + Quote after 400px scroll</td><td style="padding:12px 20px;color:#A9A198;">—</td><td style="padding:12px 20px;color:#A9A198;">—</td></tr>
+          <tr style="border-top:1px solid #F3F0EB;"><td style="padding:12px 20px;font-weight:500;">Service aside</td><td style="padding:12px 20px;color:#A9A198;">— (bar covers it)</td><td style="padding:12px 20px;color:#433F3A;">Inline card above FAQs</td><td style="padding:12px 20px;color:#433F3A;">Sticky, span 4</td></tr>
+          <tr style="border-top:1px solid #F3F0EB;"><td style="padding:12px 20px;font-weight:500;">CTA band</td><td style="padding:12px 20px;color:#433F3A;">Every page, above footer</td><td style="padding:12px 20px;color:#433F3A;">Every page</td><td style="padding:12px 20px;color:#433F3A;">Every page</td></tr>
+          <tr style="border-top:1px solid #F3F0EB;"><td style="padding:12px 20px;font-weight:500;">Footer</td><td style="padding:12px 20px;color:#433F3A;">Phone 18px, email, address</td><td style="padding:12px 20px;color:#433F3A;">Same</td><td style="padding:12px 20px;color:#433F3A;">Same</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- COPY -->
+  <section id="copy" style="padding:48px 0 96px;border-top:1px solid #E6E1D9;">
+    <h2 style="margin:0 0 8px;font-family:Newsreader,serif;font-weight:500;font-size:clamp(28px,3.2vw,40px);line-height:1.15;color:#111D29;">6 · Voice &amp; copy</h2>
+    <p style="margin:0 0 24px;font-size:16px;line-height:1.6;color:#433F3A;max-width:720px;">A tradesperson who explains things properly. Plain, specific, a bit dry. “We” is Errol (and whoever’s on the job that day); “you” is the client.</p>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:24px;">
+      <div style="background:#fff;border:1px solid #E6E1D9;border-radius:12px;padding:24px;">
+        <h3 style="margin:0 0 12px;font-size:18px;font-weight:600;">Rules</h3>
+        <ul style="margin:0;padding-left:20px;font-size:15px;line-height:1.7;color:#433F3A;"><li>Sentence case everywhere. Product/paint names keep their capitals.</li><li>Headlines ≤ 8 words, say what changes for the client.</li><li>Buttons: verb + object. “Get a quote”, “Book a visit”, “See our work”.</li><li>Prices: “from €480” lowercase from, per unit stated, VAT status once per page (confirm whether registered).</li><li>Time: “within one working day”, “w/c 12 Oct”. Never “ASAP” or “soon”.</li><li>No exclamation marks. One emoji, nowhere.</li><li>Contractions yes; jargon no (say “low-sheen”, then “eggshell” in brackets).</li></ul>
+      </div>
+      <div style="background:#fff;border:1px solid #E6E1D9;border-radius:12px;padding:24px;">
+        <h3 style="margin:0 0 12px;font-size:18px;font-weight:600;">Before → after</h3>
+        <div style="display:flex;flex-direction:column;gap:12px;font-size:15px;line-height:1.5;">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;"><span style="color:#8A1C16;text-decoration:line-through;">Transform Your Space With Our Premium Services!</span><span style="color:#1F5C38;">Walls that look finished up close.</span></div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;"><span style="color:#8A1C16;text-decoration:line-through;">Contact us for a competitive quote</span><span style="color:#1F5C38;">Get a quote — itemised, within one working day</span></div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;"><span style="color:#8A1C16;text-decoration:line-through;">Submit</span><span style="color:#1F5C38;">Send request</span></div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;"><span style="color:#8A1C16;text-decoration:line-through;">Oops! Something went wrong.</span><span style="color:#1F5C38;">We couldn’t send your request. Fix the 2 fields below, or call us.</span></div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;"><span style="color:#8A1C16;text-decoration:line-through;">Prices on application</span><span style="color:#1F5C38;">From €480 per room, including paint (VAT status to confirm)</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer style="border-top:1px solid #E6E1D9;">
+  <div style="max-width:1200px;margin:0 auto;padding:32px 24px;display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;font-size:14px;color:#5E5851;">
+    <a href="Components-Feedback.dc.html" style="font-weight:500;">← Feedback &amp; navigation</a>
+    <a href="Tokens.dc.html" style="font-weight:500;">Next: Tokens &amp; dev guide →</a>
+  </div>
+</footer>
+</x-dc>
+</body>
+</html>

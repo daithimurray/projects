@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&amp;family=Figtree:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
+<style>*{box-sizing:border-box}body{margin:0;background:#FAF8F5;color:#1A1816;font-family:Figtree,system-ui,sans-serif;-webkit-font-smoothing:antialiased}a{color:#34506A}a:hover{color:#1B2C3D}</style>
+</helmet>
+<nav style="position:sticky;top:0;z-index:50;background:rgba(250,248,245,0.96);border-bottom:1px solid #E6E1D9;">
+  <div style="max-width:1200px;margin:0 auto;padding:0 24px;min-height:64px;display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap;">
+    <a href="Index.dc.html" style="display:flex;align-items:baseline;gap:10px;text-decoration:none;color:#1B2C3D;"><span style="font-family:Newsreader,serif;font-size:22px;font-weight:500;">Errol Brennan Painting</span><span style="font-size:12px;letter-spacing:0.1em;text-transform:uppercase;font-weight:600;color:#5E5851;">Design system v1.0</span></a>
+    <div style="display:flex;gap:2px;flex-wrap:wrap;font-size:14px;font-weight:500;">
+      <a href="Index.dc.html" style="padding:8px 12px;border-radius:8px;text-decoration:none;color:#433F3A;" style-hover="background:#F3F0EB;">Overview</a>
+      <a href="Foundations.dc.html" style="padding:8px 12px;border-radius:8px;text-decoration:none;color:#433F3A;" style-hover="background:#F3F0EB;">Foundations</a>
+      <a href="Components-Forms.dc.html" style="padding:8px 12px;border-radius:8px;text-decoration:none;color:#433F3A;" style-hover="background:#F3F0EB;">Actions &amp; forms</a>
+      <a href="Components-Content.dc.html" style="padding:8px 12px;border-radius:8px;text-decoration:none;color:#111D29;background:#F3F0EB;">Content &amp; layout</a>
+      <a href="Components-Feedback.dc.html" style="padding:8px 12px;border-radius:8px;text-decoration:none;color:#433F3A;" style-hover="background:#F3F0EB;">Feedback &amp; navigation</a>
+      <a href="Patterns.dc.html" style="padding:8px 12px;border-radius:8px;text-decoration:none;color:#433F3A;" style-hover="background:#F3F0EB;">Patterns</a>
+      <a href="Tokens.dc.html" style="padding:8px 12px;border-radius:8px;text-decoration:none;color:#433F3A;" style-hover="background:#F3F0EB;">Tokens &amp; dev</a>
+    </div>
+  </div>
+</nav>
+
+<main style="max-width:1200px;margin:0 auto;padding:0 24px;">
+  <header style="padding:64px 0 32px;display:flex;justify-content:space-between;align-items:flex-end;gap:24px;flex-wrap:wrap;">
+    <div><p style="margin:0 0 12px;font-size:12px;letter-spacing:0.1em;text-transform:uppercase;font-weight:600;color:#9E6B19;">Components · 2 of 3</p><h1 style="margin:0;font-family:Newsreader,serif;font-weight:500;font-size:clamp(36px,4.5vw,56px);line-height:1.1;letter-spacing:-0.02em;color:#111D29;">Content &amp; layout</h1><p style="margin:12px 0 0;font-size:16px;color:#5E5851;">15 components that show the work and the price.</p></div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;font-size:14px;font-weight:500;"><a href="#card" style="padding:6px 12px;border:1px solid #D1CAC0;border-radius:999px;text-decoration:none;color:#1B2C3D;">Card</a><a href="#service" style="padding:6px 12px;border:1px solid #D1CAC0;border-radius:999px;text-decoration:none;color:#1B2C3D;">Service card</a><a href="#project" style="padding:6px 12px;border:1px solid #D1CAC0;border-radius:999px;text-decoration:none;color:#1B2C3D;">Project card</a><a href="#compare" style="padding:6px 12px;border:1px solid #D1CAC0;border-radius:999px;text-decoration:none;color:#1B2C3D;">Before / after</a><a href="#testimonial" style="padding:6px 12px;border:1px solid #D1CAC0;border-radius:999px;text-decoration:none;color:#1B2C3D;">Testimonial</a><a href="#badge" style="padding:6px 12px;border:1px solid #D1CAC0;border-radius:999px;text-decoration:none;color:#1B2C3D;">Badge</a><a href="#tag" style="padding:6px 12px;border:1px solid #D1CAC0;border-radius:999px;text-decoration:none;color:#1B2C3D;">Tag</a><a href="#avatar" style="padding:6px 12px;border:1px solid #D1CAC0;border-radius:999px;text-decoration:none;color:#1B2C3D;">Avatar</a><a href="#rating" style="padding:6px 12px;border:1px solid #D1CAC0;border-radius:999px;text-decoration:none;color:#1B2C3D;">Rating</a><a href="#stat" style="padding:6px 12px;border:1px solid #D1CAC0;border-radius:999px;text-decoration:none;color:#1B2C3D;">Stat</a><a href="#pricing" style="padding:6px 12px;border:1px solid #D1CAC0;border-radius:999px;text-decoration:none;color:#1B2C3D;">Pricing table</a><a href="#swatch" style="padding:6px 12px;border:1px solid #D1CAC0;border-radius:999px;text-decoration:none;color:#1B2C3D;">Paint swatch</a><a href="#section-header" style="padding:6px 12px;border:1px solid #D1CAC0;border-radius:999px;text-decoration:none;color:#1B2C3D;">Section header</a><a href="#hero" style="padding:6px 12px;border:1px solid #D1CAC0;border-radius:999px;text-decoration:none;color:#1B2C3D;">Hero</a><a href="#cta" style="padding:6px 12px;border:1px solid #D1CAC0;border-radius:999px;text-decoration:none;color:#1B2C3D;">CTA band</a></div>
+  </header>
+
+  <!-- CARD -->
+  <section id="card" style="padding:48px 0;border-top:1px solid #E6E1D9;">
+    <div style="display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;"><h2 style="margin:0;font-family:Newsreader,serif;font-weight:500;font-size:clamp(28px,3.2vw,40px);line-height:1.15;color:#111D29;">Card</h2><span style="font-size:12px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;padding:2px 8px;border-radius:4px;background:#E6F3EB;color:#1F5C38;">Stable</span></div>
+    <p style="margin:8px 0 24px;font-size:16px;line-height:1.6;color:#433F3A;max-width:720px;">The base surface. White, 1px Plaster border, radius 12. Three variants by emphasis; interactive cards lift on hover.</p>
+    <div style="background:#F3F0EB;border:1px solid #E6E1D9;border-radius:12px;padding:32px;display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:24px;">
+      <div style="background:#fff;border:1px solid #E6E1D9;border-radius:12px;padding:24px;"><div style="font-size:12px;letter-spacing:0.08em;text-transform:uppercase;font-weight:600;color:#5E5851;margin-bottom:8px;">Outlined · default</div><div style="font-size:16px;line-height:1.6;color:#433F3A;">Border 1px plaster.200. Sits on plaster.50 or plaster.100.</div></div>
+      <div style="background:#fff;border-radius:12px;padding:24px;box-shadow:0 1px 2px rgba(26,24,22,0.08);"><div style="font-size:12px;letter-spacing:0.08em;text-transform:uppercase;font-weight:600;color:#5E5851;margin-bottom:8px;">Elevated</div><div style="font-size:16px;line-height:1.6;color:#433F3A;">Shadow sm, no border. For cards over photos or dense grids.</div></div>
+      <div style="background:#FAF8F5;border-radius:12px;padding:24px;"><div style="font-size:12px;letter-spacing:0.08em;text-transform:uppercase;font-weight:600;color:#5E5851;margin-bottom:8px;">Filled</div><div style="font-size:16px;line-height:1.6;color:#433F3A;">plaster.50 fill on white pages. Quiet grouping.</div></div>
+      <a href="#card" style="display:block;text-decoration:none;color:inherit;background:#fff;border:1px solid #E6E1D9;border-radius:12px;padding:24px;transition:all 150ms cubic-bezier(0.2,0,0,1);" style-hover="border-color:#B9C6D4;box-shadow:0 4px 12px rgba(26,24,22,0.12);transform:translateY(-2px);"><div style="font-size:12px;letter-spacing:0.08em;text-transform:uppercase;font-weight:600;color:#5E5851;margin-bottom:8px;">Interactive · hover me</div><div style="font-size:16px;line-height:1.6;color:#433F3A;">Whole card is one link. Lifts 2px, gains shadow md, border ink.200.</div></a>
+      <div style="background:#1B2C3D;border:1px solid rgba(255,255,255,0.12);border-radius:12px;padding:24px;color:#fff;"><div style="font-size:12px;letter-spacing:0.08em;text-transform:uppercase;font-weight:600;color:#ECCB85;margin-bottom:8px;">Inverse</div><div style="font-size:16px;line-height:1.6;color:#DCE3EA;">Ink surface for the one highlighted item (e.g. recommended package).</div></div>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:24px;margin-top:24px;font-size:14px;line-height:1.6;color:#433F3A;">
+      <div><h4 style="margin:0 0 8px;font-size:12px;letter-spacing:0.08em;text-transform:uppercase;font-weight:600;color:#5E5851;">Anatomy</h4><ol style="margin:0;padding-left:20px;"><li>Surface, radius 12</li><li>Optional media slot (top, full-bleed, radius inherits)</li><li>Body padding 24 (compact 16, roomy 32)</li><li>Optional footer row</li></ol></div>
+      <div><h4 style="margin:0 0 8px;font-size:12px;letter-spacing:0.08em;text-transform:uppercase;font-weight:600;color:#5E5851;">Usage</h4><ul style="margin:0;padding-left:20px;"><li>Don’t nest cards. Use dividers inside.</li><li>Pick border <em>or</em> shadow, never both.</li><li>Max one inverse card per row.</li><li>Cards in a grid share height; content aligns top, footer bottom.</li></ul></div>
+      <div><h4 style="margin:0 0 8px;font-size:12px;letter-spacing:0.08em;text-transform:uppercase;font-weight:600;color:#5E5851;">Accessibility</h4><ul style="margin:0;padding-left:20px;"><li>Interactive cards are a single <code style="font-family:'JetBrains Mono',monospace;font-size:13px;">&lt;a&gt;</code>; no nested buttons (put them outside the link).</li><li>Card title is a heading at the correct level.</li><li>Hover lift is disabled under reduced motion.</li></ul></div>
+      <div><h4 style="margin:0 0 8px;font-size:12px;letter-spacing:0.08em;text-transform:uppercase;font-weight:600;color:#5E5851;">Spec</h4><pre style="margin:0;padding:16px;background:#1A1816;color:#E6E1D9;border-radius:8px;font:12.5px/1.6 'JetBrains Mono',monospace;overflow:auto;">&lt;Card variant="outlined|elevated|
+  filled|inverse" padding="md"
+  interactive href="/…"&gt;…&lt;/Card&gt;
+radius 12 · border plaster.200
+hover: translateY(-2px) shadow-md 150ms</pre></div>
+    </div>
+  </section>
+
+  <!-- SERVICE CARD -->
+  <section id="service" style="padding:48px 0;border-top:1px solid #E6E1D9;">
+    <div style="display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;"><h2 style="margin:0;font-family:Newsreader,serif;font-weight:500;font-size:clamp(28px,3.2vw,40px);line-height:1.15;color:#111D29;">Service card</h2><span style="font-size:12px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;padding:2px 8px;border-radius:4px;background:#E6F3EB;color:#1F5C38;">Stable</span></div>
+    <p style="margin:8px 0 24px;font-size:16px;line-height:1.6;color:#433F3A;max-width:720px;">One service, one photo, a starting price, and what’s included. Grid of 3 on desktop, stacked on mobile.</p>
+    <div style="background:#F3F0EB;border:1px solid #E6E1D9;border-radius:12px;padding:32px;display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:24px;">
+      <a href="#service" style="display:flex;flex-direction:column;text-decoration:none;color:inherit;background:#fff;border:1px solid #E6E1D9;border-radius:12px;overflow:hidden;" style-hover="border-color:#B9C6D4;box-shadow:0 4px 12px rgba(26,24,22,0.12);">
+        <div style="aspect-ratio:3/2;background:#DCE3EA;display:flex;align-items:center;justify-content:center;font-size:12px;color:#46627E;">Photo · finished interior · 3:2</div>
+        <div style="padding:24px;display:flex;flex-direction:column;gap:8px;flex:1;"><div style="font-size:12px;letter-spacing:0.1em;text-transform:uppercase;font-weight:600;color:#9E6B19;">Interior</div><h3 style="margin:0;font-family:Newsreader,serif;font-weight:500;font-size:24px;line-height:1.25;color:#111D29;">Walls, ceilings &amp; woodwork</h3><p style="margin:0;font-size:16px;line-height:1.6;color:#5E5851;">Full prep, two coats, dust-sheeted and tidied daily.</p><div style="margin-top:auto;padding-top:16px;display:flex;justify-content:space-between;align-items:baseline;"><span style="font-size:14px;color:#5E5851;">From <strong style="font-size:20px;font-weight:700;color:#1A1816;font-variant-numeric:tabular-nums;">€480</strong> / room</span><span style="color:#1B2C3D;font-weight:600;font-size:14px;display:inline-flex;align-items:center;gap:4px;">Details <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14m-7-7 7 7-7 7"/></svg></span></div></div>
+      </a>
+      <a href="#service" style="display:flex;flex-direction:column;text-decoration:none;color:inherit;background:#fff;border:1px solid #E6E1D9;border-radius:12px;overflow:hidden;" style-hover="border-color:#B9C6D4;box-shadow:0 4px 12px rgba(26,24,22,0.12);">
+        <div style="aspect-ratio:3/2;background:#E6E1D9;display:flex;align-items:center;justify-content:center;font-size:12px;color:#5E5851;">Photo · rendered exterior · 3:2</div>
+        <div style="padding:24px;display:flex;flex-direction:column;gap:8px;flex:1;"><div style="font-size:12px;letter-spacing:0.1em;text-transform:uppercase;font-weight:600;color:#9E6B19;">Exterior</div><h3 style="margin:0;font-family:Newsreader,serif;font-weight:500;font-size:24px;line-height:1.25;color:#111D29;">Render, masonry &amp; sash windows</h3><p style="margin:0;font-size:16px;line-height:1.6;color:#5E5851;">Weather-rated paints, scaffold arranged, 5-year guarantee.</p><div style="margin-top:auto;padding-top:16px;display:flex;justify-content:space-between;align-items:baseline;"><span style="font-size:14px;color:#5E5851;">From <strong style="font-size:20px;font-weight:700;color:#1A1816;font-variant-numeric:tabular-nums;">€1,900</strong></span><span style="color:#1B2C3D;font-weight:600;font-size:14px;display:inline-flex;align-items:center;gap:4px;">Details <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14m-7-7 7 7-7 7"/></svg></span></div></div>
+      </a>
+      <a href="#service" style="display:flex;flex-direction:column;text-decoration:none;color:inherit;background:#fff;border:1px solid #E6E1D9;border-radius:12px;overflow:hidden;" style-hover="border-color:#B9C6D4;box-shadow:0 4px 12px rgba(26,24,22,0.12);">
+        <div style="aspect-ratio:3/2;background:#F5E4BF;display:flex;align-items:center;justify-content:center;font-size:12px;color:#7C5314;">Photo · papered feature wall · 3:2</div>
+        <div style="padding:24px;display:flex;flex-direction:column;gap:8px;flex:1;"><div style="font-size:12px;letter-spacing:0.1em;text-transform:uppercase;font-weight:600;color:#9E6B19;">Wallpaper</div><h3 style="margin:0;font-family:Newsreader,serif;font-weight:500;font-size:24px;line-height:1.25;color:#111D29;">Hanging &amp; removal</h3><p style="margin:0;font-size:16px;line-height:1.6;color:#5E5851;">Pattern-matched, lining paper where needed, murals welcome.</p><div style="margin-top:auto;padding-top:16px;display:flex;justify-content:space-between;align-items:baseline;"><span style="font-size:14px;color:#5E5851;">From <strong style="font-size:20px;font-weight:700;color:#1A1816;font-variant-numeric:tabular-nums;">€320</strong> / wall</span><span style="color:#1B2C3D;font-weight:600;font-size:14px;display:inline-flex;align-items:center;gap:4px;">Details <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14m-7-7 7 7-7 7"/></svg></span></div></div>
+      </a>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:24px;margin-top:24px;font-size:14px;line-height:1.6;color:#433F3A;">
+      <div><h4 style="margin:0 0 8px;font-size:12px;letter-spacing:0.08em;text-transform:uppercase;font-weight:600;color:#5E5851;">Anatomy</h4><ol style="margin:0;padding-left:20px;"><li>Photo 3:2, full-bleed top</li><li>Eyebrow (category), ochre.600</li><li>Title H3 Newsreader 24</li><li>One-line summary</li><li>Footer: “From €X” + arrow link</li></ol></div>
+      <div><h4 style="margin:0 0 8px;font-size:12px;letter-spacing:0.08em;text-transform:uppercase;font-weight:600;color:#5E5851;">Usage</h4><ul style="margin:0;padding-left:20px;"><li>Always show a starting price and its unit. Never “POA”.</li><li>Summary ≤ 90 characters; the details page carries the rest.</li><li>3-up desktop, 2-up tablet, 1-up mobile.</li></ul></div>
+      <div><h4 style="margin:0 0 8px;font-size:12px;letter-spacing:0.08em;text-transform:uppercase;font-weight:600;color:#5E5851;">Accessibility</h4><ul style="margin:0;padding-left:20px;"><li>Photo alt describes the finish, not “service image”.</li><li>Link text is the whole card; the arrow is decorative.</li><li>Price uses tabular numerals and a real € character.</li></ul></div>
+      <div><h4 style="margin:0 0 8px;font-size:12px;letter-spacing:0.08em;text-transform:uppercase;font-weight:600;color:#5E5851;">Spec</h4><pre style="margin:0;padding:16px;background:#1A1816;color:#E6E1D9;border-radius:8px;font:12.5px/1.6 'JetBrains Mono',monospace;overflow:auto;">&lt;ServiceCard category="Interior"
+  title="…" summary="…" image={…}
+  priceFrom={480} unit="room" href/&gt;</pre></div>
+    </div>
+  </section>
+
+  <!-- PROJECT CARD -->
+  <section id="project" style="padding:48px 0;border-top:1px solid #E6E1D9;">
+    <div style="display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;"><h2 style="margin:0;font-family:Newsreader,serif;font-weight:500;font-size:clamp(28px,3.2vw,40px);line-height:1.15;color:#111D29;">Project card</h2><span style="font-size:12px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;padding:2px 8px;border-radius:4px;background:#E6F3EB;color:#1F5C38;">Stable</span></div>
+    <p style="margin:8px 0 24px;font-size:16px;line-height:1.6;color:#433F3A;max-width:720px;">Portfolio entry. Photo leads; text is a caption, not a pitch. Location and paint spec build trust.</p>
+    <div style="background:#F3F0EB;border:1px solid #E6E1D9;border-radius:12px;padding:32px;display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:24px;">
+      <a href="#project" style="display:flex;flex-direction:column;gap:12px;text-decoration:none;color:inherit;"><div style="aspect-ratio:4/3;background:#DCE3EA;border-radius:12px;display:flex;align-items:flex-end;padding:12px;position:relative;overflow:hidden;" style-hover="opacity:0.92;"><span style="background:#fff;color:#1A1816;font-size:12px;font-weight:600;padding:4px 8px;border-radius:4px;">Interior</span></div><div><h3 style="margin:0;font-size:20px;font-weight:600;line-height:1.3;">Semi-detached, Confey</h3><p style="margin:4px 0 0;font-size:14px;color:#5E5851;line-height:1.5;">Four rooms · Colourtrend · 2026</p></div></a>
+      <a href="#project" style="display:flex;flex-direction:column;gap:12px;text-decoration:none;color:inherit;"><div style="aspect-ratio:4/3;background:#E6E1D9;border-radius:12px;display:flex;align-items:flex-end;padding:12px;" style-hover="opacity:0.92;"><span style="background:#fff;color:#1A1816;font-size:12px;font-weight:600;padding:4px 8px;border-radius:4px;">Exterior</span></div><div><h3 style="margin:0;font-size:20px;font-weight:600;line-height:1.3;">Dashed bungalow, Celbridge</h3><p style="margin:4px 0 0;font-size:14px;color:#5E5851;line-height:1.5;">Front &amp; gable · Dulux Weathershield · 2025</p></div></a>
+      <a href="#project" style="display:flex;flex-direction:column;gap:12px;text-decoration:none;color:inherit;"><div style="aspect-ratio:4/3;background:#F5E4BF;border-radius:12px;display:flex;align-items:flex-end;padding:12px;" style-hover="opacity:0.92;"><span style="background:#fff;color:#1A1816;font-size:12px;font-weight:600;padding:4px 8px;border-radius:4px;">Commercial</span></div><div><h3 style="margin:0;font-size:20px;font-weight:600;line-height:1.3;">Dental practice, Maynooth</h3><p style="margin:4px 0 0;font-size:14px;color:#5E5851;line-height:1.5;">Out-of-hours · 4 nights · Scrubbable matt · 2026</p></div></a>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:24px;margin-top:24px;font-size:14px;line-height:1.6;color:#433F3A;">
+      <div><h4 style="margin:0 0 8px;font-size:12px;letter-spacing:0.08em;text-transform:uppercase;font-weight:600;color:#5E5851;">Anatomy</h4><ol style="margin:0;padding-left:20px;"><li>Photo 4:3, radius 12, category badge bottom-left</li><li>Title H4 Figtree 20/600</li><li>Meta line: rooms · paint · year</li></ol></div>
+      <div><h4 style="margin:0 0 8px;font-size:12px;letter-spacing:0.08em;text-transform:uppercase;font-weight:600;color:#5E5851;">Usage</h4><ul style="margin:0;padding-left:20px;"><li>Title = property type + neighbourhood. No client names.</li><li>Meta uses middle dots; max three items.</li><li>No border; the photo is the card.</li></ul></div>
+      <div><h4 style="margin:0 0 8px;font-size:12px;letter-spacing:0.08em;text-transform:uppercase;font-weight:600;color:#5E5851;">Accessibility</h4><ul style="margin:0;padding-left:20px;"><li>Badge sits on a white chip, never directly on the photo.</li><li>Hover dims to 92% — plus underline on title for non-colour cue.</li></ul></div>
+      <div><h4 style="margin:0 0 8px;font-size:12px;letter-spacing:0.08em;text-transform:uppercase;font-weight:600;color:#5E5851;">Spec</h4><pre style="margin:0;padding:16px;background:#1A1816;color:#E6E1D9;border-radius:8px;font:12.5px/1.6 'JetBrains Mono',monospace;overflow:auto;">&lt;ProjectCard image title="…"
+  category="Interior"
+  meta={["Four rooms","Colourtrend","2026"]}/&gt;</pre></div>
+    </div>
+  </section>
+
+  <!-- BEFORE / AFTER -->
+  <section id="compare" style="padding:48px 0;border-top:1px solid #E6E1D9;">
+    <div style="display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;"><h2 style="margin:0;font-family:Newsreader,serif;font-weight:500;font-size:clamp(28px,3.2vw,40px);line-height:1.15;color:#111D29;">Before / after compare</h2><span style="font-size:12px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;padding:2px 8px;border-radius:4px;background:#E6F3EB;color:#1F5C38;">Stable</span></div>
+    <p style="margin:8px 0 24px;font-size:16px;line-height:1.6;color:#433F3A;max-width:720px;">The signature component. A draggable divider over two aligned photos. Drag the handle.</p>
+    <div style="background:#F3F0EB;border:1px solid #E6E1D9;border-radius:12px;padding:32px;">
+      <div style="max-width:720px;">{{ compare }}</div>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:24px;margin-top:24px;font-size:14px;line-height:1.6;color:#433F3A;">
+      <div><h4 style="margin:0 0 8px;font-size:12px;letter-spacing:0.08em;text-transform:uppercase;font-weight:600;color:#5E5851;">Anatomy</h4><ol style="margin:0;padding-left:20px;"><li>Container 4:3, radius 12, overflow hidden</li><li>After photo (base), Before photo (clipped)</li><li>Divider 2px white, handle 48px round with ‹ ›</li><li>Labels “Before” / “After” in white chips</li></ol></div>
+      <div><h4 style="margin:0 0 8px;font-size:12px;letter-spacing:0.08em;text-transform:uppercase;font-weight:600;color:#5E5851;">Usage</h4><ul style="margin:0;padding-left:20px;"><li>Photos from the identical spot. If they don’t align, use two Project cards instead.</li><li>Starts at 50%. No auto-animation.</li><li>One per viewport; it’s the hero of a case study.</li></ul></div>
+      <div><h4 style="margin:0 0 8px;font-size:12px;letter-spacing:0.08em;text-transform:uppercase;font-weight:600;color:#5E5851;">Accessibility</h4><ul style="margin:0;padding-left:20px;"><li>Handle is <code style="font-family:'JetBrains Mono',monospace;font-size:13px;">&lt;input type="range"&gt;</code> under the hood: arrow keys move 5%, Home/End snap.</li><li>Label: “Compare before and after. 50% before shown.”</li><li>Both photos have alt text; labels are visible text, not just position.</li></ul></div>
+      <div><h4 style="margin:0 0 8px;font-size:12px;letter-spacing:0.08em;text-transform:uppercase;font-weight:600;color:#5E5851;">Spec</h4><pre style="margin:0;padding:16px;background:#1A1816;color:#E6E1D9;border-radius:8px;font:12.5px/1.6 'JetBrains Mono',monospace;overflow:auto;">&lt;Compare before={img} after={img}
+  ratio="4/3" initial={50}
+  labels={["Before","After"]}/&gt;
+handle 48 · divider 2px white
+no easing while dragging</pre></div>
+    </div>
+  </section>
+
+  <!-- TESTIMONIAL -->
+  <section id="testimonial" style="padding:48px 0;border-top:1px solid #E6E1D9;">
+    <div style="display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;"><h2 style="margin:0;font-family:Newsreader,serif;font-weight:500;font-size:clamp(28px,3.2vw,40px);line-height:1.15;color:#111D29;">Testimonial</h2><span style="font-size:12px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;padding:2px 8px;border-radius:4px;background:#E6F3EB;color:#1F5C38;">Stable</span></div>
+    <p style="margin:8px 0 24px;font-size:16px;line-height:1.6;color:#433F3A;max-width:720px;">A real quote, a first name and area, the job, and where the review came from. Newsreader italic is reserved for this.</p>
+    <div style="background:#F3F0EB;border:1px solid #E6E1D9;border-radius:12px;padding:32px;display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:24px;">
+      <figure style="margin:0;background:#fff;border:1px solid #E6E1D9;border-radius:12px;padding:32px;display:flex;flex-direction:column;gap:20px;">
+        <div style="display:flex;gap:2px;color:#D49A2C;" aria-label="5 out of 5 stars"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="m12 2 3.1 6.3 6.9 1-5 4.9 1.2 6.8L12 17.8 5.8 21l1.2-6.8-5-4.9 6.9-1z"/></svg><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="m12 2 3.1 6.3 6.9 1-5 4.9 1.2 6.8L12 17.8 5.8 21l1.2-6.8-5-4.9 6.9-1z"/></svg><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="m12 2 3.1 6.3 6.9 1-5 4.9 1.2 6.8L12 17.8 5.8 21l1.2-6.8-5-4.9 6.9-1z"/></svg><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="m12 2 3.1 6.3 6.9 1-5 4.9 1.2 6.8L12 17.8 5.8 21l1.2-6.8-5-4.9 6.9-1z"/></svg><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="m12 2 3.1 6.3 6.9 1-5 4.9 1.2 6.8L12 17.8 5.8 21l1.2-6.8-5-4.9 6.9-1z"/></svg></div>
+        <blockquote style="margin:0;font-family:Newsreader,serif;font-style:italic;font-size:22px;line-height:1.4;color:#1A1816;text-wrap:pretty;">“They filled cracks I’d stopped noticing and left the place cleaner than they found it. The hallway looks like a different house.”</blockquote>
+        <figcaption style="display:flex;align-items:center;gap:12px;font-size:14px;"><span style="width:40px;height:40px;border-radius:999px;background:#DCE3EA;color:#1B2C3D;display:inline-flex;align-items:center;justify-content:center;font-weight:600;">M</span><span><strong style="display:block;font-weight:600;color:#1A1816;">Mary, Leixlip (sample)</strong><span style="color:#5E5851;">Hallway &amp; landing · Facebook message · replace with a real review</span></span></figcaption>
+      </figure>
+      <figure style="margin:0;background:#1B2C3D;border-radius:12px;padding:32px;display:flex;flex-direction:column;gap:20px;color:#fff;">
+        <blockquote style="margin:0;font-family:Newsreader,serif;font-style:italic;font-size:22px;line-height:1.4;text-wrap:pretty;">“Worked four nights so the practice never closed. Patients didn’t notice anything except the walls.”</blockquote>
+        <figcaption style="display:flex;align-items:center;gap:12px;font-size:14px;"><span style="width:40px;height:40px;border-radius:999px;background:#D49A2C;color:#1A1816;display:inline-flex;align-items:center;justify-content:center;font-weight:600;">PM</span><span><strong style="display:block;font-weight:600;">Practice manager, Maynooth (sample)</strong><span style="color:#B9C6D4;">Commercial · text message · replace with a real review</span></span></figcaption>
+      </figure>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:24px;margin-top:24px;font-size:14px;line-height:1.6;color:#433F3A;">
+      <div><h4 style="margin:0 0 8px;font-size:12px;letter-spacing:0.08em;text-transform:uppercase;font-weight:600;color:#5E5851;">Anatomy</h4><ol style="margin:0;padding-left:20px;"><li>Rating (optional), ochre.400</li><li>Quote, Newsreader 400 italic 22/1.4</li><li>Avatar 40 (initials), name + area, job · source · date</li></ol></div>
+      <div><h4 style="margin:0 0 8px;font-size:12px;letter-spacing:0.08em;text-transform:uppercase;font-weight:600;color:#5E5851;">Usage</h4><ul style="margin:0;padding-left:20px;"><li>Quotes ≤ 40 words, verbatim. Trim with ellipsis, never rewrite.</li><li>Always name the source platform and month.</li><li>Inverse variant only for the single featured quote.</li></ul></div>
+      <div><h4 style="margin:0 0 8px;font-size:12px;letter-spacing:0.08em;text-transform:uppercase;font-weight:600;color:#5E5851;">Accessibility</h4><ul style="margin:0;padding-left:20px;"><li><code style="font-family:'JetBrains Mono',monospace;font-size:13px;">&lt;figure&gt;</code> + <code style="font-family:'JetBrains Mono',monospace;font-size:13px;">&lt;blockquote&gt;</code> + <code style="font-family:'JetBrains Mono',monospace;font-size:13px;">&lt;figcaption&gt;</code>.</li><li>Stars have <code style="font-family:'JetBrains Mono',monospace;font-size:13px;">aria-label="5 out of 5 stars"</code>.</li><li>Italic at 22px passes; never italic below 18px.</li></ul></div>
+      <div><h4 style="margin:0 0 8px;font-size:12px;letter-spacing:0.08em;text-transform:uppercase;font-weight:600;color:#5E5851;">Spec</h4><pre style="margin:0;padding:16px;background:#1A1816;color:#E6E1D9;border-radius:8px;font:12.5px/1.6 'JetBrains Mono',monospace;overflow:auto;">&lt;Testimonial quote name="Helen M."
+  area="Bathwick" job="Hallway"
+  source="Google" date="Mar 2026"
+  rating={5} tone="light|inverse"/&gt;</pre></div>
+    </div>
+  </section>
+
+  <!-- BADGE -->
+  <section id="badge" style="padding:48px 0;border-top:1px solid #E6E1D9;">
+    <div style="display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;"><h2 style="margin:0;font-family:Newsreader,serif;font-weight:500;font-size:clamp(28px,3.2vw,40px);line-height:1.15;color:#111D29;">Badge</h2><span style="font-size:12px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;padding:2px 8px;border-radius:4px;background:#E6F3EB;color:#1F5C38;">Stable</span></div>
+    <p style="margin:8px 0 24px;font-size:16px;line-height:1.6;color:#433F3A;max-width:720px;">Static status label. Not clickable. Sentence case, 12px, caps only for the “eyebrow” tone.</p>
+    <div style="background:#fff;border:1px solid #E6E1D9;border-radius:12px;padding:32px;display:flex;flex-wrap:wrap;gap:12px;align-items:center;">
+      <span style="font-size:12px;font-weight:600;padding:4px 8px;border-radius:4px;background:#F3F0EB;color:#433F3A;">Neutral</span>
+      <span style="font-size:12px;font-weight:600;padding:4px 8px;border-radius:4px;background:#F1F4F7;color:#263D52;">Ink</span>
+      <span style="font-size:12px;font-weight:600;padding:4px 8px;border-radius:4px;background:#FBF4E6;color:#7C5314;">Most popular</span>
+      <span style="font-size:12px;font-weight:600;padding:4px 8px;border-radius:4px;background:#E6F3EB;color:#1F5C38;">Available Oct</span>
+      <span style="font-size:12px;font-weight:600;padding:4px 8px;border-radius:4px;background:#FBF1DC;color:#7A4E0E;">2 slots left</span>
+      <span style="font-size:12px;font-weight:600;padding:4px 8px;border-radius:4px;background:#FBE9E7;color:#8A1C16;">Fully booked</span>
+      <span style="font-size:12px;font-weight:600;padding:4px 8px;border-radius:4px;background:#E6EFF9;color:#1E4E80;">New</span>
+      <span style="font-size:12px;font-weight:600;padding:4px 8px;border-radius:4px;background:#1B2C3D;color:#fff;">Solid ink</span>
+      <span style="font-size:12px;font-weight:600;padding:4px 8px;border-radius:4px;border:1px solid #D1CAC0;color:#433F3A;">Outline</span>
+      <span style="font-size:12px;font-weight:600;padding:4px 8px;border-radius:4px;background:#E6F3EB;color:#1F5C38;display:inline-flex;align-items:center;gap:4px;"><span style="width:6px;height:6px;border-radius:999px;background:#2E7D4F;"></span>With dot</span>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:24px;margin-top:24px;font-size:14px;line-height:1.6;color:#433F3A;">
+      <div><h4 style="margin:0 0 8px;font-size:12px;letter-spacing:0.08em;text-transform:uppercase;font-weight:600;color:#5E5851;">Anatomy</h4><ol style="margin:0;padding-left:20px;"><li>Container 4px 8px, radius 4</li><li>Label 12px/600</li><li>Optional 6px dot</li></ol></div>
+      <div><h4 style="margin:0 0 8px;font-size:12px;letter-spacing:0.08em;text-transform:uppercase;font-weight:600;color:#5E5851;">Usage</h4><ul style="margin:0;padding-left:20px;"><li>Semantic tones only for real status (availability).</li><li>Ochre badge = one “Most popular” per pricing table.</li><li>Max 2 badges per card.</li></ul></div>
+      <div><h4 style="margin:0 0 8px;font-size:12px;letter-spacing:0.08em;text-transform:uppercase;font-weight:600;color:#5E5851;">Accessibility</h4><ul style="margin:0;padding-left:20px;"><li>All tone text ≥ 4.5:1 on their tint (e.g. 1F5C38 on E6F3EB = 7.9:1).</li><li>Meaning in the words, not the colour.</li></ul></div>
+      <div><h4 style="margin:0 0 8px;font-size:12px;letter-spacing:0.08em;text-transform:uppercase;font-weight:600;color:#5E5851;">Spec</h4><pre style="margin:0;padding:16px;background:#1A1816;color:#E6E1D9;border-radius:8px;font:12.5px/1.6 'JetBrains Mono',monospace;overflow:auto;">&lt;Badge tone="neutral|ink|accent|success|
+  warning|error|info" variant="tint|
+  solid|outline" dot&gt;Available&lt;/Badge&gt;</pre></div>
+    </div>
+  </section>
+
+  <!-- TAG -->
+  <section id="tag" style="padding:48px 0;border-top:1px solid #E6E1D9;">
+    <div style="display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;"><h2 style="margin:0;font-family:Newsreader,serif;font-weight:500;font-size:clamp(28px,3.2vw,40px);line-height:1.15;color:#111D29;">Tag / filter chip</h2><span style="font-size:12px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;padding:2px 8px;border-radius:4px;background:#E6F3EB;color:#1F5C38;">Stable</span></div>
+    <p style="margin:8px 0 24px;font-size:16px;line-height:1.6;color:#433F3A;max-width:720px;">Interactive pill for filtering the portfolio or showing selected options. Unlike Badge, it responds to taps.</p>
+    <div style="background:#fff;border:1px solid #E6E1D9;border-radius:12px;padding:32px;display:flex;flex-wrap:wrap;gap:8px;align-items:center;">
+      <button aria-pressed="true" style="height:36px;padding:0 14px;border-radius:999px;border:1px solid #1B2C3D;background:#1B2C3D;color:#fff;font:500 14px Figtree,sans-serif;display:inline-flex;align-items:center;gap:6px;cursor:pointer;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>All</button>
+      <button style="height:36px;padding:0 14px;border-radius:999px;border:1px solid #D1CAC0;background:#fff;color:#1A1816;font:500 14px Figtree,sans-serif;cursor:pointer;" style-hover="background:#F3F0EB;">Interior</button>
+      <button style="height:36px;padding:0 14px;border-radius:999px;border:1px solid #D1CAC0;background:#fff;color:#1A1816;font:500 14px Figtree,sans-serif;cursor:pointer;" style-hover="background:#F3F0EB;">Exterior</button>
+      <button style="height:36px;padding:0 14px;border-radius:999px;border:1px solid #D1CAC0;background:#fff;color:#1A1816;font:500 14px Figtree,sans-serif;cursor:pointer;" style-hover="background:#F3F0EB;">Wallpaper</button>
+      <button style="height:36px;padding:0 14px;border-radius:999px;border:1px solid #D1CAC0;background:#fff;color:#1A1816;font:500 14px Figtree,sans-serif;cursor:pointer;outline:2px solid #46627E;outline-offset:2px;">Commercial</button>
+      <span style="width:1px;height:24px;background:#E6E1D9;margin:0 8px;"></span>
+      <span style="height:36px;padding:0 6px 0 14px;border-radius:999px;background:#F1F4F7;color:#263D52;font:500 14px Figtree,sans-serif;display:inline-flex;align-items:center;gap:4px;">Sage green<button aria-label="Remove Sage green" style="width:24px;height:24px;border:0;border-radius:999px;background:transparent;color:#263D52;display:inline-flex;align-items:center;justify-content:center;cursor:pointer;" style-hover="background:#DCE3EA;"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg></button></span>
+      <span style="height:36px;padding:0 6px 0 14px;border-radius:999px;background:#F1F4F7;color:#263D52;font:500 14px Figtree,sans-serif;display:inline-flex;align-items:center;gap:4px;">3 bedrooms<button aria-label="Remove 3 bedrooms" style="width:24px;height:24px;border:0;border-radius:999px;background:transparent;color:#263D52;display:inline-flex;align-items:center;justify-content:center;cursor:pointer;"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg></button></span>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:24px;margin-top:24px;font-size:14px;line-height:1.6;color:#433F3A;">
+      <div><h4 style="margin:0 0 8px;font-size:12px;letter-spacing:0.08em;text-transform:uppercase;font-weight:600;color:#5E5851;">Anatomy</h4><ol style="margin:0;padding-left:20px;"><li>Pill 36px, radius 999, 14px sides</li><li>Selected: ink.800 fill + check</li><li>Removable: ink.50 fill + 24px × button</li></ol></div>
+      <div><h4 style="margin:0 0 8px;font-size:12px;letter-spacing:0.08em;text-transform:uppercase;font-weight:600;color:#5E5851;">Usage</h4><ul style="margin:0;padding-left:20px;"><li>Filter chips scroll horizontally on mobile; never wrap to 3+ rows.</li><li>Removable chips summarise a quote configuration.</li><li>“All” is always first and selected by default.</li></ul></div>
+      <div><h4 style="margin:0 0 8px;font-size:12px;letter-spacing:0.08em;text-transform:uppercase;font-weight:600;color:#5E5851;">Accessibility</h4><ul style="margin:0;padding-left:20px;"><li>Filter chips: <code style="font-family:'JetBrains Mono',monospace;font-size:13px;">aria-pressed</code>; result count announced via live region.</li><li>36px chip gets 6px vertical hit-slop to reach 48.</li><li>Remove button names its chip.</li></ul></div>
+      <div><h4 style="margin:0 0 8px;font-size:12px;letter-spacing:0.08em;text-transform:uppercase;font-weight:600;color:#5E5851;">Spec</h4><pre style="margin:0;padding:16px;background:#1A1816;color:#E6E1D9;border-radius:8px;font:12.5px/1.6 'JetBrains Mono',monospace;overflow:auto;">&lt;Chip selected onToggle&gt;Interior&lt;/Chip&gt;
+&lt;Chip onRemove&gt;Sage green&lt;/Chip&gt;</pre></div>
+    </div>
+  </section>
+
+  <!-- AVATAR -->
+  <section id="avatar" style="padding:48px 0;border-top:1px solid #E6E1D9;">
+    <div style="display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;"><h2 style="margin:0;font-family:Newsreader,serif;font-weight:500;font-size:clamp(28px,3.2vw,40px);line-height:1.15;color:#111D29;">Avatar</h2><span style="font-size:12px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;padding:2px 8px;border-radius:4px;background:#E6F3EB;color:#1F5C38;">Stable</span></div>
+    <p style="margin:8px 0 24px;font-size:16px;line-height:1.6;color:#433F3A;max-width:720px;">Crew photos on the team page, initials on reviews. Circular, ink-tinted fallback.</p>
+    <div style="background:#fff;border:1px solid #E6E1D9;border-radius:12px;padding:32px;display:flex;flex-wrap:wrap;gap:24px;align-items:center;">
+      <span style="width:32px;height:32px;border-radius:999px;background:#DCE3EA;color:#1B2C3D;display:inline-flex;align-items:center;justify-content:center;font-weight:600;font-size:12px;">EB</span>
+      <span style="width:40px;height:40px;border-radius:999px;background:#DCE3EA;color:#1B2C3D;display:inline-flex;align-items:center;justify-content:center;font-weight:600;font-size:14px;">EB</span>
+      <span style="width:56px;height:56px;border-radius:999px;background:#DCE3EA;color:#1B2C3D;display:inline-flex;align-items:center;justify-content:center;font-weight:600;font-size:18px;">EB</span>
+      <span style="width:96px;height:96px;border-radius:999px;background:#E6E1D9;display:inline-flex;align-items:center;justify-content:center;font-size:11px;color:#5E5851;text-align:center;">Photo<br>1:1</span>
+      <div style="display:flex;"><span style="width:40px;height:40px;border-radius:999px;background:#DCE3EA;color:#1B2C3D;display:inline-flex;align-items:center;justify-content:center;font-weight:600;font-size:14px;border:2px solid #fff;">EB</span><span style="width:40px;height:40px;border-radius:999px;background:#F5E4BF;color:#7C5314;display:inline-flex;align-items:center;justify-content:center;font-weight:600;font-size:14px;border:2px solid #fff;margin-left:-10px;">TA</span><span style="width:40px;height:40px;border-radius:999px;background:#E6E1D9;color:#433F3A;display:inline-flex;align-items:center;justify-content:center;font-weight:600;font-size:14px;border:2px solid #fff;margin-left:-10px;">+3</span></div>
+      <div style="display:flex;align-items:center;gap:12px;"><span style="width:56px;height:56px;border-radius:999px;background:#E6E1D9;flex:none;"></span><span><strong style="display:block;font-size:16px;font-weight:600;">Errol Brennan</strong><span style="font-size:14px;color:#5E5851;">Owner · years in trade to confirm</span></span></div>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:24px;margin-top:24px;font-size:14px;line-height:1.6;color:#433F3A;">
+      <div><h4 style="margin:0 0 8px;font-size:12px;letter-spacing:0.08em;text-transform:uppercase;font-weight:600;color:#5E5851;">Anatomy</h4><ol style="margin:0;padding-left:20px;"><li>Circle 32 / 40 / 56 / 96</li><li>Photo or 2-letter initials on ink.100</li><li>Stack: 2px white ring, −10px overlap</li></ol></div>
+      <div><h4 style="margin:0 0 8px;font-size:12px;letter-spacing:0.08em;text-transform:uppercase;font-weight:600;color:#5E5851;">Usage</h4><ul style="margin:0;padding-left:20px;"><li>Crew photos: same background, same crop, natural light.</li><li>Stacks max 3 + overflow count.</li></ul></div>
+      <div><h4 style="margin:0 0 8px;font-size:12px;letter-spacing:0.08em;text-transform:uppercase;font-weight:600;color:#5E5851;">Accessibility</h4><ul style="margin:0;padding-left:20px;"><li>Photo alt = name; initials get <code style="font-family:'JetBrains Mono',monospace;font-size:13px;">aria-label</code> with the full name.</li><li>Decorative when the name appears beside it (<code style="font-family:'JetBrains Mono',monospace;font-size:13px;">alt=""</code>).</li></ul></div>
+      <div><h4 style="margin:0 0 8px;font-size:12px;letter-spacing:0.08em;text-transform:uppercase;font-weight:600;color:#5E5851;">Spec</h4><pre style="margin:0;padding:16px;background:#1A1816;color:#E6E1D9;border-radius:8px;font:12.5px/1.6 'JetBrains Mono',monospace;overflow:auto;">&lt;Avatar name="Errol Brennan" src={…}
+  size="sm|md|lg|xl"/&gt;
+&lt;AvatarStack max={3}&gt;…&lt;/AvatarStack&gt;</pre></div>
+    </div>
+  </section>
+
+  <!-- RATING -->
+  <section id="rating" style="padding:48px 0;border-top:1px solid #E6E1D9;">
+    <div style="display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;"><h2 style="margin:0;font-family:Newsreader,serif;font-weight:500;font-size:clamp(28px,3.2vw,40px);line-height:1.15;color:#111D29;">Rating</h2><span style="font-size:12px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;padding:2px 8px;border-radius:4px;background:#E6F3EB;color:#1F5C38;">Stable</span></div>
+    <p style="margin:8px 0 24px;font-size:16px;line-height:1.6;color:#433F3A;max-width:720px;">Read-only stars with the number and count beside them. Always sourced.</p>
+    <div style="background:#fff;border:1px solid #E6E1D9;border-radius:12px;padding:32px;display:flex;flex-wrap:wrap;gap:32px;align-items:center;">
+      <div style="display:flex;align-items:center;gap:8px;"><span style="display:flex;gap:2px;color:#D49A2C;" aria-label="4.9 out of 5 stars"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="m12 2 3.1 6.3 6.9 1-5 4.9 1.2 6.8L12 17.8 5.8 21l1.2-6.8-5-4.9 6.9-1z"/></svg><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="m12 2 3.1 6.3 6.9 1-5 4.9 1.2 6.8L12 17.8 5.8 21l1.2-6.8-5-4.9 6.9-1z"/></svg><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="m12 2 3.1 6.3 6.9 1-5 4.9 1.2 6.8L12 17.8 5.8 21l1.2-6.8-5-4.9 6.9-1z"/></svg><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="m12 2 3.1 6.3 6.9 1-5 4.9 1.2 6.8L12 17.8 5.8 21l1.2-6.8-5-4.9 6.9-1z"/></svg><svg width="18" height="18" viewBox="0 0 24 24" fill="#D49A2C" stroke="#D49A2C" stroke-width="1.5" stroke-linejoin="round"><defs><linearGradient id="half"><stop offset="90%" stop-color="#D49A2C"/><stop offset="90%" stop-color="#F3F0EB"/></linearGradient></defs><path fill="url(#half)" d="m12 2 3.1 6.3 6.9 1-5 4.9 1.2 6.8L12 17.8 5.8 21l1.2-6.8-5-4.9 6.9-1z"/></svg></span><strong style="font-size:16px;font-weight:700;font-variant-numeric:tabular-nums;">4.9</strong><span style="font-size:14px;color:#5E5851;">· Google reviews (sample)</span></div>
+      <div style="display:flex;align-items:center;gap:8px;"><span style="display:flex;gap:2px;color:#D49A2C;" aria-label="5 out of 5 stars"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="m12 2 3.1 6.3 6.9 1-5 4.9 1.2 6.8L12 17.8 5.8 21l1.2-6.8-5-4.9 6.9-1z"/></svg><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="m12 2 3.1 6.3 6.9 1-5 4.9 1.2 6.8L12 17.8 5.8 21l1.2-6.8-5-4.9 6.9-1z"/></svg><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="m12 2 3.1 6.3 6.9 1-5 4.9 1.2 6.8L12 17.8 5.8 21l1.2-6.8-5-4.9 6.9-1z"/></svg><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="m12 2 3.1 6.3 6.9 1-5 4.9 1.2 6.8L12 17.8 5.8 21l1.2-6.8-5-4.9 6.9-1z"/></svg><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="m12 2 3.1 6.3 6.9 1-5 4.9 1.2 6.8L12 17.8 5.8 21l1.2-6.8-5-4.9 6.9-1z"/></svg></span><span style="font-size:14px;color:#5E5851;">Small · 14px</span></div>
+      <div style="display:inline-flex;align-items:center;gap:10px;padding:8px 14px 8px 10px;border:1px solid #E6E1D9;border-radius:999px;"><span style="width:28px;height:28px;border-radius:999px;background:#F3F0EB;display:inline-flex;align-items:center;justify-content:center;font-weight:700;font-size:12px;color:#433F3A;">G</span><span style="font-size:14px;"><strong style="font-weight:700;">4.9</strong> <span style="color:#D49A2C;">★</span> <span style="color:#5E5851;">Google · sample</span></span></div>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:24px;margin-top:24px;font-size:14px;line-height:1.6;color:#433F3A;">
+      <div><h4 style="margin:0 0 8px;font-size:12px;letter-spacing:0.08em;text-transform:uppercase;font-weight:600;color:#5E5851;">Anatomy</h4><ol style="margin:0;padding-left:20px;"><li>5 stars 14/18px, ochre.400, plaster.100 empty</li><li>Score 700 tabular</li><li>Count + source</li></ol></div>
+      <div><h4 style="margin:0 0 8px;font-size:12px;letter-spacing:0.08em;text-transform:uppercase;font-weight:600;color:#5E5851;">Usage</h4><ul style="margin:0;padding-left:20px;"><li>Read-only. Hidden until the Google Business Profile has 5+ reviews.</li><li>Pill variant for header / hero trust line.</li><li>Round to one decimal; partial stars at 10% steps.</li></ul></div>
+      <div><h4 style="margin:0 0 8px;font-size:12px;letter-spacing:0.08em;text-transform:uppercase;font-weight:600;color:#5E5851;">Accessibility</h4><ul style="margin:0;padding-left:20px;"><li>Stars are one <code style="font-family:'JetBrains Mono',monospace;font-size:13px;">aria-label</code>; individual SVGs hidden.</li><li>Score text is always present — stars alone are decoration.</li></ul></div>
+      <div><h4 style="margin:0 0 8px;font-size:12px;letter-spacing:0.08em;text-transform:uppercase;font-weight:600;color:#5E5851;">Spec</h4><pre style="margin:0;padding:16px;background:#1A1816;color:#E6E1D9;border-radius:8px;font:12.5px/1.6 'JetBrains Mono',monospace;overflow:auto;">&lt;Rating value={4.9} count={212}
+  source="Google" size="sm|md"
+  variant="inline|pill"/&gt;</pre></div>
+    </div>
+  </section>
+
+  <!-- STAT -->
+  <section id="stat" style="padding:48px 0;border-top:1px solid #E6E1D9;">
+    <div style="display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;"><h2 style="margin:0;font-family:Newsreader,serif;font-weight:500;font-size:clamp(28px,3.2vw,40px);line-height:1.15;color:#111D29;">Stat</h2><span style="font-size:12px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;padding:2px 8px;border-radius:4px;background:#E6F3EB;color:#1F5C38;">Stable</span></div>
+    <p style="margin:8px 0 24px;font-size:16px;line-height:1.6;color:#433F3A;max-width:720px;">Proof numbers. Max four in a row; each needs a real figure and a footnote if it needs qualifying.</p>
+    <div style="background:#fff;border:1px solid #E6E1D9;border-radius:12px;padding:32px;display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:32px;">
+      <div><div style="font-family:Newsreader,serif;font-weight:500;font-size:48px;line-height:1;color:#111D29;font-variant-numeric:tabular-nums;">22</div><div style="font-size:14px;color:#5E5851;margin-top:8px;line-height:1.5;">years in the trade (sample)</div></div>
+      <div><div style="font-family:Newsreader,serif;font-weight:500;font-size:48px;line-height:1;color:#111D29;font-variant-numeric:tabular-nums;">1,140</div><div style="font-size:14px;color:#5E5851;margin-top:8px;line-height:1.5;">rooms painted (sample)</div></div>
+      <div><div style="font-family:Newsreader,serif;font-weight:500;font-size:48px;line-height:1;color:#111D29;font-variant-numeric:tabular-nums;">4.9<span style="font-size:24px;color:#D49A2C;">★</span></div><div style="font-size:14px;color:#5E5851;margin-top:8px;line-height:1.5;">Google rating (sample)</div></div>
+      <div><div style="font-family:Newsreader,serif;font-weight:500;font-size:48px;line-height:1;color:#111D29;font-variant-numeric:tabular-nums;">5<span style="font-size:24px;">yr</span></div><div style="font-size:14px;color:#5E5851;margin-top:8px;line-height:1.5;">guarantee on exteriors (sample)</div></div>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:24px;margin-top:24px;font-size:14px;line-height:1.6;color:#433F3A;">
+      <div><h4 style="margin:0 0 8px;font-size:12px;letter-spacing:0.08em;text-transform:uppercase;font-weight:600;color:#5E5851;">Anatomy</h4><ol style="margin:0;padding-left:20px;"><li>Figure Newsreader 500 48px tabular</li><li>Unit / suffix at 50%</li><li>Label Small, plaster.600</li></ol></div>
+      <div><h4 style="margin:0 0 8px;font-size:12px;letter-spacing:0.08em;text-transform:uppercase;font-weight:600;color:#5E5851;">Usage</h4><ul style="margin:0;padding-left:20px;"><li>Real, checkable numbers only. No public figures exist yet — collect them from Errol before any Stat ships.</li><li>2–4 per row; on mobile 2×2.</li><li>No count-up animation.</li></ul></div>
+      <div><h4 style="margin:0 0 8px;font-size:12px;letter-spacing:0.08em;text-transform:uppercase;font-weight:600;color:#5E5851;">Accessibility</h4><ul style="margin:0;padding-left:20px;"><li>Read as one phrase: “22 years in the trade (sample)” (figure and label in one element).</li><li>Footnote markers link to the note.</li></ul></div>
+      <div><h4 style="margin:0 0 8px;font-size:12px;letter-spacing:0.08em;text-transform:uppercase;font-weight:600;color:#5E5851;">Spec</h4><pre style="margin:0;padding:16px;background:#1A1816;color:#E6E1D9;border-radius:8px;font:12.5px/1.6 'JetBrains Mono',monospace;overflow:auto;">&lt;Stat value="1,140" suffix=""
+  label="rooms painted (sample)"/&gt;</pre></div>
+    </div>
+  </section>
+
+  <!-- PRICING TABLE -->
+  <section id="pricing" style="padding:48px 0;border-top:1px solid #E6E1D9;">
+    <div style="display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;"><h2 style="margin:0;font-family:Newsreader,serif;font-weight:500;font-size:clamp(28px,3.2vw,40px);line-height:1.15;color:#111D29;">Pricing table</h2><span style="font-size:12px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;padding:2px 8px;border-radius:4px;background:#E6F3EB;color:#1F5C38;">Stable</span></div>
+    <p style="margin:8px 0 24px;font-size:16px;line-height:1.6;color:#433F3A;max-width:720px;">Guide prices per room size. Honest ranges beat “contact us”. On mobile the table becomes stacked cards.</p>
+    <div style="background:#fff;border:1px solid #E6E1D9;border-radius:12px;overflow:hidden;">
+      <table style="width:100%;border-collapse:collapse;font-size:16px;font-variant-numeric:tabular-nums;">
+        <thead><tr style="background:#F3F0EB;font-size:12px;letter-spacing:0.08em;text-transform:uppercase;font-weight:600;color:#5E5851;text-align:left;"><th style="padding:14px 24px;font-weight:600;">Room</th><th style="padding:14px 24px;font-weight:600;">Walls &amp; ceiling</th><th style="padding:14px 24px;font-weight:600;">+ Woodwork</th><th style="padding:14px 24px;font-weight:600;">Days</th></tr></thead>
+        <tbody>
+          <tr style="border-top:1px solid #F3F0EB;"><td style="padding:16px 24px;font-weight:500;">Small bedroom / study</td><td style="padding:16px 24px;">€480 – €560</td><td style="padding:16px 24px;">€640 – €760</td><td style="padding:16px 24px;color:#5E5851;">1</td></tr>
+          <tr style="border-top:1px solid #F3F0EB;background:#FBF4E6;"><td style="padding:16px 24px;font-weight:500;display:flex;align-items:center;gap:8px;">Living room<span style="font-size:12px;font-weight:600;padding:2px 8px;border-radius:4px;background:#D49A2C;color:#1A1816;">Most booked</span></td><td style="padding:16px 24px;">€620 – €780</td><td style="padding:16px 24px;">€840 – €1,050</td><td style="padding:16px 24px;color:#5E5851;">1–2</td></tr>
+          <tr style="border-top:1px solid #F3F0EB;"><td style="padding:16px 24px;font-weight:500;">Hallway, stairs &amp; landing</td><td style="padding:16px 24px;">€900 – €1,200</td><td style="padding:16px 24px;">€1,300 – €1,700</td><td style="padding:16px 24px;color:#5E5851;">2–3</td></tr>
+          <tr style="border-top:1px solid #F3F0EB;"><td style="padding:16px 24px;font-weight:500;">Kitchen (walls only)</td><td style="padding:16px 24px;">€380 – €460</td><td style="padding:16px 24px;color:#A9A198;">—</td><td style="padding:16px 24px;color:#5E5851;">1</td></tr>
+        </tbody>
+      </table>
+      <div style="padding:16px 24px;border-top:1px solid #F3F0EB;font-size:14px;color:#5E5851;line-height:1.5;">Includes materials (trade matt), prep, and daily clean-up. Premium paints (Colourtrend, Farrow &amp; Ball) add €40–€80 per room.</div>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:24px;margin-top:24px;font-size:14px;line-height:1.6;color:#433F3A;">
+      <div><h4 style="margin:0 0 8px;font-size:12px;letter-spacing:0.08em;text-transform:uppercase;font-weight:600;color:#5E5851;">Anatomy</h4><ol style="margin:0;padding-left:20px;"><li>Header row plaster.100, caption caps</li><li>Rows 16/24 padding, 1px plaster.100 dividers</li><li>Highlighted row ochre.50 + solid ochre badge</li><li>Footnote row</li></ol></div>
+      <div><h4 style="margin:0 0 8px;font-size:12px;letter-spacing:0.08em;text-transform:uppercase;font-weight:600;color:#5E5851;">Usage</h4><ul style="margin:0;padding-left:20px;"><li>Ranges, en-dash, thin spaces. Tabular numerals.</li><li>Below 640px: each row becomes a Card with label/value pairs.</li><li>State inclusions directly under the table.</li></ul></div>
+      <div><h4 style="margin:0 0 8px;font-size:12px;letter-spacing:0.08em;text-transform:uppercase;font-weight:600;color:#5E5851;">Accessibility</h4><ul style="margin:0;padding-left:20px;"><li>Real <code style="font-family:'JetBrains Mono',monospace;font-size:13px;">&lt;table&gt;</code> with <code style="font-family:'JetBrains Mono',monospace;font-size:13px;">scope="col"</code> and a <code style="font-family:'JetBrains Mono',monospace;font-size:13px;">&lt;caption&gt;</code>.</li><li>“—” cells carry visually hidden “not applicable”.</li><li>Highlight row is also marked in text (“Most booked”).</li></ul></div>
+      <div><h4 style="margin:0 0 8px;font-size:12px;letter-spacing:0.08em;text-transform:uppercase;font-weight:600;color:#5E5851;">Spec</h4><pre style="margin:0;padding:16px;background:#1A1816;color:#E6E1D9;border-radius:8px;font:12.5px/1.6 'JetBrains Mono',monospace;overflow:auto;">&lt;PriceTable columns rows
+  highlight="living-room"
+  footnote="Includes VAT…"/&gt;
+stack below 640px</pre></div>
+    </div>
+  </section>
+
+  <!-- PAINT SWATCH -->
+  <section id="swatch" style="padding:48px 0;border-top:1px solid #E6E1D9;">
+    <div style="display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;"><h2 style="margin:0;font-family:Newsreader,serif;font-weight:500;font-size:clamp(28px,3.2vw,40px);line-height:1.15;color:#111D29;">Paint swatch</h2><span style="font-size:12px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;padding:2px 8px;border-radius:4px;background:#FBF1DC;color:#7A4E0E;">Beta</span></div>
+    <p style="margin:8px 0 24px;font-size:16px;line-height:1.6;color:#433F3A;max-width:720px;">Shows the colours used on a project, or lets a client shortlist favourites. Named after the manufacturer’s own name; never our own.</p>
+    <div style="background:#fff;border:1px solid #E6E1D9;border-radius:12px;padding:32px;display:flex;flex-wrap:wrap;gap:24px;align-items:flex-start;">
+      <div style="display:flex;flex-direction:column;gap:8px;width:120px;"><div style="aspect-ratio:1;border-radius:8px;background:#8A9A8B;border:1px solid rgba(26,24,22,0.08);"></div><div style="font-size:14px;font-weight:600;line-height:1.3;">Card Room Green</div><div style="font-size:12px;color:#5E5851;">Farrow &amp; Ball · No.79</div></div>
+      <div style="display:flex;flex-direction:column;gap:8px;width:120px;"><div style="aspect-ratio:1;border-radius:8px;background:#B9B8AE;border:1px solid rgba(26,24,22,0.08);"></div><div style="font-size:14px;font-weight:600;line-height:1.3;">French Grey</div><div style="font-size:12px;color:#5E5851;">Little Greene · 113</div></div>
+      <div style="display:flex;flex-direction:column;gap:8px;width:120px;"><div style="aspect-ratio:1;border-radius:8px;background:#F2EDE3;border:1px solid rgba(26,24,22,0.12);"></div><div style="font-size:14px;font-weight:600;line-height:1.3;">Wimborne White</div><div style="font-size:12px;color:#5E5851;">Farrow &amp; Ball · No.239</div></div>
+      <button aria-pressed="true" style="display:flex;flex-direction:column;gap:8px;width:120px;padding:0;border:0;background:transparent;text-align:left;font-family:Figtree,sans-serif;cursor:pointer;"><div style="aspect-ratio:1;border-radius:8px;background:#5B6B78;outline:2px solid #1B2C3D;outline-offset:3px;display:flex;align-items:flex-end;justify-content:flex-end;padding:8px;"><span style="width:24px;height:24px;border-radius:999px;background:#fff;display:inline-flex;align-items:center;justify-content:center;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#1B2C3D" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span></div><div style="font-size:14px;font-weight:600;line-height:1.3;color:#1A1816;">De Nimes</div><div style="font-size:12px;color:#5E5851;">Farrow &amp; Ball · No.299 · shortlisted</div></button>
+      <div style="display:flex;gap:0;border-radius:8px;overflow:hidden;height:48px;width:200px;"><span style="flex:1;background:#8A9A8B;"></span><span style="flex:1;background:#B9B8AE;"></span><span style="flex:1;background:#F2EDE3;"></span><span style="flex:1;background:#5B6B78;"></span></div>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:24px;margin-top:24px;font-size:14px;line-height:1.6;color:#433F3A;">
+      <div><h4 style="margin:0 0 8px;font-size:12px;letter-spacing:0.08em;text-transform:uppercase;font-weight:600;color:#5E5851;">Anatomy</h4><ol style="margin:0;padding-left:20px;"><li>Chip 1:1, radius 8, hairline border for pale colours</li><li>Name 14/600, brand · code 12</li><li>Selected: 2px ink ring + check</li><li>Strip variant: palette of a project</li></ol></div>
+      <div><h4 style="margin:0 0 8px;font-size:12px;letter-spacing:0.08em;text-transform:uppercase;font-weight:600;color:#5E5851;">Usage</h4><ul style="margin:0;padding-left:20px;"><li>Screen colour is indicative; say so once per page.</li><li>Max 8 per project; group by room if more.</li><li>Use manufacturer names and codes verbatim.</li></ul></div>
+      <div><h4 style="margin:0 0 8px;font-size:12px;letter-spacing:0.08em;text-transform:uppercase;font-weight:600;color:#5E5851;">Accessibility</h4><ul style="margin:0;padding-left:20px;"><li>Colour name always visible; chip is <code style="font-family:'JetBrains Mono',monospace;font-size:13px;">aria-hidden</code>.</li><li>Selection via check icon + ring, not colour shift.</li><li>Pale chips get a 12% border so they exist against white.</li></ul></div>
+      <div><h4 style="margin:0 0 8px;font-size:12px;letter-spacing:0.08em;text-transform:uppercase;font-weight:600;color:#5E5851;">Spec</h4><pre style="margin:0;padding:16px;background:#1A1816;color:#E6E1D9;border-radius:8px;font:12.5px/1.6 'JetBrains Mono',monospace;overflow:auto;">&lt;Swatch hex="#8A9A8B" name="Card Room
+  Green" brand="Farrow &amp; Ball" code="79"
+  selectable selected/&gt;
+&lt;SwatchStrip colors={[…]}/&gt;</pre></div>
+    </div>
+  </section>
+
+  <!-- SECTION HEADER -->
+  <section id="section-header" style="padding:48px 0;border-top:1px solid #E6E1D9;">
+    <div style="display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;"><h2 style="margin:0;font-family:Newsreader,serif;font-weight:500;font-size:clamp(28px,3.2vw,40px);line-height:1.15;color:#111D29;">Section header</h2><span style="font-size:12px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;padding:2px 8px;border-radius:4px;background:#E6F3EB;color:#1F5C38;">Stable</span></div>
+    <p style="margin:8px 0 24px;font-size:16px;line-height:1.6;color:#433F3A;max-width:720px;">Eyebrow, heading, optional lede, optional action. Left-aligned by default; centred only on full-width bands.</p>
+    <div style="background:#fff;border:1px solid #E6E1D9;border-radius:12px;padding:32px;display:flex;flex-direction:column;gap:48px;">
+      <div style="display:flex;justify-content:space-between;align-items:flex-end;gap:24px;flex-wrap:wrap;"><div style="max-width:640px;"><p style="margin:0 0 12px;font-size:12px;letter-spacing:0.1em;text-transform:uppercase;font-weight:600;color:#9E6B19;">Recent work</p><h2 style="margin:0;font-family:Newsreader,serif;font-weight:500;font-size:clamp(28px,3.2vw,40px);line-height:1.15;letter-spacing:-0.01em;color:#111D29;text-wrap:balance;">Forty-two rooms this year, and counting</h2><p style="margin:12px 0 0;font-size:18px;line-height:1.6;color:#433F3A;">Every project photographed on the last day, before the furniture goes back.</p></div><a href="#section-header" style="color:#1B2C3D;font-weight:600;text-decoration:none;display:inline-flex;align-items:center;gap:6px;white-space:nowrap;">View all projects <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14m-7-7 7 7-7 7"/></svg></a></div>
+      <div style="text-align:center;max-width:640px;margin:0 auto;"><p style="margin:0 0 12px;font-size:12px;letter-spacing:0.1em;text-transform:uppercase;font-weight:600;color:#9E6B19;">How it works</p><h2 style="margin:0;font-family:Newsreader,serif;font-weight:500;font-size:clamp(28px,3.2vw,40px);line-height:1.15;letter-spacing:-0.01em;color:#111D29;text-wrap:balance;">Quote, book, done</h2><p style="margin:12px 0 0;font-size:18px;line-height:1.6;color:#433F3A;">Centred variant for bands and step sections.</p></div>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:24px;margin-top:24px;font-size:14px;line-height:1.6;color:#433F3A;">
+      <div><h4 style="margin:0 0 8px;font-size:12px;letter-spacing:0.08em;text-transform:uppercase;font-weight:600;color:#5E5851;">Anatomy</h4><ol style="margin:0;padding-left:20px;"><li>Eyebrow Caption, ochre.600, 12px below</li><li>Heading H2, max 640px</li><li>Lede Body large, 12px below</li><li>Action arrow link, bottom-aligned right</li></ol></div>
+      <div><h4 style="margin:0 0 8px;font-size:12px;letter-spacing:0.08em;text-transform:uppercase;font-weight:600;color:#5E5851;">Usage</h4><ul style="margin:0;padding-left:20px;"><li>40px below header before content.</li><li>Eyebrow names the section; heading says something.</li><li>Centred only when the content below is also centred.</li></ul></div>
+      <div><h4 style="margin:0 0 8px;font-size:12px;letter-spacing:0.08em;text-transform:uppercase;font-weight:600;color:#5E5851;">Accessibility</h4><ul style="margin:0;padding-left:20px;"><li>Eyebrow is a <code style="font-family:'JetBrains Mono',monospace;font-size:13px;">&lt;p&gt;</code>, not a heading.</li><li>Heading level follows document outline (usually h2).</li></ul></div>
+      <div><h4 style="margin:0 0 8px;font-size:12px;letter-spacing:0.08em;text-transform:uppercase;font-weight:600;color:#5E5851;">Spec</h4><pre style="margin:0;padding:16px;background:#1A1816;color:#E6E1D9;border-radius:8px;font:12.5px/1.6 'JetBrains Mono',monospace;overflow:auto;">&lt;SectionHeader eyebrow title lede
+  action=&#123;&#123;label, href&#125;&#125;
+  align="left|center" level={2}/&gt;</pre></div>
+    </div>
+  </section>
+
+  <!-- HERO -->
+  <section id="hero" style="padding:48px 0;border-top:1px solid #E6E1D9;">
+    <div style="display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;"><h2 style="margin:0;font-family:Newsreader,serif;font-weight:500;font-size:clamp(28px,3.2vw,40px);line-height:1.15;color:#111D29;">Hero</h2><span style="font-size:12px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;padding:2px 8px;border-radius:4px;background:#E6F3EB;color:#1F5C38;">Stable</span></div>
+    <p style="margin:8px 0 24px;font-size:16px;line-height:1.6;color:#433F3A;max-width:720px;">Split hero: words on Ink, one photo beside. Trust line under the buttons. No text over photos.</p>
+    <div style="border-radius:12px;overflow:hidden;border:1px solid #E6E1D9;display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));">
+      <div style="background:#1B2C3D;color:#FAF8F5;padding:clamp(40px,6vw,80px) clamp(24px,5vw,64px);display:flex;flex-direction:column;justify-content:center;gap:24px;">
+        <p style="margin:0;font-size:12px;letter-spacing:0.1em;text-transform:uppercase;font-weight:600;color:#E1B04F;">Painter &amp; decorator · Leixlip, Co. Kildare</p>
+        <h1 style="margin:0;font-family:Newsreader,serif;font-weight:500;font-size:clamp(36px,4.5vw,56px);line-height:1.1;letter-spacing:-0.02em;text-wrap:balance;">Walls that look finished up close.</h1>
+        <p style="margin:0;font-size:18px;line-height:1.6;color:#DCE3EA;max-width:480px;">Proper prep, two coats, and a painter who turns up when he says he will. Free itemised quotes within one working day.</p>
+        <div style="display:flex;gap:12px;flex-wrap:wrap;"><a href="#hero" style="display:inline-flex;align-items:center;height:48px;padding:0 24px;border-radius:8px;background:#D49A2C;color:#1A1816;font-weight:600;font-size:16px;text-decoration:none;">Get a quote</a><a href="#hero" style="display:inline-flex;align-items:center;height:48px;padding:0 24px;border-radius:8px;border:1px solid rgba(250,248,245,0.4);color:#FAF8F5;font-weight:600;font-size:16px;text-decoration:none;">See our work</a></div>
+        <div style="display:flex;align-items:center;gap:8px;font-size:14px;color:#B9C6D4;">Free quotes · Based in Leixlip · Serving north Kildare and west Dublin</div>
+      </div>
+      <div style="background:#DCE3EA;min-height:320px;display:flex;align-items:center;justify-content:center;font-size:12px;color:#46627E;">Photo · finished room, daylight · fills column</div>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:24px;margin-top:24px;font-size:14px;line-height:1.6;color:#433F3A;">
+      <div><h4 style="margin:0 0 8px;font-size:12px;letter-spacing:0.08em;text-transform:uppercase;font-weight:600;color:#5E5851;">Anatomy</h4><ol style="margin:0;padding-left:20px;"><li>Ink panel: eyebrow (ochre.300), H1, lede, buttons, trust line</li><li>Photo panel, object-fit cover</li><li>Stacks photo-below on mobile</li></ol></div>
+      <div><h4 style="margin:0 0 8px;font-size:12px;letter-spacing:0.08em;text-transform:uppercase;font-weight:600;color:#5E5851;">Usage</h4><ul style="margin:0;padding-left:20px;"><li>Headline ≤ 8 words, says what changes for the client.</li><li>Primary = quote, secondary = work. Never three buttons.</li><li>Service pages swap the photo for the Before/after compare.</li></ul></div>
+      <div><h4 style="margin:0 0 8px;font-size:12px;letter-spacing:0.08em;text-transform:uppercase;font-weight:600;color:#5E5851;">Accessibility</h4><ul style="margin:0;padding-left:20px;"><li>The page’s single h1.</li><li>Text on Ink: white 13.5:1, ink.100 lede 11:1, ochre.300 eyebrow 7.2:1.</li><li>Photo is informative: alt names the room and finish.</li></ul></div>
+      <div><h4 style="margin:0 0 8px;font-size:12px;letter-spacing:0.08em;text-transform:uppercase;font-weight:600;color:#5E5851;">Spec</h4><pre style="margin:0;padding:16px;background:#1A1816;color:#E6E1D9;border-radius:8px;font:12.5px/1.6 'JetBrains Mono',monospace;overflow:auto;">&lt;Hero eyebrow title lede image
+  primary=&#123;&#123;…&#125;&#125; secondary=&#123;&#123;…&#125;&#125;
+  trust={&lt;Rating variant="inline"/&gt;}/&gt;
+grid 1fr 1fr · pad 80/64 · stack &lt;768</pre></div>
+    </div>
+  </section>
+
+  <!-- CTA BAND -->
+  <section id="cta" style="padding:48px 0 96px;border-top:1px solid #E6E1D9;">
+    <div style="display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;"><h2 style="margin:0;font-family:Newsreader,serif;font-weight:500;font-size:clamp(28px,3.2vw,40px);line-height:1.15;color:#111D29;">CTA band</h2><span style="font-size:12px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;padding:2px 8px;border-radius:4px;background:#E6F3EB;color:#1F5C38;">Stable</span></div>
+    <p style="margin:8px 0 24px;font-size:16px;line-height:1.6;color:#433F3A;max-width:720px;">Closes every page. One line, one primary action, the phone number as a ghost.</p>
+    <div style="display:flex;flex-direction:column;gap:24px;">
+      <div style="background:#1B2C3D;border-radius:12px;padding:clamp(32px,5vw,64px);display:flex;justify-content:space-between;align-items:center;gap:32px;flex-wrap:wrap;color:#fff;"><div><h2 style="margin:0;font-family:Newsreader,serif;font-weight:500;font-size:clamp(28px,3.2vw,40px);line-height:1.15;letter-spacing:-0.01em;text-wrap:balance;">Ready for a quote?</h2><p style="margin:8px 0 0;font-size:18px;color:#DCE3EA;">Send a few photos. We’ll reply within one working day.</p></div><div style="display:flex;gap:12px;flex-wrap:wrap;"><a href="#cta" style="display:inline-flex;align-items:center;height:48px;padding:0 24px;border-radius:8px;background:#D49A2C;color:#1A1816;font-weight:600;font-size:16px;text-decoration:none;">Get a quote</a><a href="tel:+353878753433" style="display:inline-flex;align-items:center;height:48px;padding:0 16px;border-radius:8px;color:#DCE3EA;font-weight:600;font-size:16px;text-decoration:none;">or call 087 875 3433</a></div></div>
+      <div style="background:#FBF4E6;border-radius:12px;padding:clamp(32px,5vw,64px);display:flex;justify-content:space-between;align-items:center;gap:32px;flex-wrap:wrap;"><div><h2 style="margin:0;font-family:Newsreader,serif;font-weight:500;font-size:clamp(28px,3.2vw,40px);line-height:1.15;letter-spacing:-0.01em;color:#111D29;">Not sure what you need?</h2><p style="margin:8px 0 0;font-size:18px;color:#433F3A;">Book a free 20-minute site visit. No obligation.</p></div><a href="#cta" style="display:inline-flex;align-items:center;height:48px;padding:0 24px;border-radius:8px;background:#1B2C3D;color:#fff;font-weight:600;font-size:16px;text-decoration:none;">Book a visit</a></div>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:24px;margin-top:24px;font-size:14px;line-height:1.6;color:#433F3A;">
+      <div><h4 style="margin:0 0 8px;font-size:12px;letter-spacing:0.08em;text-transform:uppercase;font-weight:600;color:#5E5851;">Anatomy</h4><ol style="margin:0;padding-left:20px;"><li>Band: ink.800 or ochre.50, radius 12 (full-bleed on page)</li><li>H2 + one-line support</li><li>Primary button + ghost phone link</li></ol></div>
+      <div><h4 style="margin:0 0 8px;font-size:12px;letter-spacing:0.08em;text-transform:uppercase;font-weight:600;color:#5E5851;">Usage</h4><ul style="margin:0;padding-left:20px;"><li>Once per page, directly above the footer.</li><li>Ink band on light pages; ochre.50 band if the section above is Ink.</li><li>Question headline, answer in the button.</li></ul></div>
+      <div><h4 style="margin:0 0 8px;font-size:12px;letter-spacing:0.08em;text-transform:uppercase;font-weight:600;color:#5E5851;">Accessibility</h4><ul style="margin:0;padding-left:20px;"><li>Phone is a <code style="font-family:'JetBrains Mono',monospace;font-size:13px;">tel:</code> link with the number as text.</li><li>Landmark: <code style="font-family:'JetBrains Mono',monospace;font-size:13px;">&lt;aside aria-labelledby&gt;</code> the heading.</li></ul></div>
+      <div><h4 style="margin:0 0 8px;font-size:12px;letter-spacing:0.08em;text-transform:uppercase;font-weight:600;color:#5E5851;">Spec</h4><pre style="margin:0;padding:16px;background:#1A1816;color:#E6E1D9;border-radius:8px;font:12.5px/1.6 'JetBrains Mono',monospace;overflow:auto;">&lt;CtaBand tone="ink|accent" title
+  support primary=&#123;&#123;…&#125;&#125; phone="…"/&gt;</pre></div>
+    </div>
+  </section>
+</main>
+
+<footer style="border-top:1px solid #E6E1D9;">
+  <div style="max-width:1200px;margin:0 auto;padding:32px 24px;display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;font-size:14px;color:#5E5851;">
+    <a href="Components-Forms.dc.html" style="font-weight:500;">← Actions &amp; forms</a>
+    <a href="Components-Feedback.dc.html" style="font-weight:500;">Next: Feedback &amp; navigation →</a>
+  </div>
+</footer>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = { pos: 50 };
+  renderVals() {
+    const pos = this.state.pos;
+    const h = React.createElement;
+    const chip = (t, side) => h('span', { style: { position: 'absolute', top: 12, [side]: 12, background: '#fff', color: '#1A1816', fontSize: 12, fontWeight: 600, padding: '4px 8px', borderRadius: 4, pointerEvents: 'none' } }, t);
+    const compare = h('div', { style: { position: 'relative', aspectRatio: '4/3', borderRadius: 12, overflow: 'hidden', background: '#8FA3B8', userSelect: 'none' } },
+      h('div', { style: { position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff', fontSize: 13 } }, 'After · Card Room Green, eggshell woodwork'),
+      h('div', { style: { position: 'absolute', inset: 0, width: pos + '%', overflow: 'hidden', background: '#D1CAC0' } },
+        h('div', { style: { position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#433F3A', fontSize: 13, width: '100%' } }, 'Before · tired magnolia, cracked filler')),
+      chip('Before', 'left'), chip('After', 'right'),
+      h('div', { style: { position: 'absolute', top: 0, bottom: 0, left: pos + '%', width: 2, background: '#fff', transform: 'translateX(-1px)', pointerEvents: 'none' } }),
+      h('div', { style: { position: 'absolute', top: '50%', left: pos + '%', transform: 'translate(-50%,-50%)', width: 48, height: 48, borderRadius: 999, background: '#fff', boxShadow: '0 4px 12px rgba(26,24,22,0.2)', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 2, color: '#1B2C3D', pointerEvents: 'none', fontSize: 14, fontWeight: 700 } }, '‹ ›'),
+      h('input', { type: 'range', min: 0, max: 100, value: pos, 'aria-label': 'Compare before and after. ' + pos + '% before shown.', onChange: e => this.setState({ pos: +e.target.value }), style: { position: 'absolute', inset: 0, width: '100%', height: '100%', opacity: 0, cursor: 'ew-resize', margin: 0 } })
+    );
+    return { compare };
+  }
+}
+</script>
+</body>
+</html>

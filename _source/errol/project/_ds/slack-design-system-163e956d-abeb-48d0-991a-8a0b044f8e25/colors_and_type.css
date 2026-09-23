@@ -1,0 +1,212 @@
+/* ============================================================
+   Slack Design System — color + type tokens
+   Import once per page:
+     <link rel="stylesheet" href="/colors_and_type.css">
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Lato:wght@400;700;900&family=Hanken+Grotesk:wght@400;500;600;700&family=Jost:wght@500;700&display=swap');
+
+:root {
+  /* --- Brand core --------------------------------------------- */
+  --sl-aubergine:       #4A154B;
+  --sl-aubergine-dark:  #3F0E40;
+  --sl-aubergine-deep:  #350D36;
+  --sl-aubergine-tint:  #611F69;
+  --sl-aubergine-soft:  #F4EDE4; /* warm off-white wash used on marketing sections */
+
+  /* Slack logo-tile accents — used ONE AT A TIME */
+  --sl-blue:            #36C5F0;
+  --sl-green:           #2EB67D;
+  --sl-yellow:          #ECB22E;
+  --sl-red:             #E01E5A; /* destructive / notifications */
+
+  /* --- Link & action ----------------------------------------- */
+  --sl-link:            #1264A3;
+  --sl-link-hover:      #0B4C81;
+
+  /* --- Neutrals (cool gray ramp) ----------------------------- */
+  --sl-black:           #1D1C1D;  /* near-black, never #000 */
+  --sl-gray-900:        #2C2D30;
+  --sl-gray-800:        #454A4E;
+  --sl-gray-700:        #616061;
+  --sl-gray-600:        #868686;
+  --sl-gray-500:        #A0A0A2;
+  --sl-gray-400:        #CECECE;
+  --sl-gray-300:        #DDDDDD;
+  --sl-gray-200:        #E8E8E8;
+  --sl-gray-100:        #F4F4F4;
+  --sl-off-white:       #F8F8F8;
+  --sl-white:           #FFFFFF;
+
+  /* --- Semantic foreground (on light) ------------------------ */
+  --sl-fg-1:            var(--sl-black);       /* primary text */
+  --sl-fg-2:            var(--sl-gray-800);    /* secondary text */
+  --sl-fg-3:            var(--sl-gray-700);    /* tertiary / meta */
+  --sl-fg-disabled:     var(--sl-gray-500);
+
+  /* --- Semantic background ----------------------------------- */
+  --sl-bg-1:            var(--sl-white);
+  --sl-bg-2:            var(--sl-off-white);
+  --sl-bg-3:            var(--sl-gray-100);
+  --sl-bg-hover:        rgba(29, 28, 29, 0.04);
+  --sl-bg-active:       rgba(29, 28, 29, 0.08);
+
+  /* --- Surface on dark (app chrome) -------------------------- */
+  --sl-surface-nav:     var(--sl-aubergine-deep);  /* workspace rail */
+  --sl-surface-sidebar: var(--sl-aubergine-dark);  /* channel sidebar */
+  --sl-surface-content: var(--sl-white);           /* message pane */
+  --sl-onbrand-fg:      #FFFFFF;
+  --sl-onbrand-fg-2:    rgba(255, 255, 255, 0.72);
+  --sl-onbrand-hover:   rgba(255, 255, 255, 0.08);
+  --sl-onbrand-active:  rgba(255, 255, 255, 0.16);
+
+  /* --- Borders ----------------------------------------------- */
+  --sl-border-subtle:   rgba(29, 28, 29, 0.08);
+  --sl-border-default:  rgba(29, 28, 29, 0.13);
+  --sl-border-strong:   rgba(29, 28, 29, 0.24);
+  --sl-border-ondark:   rgba(255, 255, 255, 0.10);
+
+  /* --- Status ------------------------------------------------ */
+  --sl-success:         #007A5A;
+  --sl-success-bg:      #E8F6F0;
+  --sl-warning:         #B26A00;
+  --sl-warning-bg:      #FFF4DB;
+  --sl-danger:          #CD2553;
+  --sl-danger-bg:       #FCE5EC;
+  --sl-info:            #1264A3;
+  --sl-info-bg:         #E8F3FA;
+
+  /* --- Type --------------------------------------------------- */
+  --sl-font-display:    'Lato', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  --sl-font-body:       'Lato', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  --sl-font-mono:       'Monaco', 'Menlo', 'Consolas', 'Roboto Mono', monospace;
+
+  /* Salesforce slide-deck substitutes (used only by /slides) */
+  --sl-font-slide-display: 'Jost', 'Futura', 'Century Gothic', sans-serif;
+  --sl-font-slide-body:    'Hanken Grotesk', 'Helvetica Neue', Helvetica, sans-serif;
+
+  /* Type scale (marketing / app) */
+  --sl-text-display-1:  96px;
+  --sl-text-display-2:  72px;
+  --sl-text-h1:         56px;
+  --sl-text-h2:         40px;
+  --sl-text-h3:         28px;
+  --sl-text-h4:         22px;
+  --sl-text-body-lg:    20px;
+  --sl-text-body:       16px;
+  --sl-text-body-sm:    14px;
+  --sl-text-caption:    13px;
+  --sl-text-eyebrow:    12px;
+
+  --sl-lh-tight:        1.08;
+  --sl-lh-snug:         1.2;
+  --sl-lh-normal:       1.5;
+  --sl-lh-loose:        1.7;
+
+  --sl-weight-regular:  400;
+  --sl-weight-bold:     700;
+  --sl-weight-black:    900;
+
+  /* --- Spacing (8px grid) ------------------------------------ */
+  --sl-space-1:         4px;
+  --sl-space-2:         8px;
+  --sl-space-3:         12px;
+  --sl-space-4:         16px;
+  --sl-space-5:         24px;
+  --sl-space-6:         32px;
+  --sl-space-7:         48px;
+  --sl-space-8:         64px;
+  --sl-space-9:         96px;
+  --sl-space-10:        128px;
+
+  /* --- Radii ------------------------------------------------- */
+  --sl-radius-sm:       4px;
+  --sl-radius-md:       8px;
+  --sl-radius-lg:       12px;
+  --sl-radius-xl:       20px;
+  --sl-radius-pill:     999px;
+
+  /* --- Shadows ----------------------------------------------- */
+  --sl-shadow-sm:       0 1px 2px rgba(0, 0, 0, 0.08);
+  --sl-shadow-md:       0 4px 12px rgba(0, 0, 0, 0.12);
+  --sl-shadow-lg:       0 12px 32px rgba(0, 0, 0, 0.16);
+  --sl-shadow-focus:    0 0 0 2px var(--sl-white), 0 0 0 4px var(--sl-link);
+
+  /* --- Motion ----------------------------------------------- */
+  --sl-ease-out:        cubic-bezier(0.2, 0, 0, 1);
+  --sl-ease-in-out:     cubic-bezier(0.4, 0, 0.2, 1);
+  --sl-dur-fast:        150ms;
+  --sl-dur-base:        250ms;
+  --sl-dur-slow:        400ms;
+}
+
+/* ============================================================
+   Semantic element styles — sensible defaults for bare HTML
+   ============================================================ */
+
+body {
+  font-family: var(--sl-font-body);
+  font-size: var(--sl-text-body);
+  line-height: var(--sl-lh-normal);
+  color: var(--sl-fg-1);
+  background: var(--sl-bg-1);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+h1, h2, h3, h4, h5 {
+  font-family: var(--sl-font-display);
+  color: var(--sl-fg-1);
+  margin: 0 0 var(--sl-space-4) 0;
+  text-wrap: balance;
+}
+h1 { font-size: var(--sl-text-h1);    font-weight: 900; line-height: var(--sl-lh-tight); letter-spacing: -0.02em; }
+h2 { font-size: var(--sl-text-h2);    font-weight: 900; line-height: var(--sl-lh-snug);  letter-spacing: -0.015em; }
+h3 { font-size: var(--sl-text-h3);    font-weight: 700; line-height: var(--sl-lh-snug); }
+h4 { font-size: var(--sl-text-h4);    font-weight: 700; line-height: var(--sl-lh-snug); }
+h5 { font-size: var(--sl-text-body);  font-weight: 700; line-height: var(--sl-lh-snug); }
+
+p {
+  margin: 0 0 var(--sl-space-4) 0;
+  color: var(--sl-fg-1);
+  text-wrap: pretty;
+  max-width: 65ch;
+}
+
+.sl-eyebrow {
+  font-size: var(--sl-text-eyebrow);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--sl-fg-2);
+}
+
+.sl-display-1 { font-family: var(--sl-font-display); font-size: var(--sl-text-display-1); font-weight: 900; line-height: 1.02; letter-spacing: -0.03em; }
+.sl-display-2 { font-family: var(--sl-font-display); font-size: var(--sl-text-display-2); font-weight: 900; line-height: 1.05; letter-spacing: -0.025em; }
+
+a {
+  color: var(--sl-link);
+  text-decoration: none;
+  transition: color var(--sl-dur-fast) var(--sl-ease-out);
+}
+a:hover { color: var(--sl-link-hover); text-decoration: underline; }
+
+code, kbd, pre {
+  font-family: var(--sl-font-mono);
+  font-size: 0.92em;
+  background: var(--sl-bg-3);
+  padding: 2px 6px;
+  border-radius: var(--sl-radius-sm);
+}
+
+hr {
+  border: none;
+  border-top: 1px solid var(--sl-border-subtle);
+  margin: var(--sl-space-6) 0;
+}
+
+/* utility */
+.sl-muted  { color: var(--sl-fg-2); }
+.sl-faint  { color: var(--sl-fg-3); }
+.sl-mono   { font-family: var(--sl-font-mono); }

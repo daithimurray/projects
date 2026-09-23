@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&amp;family=Figtree:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
+<style>*{box-sizing:border-box}body{margin:0;background:#FAF8F5;color:#1A1816;font-family:Figtree,system-ui,sans-serif;-webkit-font-smoothing:antialiased}a{color:#34506A}a:hover{color:#1B2C3D}</style>
+</helmet>
+<nav style="position:sticky;top:0;z-index:50;background:rgba(250,248,245,0.96);border-bottom:1px solid #E6E1D9;">
+  <div style="max-width:1200px;margin:0 auto;padding:0 24px;min-height:64px;display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap;">
+    <a href="Index.dc.html" style="display:flex;align-items:baseline;gap:10px;text-decoration:none;color:#1B2C3D;"><span style="font-family:Newsreader,serif;font-size:22px;font-weight:500;">Errol Brennan Painting</span><span style="font-size:12px;letter-spacing:0.1em;text-transform:uppercase;font-weight:600;color:#5E5851;">Design system v1.0</span></a>
+    <div style="display:flex;gap:2px;flex-wrap:wrap;font-size:14px;font-weight:500;">
+      <a href="Index.dc.html" style="padding:8px 12px;border-radius:8px;text-decoration:none;color:#433F3A;" style-hover="background:#F3F0EB;">Overview</a>
+      <a href="Foundations.dc.html" style="padding:8px 12px;border-radius:8px;text-decoration:none;color:#111D29;background:#F3F0EB;">Foundations</a>
+      <a href="Components-Forms.dc.html" style="padding:8px 12px;border-radius:8px;text-decoration:none;color:#433F3A;" style-hover="background:#F3F0EB;">Actions &amp; forms</a>
+      <a href="Components-Content.dc.html" style="padding:8px 12px;border-radius:8px;text-decoration:none;color:#433F3A;" style-hover="background:#F3F0EB;">Content &amp; layout</a>
+      <a href="Components-Feedback.dc.html" style="padding:8px 12px;border-radius:8px;text-decoration:none;color:#433F3A;" style-hover="background:#F3F0EB;">Feedback &amp; navigation</a>
+      <a href="Patterns.dc.html" style="padding:8px 12px;border-radius:8px;text-decoration:none;color:#433F3A;" style-hover="background:#F3F0EB;">Patterns</a>
+      <a href="Tokens.dc.html" style="padding:8px 12px;border-radius:8px;text-decoration:none;color:#433F3A;" style-hover="background:#F3F0EB;">Tokens &amp; dev</a>
+    </div>
+  </div>
+</nav>
+
+<main style="max-width:1200px;margin:0 auto;padding:0 24px;">
+  <header style="padding:64px 0 32px;display:flex;justify-content:space-between;align-items:flex-end;gap:24px;flex-wrap:wrap;">
+    <div><p style="margin:0 0 12px;font-size:12px;letter-spacing:0.1em;text-transform:uppercase;font-weight:600;color:#9E6B19;">Foundations</p><h1 style="margin:0;font-family:Newsreader,serif;font-weight:500;font-size:clamp(36px,4.5vw,56px);line-height:1.1;letter-spacing:-0.02em;color:#111D29;">Colour, type, grid, space</h1></div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;font-size:14px;font-weight:500;"><a href="#color" style="padding:6px 12px;border:1px solid #D1CAC0;border-radius:999px;text-decoration:none;color:#1B2C3D;">Colour</a><a href="#type" style="padding:6px 12px;border:1px solid #D1CAC0;border-radius:999px;text-decoration:none;color:#1B2C3D;">Typography</a><a href="#grid" style="padding:6px 12px;border:1px solid #D1CAC0;border-radius:999px;text-decoration:none;color:#1B2C3D;">Grid</a><a href="#spacing" style="padding:6px 12px;border:1px solid #D1CAC0;border-radius:999px;text-decoration:none;color:#1B2C3D;">Spacing</a><a href="#shape" style="padding:6px 12px;border:1px solid #D1CAC0;border-radius:999px;text-decoration:none;color:#1B2C3D;">Shape &amp; elevation</a><a href="#motion" style="padding:6px 12px;border:1px solid #D1CAC0;border-radius:999px;text-decoration:none;color:#1B2C3D;">Motion</a><a href="#icons" style="padding:6px 12px;border:1px solid #D1CAC0;border-radius:999px;text-decoration:none;color:#1B2C3D;">Icons &amp; imagery</a></div>
+  </header>
+
+  <!-- COLOUR -->
+  <section id="color" style="padding:48px 0;border-top:1px solid #E6E1D9;">
+    <h2 style="margin:0 0 8px;font-family:Newsreader,serif;font-weight:500;font-size:clamp(28px,3.2vw,40px);line-height:1.15;letter-spacing:-0.01em;color:#111D29;">Colour</h2>
+    <p style="margin:0 0 40px;font-size:18px;line-height:1.6;color:#433F3A;max-width:720px;text-wrap:pretty;">Three named ramps. <strong>Ink</strong> is the brand: deep, trustworthy, the colour of a signed estimate. <strong>Ochre</strong> is the single accent, used like a painter’s tape line: once, to mark the action. <strong>Plaster</strong> is the warm neutral ramp for every surface and text tone.</p>
+
+    <h3 style="margin:0 0 16px;font-size:20px;font-weight:600;">Ink · primary</h3>
+    <div style="display:grid;grid-template-columns:repeat(10,minmax(0,1fr));gap:4px;margin-bottom:8px;">
+      <div style="height:72px;border-radius:8px 0 0 8px;background:#F1F4F7;"></div><div style="height:72px;background:#DCE3EA;"></div><div style="height:72px;background:#B9C6D4;"></div><div style="height:72px;background:#8FA3B8;"></div><div style="height:72px;background:#64809B;"></div><div style="height:72px;background:#46627E;"></div><div style="height:72px;background:#34506A;"></div><div style="height:72px;background:#263D52;"></div><div style="height:72px;background:#1B2C3D;"></div><div style="height:72px;border-radius:0 8px 8px 0;background:#111D29;"></div>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(10,minmax(0,1fr));gap:4px;margin-bottom:32px;font-family:'JetBrains Mono',monospace;font-size:11px;color:#5E5851;line-height:1.5;">
+      <div>50<br>F1F4F7</div><div>100<br>DCE3EA</div><div>200<br>B9C6D4</div><div>300<br>8FA3B8</div><div>400<br>64809B</div><div>500<br>46627E</div><div>600<br>34506A</div><div>700<br>263D52</div><div>800<br>1B2C3D</div><div>900<br>111D29</div>
+    </div>
+
+    <h3 style="margin:0 0 16px;font-size:20px;font-weight:600;">Ochre · accent</h3>
+    <div style="display:grid;grid-template-columns:repeat(10,minmax(0,1fr));gap:4px;margin-bottom:8px;">
+      <div style="height:72px;border-radius:8px 0 0 8px;background:#FBF4E6;"></div><div style="height:72px;background:#F5E4BF;"></div><div style="height:72px;background:#ECCB85;"></div><div style="height:72px;background:#E1B04F;"></div><div style="height:72px;background:#D49A2C;"></div><div style="height:72px;background:#C08420;"></div><div style="height:72px;background:#9E6B19;"></div><div style="height:72px;background:#7C5314;"></div><div style="height:72px;background:#5C3D0F;"></div><div style="height:72px;border-radius:0 8px 8px 0;background:#3E290A;"></div>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(10,minmax(0,1fr));gap:4px;margin-bottom:32px;font-family:'JetBrains Mono',monospace;font-size:11px;color:#5E5851;line-height:1.5;">
+      <div>50<br>FBF4E6</div><div>100<br>F5E4BF</div><div>200<br>ECCB85</div><div>300<br>E1B04F</div><div>400<br>D49A2C</div><div>500<br>C08420</div><div>600<br>9E6B19</div><div>700<br>7C5314</div><div>800<br>5C3D0F</div><div>900<br>3E290A</div>
+    </div>
+
+    <h3 style="margin:0 0 16px;font-size:20px;font-weight:600;">Plaster · neutral</h3>
+    <div style="display:grid;grid-template-columns:repeat(11,minmax(0,1fr));gap:4px;margin-bottom:8px;">
+      <div style="height:72px;border-radius:8px 0 0 8px;background:#FFFFFF;border:1px solid #E6E1D9;"></div><div style="height:72px;background:#FAF8F5;border:1px solid #E6E1D9;"></div><div style="height:72px;background:#F3F0EB;"></div><div style="height:72px;background:#E6E1D9;"></div><div style="height:72px;background:#D1CAC0;"></div><div style="height:72px;background:#A9A198;"></div><div style="height:72px;background:#7E776F;"></div><div style="height:72px;background:#5E5851;"></div><div style="height:72px;background:#433F3A;"></div><div style="height:72px;background:#2B2825;"></div><div style="height:72px;border-radius:0 8px 8px 0;background:#1A1816;"></div>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(11,minmax(0,1fr));gap:4px;margin-bottom:48px;font-family:'JetBrains Mono',monospace;font-size:11px;color:#5E5851;line-height:1.5;">
+      <div>0<br>FFFFFF</div><div>50<br>FAF8F5</div><div>100<br>F3F0EB</div><div>200<br>E6E1D9</div><div>300<br>D1CAC0</div><div>400<br>A9A198</div><div>500<br>7E776F</div><div>600<br>5E5851</div><div>700<br>433F3A</div><div>800<br>2B2825</div><div>900<br>1A1816</div>
+    </div>
+
+    <h3 style="margin:0 0 16px;font-size:20px;font-weight:600;">Semantic</h3>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;margin-bottom:48px;">
+      <div style="border-radius:12px;overflow:hidden;border:1px solid #E6E1D9;"><div style="background:#2E7D4F;height:56px;"></div><div style="background:#E6F3EB;padding:16px;color:#1F5C38;font-size:14px;line-height:1.5;"><strong>Success</strong> — quote sent, booking confirmed<br><span style="font-family:'JetBrains Mono',monospace;font-size:11px;">500 2E7D4F · text 1F5C38 · bg E6F3EB</span></div></div>
+      <div style="border-radius:12px;overflow:hidden;border:1px solid #E6E1D9;"><div style="background:#B7791F;height:56px;"></div><div style="background:#FBF1DC;padding:16px;color:#7A4E0E;font-size:14px;line-height:1.5;"><strong>Warning</strong> — limited dates, weather delay<br><span style="font-family:'JetBrains Mono',monospace;font-size:11px;">500 B7791F · text 7A4E0E · bg FBF1DC</span></div></div>
+      <div style="border-radius:12px;overflow:hidden;border:1px solid #E6E1D9;"><div style="background:#B3261E;height:56px;"></div><div style="background:#FBE9E7;padding:16px;color:#8A1C16;font-size:14px;line-height:1.5;"><strong>Error</strong> — invalid Eircode, upload failed<br><span style="font-family:'JetBrains Mono',monospace;font-size:11px;">500 B3261E · text 8A1C16 · bg FBE9E7</span></div></div>
+      <div style="border-radius:12px;overflow:hidden;border:1px solid #E6E1D9;"><div style="background:#2B6CB0;height:56px;"></div><div style="background:#E6EFF9;padding:16px;color:#1E4E80;font-size:14px;line-height:1.5;"><strong>Info</strong> — how we price, drying times<br><span style="font-family:'JetBrains Mono',monospace;font-size:11px;">500 2B6CB0 · text 1E4E80 · bg E6EFF9</span></div></div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:24px;">
+      <div style="background:#fff;border:1px solid #E6E1D9;border-radius:12px;padding:32px;">
+        <h3 style="margin:0 0 16px;font-size:20px;font-weight:600;">Usage roles</h3>
+        <table style="width:100%;border-collapse:collapse;font-size:14px;line-height:1.5;">
+          <tbody>
+            <tr style="border-bottom:1px solid #F3F0EB;"><td style="padding:10px 0;color:#5E5851;">Page background</td><td style="padding:10px 0;text-align:right;font-family:'JetBrains Mono',monospace;font-size:12px;">plaster.50</td></tr>
+            <tr style="border-bottom:1px solid #F3F0EB;"><td style="padding:10px 0;color:#5E5851;">Card surface</td><td style="padding:10px 0;text-align:right;font-family:'JetBrains Mono',monospace;font-size:12px;">plaster.0</td></tr>
+            <tr style="border-bottom:1px solid #F3F0EB;"><td style="padding:10px 0;color:#5E5851;">Sunken / muted surface</td><td style="padding:10px 0;text-align:right;font-family:'JetBrains Mono',monospace;font-size:12px;">plaster.100</td></tr>
+            <tr style="border-bottom:1px solid #F3F0EB;"><td style="padding:10px 0;color:#5E5851;">Borders</td><td style="padding:10px 0;text-align:right;font-family:'JetBrains Mono',monospace;font-size:12px;">plaster.200 / 300</td></tr>
+            <tr style="border-bottom:1px solid #F3F0EB;"><td style="padding:10px 0;color:#5E5851;">Text primary / secondary</td><td style="padding:10px 0;text-align:right;font-family:'JetBrains Mono',monospace;font-size:12px;">plaster.900 / 600</td></tr>
+            <tr style="border-bottom:1px solid #F3F0EB;"><td style="padding:10px 0;color:#5E5851;">Headings</td><td style="padding:10px 0;text-align:right;font-family:'JetBrains Mono',monospace;font-size:12px;">ink.900</td></tr>
+            <tr style="border-bottom:1px solid #F3F0EB;"><td style="padding:10px 0;color:#5E5851;">Primary button / dark bands</td><td style="padding:10px 0;text-align:right;font-family:'JetBrains Mono',monospace;font-size:12px;">ink.800</td></tr>
+            <tr style="border-bottom:1px solid #F3F0EB;"><td style="padding:10px 0;color:#5E5851;">Links / focus ring</td><td style="padding:10px 0;text-align:right;font-family:'JetBrains Mono',monospace;font-size:12px;">ink.600 / ink.500</td></tr>
+            <tr style="border-bottom:1px solid #F3F0EB;"><td style="padding:10px 0;color:#5E5851;">Accent fill (CTA on dark, highlight)</td><td style="padding:10px 0;text-align:right;font-family:'JetBrains Mono',monospace;font-size:12px;">ochre.400</td></tr>
+            <tr><td style="padding:10px 0;color:#5E5851;">Accent text (eyebrows, small labels)</td><td style="padding:10px 0;text-align:right;font-family:'JetBrains Mono',monospace;font-size:12px;">ochre.600 / 700</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div style="background:#fff;border:1px solid #E6E1D9;border-radius:12px;padding:32px;">
+        <h3 style="margin:0 0 16px;font-size:20px;font-weight:600;">Contrast (WCAG 2.2)</h3>
+        <div style="display:flex;flex-direction:column;gap:8px;font-size:14px;">
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 16px;border-radius:8px;background:#FAF8F5;color:#1A1816;"><span>plaster.900 on plaster.50</span><strong style="color:#1F5C38;">16.4 : 1 AAA</strong></div>
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 16px;border-radius:8px;background:#fff;border:1px solid #E6E1D9;color:#5E5851;"><span>plaster.600 on white</span><strong style="color:#1F5C38;">7.0 : 1 AAA</strong></div>
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 16px;border-radius:8px;background:#1B2C3D;color:#fff;"><span>white on ink.800</span><strong style="color:#8FD4A8;">13.5 : 1 AAA</strong></div>
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 16px;border-radius:8px;background:#fff;border:1px solid #E6E1D9;color:#34506A;"><span>ink.600 on white (links)</span><strong style="color:#1F5C38;">8.1 : 1 AAA</strong></div>
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 16px;border-radius:8px;background:#D49A2C;color:#1A1816;"><span>plaster.900 on ochre.400</span><strong style="color:#1A1816;">6.8 : 1 AA</strong></div>
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 16px;border-radius:8px;background:#fff;border:1px solid #E6E1D9;color:#9E6B19;"><span>ochre.600 on white (12px+ bold only)</span><strong style="color:#1F5C38;">4.6 : 1 AA</strong></div>
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 16px;border-radius:8px;background:#fff;border:1px solid #E6E1D9;color:#D49A2C;"><span>ochre.400 on white</span><strong style="color:#8A1C16;">2.5 : 1 fail — fill only</strong></div>
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 16px;border-radius:8px;background:#fff;border:1px solid #E6E1D9;color:#7E776F;"><span>plaster.500 on white</span><strong style="color:#8A1C16;">4.4 : 1 — placeholder/disabled only</strong></div>
+        </div>
+        <p style="margin:16px 0 0;font-size:14px;line-height:1.5;color:#5E5851;">Rule: text ≥ 4.5:1, headline-scale (24px+) ≥ 3:1, UI borders and icons ≥ 3:1. Never rely on colour alone; pair with text or an icon.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- TYPOGRAPHY -->
+  <section id="type" style="padding:48px 0;border-top:1px solid #E6E1D9;">
+    <h2 style="margin:0 0 8px;font-family:Newsreader,serif;font-weight:500;font-size:clamp(28px,3.2vw,40px);line-height:1.15;letter-spacing:-0.01em;color:#111D29;">Typography</h2>
+    <p style="margin:0 0 40px;font-size:18px;line-height:1.6;color:#433F3A;max-width:720px;text-wrap:pretty;"><strong>Newsreader</strong> for headings: a working serif with the warmth of a hand-lettered shop sign. <strong>Figtree</strong> for body and UI: neutral, open, legible at 14px. <strong>JetBrains Mono</strong> only for reference numbers and code. Sizes use <code style="font-family:'JetBrains Mono',monospace;font-size:14px;background:#F3F0EB;padding:2px 6px;border-radius:4px;">clamp()</code> so the scale breathes between 360px and 1280px without breakpoints.</p>
+
+    <div style="background:#fff;border:1px solid #E6E1D9;border-radius:12px;overflow:hidden;">
+      <div style="display:grid;grid-template-columns:140px minmax(0,1fr) 220px;gap:24px;padding:12px 32px;background:#F3F0EB;font-size:12px;letter-spacing:0.08em;text-transform:uppercase;font-weight:600;color:#5E5851;"><span>Level</span><span>Specimen</span><span>Spec</span></div>
+      <div style="display:grid;grid-template-columns:140px minmax(0,1fr) 220px;gap:24px;padding:24px 32px;border-top:1px solid #F3F0EB;align-items:center;"><span style="font-size:14px;font-weight:600;">Display</span><span style="font-family:Newsreader,serif;font-weight:500;font-size:clamp(44px,6vw,80px);line-height:1;letter-spacing:-0.02em;color:#111D29;">Fresh walls</span><span style="font-family:'JetBrains Mono',monospace;font-size:12px;color:#5E5851;line-height:1.6;">Newsreader 500<br>clamp(44px, 6vw, 80px)<br>lh 1.0 · ls −0.02em</span></div>
+      <div style="display:grid;grid-template-columns:140px minmax(0,1fr) 220px;gap:24px;padding:24px 32px;border-top:1px solid #F3F0EB;align-items:center;"><span style="font-size:14px;font-weight:600;">Heading 1</span><span style="font-family:Newsreader,serif;font-weight:500;font-size:clamp(36px,4.5vw,56px);line-height:1.1;letter-spacing:-0.02em;color:#111D29;">Interior painting in Leixlip</span><span style="font-family:'JetBrains Mono',monospace;font-size:12px;color:#5E5851;line-height:1.6;">Newsreader 500<br>clamp(36px, 4.5vw, 56px)<br>lh 1.1 · ls −0.02em</span></div>
+      <div style="display:grid;grid-template-columns:140px minmax(0,1fr) 220px;gap:24px;padding:24px 32px;border-top:1px solid #F3F0EB;align-items:center;"><span style="font-size:14px;font-weight:600;">Heading 2</span><span style="font-family:Newsreader,serif;font-weight:500;font-size:clamp(28px,3.2vw,40px);line-height:1.15;letter-spacing:-0.01em;color:#111D29;">What a repaint costs</span><span style="font-family:'JetBrains Mono',monospace;font-size:12px;color:#5E5851;line-height:1.6;">Newsreader 500<br>clamp(28px, 3.2vw, 40px)<br>lh 1.15 · ls −0.01em</span></div>
+      <div style="display:grid;grid-template-columns:140px minmax(0,1fr) 220px;gap:24px;padding:24px 32px;border-top:1px solid #F3F0EB;align-items:center;"><span style="font-size:14px;font-weight:600;">Heading 3</span><span style="font-family:Newsreader,serif;font-weight:500;font-size:clamp(22px,2.4vw,28px);line-height:1.25;color:#111D29;">Prep is 60% of the job</span><span style="font-family:'JetBrains Mono',monospace;font-size:12px;color:#5E5851;line-height:1.6;">Newsreader 500<br>clamp(22px, 2.4vw, 28px)<br>lh 1.25</span></div>
+      <div style="display:grid;grid-template-columns:140px minmax(0,1fr) 220px;gap:24px;padding:24px 32px;border-top:1px solid #F3F0EB;align-items:center;"><span style="font-size:14px;font-weight:600;">Heading 4</span><span style="font-size:20px;font-weight:600;line-height:1.3;color:#1A1816;">Two coats, Colourtrend Ceramic Matt</span><span style="font-family:'JetBrains Mono',monospace;font-size:12px;color:#5E5851;line-height:1.6;">Figtree 600<br>20px · lh 1.3</span></div>
+      <div style="display:grid;grid-template-columns:140px minmax(0,1fr) 220px;gap:24px;padding:24px 32px;border-top:1px solid #F3F0EB;align-items:center;"><span style="font-size:14px;font-weight:600;">Body large</span><span style="font-size:18px;line-height:1.6;color:#433F3A;">We sand, fill, and prime before a single top coat goes on. It takes longer. It lasts years longer.</span><span style="font-family:'JetBrains Mono',monospace;font-size:12px;color:#5E5851;line-height:1.6;">Figtree 400<br>18px · lh 1.6</span></div>
+      <div style="display:grid;grid-template-columns:140px minmax(0,1fr) 220px;gap:24px;padding:24px 32px;border-top:1px solid #F3F0EB;align-items:center;"><span style="font-size:14px;font-weight:600;">Body</span><span style="font-size:16px;line-height:1.6;color:#433F3A;">Every quote is itemised by room and coat, so you can see exactly where the money goes.</span><span style="font-family:'JetBrains Mono',monospace;font-size:12px;color:#5E5851;line-height:1.6;">Figtree 400<br>16px · lh 1.6</span></div>
+      <div style="display:grid;grid-template-columns:140px minmax(0,1fr) 220px;gap:24px;padding:24px 32px;border-top:1px solid #F3F0EB;align-items:center;"><span style="font-size:14px;font-weight:600;">Small</span><span style="font-size:14px;line-height:1.5;color:#5E5851;">Prices include materials and dust sheets. Furniture moving on request.</span><span style="font-family:'JetBrains Mono',monospace;font-size:12px;color:#5E5851;line-height:1.6;">Figtree 400/500<br>14px · lh 1.5</span></div>
+      <div style="display:grid;grid-template-columns:140px minmax(0,1fr) 220px;gap:24px;padding:24px 32px;border-top:1px solid #F3F0EB;align-items:center;"><span style="font-size:14px;font-weight:600;">Caption</span><span style="font-size:12px;letter-spacing:0.1em;text-transform:uppercase;font-weight:600;color:#9E6B19;">Exterior · Completed May 2026</span><span style="font-family:'JetBrains Mono',monospace;font-size:12px;color:#5E5851;line-height:1.6;">Figtree 600<br>12px · lh 1.4 · ls 0.1em · caps</span></div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:24px;margin-top:24px;">
+      <div style="background:#fff;border:1px solid #E6E1D9;border-radius:12px;padding:32px;"><h3 style="margin:0 0 12px;font-size:20px;font-weight:600;">Responsive behaviour</h3><ul style="margin:0;padding-left:20px;font-size:16px;line-height:1.7;color:#433F3A;"><li>Display and headings scale fluidly via clamp; body text never changes size.</li><li>Below 640px, Display caps at 44px and line-height stays 1.0 to avoid 4-line heroes.</li><li>Measure: 60–72 characters. Cap paragraphs at <code style="font-family:'JetBrains Mono',monospace;font-size:14px;">max-width: 65ch</code>.</li><li>Use <code style="font-family:'JetBrains Mono',monospace;font-size:14px;">text-wrap: balance</code> on headings, <code style="font-family:'JetBrains Mono',monospace;font-size:14px;">pretty</code> on body.</li></ul></div>
+      <div style="background:#fff;border:1px solid #E6E1D9;border-radius:12px;padding:32px;"><h3 style="margin:0 0 12px;font-size:20px;font-weight:600;">Accessibility</h3><ul style="margin:0;padding-left:20px;font-size:16px;line-height:1.7;color:#433F3A;"><li>Root font size stays at the user’s setting; all sizes in rem (spec shows px equivalents).</li><li>Body 16px minimum; Small 14px only for supporting metadata, never for instructions.</li><li>Text must reflow to 320px wide and zoom to 200% without horizontal scroll.</li><li>One <code style="font-family:'JetBrains Mono',monospace;font-size:14px;">h1</code> per page; heading levels never skip. Visual level and semantic level may differ via class.</li><li>Caption caps: 0.1em tracking keeps uppercase readable; never use caps above 14px.</li></ul></div>
+      <div style="background:#fff;border:1px solid #E6E1D9;border-radius:12px;padding:32px;"><h3 style="margin:0 0 12px;font-size:20px;font-weight:600;">Weights and italics</h3><ul style="margin:0;padding-left:20px;font-size:16px;line-height:1.7;color:#433F3A;"><li>Newsreader: 500 default, 600 for pull quotes, 400 italic for testimonials only.</li><li>Figtree: 400 body, 500 labels and nav, 600 buttons and H4, 700 numerals in stats.</li><li>Never fake bold or italic. Load only the listed weights (5 files, ~110 KB).</li><li>Tabular numerals (<code style="font-family:'JetBrains Mono',monospace;font-size:14px;">font-variant-numeric: tabular-nums</code>) in price tables.</li></ul></div>
+    </div>
+  </section>
+
+  <!-- GRID -->
+  <section id="grid" style="padding:48px 0;border-top:1px solid #E6E1D9;">
+    <h2 style="margin:0 0 8px;font-family:Newsreader,serif;font-weight:500;font-size:clamp(28px,3.2vw,40px);line-height:1.15;letter-spacing:-0.01em;color:#111D29;">Grid</h2>
+    <p style="margin:0 0 40px;font-size:18px;line-height:1.6;color:#433F3A;max-width:720px;text-wrap:pretty;">A 12-column fluid grid, 1200px max, 24px gutters. Columns collapse to 4 on phones. Content reads left-aligned in 8 columns; photography and dark bands run full-bleed.</p>
+    <div style="background:#fff;border:1px solid #E6E1D9;border-radius:12px;padding:24px;overflow:hidden;">
+      <div style="display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:24px;">
+        <div style="grid-column:span 12;display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:24px;"><div style="height:48px;background:#F1F4F7;border:1px dashed #B9C6D4;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:11px;color:#46627E;font-family:'JetBrains Mono',monospace;">1</div><div style="height:48px;background:#F1F4F7;border:1px dashed #B9C6D4;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:11px;color:#46627E;font-family:'JetBrains Mono',monospace;">2</div><div style="height:48px;background:#F1F4F7;border:1px dashed #B9C6D4;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:11px;color:#46627E;font-family:'JetBrains Mono',monospace;">3</div><div style="height:48px;background:#F1F4F7;border:1px dashed #B9C6D4;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:11px;color:#46627E;font-family:'JetBrains Mono',monospace;">4</div><div style="height:48px;background:#F1F4F7;border:1px dashed #B9C6D4;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:11px;color:#46627E;font-family:'JetBrains Mono',monospace;">5</div><div style="height:48px;background:#F1F4F7;border:1px dashed #B9C6D4;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:11px;color:#46627E;font-family:'JetBrains Mono',monospace;">6</div><div style="height:48px;background:#F1F4F7;border:1px dashed #B9C6D4;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:11px;color:#46627E;font-family:'JetBrains Mono',monospace;">7</div><div style="height:48px;background:#F1F4F7;border:1px dashed #B9C6D4;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:11px;color:#46627E;font-family:'JetBrains Mono',monospace;">8</div><div style="height:48px;background:#F1F4F7;border:1px dashed #B9C6D4;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:11px;color:#46627E;font-family:'JetBrains Mono',monospace;">9</div><div style="height:48px;background:#F1F4F7;border:1px dashed #B9C6D4;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:11px;color:#46627E;font-family:'JetBrains Mono',monospace;">10</div><div style="height:48px;background:#F1F4F7;border:1px dashed #B9C6D4;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:11px;color:#46627E;font-family:'JetBrains Mono',monospace;">11</div><div style="height:48px;background:#F1F4F7;border:1px dashed #B9C6D4;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:11px;color:#46627E;font-family:'JetBrains Mono',monospace;">12</div></div>
+        <div style="grid-column:span 8;height:64px;background:#1B2C3D;border-radius:8px;color:#fff;font-size:13px;display:flex;align-items:center;padding:0 16px;">Text column · span 8</div>
+        <div style="grid-column:span 4;height:64px;background:#D49A2C;border-radius:8px;color:#1A1816;font-size:13px;display:flex;align-items:center;padding:0 16px;">Aside · span 4</div>
+        <div style="grid-column:span 4;height:64px;background:#E6E1D9;border-radius:8px;font-size:13px;display:flex;align-items:center;padding:0 16px;color:#433F3A;">Card · 4</div>
+        <div style="grid-column:span 4;height:64px;background:#E6E1D9;border-radius:8px;font-size:13px;display:flex;align-items:center;padding:0 16px;color:#433F3A;">Card · 4</div>
+        <div style="grid-column:span 4;height:64px;background:#E6E1D9;border-radius:8px;font-size:13px;display:flex;align-items:center;padding:0 16px;color:#433F3A;">Card · 4</div>
+      </div>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:16px;margin-top:24px;">
+      <div style="background:#fff;border:1px solid #E6E1D9;border-radius:12px;padding:20px;"><div style="font-size:12px;letter-spacing:0.08em;text-transform:uppercase;font-weight:600;color:#5E5851;">xs · &lt;640</div><div style="font-size:20px;font-weight:600;margin:4px 0;">4 columns</div><div style="font-size:14px;color:#5E5851;">Margin 16 · gutter 16</div></div>
+      <div style="background:#fff;border:1px solid #E6E1D9;border-radius:12px;padding:20px;"><div style="font-size:12px;letter-spacing:0.08em;text-transform:uppercase;font-weight:600;color:#5E5851;">sm · 640</div><div style="font-size:20px;font-weight:600;margin:4px 0;">8 columns</div><div style="font-size:14px;color:#5E5851;">Margin 24 · gutter 24</div></div>
+      <div style="background:#fff;border:1px solid #E6E1D9;border-radius:12px;padding:20px;"><div style="font-size:12px;letter-spacing:0.08em;text-transform:uppercase;font-weight:600;color:#5E5851;">md · 768</div><div style="font-size:20px;font-weight:600;margin:4px 0;">12 columns</div><div style="font-size:14px;color:#5E5851;">Margin 32 · gutter 24</div></div>
+      <div style="background:#fff;border:1px solid #E6E1D9;border-radius:12px;padding:20px;"><div style="font-size:12px;letter-spacing:0.08em;text-transform:uppercase;font-weight:600;color:#5E5851;">lg · 1024</div><div style="font-size:20px;font-weight:600;margin:4px 0;">12 columns</div><div style="font-size:14px;color:#5E5851;">Margin 48 · gutter 24</div></div>
+      <div style="background:#fff;border:1px solid #E6E1D9;border-radius:12px;padding:20px;"><div style="font-size:12px;letter-spacing:0.08em;text-transform:uppercase;font-weight:600;color:#5E5851;">xl · 1280</div><div style="font-size:20px;font-weight:600;margin:4px 0;">12 · max 1200</div><div style="font-size:14px;color:#5E5851;">Centred · gutter 24</div></div>
+    </div>
+  </section>
+
+  <!-- SPACING -->
+  <section id="spacing" style="padding:48px 0;border-top:1px solid #E6E1D9;">
+    <h2 style="margin:0 0 8px;font-family:Newsreader,serif;font-weight:500;font-size:clamp(28px,3.2vw,40px);line-height:1.15;letter-spacing:-0.01em;color:#111D29;">Spacing</h2>
+    <p style="margin:0 0 40px;font-size:18px;line-height:1.6;color:#433F3A;max-width:720px;text-wrap:pretty;">An 8px base. One half-step (4px) for icon gaps and tight labels. Every padding, gap, and margin is a token; no 10px, no 15px.</p>
+    <div style="background:#fff;border:1px solid #E6E1D9;border-radius:12px;padding:32px;display:flex;flex-direction:column;gap:12px;">
+      <div style="display:grid;grid-template-columns:90px 60px minmax(0,1fr) 200px;gap:16px;align-items:center;font-size:14px;"><span style="font-family:'JetBrains Mono',monospace;color:#5E5851;">space.0.5</span><span style="font-weight:600;">4px</span><span style="height:16px;width:4px;background:#D49A2C;border-radius:2px;"></span><span style="color:#5E5851;">Icon-to-label, chip inner</span></div>
+      <div style="display:grid;grid-template-columns:90px 60px minmax(0,1fr) 200px;gap:16px;align-items:center;font-size:14px;"><span style="font-family:'JetBrains Mono',monospace;color:#5E5851;">space.1</span><span style="font-weight:600;">8px</span><span style="height:16px;width:8px;background:#D49A2C;border-radius:2px;"></span><span style="color:#5E5851;">Label to input, inline gaps</span></div>
+      <div style="display:grid;grid-template-columns:90px 60px minmax(0,1fr) 200px;gap:16px;align-items:center;font-size:14px;"><span style="font-family:'JetBrains Mono',monospace;color:#5E5851;">space.1.5</span><span style="font-weight:600;">12px</span><span style="height:16px;width:12px;background:#D49A2C;border-radius:2px;"></span><span style="color:#5E5851;">Button gap, list rows</span></div>
+      <div style="display:grid;grid-template-columns:90px 60px minmax(0,1fr) 200px;gap:16px;align-items:center;font-size:14px;"><span style="font-family:'JetBrains Mono',monospace;color:#5E5851;">space.2</span><span style="font-weight:600;">16px</span><span style="height:16px;width:16px;background:#D49A2C;border-radius:2px;"></span><span style="color:#5E5851;">Card inner (compact), form fields</span></div>
+      <div style="display:grid;grid-template-columns:90px 60px minmax(0,1fr) 200px;gap:16px;align-items:center;font-size:14px;"><span style="font-family:'JetBrains Mono',monospace;color:#5E5851;">space.3</span><span style="font-weight:600;">24px</span><span style="height:16px;width:24px;background:#D49A2C;border-radius:2px;"></span><span style="color:#5E5851;">Gutters, card inner</span></div>
+      <div style="display:grid;grid-template-columns:90px 60px minmax(0,1fr) 200px;gap:16px;align-items:center;font-size:14px;"><span style="font-family:'JetBrains Mono',monospace;color:#5E5851;">space.4</span><span style="font-weight:600;">32px</span><span style="height:16px;width:32px;background:#D49A2C;border-radius:2px;"></span><span style="color:#5E5851;">Card inner (roomy), section sub-gaps</span></div>
+      <div style="display:grid;grid-template-columns:90px 60px minmax(0,1fr) 200px;gap:16px;align-items:center;font-size:14px;"><span style="font-family:'JetBrains Mono',monospace;color:#5E5851;">space.6</span><span style="font-weight:600;">48px</span><span style="height:16px;width:48px;background:#D49A2C;border-radius:2px;"></span><span style="color:#5E5851;">Between component groups</span></div>
+      <div style="display:grid;grid-template-columns:90px 60px minmax(0,1fr) 200px;gap:16px;align-items:center;font-size:14px;"><span style="font-family:'JetBrains Mono',monospace;color:#5E5851;">space.8</span><span style="font-weight:600;">64px</span><span style="height:16px;width:64px;background:#D49A2C;border-radius:2px;"></span><span style="color:#5E5851;">Section padding (mobile)</span></div>
+      <div style="display:grid;grid-template-columns:90px 60px minmax(0,1fr) 200px;gap:16px;align-items:center;font-size:14px;"><span style="font-family:'JetBrains Mono',monospace;color:#5E5851;">space.12</span><span style="font-weight:600;">96px</span><span style="height:16px;width:96px;background:#D49A2C;border-radius:2px;"></span><span style="color:#5E5851;">Section padding (desktop)</span></div>
+      <div style="display:grid;grid-template-columns:90px 60px minmax(0,1fr) 200px;gap:16px;align-items:center;font-size:14px;"><span style="font-family:'JetBrains Mono',monospace;color:#5E5851;">space.16</span><span style="font-weight:600;">128px</span><span style="height:16px;width:128px;background:#D49A2C;border-radius:2px;"></span><span style="color:#5E5851;">Hero top padding</span></div>
+    </div>
+  </section>
+
+  <!-- SHAPE & ELEVATION -->
+  <section id="shape" style="padding:48px 0;border-top:1px solid #E6E1D9;">
+    <h2 style="margin:0 0 8px;font-family:Newsreader,serif;font-weight:500;font-size:clamp(28px,3.2vw,40px);line-height:1.15;letter-spacing:-0.01em;color:#111D29;">Shape &amp; elevation</h2>
+    <p style="margin:0 0 40px;font-size:18px;line-height:1.6;color:#433F3A;max-width:720px;text-wrap:pretty;">Square-ish corners, like a well-cut skirting board. Borders do most of the work; shadows are reserved for things that float.</p>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:24px;">
+      <div style="background:#fff;border:1px solid #E6E1D9;border-radius:12px;padding:32px;">
+        <h3 style="margin:0 0 16px;font-size:20px;font-weight:600;">Radius</h3>
+        <div style="display:flex;gap:16px;flex-wrap:wrap;align-items:flex-end;">
+          <div style="text-align:center;font-size:12px;color:#5E5851;"><div style="width:64px;height:64px;background:#DCE3EA;border-radius:4px;margin-bottom:8px;"></div>4 · inputs, tags</div>
+          <div style="text-align:center;font-size:12px;color:#5E5851;"><div style="width:64px;height:64px;background:#DCE3EA;border-radius:8px;margin-bottom:8px;"></div>8 · buttons, menus</div>
+          <div style="text-align:center;font-size:12px;color:#5E5851;"><div style="width:64px;height:64px;background:#DCE3EA;border-radius:12px;margin-bottom:8px;"></div>12 · cards, modals</div>
+          <div style="text-align:center;font-size:12px;color:#5E5851;"><div style="width:64px;height:64px;background:#DCE3EA;border-radius:999px;margin-bottom:8px;"></div>999 · pills, avatars</div>
+        </div>
+      </div>
+      <div style="background:#fff;border:1px solid #E6E1D9;border-radius:12px;padding:32px;">
+        <h3 style="margin:0 0 16px;font-size:20px;font-weight:600;">Shadow</h3>
+        <div style="display:flex;gap:24px;flex-wrap:wrap;">
+          <div style="text-align:center;font-size:12px;color:#5E5851;"><div style="width:96px;height:64px;background:#fff;border:1px solid #E6E1D9;border-radius:8px;margin-bottom:8px;"></div>0 · border only</div>
+          <div style="text-align:center;font-size:12px;color:#5E5851;"><div style="width:96px;height:64px;background:#fff;border-radius:8px;box-shadow:0 1px 2px rgba(26,24,22,0.08);margin-bottom:8px;"></div>sm · cards at rest</div>
+          <div style="text-align:center;font-size:12px;color:#5E5851;"><div style="width:96px;height:64px;background:#fff;border-radius:8px;box-shadow:0 4px 12px rgba(26,24,22,0.12);margin-bottom:8px;"></div>md · menus, popovers</div>
+          <div style="text-align:center;font-size:12px;color:#5E5851;"><div style="width:96px;height:64px;background:#fff;border-radius:8px;box-shadow:0 12px 32px rgba(26,24,22,0.16);margin-bottom:8px;"></div>lg · modals, drawers</div>
+        </div>
+        <p style="margin:16px 0 0;font-size:14px;color:#5E5851;line-height:1.5;">Border: 1px plaster.200 on light, 1px rgba(255,255,255,0.12) on Ink. Never border + shadow on the same card.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- MOTION -->
+  <section id="motion" style="padding:48px 0;border-top:1px solid #E6E1D9;">
+    <h2 style="margin:0 0 8px;font-family:Newsreader,serif;font-weight:500;font-size:clamp(28px,3.2vw,40px);line-height:1.15;letter-spacing:-0.01em;color:#111D29;">Motion</h2>
+    <p style="margin:0 0 40px;font-size:18px;line-height:1.6;color:#433F3A;max-width:720px;text-wrap:pretty;">Calm and quick. Motion confirms a tap or reveals a panel; it never performs.</p>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;">
+      <div style="background:#fff;border:1px solid #E6E1D9;border-radius:12px;padding:24px;"><div style="font-family:'JetBrains Mono',monospace;font-size:12px;color:#5E5851;">motion.fast</div><div style="font-size:28px;font-weight:600;margin:4px 0;">150ms</div><div style="font-size:14px;color:#5E5851;line-height:1.5;">Hover, press, toggle. ease-out (0.2, 0, 0, 1)</div></div>
+      <div style="background:#fff;border:1px solid #E6E1D9;border-radius:12px;padding:24px;"><div style="font-family:'JetBrains Mono',monospace;font-size:12px;color:#5E5851;">motion.base</div><div style="font-size:28px;font-weight:600;margin:4px 0;">250ms</div><div style="font-size:14px;color:#5E5851;line-height:1.5;">Menus, accordions, tooltips. ease-out</div></div>
+      <div style="background:#fff;border:1px solid #E6E1D9;border-radius:12px;padding:24px;"><div style="font-family:'JetBrains Mono',monospace;font-size:12px;color:#5E5851;">motion.slow</div><div style="font-size:28px;font-weight:600;margin:4px 0;">400ms</div><div style="font-size:14px;color:#5E5851;line-height:1.5;">Modal, drawer, page reveal. (0.4, 0, 0.2, 1)</div></div>
+      <div style="background:#fff;border:1px solid #E6E1D9;border-radius:12px;padding:24px;"><div style="font-family:'JetBrains Mono',monospace;font-size:12px;color:#5E5851;">reduced motion</div><div style="font-size:28px;font-weight:600;margin:4px 0;">0ms</div><div style="font-size:14px;color:#5E5851;line-height:1.5;">Respect <code style="font-family:'JetBrains Mono',monospace;font-size:12px;">prefers-reduced-motion</code>: fade only, no transforms.</div></div>
+    </div>
+    <p style="margin:24px 0 0;font-size:14px;color:#5E5851;line-height:1.5;">No bounce, spring, or overshoot. Entrances: opacity 0→1 plus translateY 8px→0. Exits are faster than entrances (÷1.5). Before/after slider follows the pointer with no easing.</p>
+  </section>
+
+  <!-- ICONS & IMAGERY -->
+  <section id="icons" style="padding:48px 0 96px;border-top:1px solid #E6E1D9;">
+    <h2 style="margin:0 0 8px;font-family:Newsreader,serif;font-weight:500;font-size:clamp(28px,3.2vw,40px);line-height:1.15;letter-spacing:-0.01em;color:#111D29;">Icons &amp; imagery</h2>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:24px;margin-top:32px;">
+      <div style="background:#fff;border:1px solid #E6E1D9;border-radius:12px;padding:32px;">
+        <h3 style="margin:0 0 12px;font-size:20px;font-weight:600;">Icons</h3>
+        <div style="display:flex;gap:16px;margin:0 0 16px;color:#1B2C3D;flex-wrap:wrap;">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.6a2 2 0 0 1-.5 2.1L8.1 9.7a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.8.3 1.7.5 2.6.7A2 2 0 0 1 22 16.9z"/></svg>
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M4 22h16M4 2h16v8H4zM12 10v4a2 2 0 0 0 2 2h2v6"/></svg>
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="m12 2 3.1 6.3 6.9 1-5 4.9 1.2 6.8L12 17.8 5.8 21l1.2-6.8-5-4.9 6.9-1z"/></svg>
+        </div>
+        <ul style="margin:0;padding-left:20px;font-size:16px;line-height:1.7;color:#433F3A;"><li><a href="https://lucide.dev">Lucide</a>, 24px grid, 1.75px stroke, round caps. Inline SVG with <code style="font-family:'JetBrains Mono',monospace;font-size:14px;">currentColor</code>.</li><li>Sizes: 16 (inline with Small text), 20 (buttons, inputs), 24 (nav, feature rows). Never larger than 32 as UI; larger is illustration.</li><li>Decorative icons get <code style="font-family:'JetBrains Mono',monospace;font-size:14px;">aria-hidden</code>; standalone icon buttons get a visible tooltip and <code style="font-family:'JetBrains Mono',monospace;font-size:14px;">aria-label</code>.</li><li>No emoji in UI. No icon fonts.</li></ul>
+      </div>
+      <div style="background:#fff;border:1px solid #E6E1D9;border-radius:12px;padding:32px;">
+        <h3 style="margin:0 0 12px;font-size:20px;font-weight:600;">Photography</h3>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:16px;"><div style="aspect-ratio:4/3;background:#E6E1D9;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:12px;color:#5E5851;">Before · 4:3</div><div style="aspect-ratio:4/3;background:#DCE3EA;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:12px;color:#46627E;">After · 4:3</div></div>
+        <ul style="margin:0;padding-left:20px;font-size:16px;line-height:1.7;color:#433F3A;"><li>Our finished rooms, daylight, tripod-straight verticals. No filters, no HDR.</li><li>Ratios: 4:3 for portfolio pairs, 3:2 for service heroes, 1:1 for team.</li><li>Before/after pairs shot from the same spot; the slider only works when edges line up.</li><li>Text never sits on a photo without a solid Ink panel beneath it. No scrims.</li><li>Alt text describes the room and finish: “Sage green eggshell on hallway panelling, Leixlip.”</li></ul>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer style="border-top:1px solid #E6E1D9;">
+  <div style="max-width:1200px;margin:0 auto;padding:32px 24px;display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;font-size:14px;color:#5E5851;">
+    <span>Errol Brennan Painting design system · v1.0</span>
+    <a href="Components-Forms.dc.html" style="font-weight:500;">Next: Actions &amp; forms →</a>
+  </div>
+</footer>
+</x-dc>
+</body>
+</html>
