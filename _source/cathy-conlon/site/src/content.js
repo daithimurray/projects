@@ -32,8 +32,8 @@ export const collection = {
 
 export const readOnline = [
   { title: "The Light Dancing and Lizzie", where: "Poethead", year: 2016, note: "The title poem of the collection, about my father, with its companion poem.", href: "https://poethead.wordpress.com/2016/09/12/the-light-dancing-and-lizzie-by-catherine-conlon/", kind: "Read" },
-  { title: "Three poems", where: "The Milk House", year: 2023, note: "Three poems, published in 2023.", href: "https://www.themilkhouse.org/three-poems-by-cathy-conlon/", kind: "Read" },
-  { title: "Poetry Day Ireland special", where: "Eat the Storms podcast", year: 2023, note: "Featured on the Poetry Day Ireland episode.", href: "https://eatthestorms.com/2023/04/25/a-message-in-a-casino-poetry-day-ireland-2023-a-special-episode-of-eat-the-storms/", kind: "Listen" },
+  { title: "Three poems", where: "The Milk House", year: 2023, href: "https://www.themilkhouse.org/three-poems-by-cathy-conlon/", kind: "Read" },
+  { title: "Poetry Day Ireland special", where: "Eat the Storms podcast", year: 2023, href: "https://eatthestorms.com/2023/04/25/a-message-in-a-casino-poetry-day-ireland-2023-a-special-episode-of-eat-the-storms/", kind: "Listen" },
 ];
 
 export const publications = ["The Irish Times", "Poetry Ireland Review", "Books Ireland", "Cúirt Journal", "Ropes", "Skylight 47", "Boyne Berries", "Brevity is the Soul (Liberties Press)", "Stories for the Ear (Kildare County Council)"];
@@ -41,7 +41,6 @@ export const publications = ["The Irish Times", "Poetry Ireland Review", "Books 
 export const events = [
   { date: "2026-07-17", title: "Reading from Swift, Vanessa & The Sluttery", venue: "Castletown House", city: "Celbridge", time: "5.30pm", kind: "Swift & Vanessa Festival" },
   { date: "2026-05-10", title: "Launch of Swift, Vanessa & The Sluttery", venue: "Barberstown Castle", city: "Straffan, Co. Kildare", time: "3pm", kind: "Launched by Ger Duffy", href: "https://www.youtube.com/watch?v=CkugUuJh0dk", linkLabel: "Watch the launch" },
-  { date: "2023-04-25", title: "Poetry Day Ireland special", venue: "Eat the Storms podcast", kind: "Podcast", href: "https://eatthestorms.com/2023/04/25/a-message-in-a-casino-poetry-day-ireland-2023-a-special-episode-of-eat-the-storms/", linkLabel: "Listen" },
 ];
 
 export const prizes = {

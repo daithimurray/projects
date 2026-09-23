@@ -90,17 +90,17 @@ export function OnePage() {
       <div className="cc-books">
         <BookCard layout="row" featured title={novel.title} author={author.name} cover={novel.cover} kind={novel.kind} publisher={novel.publisher} year={novel.year} blurb={novel.blurb}
           actions={<><Button variant="accent" href={novel.buy} target="_blank" rel="noopener noreferrer">Buy the novel, {novel.price}</Button><TextLink variant="arrow" href="#swift">The story behind it</TextLink></>} />
-        <BookCard layout="row" title={collection.title} author={author.name} cover={collection.cover} kind={collection.kind} publisher={collection.publisher} year={collection.year} blurb={collection.blurb}
+        <BookCard layout="row" className="cc-book--paper" title={collection.title} author={author.name} cover={collection.cover} kind={collection.kind} publisher={collection.publisher} year={collection.year} blurb={collection.blurb}
           actions={<p className="cc-stockists"><span className="cc-label">In bookshops</span>{collection.stockists.join("; ")}.</p>} />
       </div>
-      <p className="cc-note">Both books are published by the <TextLink href={publisher.href} external>{publisher.name}</TextLink>.</p>
+      <p className="cc-note">Revival Press and Savoy Editions are imprints of the <TextLink href={publisher.href} external>{publisher.name}</TextLink>.</p>
     </Section>
 
-    <Section id="swift" tone="inverse" eyebrow="Celbridge, 1720" title="Swift came to Celbridge Abbey to see Vanessa.">
+    <Section id="swift" tone="inverse" title="Swift came to Celbridge Abbey to see Vanessa.">
       <div className="cc-chapter">
         <div className="cc-chapter__text">
-          <p className="cc-lede">In 1720 Jonathan Swift visited Esther Vanhomrigh, the woman he called Vanessa, a short walk from where I live. Their seventeen years of letters and arguments became my first novel, about a woman who wanted an equal place beside him.</p>
-          <div className="cc-links"><TextLink href={festival.href} external>{festival.name}</TextLink><TextLink href={events[1].href} external>Watch the launch at Barberstown Castle</TextLink></div>
+          <p className="cc-lede">In 1720 Jonathan Swift visited Esther Vanhomrigh, the woman he called Vanessa, a short walk from where I live. Their story became my first novel.</p>
+          <div className="cc-links"><TextLink href={festival.href} external>{festival.name}</TextLink></div>
         </div>
         <p className="cc-chapter__year" aria-hidden="true">1720</p>
       </div>
@@ -112,7 +112,7 @@ export function OnePage() {
           <a className="cc-read" href={r.href} target="_blank" rel="noopener noreferrer">
             <span className="cc-read__meta">{r.kind} at {r.where}, {r.year}</span>
             <span className="cc-read__title">{r.title}<span className="visually-hidden"> (opens in new tab)</span></span>
-            <span className="cc-read__note">{r.note}</span>
+            {r.note && <span className="cc-read__note">{r.note}</span>}
           </a>
         </li>)}
       </ul>
@@ -127,7 +127,7 @@ export function OnePage() {
         </div>
         <div className="cc-events__list">
           <h3 className="cc-h3">Recent</h3>
-          {events.map((e) => <EventCard key={e.title} date={e.date} title={e.title} venue={e.venue} city={e.city} time={e.time} kind={e.kind}
+          {events.map((e) => <EventCard key={e.title} date={e.date} title={e.title} venue={e.venue} city={e.city} time={e.time} kind={e.kind} showYear
             actions={e.href ? <TextLink href={e.href} external>{e.linkLabel}</TextLink> : undefined} />)}
         </div>
       </div>
@@ -149,14 +149,15 @@ export function OnePage() {
       </div>
     </Section>
 
-    <Section id="contact" tone="sunken" title="Write to me">
-      <div className="cc-contact">
+    <Section id="contact" tone="sunken" title="Contact">
+      <div className={"cc-contact" + (NEWSLETTER_ENDPOINT ? " cc-contact--split" : "")}>
         <div className="cc-contact__main">
           <p className="cc-lede">Readings, book clubs, rights, or just to say hello.</p>
           {FORM_ENDPOINT ? <ContactForm /> : <ul className="cc-routes">
             {CONTACT_EMAIL && <li><span className="cc-label">Email</span><a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a></li>}
             <li><span className="cc-label">On X</span><TextLink href={author.x} external>@cat_conlon</TextLink></li>
-            <li><span className="cc-label">Readings and rights</span><span>through my publisher, the {publisher.name}: <a href={`mailto:${publisher.email}`}>{publisher.email}</a></span></li>
+            <li><span className="cc-label">Readings, festivals and rights</span><span>Through my publisher, the {publisher.name}: <a href={`mailto:${publisher.email}?subject=${encodeURIComponent("Reading request: Cathy Conlon")}`}>{publisher.email}</a></span></li>
+            <li><span className="cc-label">Press</span><a href={BASE + "press/cathy-conlon-bio.txt"} download>Short bio (.txt)</a></li>
           </ul>}
         </div>
         {NEWSLETTER_ENDPOINT && <div className="cc-contact__side"><Newsletter /></div>}
