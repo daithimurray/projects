@@ -1,24 +1,19 @@
 # Cathy Conlon site: source
 
-Live at cathy-conlon.getawebsite.ie. It's a separate Vercel project from the main getawebsite.ie site.
+Served at getawebsite.ie/cathyconlon/. The built `site/dist/` is copied into the main getawebsite.ie site as a `cathyconlon/` folder, and the main site is redeployed to Vercel.
 
 - `project/` Claude Design handoff: design system, tokens, components, page (`ui_kits/website/OnePage.jsx`) and content (`data.js`).
 - `site/` Vite + React app that imports `project/` and builds it. `site/vercel.json` holds the deploy config.
 - `HANDOFF.md`, `chats/` original handoff notes and design transcript.
 
-## Vercel project settings
-
-- Import `daithimurray/projects`.
-- Root Directory: `_source/cathy-conlon/site`.
-- Keep "Include files outside the root directory in the Build Step" on (default). The app imports `../project`.
-- Domain: `cathy-conlon.getawebsite.ie`.
-
 ## Update the live site
 
     cd _source/cathy-conlon/site
     npm ci
-    npm run dev      # edit, check locally
-    git add -A && git commit && git push   # Vercel rebuilds on push to the production branch
+    npm run dev      # check locally at /cathyconlon/
+    npm run build    # output in dist/, asset paths start with /cathyconlon/
+
+Copy `dist/` into the main getawebsite.ie site as `cathyconlon/` (in its public or static folder if it uses a framework), then redeploy that site to Vercel.
 
 ## Before launch
 

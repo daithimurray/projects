@@ -6,7 +6,9 @@ const here = (p) => fileURLToPath(new URL(p, import.meta.url));
 
 // The design system in ../project is the single source of truth for components, tokens and content.
 // It has no node_modules of its own, so React resolves from this package.
+// Served at getawebsite.ie/cathyconlon/, copied into the main getawebsite.ie site.
 export default defineConfig({
+  base: "/cathyconlon/",
   plugins: [react({ include: /\.(jsx|js)$/ })],
   resolve: {
     alias: { "@ds": here("../project"), react: here("./node_modules/react"), "react-dom": here("./node_modules/react-dom") },
