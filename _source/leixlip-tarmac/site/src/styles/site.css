@@ -1,0 +1,37 @@
+/* Design system tokens + components, then the few page-level rules the prototype set inline. */
+@import '@fontsource/barlow/400.css';
+@import '@fontsource/barlow/500.css';
+@import '@fontsource/barlow/600.css';
+@import '@fontsource/barlow/700.css';
+@import '@fontsource/barlow-semi-condensed/600.css';
+@import '@fontsource/barlow-semi-condensed/700.css';
+@import '@fontsource/barlow-semi-condensed/800.css';
+@import './colors.css';
+@import './typography.css';
+@import './spacing.css';
+@import './shape.css';
+@import './motion.css';
+@import './base.css';
+@import './components.css';
+
+html { scroll-behavior: smooth; }
+html, body { margin: 0; min-height: 100%; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+main [id] { scroll-margin-top: 80px; }
+@media (max-width: 900px) { .hs-two { grid-template-columns: 1fr !important; } }
+
+.lt-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px; }
+.lt-ph {
+  height: 100%; min-height: 320px; display: grid; place-items: center;
+  background: repeating-linear-gradient(135deg, var(--hs-asphalt-700) 0 2px, var(--hs-asphalt-600) 2px 14px);
+  color: var(--hs-stone-400); font-size: 12px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase;
+}
+
+.lt-skip { position: absolute; left: 16px; top: -48px; z-index: 50; padding: 8px 16px; background: var(--hs-surface); color: var(--hs-text); font-weight: 600; border-radius: var(--hs-radius-md, 6px); }
+.lt-skip:focus { top: 8px; }
+
+/* Phone-width fixes. The prototype overflowed by ~125px at 390px wide. Port back to the design system. */
+.hs-section-head--row > div { min-width: 0; max-width: 100%; }
+@media (max-width: 599px) { .hs-navbar__actions { display: none; } .hs-navbar__inner { gap: var(--hs-space-4); } }
+.hs-topbar__item { white-space: nowrap; }
+@media (max-width: 599px) { .hs-topbar__items .hs-topbar__item + .hs-topbar__item { display: none; } }

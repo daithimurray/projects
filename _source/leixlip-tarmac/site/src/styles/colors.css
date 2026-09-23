@@ -1,0 +1,118 @@
+:root {
+  /* Primitive — Asphalt (brand dark) */
+  --hs-asphalt-950: #0E1012;
+  --hs-asphalt-900: #131517;
+  --hs-asphalt-800: #1E2124;
+  --hs-asphalt-700: #2A2E32;
+  --hs-asphalt-600: #3A4046;
+  --hs-asphalt-500: #4E555C;
+  --hs-asphalt-400: #6B737B;
+  /* Primitive — Amber (action / hi-vis accent) */
+  --hs-amber-100: #FFF3D1;
+  --hs-amber-200: #FFE39A;
+  --hs-amber-300: #FFD35C;
+  --hs-amber-400: #FFBE2E;
+  --hs-amber-500: #F2A900;
+  --hs-amber-600: #D18F00;
+  --hs-amber-700: #A87200;
+  /* Primitive — Stone (warm neutrals) */
+  --hs-stone-0: #FFFFFF;
+  --hs-stone-50: #F7F6F3;
+  --hs-stone-100: #EEECE7;
+  --hs-stone-200: #DEDAD2;
+  --hs-stone-300: #C6C1B7;
+  --hs-stone-400: #A39D92;
+  --hs-stone-500: #7C766C;
+  --hs-stone-600: #5D584F;
+  --hs-stone-700: #3F3B35;
+  /* Primitive — Semantic hues */
+  --hs-green-600: #1E7F4F;
+  --hs-green-100: #E3F3EA;
+  --hs-green-300: #7FCBA0;
+  --hs-red-600: #C0392B;
+  --hs-red-100: #FBE7E4;
+  --hs-red-300: #F0978D;
+  --hs-blue-600: #1F5FA8;
+  --hs-blue-100: #E3ECF8;
+  --hs-blue-300: #8DB3E2;
+  --hs-orange-700: #9A5B00;
+  --hs-orange-100: #FDF1DC;
+
+  /* Semantic — surfaces */
+  --hs-bg: var(--hs-stone-50);
+  --hs-surface: var(--hs-stone-0);
+  --hs-surface-2: var(--hs-stone-100);
+  --hs-surface-3: var(--hs-stone-200);
+  --hs-surface-inverse: var(--hs-asphalt-900);
+  --hs-surface-inverse-2: var(--hs-asphalt-800);
+  --hs-overlay: rgba(19, 21, 23, 0.6);
+  /* Semantic — text */
+  --hs-text: var(--hs-asphalt-900);
+  --hs-text-2: var(--hs-stone-600);
+  --hs-text-3: var(--hs-stone-500);
+  --hs-text-inverse: var(--hs-stone-50);
+  --hs-text-inverse-2: var(--hs-stone-300);
+  --hs-text-on-accent: var(--hs-asphalt-900);
+  --hs-text-link: var(--hs-blue-600);
+  /* Semantic — borders */
+  --hs-border: var(--hs-stone-200);
+  --hs-border-strong: var(--hs-stone-400);
+  --hs-border-inverse: rgba(255, 255, 255, 0.14);
+  /* Semantic — accent (actions) */
+  --hs-accent: var(--hs-amber-500);
+  --hs-accent-hover: var(--hs-amber-400);
+  --hs-accent-active: var(--hs-amber-600);
+  --hs-accent-soft: var(--hs-amber-100);
+  --hs-accent-text: var(--hs-amber-700);
+  /* Semantic — primary (dark button / brand) */
+  --hs-primary: var(--hs-asphalt-900);
+  --hs-primary-hover: var(--hs-asphalt-700);
+  --hs-primary-active: var(--hs-asphalt-950);
+  /* Semantic — status */
+  --hs-success: var(--hs-green-600);
+  --hs-success-soft: var(--hs-green-100);
+  --hs-warning: var(--hs-orange-700);
+  --hs-warning-soft: var(--hs-orange-100);
+  --hs-danger: var(--hs-red-600);
+  --hs-danger-soft: var(--hs-red-100);
+  --hs-info: var(--hs-blue-600);
+  --hs-info-soft: var(--hs-blue-100);
+  /* Focus */
+  --hs-focus: var(--hs-blue-600);
+  --hs-focus-on-dark: var(--hs-amber-400);
+  color-scheme: light;
+}
+
+[data-theme="dark"] {
+  --hs-bg: var(--hs-asphalt-950);
+  --hs-surface: var(--hs-asphalt-900);
+  --hs-surface-2: var(--hs-asphalt-800);
+  --hs-surface-3: var(--hs-asphalt-700);
+  --hs-surface-inverse: var(--hs-stone-50);
+  --hs-surface-inverse-2: var(--hs-stone-100);
+  --hs-overlay: rgba(0, 0, 0, 0.7);
+  --hs-text: var(--hs-stone-50);
+  --hs-text-2: var(--hs-stone-300);
+  --hs-text-3: var(--hs-stone-400);
+  --hs-text-inverse: var(--hs-asphalt-900);
+  --hs-text-inverse-2: var(--hs-stone-600);
+  --hs-text-link: var(--hs-blue-300);
+  --hs-border: var(--hs-asphalt-700);
+  --hs-border-strong: var(--hs-asphalt-500);
+  --hs-border-inverse: rgba(19, 21, 23, 0.14);
+  --hs-accent-soft: rgba(242, 169, 0, 0.16);
+  --hs-accent-text: var(--hs-amber-400);
+  --hs-primary: var(--hs-stone-50);
+  --hs-primary-hover: var(--hs-stone-200);
+  --hs-primary-active: var(--hs-stone-300);
+  --hs-success: var(--hs-green-300);
+  --hs-success-soft: rgba(30, 127, 79, 0.2);
+  --hs-warning: var(--hs-amber-300);
+  --hs-warning-soft: rgba(154, 91, 0, 0.24);
+  --hs-danger: var(--hs-red-300);
+  --hs-danger-soft: rgba(192, 57, 43, 0.22);
+  --hs-info: var(--hs-blue-300);
+  --hs-info-soft: rgba(31, 95, 168, 0.22);
+  --hs-focus: var(--hs-amber-400);
+  color-scheme: dark;
+}

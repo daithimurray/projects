@@ -1,0 +1,76 @@
+---
+import '../styles/site.css';
+import { HeroSection, ServicesSection, AboutSection, ReviewsSection, ContactHeader, ContactAside, CallBanner, SiteFooter } from '../components/sections.jsx';
+import { SiteNav, ProjectsSection, Estimator, Faq, ConsultationForm } from '../components/islands.jsx';
+import { SectionHeader } from '../ds/marketing/SectionHeader.jsx';
+
+const title = 'Leixlip Tarmac, Tarmac driveways, kerbing & groundworks, Kildare, Dublin & Meath';
+const description = 'Family-run tarmac, kerbing and groundworks contractor based in Leixlip. Driveways, car parks, roadways, schools and repairs across Kildare, Dublin and Meath. Free design consultation.';
+const canonical = new URL(import.meta.env.BASE_URL, Astro.site).href;
+
+// Only facts confirmed in the client dossier. No hours, price range or address until the client signs off.
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'HomeAndConstructionBusiness',
+  name: 'Leixlip Tarmac Enterprises Ltd',
+  url: canonical,
+  telephone: '+35316242130',
+  description,
+  address: { '@type': 'PostalAddress', addressLocality: 'Leixlip', addressRegion: 'Co. Kildare', addressCountry: 'IE' },
+  areaServed: ['County Kildare', 'County Dublin', 'County Meath'],
+  employee: [
+    { '@type': 'Person', name: 'Barry Roche', telephone: '+353879352775' },
+    { '@type': 'Person', name: 'John Roche', telephone: '+353872594880' },
+  ],
+};
+---
+<!doctype html>
+<html lang="en-IE">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    {import.meta.env.PUBLIC_NOINDEX ? <meta name="robots" content="noindex, nofollow" /> : null}
+    <link rel="canonical" href={canonical} />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <link rel="icon" href={import.meta.env.BASE_URL.replace(/\/?$/, '/') + 'favicon.svg'} type="image/svg+xml" />
+    <meta name="theme-color" content="#131517" />
+    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+  </head>
+  <body class="hs">
+    <a class="lt-skip" href="#main">Skip to content</a>
+    <SiteNav client:load />
+    <main id="main">
+      <HeroSection />
+      <ServicesSection />
+      <AboutSection />
+      <section class="hs-section" id="projects"><div class="hs-container">
+        <ProjectsSection client:visible />
+      </div></section>
+      <section class="hs-section" style="background: var(--hs-surface)" id="estimate"><div class="hs-container">
+        <SectionHeader eyebrow="Rough idea of cost?" title="Get a guide price in ten seconds" lede="Move the slider, pick a surface. It's a market guide only. Your real quote follows a free consultation." />
+        <Estimator client:visible />
+      </div></section>
+      <ReviewsSection />
+      <section class="hs-section" style="background: var(--hs-surface)" id="faq">
+        <div class="hs-container hs-two" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 48px">
+          <SectionHeader eyebrow="Questions" title="Things people ask before they book" lede="If yours isn't here, ring Barry or John for a straight answer." />
+          <Faq client:visible />
+        </div>
+      </section>
+      <section class="hs-section" id="quote"><div class="hs-container">
+        <ContactHeader />
+        <div class="hs-two" style="display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: 48px; align-items: start; margin-top: 32px">
+          <ConsultationForm client:visible />
+          <ContactAside />
+        </div>
+      </div></section>
+      <CallBanner />
+    </main>
+    <SiteFooter />
+  </body>
+</html>

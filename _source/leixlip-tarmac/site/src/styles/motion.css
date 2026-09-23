@@ -1,0 +1,11 @@
+:root {
+  --hs-dur-fast: 120ms;
+  --hs-dur-base: 200ms;
+  --hs-dur-slow: 320ms;
+  --hs-ease-out: cubic-bezier(0.2, 0, 0, 1);
+  --hs-ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+  --hs-ease-enter: cubic-bezier(0.16, 1, 0.3, 1);
+}
+@media (prefers-reduced-motion: reduce) {
+  :root { --hs-dur-fast: 0ms; --hs-dur-base: 0ms; --hs-dur-slow: 0ms; }
+}

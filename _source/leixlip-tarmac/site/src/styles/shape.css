@@ -1,0 +1,19 @@
+:root {
+  --hs-radius-xs: 2px;
+  --hs-radius-sm: 4px;
+  --hs-radius-md: 6px;
+  --hs-radius-lg: 10px;
+  --hs-radius-xl: 16px;
+  --hs-radius-pill: 999px;
+
+  --hs-border-width: 1px;
+  --hs-border-width-strong: 2px;
+
+  --hs-shadow-sm: 0 1px 2px rgba(19, 21, 23, 0.08);
+  --hs-shadow-md: 0 4px 12px rgba(19, 21, 23, 0.10), 0 1px 2px rgba(19, 21, 23, 0.06);
+  --hs-shadow-lg: 0 16px 40px rgba(19, 21, 23, 0.18), 0 2px 6px rgba(19, 21, 23, 0.08);
+  --hs-shadow-focus: 0 0 0 3px rgba(31, 95, 168, 0.35);
+
+  /* Hazard stripe: thin divider motif only (2 to 4px), not a background */
+  --hs-hazard: repeating-linear-gradient(135deg, var(--hs-amber-500) 0 12px, var(--hs-asphalt-900) 12px 24px);
+}

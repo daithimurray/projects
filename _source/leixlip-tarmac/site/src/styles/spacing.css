@@ -1,0 +1,37 @@
+:root {
+  /* 8px base grid (4px half-step) */
+  --hs-space-0: 0;
+  --hs-space-1: 4px;
+  --hs-space-2: 8px;
+  --hs-space-3: 12px;
+  --hs-space-4: 16px;
+  --hs-space-5: 24px;
+  --hs-space-6: 32px;
+  --hs-space-7: 40px;
+  --hs-space-8: 48px;
+  --hs-space-9: 64px;
+  --hs-space-10: 80px;
+  --hs-space-11: 96px;
+  --hs-space-12: 128px;
+
+  /* 12-column grid */
+  --hs-grid-columns: 12;
+  --hs-grid-max: 1200px;
+  --hs-grid-gutter: 24px;
+  --hs-grid-margin: 24px;
+  --hs-section-y: clamp(48px, 4vw + 32px, 96px);
+
+  /* Breakpoints (reference only — CSS vars can't drive media queries) */
+  --hs-bp-sm: 480px;
+  --hs-bp-md: 768px;
+  --hs-bp-lg: 1024px;
+  --hs-bp-xl: 1280px;
+
+  /* Control sizes */
+  --hs-control-sm: 36px;
+  --hs-control-md: 44px;
+  --hs-control-lg: 52px;
+}
+@media (max-width: 767px) {
+  :root { --hs-grid-gutter: 16px; --hs-grid-margin: 16px; }
+}
