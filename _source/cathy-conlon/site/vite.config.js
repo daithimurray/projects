@@ -15,4 +15,6 @@ export default defineConfig({
     dedupe: ["react", "react-dom"],
   },
   server: { fs: { allow: [here("..")] } },
+  // The pre-render build bundles its dependencies so the icons and the page share one copy of React.
+  ssr: { noExternal: true },
 });

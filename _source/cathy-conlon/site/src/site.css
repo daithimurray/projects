@@ -1,14 +1,81 @@
-/* Responsive column overrides from the prototype (ui_kits/website/index.html).
-   Cols carry inline grid-column styles, so these match on the style attribute. */
-@media (max-width: 64em) {
-  .ih-grid > [style*="span 3"] { grid-column: span 6 !important; }
-  .ih-grid > [style*="span 4"] { grid-column: span 6 !important; }
-  .ih-grid > [style*="span 8"],
-  .ih-grid > [style*="span 7"] { grid-column: span 12 !important; }
-  .ih-grid > [style*="9 / span 4"] { grid-column: span 12 !important; }
-  .ih-grid > [style*="3 / span 8"] { grid-column: span 12 !important; }
-}
-@media (max-width: 40em) {
-  .ih-grid > [style*="span 6"] { grid-column: span 12 !important; }
-  .ih-grid > [style*="span 3"] { grid-column: span 6 !important; }
-}
+/* Site layer on top of the design system. Every multi-column layout declares its phone fallback here. */
+
+/* Newsreader is self-hosted as a variable font under its own family name. */
+:root { --font-text: "Newsreader Variable", "Newsreader", "Iowan Old Style", Georgia, serif; }
+
+html { scroll-padding-top: 5rem; }
+cite { font-style: italic; }
+.cc-h3 { font-family: var(--font-display); font-size: 1.5rem; font-weight: 500; line-height: 1.2; margin-bottom: var(--space-3); }
+.cc-lede { font-family: var(--font-text); font-size: var(--type-bodylg-size); line-height: var(--type-bodylg-lh); color: var(--fg-secondary); max-width: var(--measure); text-wrap: pretty; }
+.cc-muted { color: var(--fg-muted); }
+.cc-label { display: block; font-family: var(--font-ui); font-size: var(--type-label-size); font-weight: 500; color: var(--fg-muted); margin-bottom: var(--space-1); }
+.cc-note { margin-top: var(--space-7); font-family: var(--font-text); color: var(--fg-muted); max-width: var(--measure); }
+.cc-note--wide { max-width: var(--measure-wide); }
+.cc-links { display: flex; flex-wrap: wrap; gap: var(--space-3) var(--space-6); margin-top: var(--space-6); font-family: var(--font-ui); font-size: var(--type-label-size); }
+.cc-links .ih-link { display: inline-flex; align-items: center; min-height: 2.75rem; }
+
+/* Typographic cover, used until the publisher's cover art is supplied. */
+.cc-cover { aspect-ratio: 2 / 3; display: flex; flex-direction: column; justify-content: space-between; padding: 14% 11%; background: var(--bg-inverse); color: var(--fg-inverse); border-radius: var(--radius-xs); box-shadow: var(--shadow-3), inset 4px 0 8px -5px rgb(0 0 0 / .5); }
+.cc-cover__title { font-family: var(--font-display); font-weight: 400; font-size: clamp(1.75rem, 1rem + 2vw, 2.5rem); line-height: 1.08; letter-spacing: -.01em; text-wrap: balance; }
+.cc-cover__author { font-family: var(--font-ui); font-size: .75rem; font-weight: 500; letter-spacing: .14em; text-transform: uppercase; color: var(--fg-inverse-muted); }
+.cc-hero__book { display: block; color: inherit; text-decoration: none; max-width: 20rem; margin-inline: auto; transition: transform var(--duration-slow) var(--ease-out); }
+.cc-hero__book:hover { transform: translateY(-4px) rotate(-.5deg); }
+.cc-portrait { width: 100%; aspect-ratio: 4 / 5; object-fit: cover; border-radius: var(--radius-xs); }
+@media (max-width: 63.99em) { .cc-hero .ih-hero__media { display: none; } }
+
+/* Books: two titles side by side, stacked on tablets and phones. */
+.cc-books { display: grid; gap: var(--space-9) var(--grid-gutter); grid-template-columns: minmax(0, 1fr); }
+@media (min-width: 64em) { .cc-books { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+.cc-books .ih-book__actions { align-items: center; gap: var(--space-3) var(--space-5); }
+.cc-stockists { font-family: var(--font-text); color: var(--fg-secondary); }
+
+/* Swift: a text chapter with the year set large. */
+.cc-chapter { display: grid; gap: var(--space-6); align-items: end; grid-template-columns: minmax(0, 1fr); }
+.cc-chapter__year { font-family: var(--font-display); font-weight: 300; font-size: clamp(5rem, 3rem + 9vw, 11rem); line-height: .8; letter-spacing: -.03em; color: var(--fg-inverse-muted); opacity: .55; }
+@media (min-width: 64em) { .cc-chapter { grid-template-columns: 7fr 5fr; } .cc-chapter__year { text-align: right; } }
+@media (max-width: 47.99em) { .cc-chapter__year { display: none; } }
+.ih-section--inverse .cc-lede { color: var(--fg-secondary); }
+
+/* Poetry: reading and listening links as a ruled list. */
+.cc-reads { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: minmax(0, 1fr); border-top: 1px solid var(--border); }
+@media (min-width: 48em) { .cc-reads { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0 var(--grid-gutter); border-top: 0; } .cc-reads li { border-top: 1px solid var(--border); } }
+.cc-read { display: flex; flex-direction: column; gap: var(--space-2); padding: var(--space-6) 0; color: var(--fg); text-decoration: none; }
+.cc-read__meta { font-family: var(--font-ui); font-size: var(--type-label-size); color: var(--fg-muted); }
+.cc-read__title { font-family: var(--font-display); font-size: var(--type-title1-size); font-weight: 500; line-height: 1.15; text-wrap: balance; }
+.cc-read__title::after { content: " ↗"; font-size: .7em; color: var(--accent); }
+.cc-read__note { font-family: var(--font-text); color: var(--fg-secondary); }
+.cc-read:hover .cc-read__title { color: var(--link-hover); }
+
+/* Readings: invitation beside the recent list. */
+.cc-events { display: grid; gap: var(--space-8) var(--grid-gutter); grid-template-columns: minmax(0, 1fr); }
+@media (min-width: 64em) { .cc-events { grid-template-columns: 4fr 1fr 7fr; } .cc-events__list { grid-column: 3; } }
+.cc-events__cta { display: flex; flex-direction: column; align-items: flex-start; gap: var(--space-5); }
+.cc-events .ih-event__actions { font-family: var(--font-ui); font-size: var(--type-label-size); }
+
+/* About: bio beside grouped prizes. */
+.cc-about { display: grid; gap: var(--space-8) var(--grid-gutter); grid-template-columns: minmax(0, 1fr); }
+@media (min-width: 64em) { .cc-about { grid-template-columns: 7fr 1fr 4fr; } .cc-about__prizes { grid-column: 3; } }
+.cc-about__bio { display: grid; gap: var(--space-5); max-width: var(--measure); align-content: start; }
+.cc-about__bio .cc-links { margin-top: 0; }
+.cc-prizes { list-style: none; margin: 0 0 var(--space-7); padding: 0; display: grid; gap: var(--space-4); }
+.cc-prizes li { display: grid; gap: var(--space-1); }
+.cc-prizes__what { font-family: var(--font-text); font-size: 1.0625rem; color: var(--fg); }
+.cc-prizes .cc-muted { font-family: var(--font-ui); font-size: var(--type-caption-size); }
+
+/* Contact. */
+.cc-contact { display: grid; gap: var(--space-8) var(--grid-gutter); grid-template-columns: minmax(0, 1fr); }
+@media (min-width: 64em) { .cc-contact { grid-template-columns: 7fr 1fr 4fr; } .cc-contact__side { grid-column: 3; } }
+.cc-contact__main { display: grid; gap: var(--space-6); align-content: start; }
+.cc-form { display: grid; gap: var(--space-5); max-width: var(--measure); }
+.cc-form__row { display: grid; gap: var(--space-5); grid-template-columns: minmax(0, 1fr); }
+@media (min-width: 40em) { .cc-form__row { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+.cc-routes { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--space-5); font-family: var(--font-text); font-size: 1.0625rem; }
+.cc-routes a { color: var(--link); text-underline-offset: .14em; text-decoration-color: var(--link-underline); overflow-wrap: anywhere; }
+.cc-letter { display: grid; gap: var(--space-3); }
+.cc-letter__row { display: flex; flex-wrap: wrap; gap: var(--space-2); }
+.cc-letter__row .ih-input { flex: 1 1 12rem; }
+.cc-fine { font-family: var(--font-ui); font-size: var(--type-caption-size); color: var(--fg-muted); }
+.cc-fine a { color: inherit; }
+
+/* Phone: comfortable targets in the footer. */
+@media (max-width: 47.99em) { .ih-footer__col a, .ih-footer__bottom a { display: inline-flex; align-items: center; min-height: 2.75rem; } }

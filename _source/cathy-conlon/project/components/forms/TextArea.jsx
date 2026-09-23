@@ -7,7 +7,7 @@ function Field({ id, label, help, error, optional, disabled, children }) {
     {label && <label className="ih-field__label" htmlFor={id}>{label}{optional && <span className="ih-field__optional">Optional</span>}</label>}
     {children({ "aria-describedby": [helpId, errId].filter(Boolean).join(" ") || undefined, "aria-invalid": error ? "true" : undefined })}
     {help && !error && <p className="ih-field__help" id={helpId}>{help}</p>}
-    {error && <p className="ih-field__error" id={errId} role="alert">{error}</p>}
+    {error && <p className="ih-field__error" id={errId}>{error}</p>}
   </div>;
 }
 export function TextArea({ id, label, help, error, optional, disabled, serif = false, rows = 5, maxLength, value, className, ...rest }) {

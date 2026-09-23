@@ -1,30 +1,28 @@
 import React from "react";
+import { List, X, Moon, Sun } from "@phosphor-icons/react";
 import { SkipLink } from "@ds/components/navigation/SkipLink.jsx";
 import { NavBar } from "@ds/components/navigation/NavBar.jsx";
 import { Footer } from "@ds/components/navigation/Footer.jsx";
-import { Switch } from "@ds/components/forms/Switch.jsx";
-import { Toast, ToastRegion } from "@ds/components/feedback/Toast.jsx";
-import { OnePage } from "@ds/ui_kits/website/OnePage.jsx";
+import { OnePage } from "./OnePage.jsx";
+import { author, novel, publisher } from "./content.js";
 
-const THEME_KEY = "ih-kit-theme";
+export const THEME_KEY = "cc-theme";
 const NAV_OFFSET = 72;
+const BASE = import.meta.env.BASE_URL;
 
 const links = [
   { label: "Books", href: "#books" },
   { label: "Swift & Vanessa", href: "#swift" },
   { label: "Poetry", href: "#poetry" },
-  { label: "Events", href: "#events" },
+  { label: "Readings", href: "#events" },
   { label: "About", href: "#about" },
   { label: "Contact", href: "#contact" },
 ];
 
 const footerColumns = [
-  { title: "On this page", links: [{ label: "Books", href: "#books" }, { label: "Poetry", href: "#poetry" }, { label: "Swift & Vanessa", href: "#swift" }] },
-  { title: "Meet", links: [{ label: "Events", href: "#events" }, { label: "About", href: "#about" }, { label: "Contact", href: "#contact" }] },
-  { title: "Elsewhere", links: [{ label: "X · @cat_conlon", href: "https://x.com/cat_conlon" }, { label: "Buythebook.ie", href: "https://www.buythebook.ie/product/swift-vanessa-the-sluttery/" }, { label: "Limerick Writers' Centre", href: "https://limerickwriterscentre.com/" }] },
+  { title: "On this page", links },
+  { title: "Elsewhere", links: [{ label: "@cat_conlon on X", href: author.x }, { label: "Buy the novel at Buythebook.ie", href: novel.buy }, { label: publisher.name, href: publisher.href }] },
 ];
-
-const readTheme = () => { try { return localStorage.getItem(THEME_KEY) === "dark"; } catch (e) { return false; } };
 
 function scrollToHash(hash, behavior = "smooth") {
   const el = document.getElementById(hash.slice(1));
@@ -34,21 +32,32 @@ function scrollToHash(hash, behavior = "smooth") {
   return true;
 }
 
+// Theme: follow the system unless the visitor has chosen. Server and first client render agree (light, no choice);
+// the pre-paint script in index.html has already applied any stored choice, so there is no flash.
+function useTheme() {
+  const [pref, setPref] = React.useState(null);
+  const [systemDark, setSystemDark] = React.useState(false);
+  React.useEffect(() => {
+    try { const s = localStorage.getItem(THEME_KEY); if (s === "dark" || s === "light") setPref(s); } catch (e) {}
+    const mq = window.matchMedia("(prefers-color-scheme: dark)");
+    setSystemDark(mq.matches);
+    const on = (e) => setSystemDark(e.matches);
+    mq.addEventListener("change", on);
+    return () => mq.removeEventListener("change", on);
+  }, []);
+  const dark = pref ? pref === "dark" : systemDark;
+  const toggle = () => {
+    const next = dark ? "light" : "dark";
+    setPref(next);
+    document.documentElement.dataset.theme = next;
+    try { localStorage.setItem(THEME_KEY, next); } catch (e) {}
+  };
+  return [dark, toggle];
+}
+
 export function App() {
-  const [dark, setDark] = React.useState(readTheme);
-  const [toast, setToast] = React.useState(null);
+  const [dark, toggleTheme] = useTheme();
   const [current, setCurrent] = React.useState("#top");
-
-  React.useEffect(() => {
-    document.documentElement.dataset.theme = dark ? "dark" : "light";
-    try { localStorage.setItem(THEME_KEY, dark ? "dark" : "light"); } catch (e) {}
-  }, [dark]);
-
-  React.useEffect(() => {
-    if (!toast) return;
-    const t = setTimeout(() => setToast(null), 4000);
-    return () => clearTimeout(t);
-  }, [toast]);
 
   // Highlight the nav link for the section in the middle of the viewport.
   React.useEffect(() => {
@@ -66,21 +75,22 @@ export function App() {
     const a = e.target.closest && e.target.closest("a[href]");
     if (!a) return;
     const h = a.getAttribute("href");
-    if (h === "#") { e.preventDefault(); return; }
-    if (h && h.startsWith("#") && scrollToHash(h)) {
+    if (h && h.startsWith("#") && h.length > 1 && scrollToHash(h)) {
       e.preventDefault();
       history.replaceState(null, "", h);
       if (h === "#main") document.getElementById("main").focus({ preventScroll: true });
     }
   };
 
+  const themeLabel = dark ? "Switch to light theme" : "Switch to dark theme";
   return <div onClick={onClick}>
     <SkipLink />
-    <NavBar brand="Cathy Conlon" brandHref="#top" current={current} links={links}
-      actions={<Switch id="theme" size="sm" label={<span className="type-caption text-muted">Candlelight</span>} checked={dark} onChange={setDark} />} />
-    <main id="main" tabIndex={-1}><OnePage onToast={setToast} /></main>
-    <Footer name="Cathy Conlon" tagline="Poetry, fiction and radio drama from Celbridge, Co. Kildare." columns={footerColumns}
-      bottomLinks={[{ label: "Privacy", href: "#" }, { label: "Colophon", href: "#" }]} />
-    {toast && <ToastRegion><Toast tone="success" message={toast} onDismiss={() => setToast(null)} /></ToastRegion>}
+    <NavBar brand={author.name} brandHref="#top" current={current} links={links}
+      menuIcon={<List size={22} />} closeIcon={<X size={22} />}
+      actions={<button type="button" className="ih-iconbtn" aria-label={themeLabel} title={themeLabel} onClick={toggleTheme}>{dark ? <Sun size={20} aria-hidden="true" /> : <Moon size={20} aria-hidden="true" />}</button>} />
+    <main id="main" tabIndex={-1}><OnePage /></main>
+    <Footer name={author.name} tagline="Poetry, fiction and radio drama from Celbridge, Co. Kildare." columns={footerColumns}
+      copyright={`© ${new Date().getFullYear()} ${author.name}. Set in Cormorant Garamond, Newsreader and Instrument Sans.`}
+      bottomLinks={[{ label: "Privacy", href: BASE + "privacy/" }]} />
   </div>;
 }

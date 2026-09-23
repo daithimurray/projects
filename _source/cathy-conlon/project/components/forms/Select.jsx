@@ -7,7 +7,7 @@ function Field({ id, label, help, error, optional, disabled, children }) {
     {label && <label className="ih-field__label" htmlFor={id}>{label}{optional && <span className="ih-field__optional">Optional</span>}</label>}
     {children({ "aria-describedby": [helpId, errId].filter(Boolean).join(" ") || undefined, "aria-invalid": error ? "true" : undefined })}
     {help && !error && <p className="ih-field__help" id={helpId}>{help}</p>}
-    {error && <p className="ih-field__error" id={errId} role="alert">{error}</p>}
+    {error && <p className="ih-field__error" id={errId}>{error}</p>}
   </div>;
 }
 export function Select({ id, label, help, error, optional, disabled, options = [], placeholder, className, ...rest }) {
