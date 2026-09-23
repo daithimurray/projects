@@ -3,6 +3,7 @@
 Single-page site for Leixlip Tarmac Enterprises (Kildare, Dublin & Meath), built from a Claude Design handoff.
 
 - `site/` Astro app with React islands. The design-system components and tokens are copied into `site/src/ds` and `site/src/styles`. See `site/README.md`.
+- `DEPLOY.md` deploy runbook for a session with Vercel access.
 - `../../leixlip-tarmac/` prebuilt copy for `getawebsite.ie/leixlip-tarmac`, built with `BASE_PATH=/leixlip-tarmac`. It only goes live if a deployment serves this repo's root folders.
 
 Every build ships with `noindex`, so the demo doesn't compete with leixliptarmac.com in Google.
