@@ -22,4 +22,6 @@ Every build ships with `noindex`, so the demo doesn't compete with leixliptarmac
 2. **Consultation form**: set `PUBLIC_FORM_ENDPOINT`. Until then every submission shows an error with Barry's and John's numbers.
 3. **Privacy notice**: the form collects names and phone numbers.
 4. **Photos**: the hero, map and project cards are striped placeholders.
-5. **Confirm with the client**: "35 years", the client names list, and whether to show the Leixlip address.
+5. **Confirm with the client**: "35 years" (now stated once, in the About heading) and whether to show the Leixlip address.
+6. **Estimator rates**: the per-m² bands in `site/src/ds/marketing/QuoteEstimator.jsx` are placeholders. Replace with the client's own, or remove the section.
+7. **Client names** (HSE, Electric Ireland, EuroSpar, the colleges): kept in `data.js` but not shown until the client gives permission.

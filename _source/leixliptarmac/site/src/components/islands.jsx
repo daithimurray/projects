@@ -4,7 +4,6 @@ import { D } from '../data.js';
 import { Navbar } from '../ds/navigation/Navbar.jsx';
 import { Tabs } from '../ds/navigation/Tabs.jsx';
 import { SectionHeader } from '../ds/marketing/SectionHeader.jsx';
-import { ProjectCard } from '../ds/marketing/ProjectCard.jsx';
 import { QuoteEstimator } from '../ds/marketing/QuoteEstimator.jsx';
 import { Accordion } from '../ds/display/Accordion.jsx';
 import { FormField } from '../ds/forms/FormField.jsx';
@@ -37,13 +36,25 @@ export function SiteNav() {
 
 const FILTERS = [{ id: 'all', label: 'All' }, { id: 'driveway', label: 'Driveways' }, { id: 'roadway', label: 'Roadways' }, { id: 'commercial', label: 'Commercial' }, { id: 'repair', label: 'Repairs' }];
 
+// Mosaic on a 3-column grid. The first tile's size depends on the count, so every row ends full.
+const leadSize = (n) => (n % 3 === 0 ? 'lt-work--big' : n % 3 === 1 ? 'lt-work--full' : 'lt-work--wide');
+
 export function ProjectsSection() {
   const [cat, setCat] = React.useState('all');
   const list = D.projects.filter((p) => cat === 'all' || p.category.toLowerCase() === cat);
   return (
     <>
-      <SectionHeader eyebrow="Recent work" title="Jobs across Kildare, Dublin and Meath" lede="Castleknock, Dundrum, Howth, Straffan, Suncroft, Kilcloon and more." action={<Tabs variant="pills" value={cat} onChange={setCat} tabs={FILTERS} />} />
-      <div className="lt-cards">{list.map((p) => <ProjectCard key={p.title} {...p} href="#quote" />)}</div>
+      <SectionHeader title="Jobs across Kildare, Dublin and Meath" lede="Castleknock, Dundrum, Howth, Straffan, Suncroft, Kilcloon and more." action={<Tabs variant="pills" value={cat} onChange={setCat} tabs={FILTERS} />} />
+      <ul className="lt-work" id={'hs-panel-' + cat} role="tabpanel" aria-labelledby={'hs-tab-' + cat}>
+        {list.map((p, i) => (
+          <li key={p.title} className={i === 0 ? leadSize(list.length) : undefined}>
+            <figure>
+              {p.image ? <img src={p.image} alt={p.title} loading="lazy" /> : <div className="lt-ph lt-ph--light"><span className="lt-ph__place">{p.location.split(',')[0]}</span><span className="lt-ph__label">Photo to come</span></div>}
+              <figcaption><strong>{p.title}</strong><span>{p.location}</span></figcaption>
+            </figure>
+          </li>
+        ))}
+      </ul>
     </>
   );
 }

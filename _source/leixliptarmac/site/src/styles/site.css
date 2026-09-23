@@ -20,12 +20,73 @@ html, body { margin: 0; min-height: 100%; }
 main [id] { scroll-margin-top: 80px; }
 @media (max-width: 900px) { .hs-two { grid-template-columns: 1fr !important; } }
 
-.lt-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px; }
+/* Media slot until real photos arrive: the place name set large, so the gap reads as intentional. */
 .lt-ph {
-  height: 100%; min-height: 320px; display: grid; place-items: center;
-  background: repeating-linear-gradient(135deg, var(--hs-asphalt-700) 0 2px, var(--hs-asphalt-600) 2px 14px);
-  color: var(--hs-stone-400); font-size: 12px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase;
+  position: relative; height: 100%; min-height: 320px; display: flex; flex-direction: column; justify-content: flex-end; gap: 6px; padding: 24px;
+  background: repeating-linear-gradient(135deg, var(--hs-asphalt-800) 0 2px, var(--hs-asphalt-700) 2px 14px);
+  color: var(--hs-stone-300);
 }
+.lt-ph__place { font: var(--hs-weight-display) clamp(1.75rem, 3vw, 2.5rem)/1 var(--hs-font-display); text-transform: uppercase; color: var(--hs-stone-50); }
+.lt-ph__label { font-size: var(--hs-text-small); }
+.lt-ph--light { min-height: 0; background: repeating-linear-gradient(135deg, var(--hs-stone-200) 0 2px, var(--hs-stone-100) 2px 14px); color: var(--hs-text-2); }
+.lt-ph--light .lt-ph__place { color: var(--hs-text); }
+
+/* Services: lead service large, two supporting, then a compact list. */
+.lt-services { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); grid-template-rows: auto auto; gap: 24px; }
+.lt-service { display: flex; flex-direction: column; gap: var(--hs-space-3); padding: var(--hs-space-6); background: var(--hs-surface); border: 1px solid var(--hs-border); border-radius: var(--hs-radius-lg); color: var(--hs-text); text-decoration: none; transition: border-color var(--hs-dur-base), box-shadow var(--hs-dur-base); }
+.lt-service:hover { border-color: var(--hs-border-strong); box-shadow: var(--hs-shadow-md); }
+.lt-service--lead { grid-row: span 2; background: var(--hs-asphalt-900); border-color: var(--hs-asphalt-900); color: var(--hs-stone-50); padding: var(--hs-space-8); justify-content: flex-end; }
+.lt-service--lead .hs-service__icon { background: var(--hs-accent); color: var(--hs-asphalt-900); }
+.lt-service__head { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+.lt-service__title { margin: 0; font: var(--hs-weight-bold) var(--hs-text-h3)/1.15 var(--hs-font-display); }
+.lt-service--lead .lt-service__title { font-size: var(--hs-text-h2); }
+.lt-service__desc { margin: 0; color: var(--hs-text-2); max-width: 46ch; }
+.lt-service--lead .lt-service__desc { color: var(--hs-stone-300); font-size: var(--hs-text-body-lg); }
+.lt-service__meta { font-size: var(--hs-text-small); color: var(--hs-text-2); }
+.lt-service--lead .lt-service__meta { color: var(--hs-stone-300); }
+.lt-service__cta { margin-top: auto; padding-top: var(--hs-space-2); }
+.lt-service--lead .lt-service__cta { color: var(--hs-amber-400); margin-top: var(--hs-space-2); }
+.lt-also { margin: 56px 0 8px; font: var(--hs-weight-bold) var(--hs-text-h3)/1.2 var(--hs-font-display); }
+.lt-also__list { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 48px; }
+.lt-also__list li { display: flex; gap: 16px; padding: 20px 0; border-top: 1px solid var(--hs-border); }
+.lt-also__list strong { display: block; margin-bottom: 4px; }
+.lt-also__list p { margin: 0; color: var(--hs-text-2); max-width: 52ch; }
+.lt-also__icon { flex: none; width: 24px; height: 24px; margin-top: 2px; color: var(--hs-accent-text); }
+@media (max-width: 767px) {
+  .lt-services, .lt-also__list { grid-template-columns: 1fr; }
+  .lt-service--lead { grid-row: auto; padding: var(--hs-space-6); }
+}
+
+/* Projects mosaic. The lead tile's size is picked per count so rows always end full. */
+.lt-work { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; }
+.lt-work figure { margin: 0; display: flex; flex-direction: column; gap: 12px; height: 100%; }
+.lt-work .lt-ph, .lt-work img { flex: 1; min-height: 200px; aspect-ratio: 4 / 3; border-radius: var(--hs-radius-lg); overflow: hidden; object-fit: cover; width: 100%; }
+.lt-work figcaption { display: flex; flex-direction: column; gap: 2px; }
+.lt-work figcaption span { font-size: var(--hs-text-small); color: var(--hs-text-2); }
+.lt-work--wide { grid-column: span 2; }
+.lt-work--full { grid-column: 1 / -1; }
+.lt-work--big { grid-column: span 2; grid-row: span 2; }
+.lt-work--wide .lt-ph, .lt-work--full .lt-ph, .lt-work--big .lt-ph { aspect-ratio: auto; }
+.lt-work--full .lt-ph { min-height: 320px; }
+@media (max-width: 767px) {
+  .lt-work { grid-template-columns: minmax(0, 1fr); }
+  .lt-work li { grid-column: auto !important; grid-row: auto !important; }
+  .lt-work .lt-ph { aspect-ratio: 4 / 3 !important; }
+}
+
+/* About band copy. */
+.lt-about p { margin: 16px 0 0; max-width: 56ch; color: var(--hs-stone-300); }
+
+/* Contrast fixes, measured: footer links 2.84:1, dark-band step text 2.59:1. Port back to the design system. */
+.hs .hs-footer__list a { color: var(--hs-stone-300); text-decoration: none; }
+.hs .hs-footer__list a:hover { color: var(--hs-stone-50); text-decoration: underline; text-underline-offset: 3px; }
+.hs-inverse .hs-steps__desc { color: var(--hs-text-inverse-2); }
+.hs-inverse .hs-section-head__lede { color: var(--hs-stone-300); }
+.hs-inverse .hs-steps__item--done .hs-steps__num { background: var(--hs-accent); border-color: var(--hs-accent); color: var(--hs-asphalt-900); }
+.hs-inverse .hs-steps--vertical .hs-steps__item--done .hs-steps__line { background: var(--hs-border-inverse); }
+
+/* Hero: headline sized for 2 to 3 lines, no floating top padding. */
+.hs-hero__title { max-width: 20ch; font-size: clamp(2.5rem, 4.8vw, 4rem); }
 
 .lt-skip { position: absolute; left: 16px; top: -48px; z-index: 50; padding: 8px 16px; background: var(--hs-surface); color: var(--hs-text); font-weight: 600; border-radius: var(--hs-radius-md, 6px); }
 .lt-skip:focus { top: 8px; }
@@ -35,3 +96,16 @@ main [id] { scroll-margin-top: 80px; }
 @media (max-width: 599px) { .hs-navbar__actions { display: none; } .hs-navbar__inner { gap: var(--hs-space-4); } }
 .hs-topbar__item { white-space: nowrap; }
 @media (max-width: 599px) { .hs-topbar__items .hs-topbar__item + .hs-topbar__item { display: none; } }
+
+/* Lead service carries a photo slot on top, so the tall card isn't an empty block. */
+.lt-service--lead { justify-content: flex-start; }
+.lt-service__media { flex: 1; min-height: 220px; margin: calc(-1 * var(--hs-space-8)) calc(-1 * var(--hs-space-8)) var(--hs-space-3); border-radius: var(--hs-radius-lg) var(--hs-radius-lg) 0 0; overflow: hidden; }
+.lt-service__media .lt-ph { min-height: 100%; }
+@media (max-width: 767px) { .lt-service__media { margin: calc(-1 * var(--hs-space-6)) calc(-1 * var(--hs-space-6)) var(--hs-space-3); } }
+
+.lt-about .hs-section-head { margin-bottom: var(--hs-space-6); }
+
+/* Sentence-case small labels instead of tracked all caps. */
+.hs-contact__label, .hs-estimator__label, .hs-footer__title, .hs-badge { text-transform: none; letter-spacing: 0; }
+.hs-contact__label, .hs-estimator__label, .hs-footer__title { font-size: var(--hs-text-small); }
+.hs-contact__label { color: var(--hs-text-2); }
