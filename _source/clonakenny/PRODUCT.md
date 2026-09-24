@@ -30,7 +30,7 @@ from npm. No third-party requests at runtime. Intended URL: https://getawebsite.
 Clonakenny Flower Farm grows seasonal cut flowers from seed on about two acres in Clonakenny,
 near Roscrea, Co. Tipperary, and sells them as bespoke bouquets, wedding flowers, event flowers
 and December wreaths. The site exists to turn attention (Instagram, press, word of mouth) into
-an enquiry by WhatsApp, text or phone. Success = more well-formed enquiries, especially weddings
+an enquiry by email or Instagram DM (see v12 below). Success = more well-formed wedding enquiries,
 booked early enough to plan around the season.
 
 ## Positioning
@@ -47,7 +47,7 @@ is a former head chef, so the farm runs on a chef's logic: cook (and cut) what's
 - Weddings are taken on a case-by-case basis (verified).
 - Grown in meadows, raised beds and four and a half polytunnels (verified, Irish Country Living,
   March 2025).
-- Orders happen by message or phone. There is no online shop, no booking system, no backend.
+- Orders happen by email or Instagram DM. There is no online shop, no booking system, no backend.
 
 ## Capabilities and Constraints
 
@@ -83,8 +83,9 @@ Undecided / unverified (must not be stated as fact without Ali's sign-off):
   third child when Covid closed the venue in 2020. Kenny had put up a polytunnel for vegetables;
   they grew flowers instead. Ali is originally from Kildare.
 - Address: Clonakenny, Roscrea, Co. Tipperary, E53 PX74 (Golden Pages).
-- No photos available in the build environment. The user will supply real photos later.
-- No testimonials, reviews, prices or customer names. Do not invent any.
+- Photos: five supplied through chat and shipped (provenance in `clonakenny/img/*.json` and the
+  README); about 24 more from v12 still to bring in.
+- Reviews: v12's Google reviews only. No prices. Do not invent reviews, prices or customer names.
 
 ## Product Principles
 

@@ -18,6 +18,7 @@ Deploy runbook: `_source/clonakenny/DEPLOY.md`.
   SIL OFL, via Fontsource
 - `img/`: WebP photos and the flower poster used when WebGL is unavailable
 - `vercel.json`: headers, including `X-Robots-Tag: noindex` until Ali signs off
+- `.vercelignore`: keeps this README and the `img/*.json` provenance sidecars out of the deploy
 
 Asset paths are relative, so the page must be served at `/clonakenny/` **with** the trailing slash.
 
@@ -46,6 +47,9 @@ Asset paths are relative, so the page must be served at `/clonakenny/` **with** 
   cropped to the photo.
 - `img/dahlia-poster.webp`: the WebGL dahlia, rendered by `flower.js`.
 - `img/og.jpg`: share image (1200×630), a capture of the hero.
+
+Each raster's origin is recorded with it: `img/<name>.webp.json` sidecars for the WebP files and a
+JPEG comment in `og.jpg` (read back with `node .claude/skills/impeccable/scripts/embed-prompt.mjs <image> --read`).
 
 The supplied files are small (they arrived through chat at 447–928px wide). The wide styling photo
 in particular is shown larger than its 790px source; replace it with Ali's original, at least 1600px
