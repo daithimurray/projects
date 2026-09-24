@@ -20,6 +20,12 @@ const preloadSharedMotion = () => ({
         fs.readdirSync(d, { withFileTypes: true }).flatMap((e) =>
           e.isDirectory() ? pages(path.join(d, e.name)) : e.name.endsWith('.html') ? [path.join(d, e.name)] : [],
         );
+      // Provenance sidecars (<image>.json, tools/embed-prompt) stay in the source, not the site
+      const sidecars = (d) =>
+        fs.readdirSync(d, { withFileTypes: true }).flatMap((e) =>
+          e.isDirectory() ? sidecars(path.join(d, e.name)) : /\.(png|jpe?g|webp)\.json$/i.test(e.name) ? [path.join(d, e.name)] : [],
+        );
+      sidecars(root).forEach((f) => fs.rmSync(f));
       for (const file of pages(root)) {
         const html = fs.readFileSync(file, 'utf8');
         if (!html.includes('type="module"')) continue;

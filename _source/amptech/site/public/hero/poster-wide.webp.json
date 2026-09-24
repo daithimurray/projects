@@ -1,0 +1,4 @@
+{
+  "prompt": "Rendered, not generated: a frame of this site's own three.js hero scene (src/scripts/hero/*), captured by tools/capture-hero.mjs from the dev server with ?poster (deterministic state: floodlight on, fixed time, camera at rest, no UI). Regenerate with: node tools/capture-hero.mjs. No stock or third-party imagery.",
+  "createdAt": "2026-09-24T22:15:05.620Z"
+}
