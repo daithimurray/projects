@@ -160,7 +160,7 @@
     if (w <= 860) {
       heroBase.offsetX = 0; heroBase.offsetY = aspect < 0.62 ? 0.5 : 0.42; heroBase.dist = aspect < 0.62 ? 12.5 : 10.5;
     } else {
-      heroBase.offsetX = 0.36; heroBase.offsetY = 0.04; heroBase.dist = aspect > 1.9 ? 7.4 : 7.9;
+      heroBase.offsetX = 0.42; heroBase.offsetY = 0.04; heroBase.dist = aspect > 1.9 ? 7.8 : 8.4;
     }
   }
   if (hero) {
