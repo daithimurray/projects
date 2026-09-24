@@ -32,8 +32,9 @@ const jsonLd = {
   '@context': 'https://schema.org',
   '@type': 'LocalBusiness',
   '@id': `${canonical}#business`,
-  name: company.legalName,
-  alternateName: company.name,
+  name: company.name,
+  legalName: company.legalName,
+  alternateName: 'Amptech Security Systems',
   description:
     'PSA-licensed installer of intruder alarms, CCTV, fire detection and security lighting for homes and businesses. Based in Leixlip, Co. Kildare.',
   url: canonical,
@@ -44,11 +45,25 @@ const jsonLd = {
     streetAddress: company.address.street,
     addressLocality: company.address.town,
     addressRegion: company.address.county,
+    postalCode: company.eircode,
     addressCountry: company.address.postalCountry,
   },
   geo: { '@type': 'GeoCoordinates', latitude: company.geo.lat, longitude: company.geo.lng },
-  areaServed: { '@type': 'Country', name: 'Ireland' },
-  knowsAbout: ['Intruder alarms', 'CCTV', 'Fire detection', 'Security lighting', 'Alarm upgrades', 'HKC alarm systems'],
+  areaServed: [
+    ...company.areas.map((name) => ({ '@type': 'AdministrativeArea', name: `County ${name}` })),
+    { '@type': 'Country', name: 'Ireland' },
+  ],
+  knowsAbout: [
+    'Intruder alarms',
+    'CCTV',
+    'Fire detection',
+    'Security lighting',
+    'Access control',
+    'Alarm upgrades',
+    'Alarm maintenance',
+    'Alarm monitoring',
+    'HKC alarm systems',
+  ],
 };
 ---
 

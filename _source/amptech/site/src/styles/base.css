@@ -196,6 +196,26 @@ a {
   padding-block: var(--section-y);
 }
 
+/* Night sections: an overcast sky lit orange from below by sodium streetlights.
+   Each one carries a lamp's cast from above, alternating sides like lamps along
+   a road, over a fine overcast grain. The cast fades out before the top edge,
+   so sections meet without a seam. Sections with their own sky keep it. */
+.section.is-night {
+  --cast-x: 50%;
+  background-color: var(--night-900);
+  background-image:
+    radial-gradient(900px 560px at var(--cast-x) 300px, rgb(255 158 61 / 0.075), rgb(255 158 61 / 0.025) 45%, transparent 70%),
+    var(--grain);
+  background-repeat: no-repeat, repeat;
+  background-size: auto, 220px 220px;
+}
+main > .section.is-night:nth-of-type(odd) {
+  --cast-x: 16%;
+}
+main > .section.is-night:nth-of-type(even) {
+  --cast-x: 84%;
+}
+
 /* A lit section: floodlight white ground for dense reading. */
 .is-lit {
   --text: var(--ink-900);
@@ -206,6 +226,12 @@ a {
   background: var(--flood-50);
   color: var(--ink-900);
   color-scheme: light;
+}
+/* Lit sections are lit by a lamp at their top centre, falling off to the edges */
+.section.is-lit {
+  background-color: var(--flood-50);
+  background-image: radial-gradient(1200px 820px at 50% -80px, var(--flood-0) 0%, var(--flood-50) 55%, var(--flood-100) 100%);
+  background-repeat: no-repeat;
 }
 
 .is-night {
@@ -411,14 +437,13 @@ a {
  */
 
 /* Lit sections switch on like a floodlight as they arrive */
-.motion-ok [data-lit-reveal] {
+@property --reveal {
+  syntax: '<length>';
+  inherits: false;
+  initial-value: 0px;
+}
+.lit-veil {
   --reveal: 400vmax;
-}
-.motion-ok [data-lit-reveal].is-revealed::after {
-  content: none;
-}
-.motion-ok [data-lit-reveal]::after {
-  content: '';
   position: absolute;
   inset: -1px 0 0;
   z-index: 3;
@@ -426,6 +451,17 @@ a {
   background: var(--night-900);
   -webkit-mask-image: radial-gradient(circle at 50% 0%, transparent var(--reveal), #000 calc(var(--reveal) + 18vmax));
   mask-image: radial-gradient(circle at 50% 0%, transparent var(--reveal), #000 calc(var(--reveal) + 18vmax));
+}
+.is-revealed > .lit-veil {
+  display: none;
+}
+
+/* Pause control (WCAG 2.2.2): stops every looping CSS animation on the page.
+   Scripted loops listen for the same state through motion.js. */
+.motion-paused *,
+.motion-paused *::before,
+.motion-paused *::after {
+  animation-play-state: paused !important;
 }
 
 @media (prefers-reduced-motion: reduce) {

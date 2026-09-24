@@ -21,6 +21,13 @@ import { company, nav } from '../data/content.js';
     </nav>
 
     <div class="site-header__actions">
+      <button class="pause-toggle" type="button" aria-pressed="false" data-pause-toggle>
+        <span class="visually-hidden" data-pause-label>Pause animations</span>
+        <svg class="pause-toggle__icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+          <g class="pause-toggle__pause"><rect x="7" y="5.5" width="3.2" height="13" rx="1" /><rect x="13.8" y="5.5" width="3.2" height="13" rx="1" /></g>
+          <path class="pause-toggle__play" d="M8 5.8v12.4a.8.8 0 0 0 1.2.7l10-6.2a.8.8 0 0 0 0-1.4l-10-6.2A.8.8 0 0 0 8 5.8Z" />
+        </svg>
+      </button>
       <a class="btn btn--primary site-header__call" href={company.phoneHref}>
         <Icon name="phone" />
         <span class="site-header__call-text">{company.phoneDisplay}</span>
@@ -121,16 +128,26 @@ import { company, nav } from '../data/content.js';
     height: 7px;
     border-radius: 2px;
     background: var(--sodium-500);
-    box-shadow: 0 0 10px 2px var(--sodium-glow);
+  }
+  /* The LED's bloom: only opacity animates, so the breath is compositor-only */
+  .wordmark__led::after {
+    content: '';
+    position: absolute;
+    inset: -6px;
+    border-radius: 50%;
+    background: radial-gradient(closest-side, var(--sodium-glow), transparent);
   }
   @media (prefers-reduced-motion: no-preference) {
-    .wordmark__led {
+    .wordmark__led::after {
       animation: breathe 3.2s var(--ease-in-out) infinite;
     }
   }
+  .site-header.is-hidden .wordmark__led::after {
+    animation-play-state: paused;
+  }
   @keyframes breathe {
     0%, 100% { opacity: 1; }
-    50% { opacity: 0.35; box-shadow: 0 0 4px 0 var(--sodium-glow); }
+    50% { opacity: 0.25; }
   }
 
   .site-nav {
@@ -184,6 +201,40 @@ import { company, nav } from '../data/content.js';
     padding: 0.55rem 1rem;
     font-size: var(--step--1);
     font-variant-numeric: tabular-nums;
+  }
+
+  .pause-toggle {
+    display: grid;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    border: 1px solid transparent;
+    border-radius: var(--radius-sm);
+    background: none;
+    color: var(--dusk-300);
+    transition: color var(--dur-fast) var(--ease-out), border-color var(--dur-fast) var(--ease-out);
+  }
+  .pause-toggle:hover {
+    color: var(--dusk-50);
+    border-color: var(--night-600);
+  }
+  .pause-toggle__icon {
+    width: 16px;
+    height: 16px;
+    fill: currentColor;
+  }
+  .pause-toggle__play,
+  .pause-toggle[aria-pressed='true'] .pause-toggle__pause {
+    display: none;
+  }
+  .pause-toggle[aria-pressed='true'] .pause-toggle__play {
+    display: block;
+  }
+  /* Nothing loops under reduced motion, so there is nothing to pause */
+  @media (prefers-reduced-motion: reduce) {
+    .pause-toggle {
+      display: none;
+    }
   }
 
   .menu-toggle {
@@ -304,7 +355,7 @@ import { company, nav } from '../data/content.js';
 </style>
 
 <script>
-  import { boot, gsap, ScrollTrigger, motionOK } from '../scripts/motion.js';
+  import { boot, gsap, ScrollTrigger, motionOK, isPaused, setPaused } from '../scripts/motion.js';
 
   const { lenis } = boot();
   const header = document.querySelector('[data-header]');
@@ -320,7 +371,8 @@ import { company, nav } from '../data/content.js';
     onUpdate(self) {
       const y = self.scroll();
       header.classList.toggle('is-solid', y > 24);
-      if (!header.classList.contains('menu-open')) {
+      // Never slide away while a header control has keyboard focus
+      if (!header.classList.contains('menu-open') && !header.contains(document.activeElement)) {
         header.classList.toggle('is-hidden', self.direction === 1 && y > window.innerHeight * 0.9);
       }
       if (bar) bar.style.transform = `scaleX(${self.progress.toFixed(4)})`;
@@ -345,8 +397,26 @@ import { company, nav } from '../data/content.js';
     });
   });
 
-  // Mobile menu
+  // Pause every looping animation (WCAG 2.2.2)
+  const pauseBtn = header.querySelector('[data-pause-toggle]');
+  const pauseLabel = header.querySelector('[data-pause-label]');
+  const syncPause = () => {
+    const paused = isPaused();
+    pauseBtn.setAttribute('aria-pressed', String(paused));
+    pauseLabel.textContent = paused ? 'Play animations' : 'Pause animations';
+    pauseBtn.title = pauseLabel.textContent;
+  };
+  pauseBtn.addEventListener('click', () => {
+    setPaused(!isPaused());
+    syncPause();
+  });
+  syncPause();
+
+  // Mobile menu. While it is open, everything behind it is inert, so Tab
+  // cycles through the menu and the header controls only.
+  const behind = () => [document.querySelector('main'), document.querySelector('footer'), document.querySelector('[data-mobile-bar]')].filter(Boolean);
   const setOpen = (open) => {
+    behind().forEach((el) => el.toggleAttribute('inert', open));
     toggle.setAttribute('aria-expanded', String(open));
     label.textContent = open ? 'Close menu' : 'Open menu';
     header.classList.toggle('menu-open', open);

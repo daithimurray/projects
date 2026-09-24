@@ -1,11 +1,19 @@
 // All copy and facts for the Amptech site, in one place.
-// Facts come from public search results of the live amptech.ie (the build
-// environment could not fetch it). Verify against the live site before launch.
-// Never add prices, star ratings, customer counts or response-time promises here.
+// Source of truth: _source/amptech/dossier.md and PRODUCT.md. "Company claim"
+// items come from the client's own site and are on the pre-launch confirm list
+// in README.md. Never add prices, aggregate ratings, customer counts or
+// response-time promises here, and never call the company "Amptech Ltd".
 
 export const company = {
   name: 'Amptech',
-  legalName: 'Amptech Ltd',
+  // Verified on the PSA register. Company number and Eircode are Reported (SoloCheck); confirm before launch.
+  legalName: 'Robert Farnan Electrical & Alarms Limited',
+  tradingAs: 'Robert Farnan Electrical & Alarms Limited, trading as Amptech',
+  companyNo: '501850',
+  eircode: 'W23 N226',
+  psaExpiry: 'April 2028',
+  callout: '24/7 emergency call-out, 365 days a year',
+  areas: ['Dublin', 'Kildare', 'Meath'],
   phoneDisplay: '01 615 5980',
   phoneIntl: '+353 1 615 5980',
   phoneHref: 'tel:+35316155980',
@@ -19,7 +27,7 @@ export const company = {
     country: 'Ireland',
     postalCountry: 'IE',
   },
-  mapsHref: 'https://www.google.com/maps/search/?api=1&query=3+The+Rise+Louisa+Valley+Leixlip+Co.+Kildare',
+  // The address is probably a home office: show it as the registered address only, never as a place to visit.
   // Approximate location of Leixlip, for the area map and JSON-LD.
   geo: { lat: 53.3659, lng: -6.4955 },
 };
@@ -28,6 +36,7 @@ export const nav = [
   { href: '#how-it-works', label: 'How it works' },
   { href: '#services', label: 'Services' },
   { href: '#upgrades', label: 'Upgrades' },
+  { href: '#reviews', label: 'Reviews' },
   { href: '#about', label: 'About' },
   { href: '#contact', label: 'Contact' },
 ];
@@ -35,10 +44,10 @@ export const nav = [
 export const hero = {
   title: 'Nobody reaches the door unseen.',
   lede:
-    'Intruder alarms, CCTV, fire detection and security lighting for homes and businesses. Designed, installed and certified by a PSA-licensed team from Leixlip, for over 20 years.',
+    'Intruder alarms, CCTV, fire detection and security lighting for homes and businesses across Dublin, Kildare and Meath. Installed and looked after by a PSA-licensed installer from Leixlip, for over 20 years.',
   primary: { label: 'Call 01 615 5980', href: 'tel:+35316155980' },
   secondary: { label: 'Request a quote', href: '#contact' },
-  proof: ['PSA licence 03019', 'Certified to EN 50131-1', 'Certificate of Compliance with every intruder install'],
+  proof: ['PSA licence 03019', 'Certificate of Compliance with every intruder install', '24/7 emergency call-out'],
   hintPointer: 'Walk onto the driveway',
   hintTouch: 'Tap the driveway',
   camLabel: 'CAM 01 · DRIVEWAY',
@@ -48,11 +57,11 @@ export const hero = {
 
 // The "system check" strip under the hero.
 export const trust = [
-  { label: 'PSA licensed', value: 'Licence no. 03019' },
-  { label: 'EN 50131-1', value: 'Every intruder system conforms' },
-  { label: 'Certificate of Compliance', value: 'Issued when the job is done' },
-  { label: 'Over 20 years', value: 'Installing and maintaining countrywide' },
-  { label: 'Leixlip based', value: '3 The Rise, Louisa Valley' },
+  { label: 'PSA licensed', value: 'Licence 03019, valid to 2028' },
+  { label: 'Certificate of Compliance', value: 'Uniquely numbered, for your insurer' },
+  { label: '24/7 call-out', value: '365 days a year' },
+  { label: 'Over 20 years', value: 'Big jobs, small jobs and everywhere in between' },
+  { label: 'Leixlip based', value: 'Dublin, Kildare and Meath' },
 ];
 
 export const anatomy = {
@@ -82,7 +91,7 @@ export const anatomy = {
       id: 'fire',
       zone: 'Zone 5 · Landing',
       title: 'Fire detection',
-      body: 'Smoke and heat detectors raise the alarm early, whether or not the intruder alarm is armed.',
+      body: 'Smoke and heat detectors raise the alarm early, whether or not the intruder alarm is set.',
     },
     {
       id: 'deterrent',
@@ -94,59 +103,83 @@ export const anatomy = {
       id: 'app',
       zone: 'HKC app',
       title: 'Alerts on your phone',
-      body: 'With the HKC app, alarm alerts, images and messages reach your phone as audible and text notifications. Check on the house from anywhere.',
+      body: 'With the HKC app you can set and unset the alarm, check the log and see images from anywhere. Alerts and messages reach your phone as audible and text notifications.',
     },
   ],
-  footnote: 'Every intruder system we fit conforms to EN 50131-1 and comes with a Certificate of Compliance.',
+  footnote: 'Every intruder system we fit comes with a uniquely numbered Certificate of Compliance.',
 };
 
 export const services = {
   title: 'What we install and look after',
-  lede: 'For homes, shops, offices and industrial units. New systems, or the one already on your wall.',
-  items: [
+  lede: 'For homes, shops, offices, workshops and warehouses. New systems, or the one already on your wall.',
+  // Two groups, using the client's own service names where they exist
+  // (Security, System Upgrades, Maintenance, Monitoring Services).
+  groups: [
     {
-      id: 'intruder',
-      name: 'Intruder alarms',
-      body: 'Alarm systems for domestic, commercial and industrial property, with a Certificate of Compliance on completion.',
-      for: ['Homes', 'Businesses'],
+      id: 'install',
+      title: 'New systems',
+      items: [
+        {
+          id: 'intruder',
+          name: 'Intruder alarms',
+          body: 'Wired and wireless alarms for homes, businesses and industrial sites, with key fobs, 24-hour panic alarms and a Certificate of Compliance on completion.',
+        },
+        {
+          id: 'cctv',
+          name: 'CCTV',
+          body: 'High-resolution, low-light cameras for driveways, entrances, yards and warehouses. Surveyed, installed and supported.',
+        },
+        {
+          id: 'fire',
+          name: 'Fire detection',
+          body: 'Smoke and heat detection reviewed, designed and upgraded to bring homes and premises up to code.',
+        },
+        {
+          id: 'lighting',
+          name: 'Security lighting',
+          body: 'Floodlights and security lighting that make the approach to your property hard to use unseen.',
+        },
+        {
+          id: 'access',
+          name: 'Access control',
+          body: 'Controlled entry for offices, units and warehouses. Access control is one of the categories on our PSA licence.',
+          for: ['Businesses'],
+        },
+      ],
     },
     {
-      id: 'cctv',
-      name: 'CCTV',
-      body: 'Camera systems for driveways, entrances, yards and shop floors. Installed, set up and maintained.',
-      for: ['Homes', 'Businesses'],
-    },
-    {
-      id: 'fire',
-      name: 'Fire detection',
-      body: 'Fire detection systems installed and maintained for homes and commercial premises.',
-      for: ['Homes', 'Businesses'],
-    },
-    {
-      id: 'lighting',
-      name: 'Security lighting',
-      body: 'Floodlights and security lighting that make the approach to your property hard to use unseen.',
-      for: ['Homes', 'Businesses'],
-    },
-    {
-      id: 'upgrades',
-      name: 'Repairs and upgrades',
-      body: 'We repair and upgrade many of the systems already fitted in Ireland. You don’t always need to start again.',
-      for: ['Existing systems'],
-      href: '#upgrades',
-    },
-    {
-      id: 'maintenance',
-      name: 'Maintenance',
-      body: 'Servicing that keeps a system working the way it was installed, year after year.',
-      for: ['Homes', 'Businesses'],
-    },
-    {
-      id: 'app',
-      name: 'HKC mobile app',
-      body: 'Alerts, images and messages from your alarm, on your phone, wherever you are.',
-      for: ['HKC systems'],
-      href: '#app',
+      id: 'care',
+      title: 'Looking after them',
+      items: [
+        {
+          id: 'upgrades',
+          name: 'System upgrades',
+          body: 'Outdated panels, sensors and cameras replaced, and new doors and windows added after an extension. You don’t always need to start again.',
+          href: '#upgrades',
+        },
+        {
+          id: 'maintenance',
+          name: 'Maintenance',
+          body: 'Contracted annual inspections of intruder alarms, fire alarms, CCTV and fire extinguishers, with a detailed engineer’s report after every service.',
+        },
+        {
+          id: 'monitoring',
+          name: 'Monitoring services',
+          body: '24/7 monitored systems with keyholder calls and a Garda Unique Reference Number, so a confirmed alarm can get a Garda response. Or a GSM unit that texts your phone, with no landline and no monitoring fee.',
+        },
+        {
+          id: 'callout',
+          name: '24/7 call-out',
+          body: 'Emergency call-out, 24 hours a day, 365 days a year, on 01 615 5980.',
+        },
+        {
+          id: 'app',
+          name: 'HKC mobile app',
+          body: 'Set and unset, check the log, and get alerts and images from anywhere.',
+          for: ['HKC systems'],
+          href: '#app',
+        },
+      ],
     },
   ],
 };
@@ -154,7 +187,7 @@ export const services = {
 export const upgrade = {
   title: 'Old alarm? Upgrade it. Don’t rip it out.',
   lede:
-    'We repair and upgrade many of the systems already fitted in Irish homes and businesses. Tell us what’s on the wall and we’ll tell you what can be repaired, upgraded or kept.',
+    'Replace an outdated panel and sensors, add doors and windows after an extension, or move old CCTV to high-resolution, low-light cameras. Tell us what’s on the wall and we’ll tell you what can be kept.',
   beforeLabel: 'Before',
   afterLabel: 'After',
   beforeCaption: 'An ageing keypad showing a fault',
@@ -164,19 +197,89 @@ export const upgrade = {
   cta: { label: 'Ask about an upgrade', href: '#contact' },
 };
 
-export const testimonial = {
-  quote:
-    'Very happy with choosing Amptech for this. They listened to my needs and provided a cost effective solution. The installation was professional and the support given once up and running has been second to none.',
-  name: 'Robert C.',
-  place: 'Donaghmede, Dublin',
-  job: 'Outdated HKC alarm upgraded',
+// Customer testimonials, verbatim from the client's site (amptech.ie/whatourcustomerssay/).
+// Do not edit the wording, and never attribute one customer's words to another's job.
+export const testimonials = {
+  brian: {
+    quote:
+      'I recently used Amptech to install an intruder alarm. The house has recently been updated and had no alarm previously. Amptech handled the whole thing. Neatly installed, would recommend.',
+    name: 'Brian W.',
+    place: 'Clonsilla, Dublin',
+    job: 'New intruder alarm',
+  },
+  robert: {
+    quote:
+      'Largescale CCTV system installed. Very happy with choosing Amptech for this. They listened to my needs and provided a cost effective solution. The installation was professional and the support given once up and running has been second to none.',
+    name: 'Robert C.',
+    place: 'Donaghmede, Dublin',
+    job: 'Large-scale CCTV system',
+  },
+  mary: {
+    quote:
+      'I had my outdated HKC alarm upgraded by Amptech. It was done quickly and the new alarm is very easy to use with lots of features.',
+    name: 'Mary T.',
+    place: 'Lucan, Co. Dublin',
+    job: 'Outdated HKC alarm upgraded',
+  },
+  dave: {
+    quote:
+      'Amptech were able to add new windows and doors to our existing alarm after we had some home alteration work. Not a bother since.',
+    name: 'Dave G.',
+    place: 'Clonsilla, Dublin',
+    job: 'Doors and windows added to an existing alarm',
+  },
+  melanie: {
+    quote:
+      'Outdated panel and sensors replaced by Amptech. Very happy didn’t have to change much to update. The two lads demonstrated the system and made sure I was satisfied before leaving. Very helpful, super stuff.',
+    name: 'Melanie R.',
+    place: 'Sutton, Dublin',
+    job: 'Old panel and sensors replaced',
+  },
+  distributor: {
+    quote:
+      'We built a new warehouse for our regional distribution centre. Amptech conducted a survey and submitted a winning proposal for the best camera coverage, installation and support. All for a competitive price. Still a customer and would recommend.',
+    name: 'Retail goods distributor',
+    place: 'Co. Meath',
+    job: 'CCTV for a new distribution warehouse',
+  },
+};
+
+// Google reviews supplied by the client. Each is 5/5. There is no confirmed
+// total or average, so never show one. Rating-only reviews are not quoted.
+export const googleReviews = [
+  {
+    quote:
+      'Got CCTV, intruder alarm and smoke detectors installed. Top drawer service and products. Great value for money and sound advice on what we needed. Would highly recommend.',
+    name: 'Google reviewer',
+    job: 'CCTV, intruder alarm and smoke detectors',
+    rating: 5,
+  },
+  {
+    quote: 'Did a great job on our lighting in the workshop reception and in the unit repair bay of our workshop.',
+    name: 'McCoy Motors',
+    job: 'Workshop lighting',
+    rating: 5,
+  },
+];
+
+// Upgrade section: the three testimonials about upgrading an existing system.
+export const upgradeVoices = ['melanie', 'mary', 'dave'];
+
+// The reviews section. Heading and lede adapted from the client's own testimonials page.
+export const voices = {
+  title: 'Big jobs, small jobs and everywhere in between.',
+  lede: 'We’ve made and kept a lot of happy customers over the years. Don’t take our word for it.',
+  featured: ['robert', 'brian', 'distributor'],
+  googleLabel: 'Google review',
+  siteLabel: 'From amptech.ie',
+  ratingLabel: '5 out of 5',
 };
 
 export const app = {
   title: 'Your alarm, in your pocket.',
   lede:
-    'With the HKC app you can check on your alarm from anywhere. Alarm alerts, images and messages come straight to your phone, as audible and text notifications.',
-  points: ['Check the system from anywhere', 'Alerts the moment something happens', 'Images and messages, not just a beep'],
+    'With the HKC app you can set and unset your alarm, check the log and capture images from anywhere. Alerts, images and messages reach your phone as audible and text notifications.',
+  points: ['Set and unset from anywhere', 'Alerts and images the moment something happens', 'Check the log, and capture an image on demand'],
   demoButton: 'Send a test alert',
   illustrationNote: 'Illustration of the HKC app. Not a live system.',
   // Synthetic demo feed for the phone illustration.
@@ -190,34 +293,39 @@ export const app = {
 export const process = {
   title: 'From first call to certificate',
   lede: 'What happens after you pick up the phone.',
+  // The client's own policy statement (About Us), with "Its" corrected.
+  policy:
+    'It’s our policy to provide each and every one of our clients with the best possible service – from the time of survey through to completion of installation with ongoing backup, service and maintenance.',
+  policyCite: 'Amptech’s policy',
   steps: [
     {
       title: 'Call or send a request',
       body: 'Ring 01 615 5980 or use the form. Tell us about the property and what’s worrying you.',
     },
     {
-      title: 'We listen, then design',
-      body: 'A system sized to the property and to how you use it, with a clear, competitive quote.',
+      title: 'A survey, then a proposal',
+      body: 'We look at the property, listen to what you need, and give you a clear, competitive quote.',
     },
     {
-      title: 'Professional installation',
-      body: 'Fitted, tested and handed over properly.',
+      title: 'Neat, professional installation',
+      body: 'Fitted and tested, then demonstrated before we leave, so you know exactly how to use it.',
     },
     {
       title: 'Certificate of Compliance',
-      body: 'Every intruder system comes with a certificate: evidence it was installed by a professional company to the appropriate standard.',
+      body: 'Every intruder system gets a uniquely numbered certificate. Your insurer may ask for it, and it may help with your premium.',
     },
     {
-      title: 'Support that continues',
-      body: 'Maintenance, repairs and upgrades after the install, from the same company that fitted it.',
+      title: 'Backup, service and maintenance',
+      body: 'Maintenance contracts, repairs, upgrades and a 24/7 call-out, from the company that fitted it.',
     },
   ],
   certificate: {
     title: 'Certificate of Compliance',
     rows: [
+      ['Certificate no.', '000000'],
       ['System', 'Intruder alarm'],
       ['Standard', 'EN 50131-1'],
-      ['Installer', 'Amptech Ltd'],
+      ['Installer', 'Amptech'],
       ['PSA licence', '03019'],
     ],
     specimen: 'Specimen',
@@ -227,14 +335,14 @@ export const process = {
 export const about = {
   title: 'Leixlip-based. Working countrywide.',
   body: [
-    'Amptech is a PSA-licensed company based in Leixlip, on the Kildare edge of Dublin. For over 20 years we’ve installed and maintained CCTV, intruder and fire systems for homes and businesses throughout the country.',
-    'We fit new systems, and we repair and upgrade many of the ones already installed.',
+    'Amptech is the trading name of Robert Farnan Electrical & Alarms Limited, a PSA-licensed installer based in Leixlip, on the Kildare edge of Dublin. For over 20 years we’ve done big jobs, small jobs and everywhere in between: alarms, CCTV and fire systems for homes and businesses throughout the country.',
+    'Customers include homes in Clonsilla, Lucan, Donaghmede and Sutton, and a regional distribution warehouse in Co. Meath.',
   ],
   facts: [
-    { label: 'Address', value: '3 The Rise, Louisa Valley, Leixlip, Co. Kildare' },
+    { label: 'Company', value: 'Robert Farnan Electrical & Alarms Limited, trading as Amptech' },
+    { label: 'Registered address', value: '3 The Rise, Louisa Valley, Leixlip, Co. Kildare, W23 N226' },
     { label: 'Phone', value: '01 615 5980', href: 'tel:+35316155980' },
-    { label: 'PSA licence', value: '03019' },
-    { label: 'Standard', value: 'EN 50131-1' },
+    { label: 'PSA licence', value: '03019, valid to April 2028' },
   ],
   mapLabel: 'Map of Ireland showing Amptech’s base in Leixlip, Co. Kildare, and coverage across the country.',
 };
@@ -244,27 +352,39 @@ export const faq = {
   items: [
     {
       q: 'Can you upgrade the alarm I already have?',
-      a: 'Often, yes. We repair and upgrade many of the systems already installed in Ireland. Tell us the make and model if you know it, or describe the keypad, and we’ll advise.',
+      a: 'Often, yes. We repair and upgrade many of the systems already installed in Ireland, and we can add new doors and windows to an existing alarm after an extension. Tell us the make and model if you know it, or describe the keypad, and we’ll advise.',
+    },
+    {
+      q: 'What if my alarm goes off in the middle of the night?',
+      a: 'Call 01 615 5980. We run a 24/7 emergency call-out, 365 days a year.',
     },
     {
       q: 'Are you licensed?',
-      a: 'Yes. Amptech is licensed by the Private Security Authority. Our licence number is 03019.',
+      a: 'Yes. Amptech is the trading name of Robert Farnan Electrical & Alarms Limited, licensed by the Private Security Authority under licence number 03019. The licence covers intruder alarms, CCTV and access control.',
     },
     {
       q: 'What do I get when the installation is finished?',
-      a: 'Every intruder system we install comes with a Certificate of Compliance. It is evidence that the system was installed by a professional company and meets the appropriate standard, EN 50131-1.',
+      a: 'A demonstration of the system before we leave. For intruder alarms, you also get a uniquely numbered Certificate of Compliance, which shows the system was installed by a professional company to the appropriate standard (EN 50131-1). Your insurer may ask for it, and it may help with your premium.',
+    },
+    {
+      q: 'Can my alarm be monitored?',
+      a: 'Yes. We offer 24/7 monitored systems that call your designated keyholders and can carry a Garda Unique Reference Number (URN), so a confirmed alarm can get a Garda response. If you’d rather not pay for monitoring, a GSM unit can text alerts straight to your phone, with no landline and no annual fee.',
     },
     {
       q: 'Can I check my alarm from my phone?',
-      a: 'Yes, with the HKC mobile app. It sends alarm alerts, images and messages to your phone as audible and text notifications, so you can check on the system from anywhere.',
+      a: 'Yes, with the HKC mobile app. You can set and unset the alarm, check the log and capture images from anywhere, and alerts, images and messages reach your phone as audible and text notifications.',
+    },
+    {
+      q: 'Do you do maintenance contracts?',
+      a: 'Yes. Under contract we inspect intruder alarms, fire alarms, CCTV and fire extinguishers every year, and send a detailed engineer’s report after each service.',
     },
     {
       q: 'Do you work with businesses?',
-      a: 'Yes. We install and maintain intruder alarms, CCTV and fire detection for commercial and industrial premises as well as homes.',
+      a: 'Yes, from shops and workshops to a regional distribution warehouse. We install and maintain intruder alarms, CCTV, fire detection and access control for commercial and industrial premises as well as homes.',
     },
     {
       q: 'What areas do you cover?',
-      a: 'We’re based in Leixlip, Co. Kildare, and work throughout the country.',
+      a: 'We’re based in Leixlip, Co. Kildare. Our customers include homes in Clonsilla, Lucan, Donaghmede and Sutton and businesses in Co. Meath, and we work throughout the country.',
     },
     {
       q: 'How much does a system cost?',
@@ -276,8 +396,19 @@ export const faq = {
 export const contact = {
   title: 'Tell us about the property.',
   lede: 'Call for a competitive quote, or send the details and we’ll ring you back.',
+  emergency: 'Alarm going off? Our 24/7 emergency call-out runs 365 days a year, on the same number.',
   propertyTypes: ['Home', 'Business'],
-  interests: ['Intruder alarm', 'CCTV', 'Fire detection', 'Security lighting', 'Repair or upgrade', 'Not sure yet'],
+  interests: [
+    'Intruder alarm',
+    'CCTV',
+    'Fire detection',
+    'Security lighting',
+    'Access control',
+    'Upgrade or extension',
+    'Maintenance',
+    'Monitoring',
+    'Not sure yet',
+  ],
   submit: 'Send request',
   consent: 'We use these details only to reply to your request.',
   success: 'Thanks. Your request is in. We’ll ring you back.',
@@ -287,6 +418,10 @@ export const contact = {
 
 export const footer = {
   tagline: 'Intruder alarms, CCTV, fire detection and security lighting. Leixlip, Co. Kildare.',
+  // Irish company websites must show the registered name, number and office (Companies Act 2014, s. 151).
+  legal:
+    'Amptech is the trading name of Robert Farnan Electrical & Alarms Limited. Registered in Ireland, no. 501850. Registered office: 3 The Rise, Louisa Valley, Leixlip, Co. Kildare, W23 N226.',
+  copyright: '© 2026 Robert Farnan Electrical & Alarms Limited',
 };
 
 // Hero scene overlay: the CCTV on-screen display. Data voice only.
@@ -396,7 +531,7 @@ export const faqAside = {
 
 export const contactForm = {
   callLabel: 'Call Amptech on',
-  directions: 'Directions on Google Maps',
+  addressLabel: 'Registered address',
   licence: 'PSA licence 03019',
   required: 'Fields marked * are required.',
   fields: {
@@ -432,9 +567,8 @@ export const footerLinks = {
   explore: 'Explore',
   extra: [{ href: '#faq', label: 'Questions' }],
   contact: 'Contact',
-  directions: 'Get directions',
   credentials: 'Credentials',
-  credentialsList: ['PSA licence 03019', 'Certified to EN 50131-1', 'Certificate of Compliance with every intruder install'],
+  credentialsList: ['PSA licence 03019', 'Certificate of Compliance with every intruder install', '24/7 emergency call-out'],
   privacy: 'Privacy notice',
   top: 'Back to top',
 };
@@ -445,7 +579,7 @@ const privacyTel = { link: '01 615 5980', href: 'tel:+35316155980' };
 export const privacy = {
   title: 'Privacy notice',
   metaTitle: 'Privacy notice | Amptech, Leixlip, Co. Kildare',
-  description: 'How Amptech Ltd handles the details you send through the quote form on this website.',
+  description: 'How Amptech (Robert Farnan Electrical & Alarms Limited) handles the details you send through the quote form on this website.',
   intro: 'How Amptech handles the details you send through this website.',
   draftTitle: 'Draft for Amptech to confirm before launch',
   draftBody:
@@ -457,8 +591,10 @@ export const privacy = {
       title: 'Who we are',
       paragraphs: [
         [
-          'Amptech Ltd, 3 The Rise, Louisa Valley, Leixlip, Co. Kildare, is responsible for the personal data described here. You can reach us on ',
+          'Robert Farnan Electrical & Alarms Limited, trading as Amptech, 3 The Rise, Louisa Valley, Leixlip, Co. Kildare, W23 N226 (registered in Ireland, no. 501850), is the controller of the personal data described here. You can reach us on ',
           privacyTel,
+          ' or by email at ',
+          { tbc: 'email address to confirm' },
           '. We are licensed by the Private Security Authority, licence number 03019.',
         ],
       ],

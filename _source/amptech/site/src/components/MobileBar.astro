@@ -35,12 +35,17 @@ import { company } from '../data/content.js';
   .mobile-bar.is-shown {
     transform: none;
   }
-  @media (max-width: 767px) {
+  /* Only where there is room: at high zoom or on landscape phones the bar would
+     eat most of the viewport. Focus and anchor scrolling keep clear of it. */
+  @media (max-width: 767px) and (min-height: 560px) {
     .mobile-bar {
       display: grid;
     }
     :global(body) {
       padding-bottom: calc(76px + env(safe-area-inset-bottom));
+    }
+    :global(html) {
+      scroll-padding-bottom: calc(88px + env(safe-area-inset-bottom));
     }
   }
 </style>

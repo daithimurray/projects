@@ -186,7 +186,7 @@ const rain = Array.from({ length: 26 }, (_, i) => {
 
     <ul class="svc-index" role="list">
       {
-        services.items.map((item) => (
+        services.groups.flatMap((g) => g.items).map((item) => (
           <li class={`svc svc--${item.id}`} data-svc data-pointer-light>
             <span class="svc__icon" aria-hidden="true">
               <svg
@@ -203,12 +203,14 @@ const rain = Array.from({ length: 26 }, (_, i) => {
             </span>
             <h3 class="svc__name">{item.name}</h3>
             <p class="svc__body">{item.body}</p>
-            <p class="svc__for">
-              <span class="visually-hidden">{servicesUi.forLabel} </span>
-              {item.for.map((tag) => (
-                <span class="svc__chip">{tag}</span>
-              ))}
-            </p>
+            {item.for && (
+              <p class="svc__for">
+                <span class="visually-hidden">{servicesUi.forLabel} </span>
+                {item.for.map((tag) => (
+                  <span class="svc__chip">{tag}</span>
+                ))}
+              </p>
+            )}
             {item.href && linkLabel(item.id) && (
               <a class="svc__link" href={item.href}>
                 <span>{linkLabel(item.id)}</span>

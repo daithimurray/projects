@@ -36,10 +36,6 @@ const icons: Record<string, string> = { Home: 'home', Business: 'business' };
               {company.address.town}, {company.address.county}
             </span>
           </address>
-          <a class="contact__maps" href={company.mapsHref} rel="noopener">
-            <span>{contactForm.directions}</span>
-            <Icon name="arrow-up-right" size={18} />
-          </a>
           <p class="data contact__licence">{contactForm.licence}</p>
         </div>
       </div>

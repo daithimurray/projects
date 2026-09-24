@@ -70,8 +70,8 @@ export function boot() {
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', settle, { once: true });
   else queueMicrotask(settle);
   if (document.fonts?.ready) document.fonts.ready.then(settle);
-  window.addEventListener('load', () => ScrollTrigger.refresh(), { once: true });
 
+  initPause();
   initLitReveals();
   initPointerLights();
   return { gsap, ScrollTrigger, lenis };
@@ -152,15 +152,79 @@ export function strobe(el, { color = 'var(--strobe-500)' } = {}) {
     .to(el, { '--strobe-a': 0, duration: 0.4, ease: 'decay' });
 }
 
-// Lit sections: the floodlight switches on as the section arrives. The final
-// radius covers the whole section (tall sections on phones outgrow any vmax
-// value), and the overlay is dropped entirely once the light is fully on.
+/**
+ * Build non-critical section motion after first paint, in idle time, so the
+ * first viewport isn't blocked by timelines for sections far below it.
+ * Pinned sections must NOT use this: pins are built eagerly so every later
+ * trigger measures with the pin spacing in place. One sort + refresh runs
+ * after the queue drains.
+ */
+const laterQueue = [];
+let laterScheduled = false;
+const idle = window.requestIdleCallback || ((fn) => setTimeout(() => fn({ timeRemaining: () => 8 }), 60));
+export function later(build) {
+  laterQueue.push(build);
+  if (laterScheduled) return;
+  laterScheduled = true;
+  const run = (deadline) => {
+    while (laterQueue.length && deadline.timeRemaining() > 4) laterQueue.shift()();
+    if (laterQueue.length) {
+      idle(run, { timeout: 400 });
+      return;
+    }
+    laterScheduled = false;
+    ScrollTrigger.sort();
+    ScrollTrigger.refresh();
+  };
+  const start = () => idle(run, { timeout: 800 });
+  if (document.readyState === 'complete') start();
+  else window.addEventListener('load', start, { once: true });
+}
+
+/*
+ * Pause (WCAG 2.2.2). One switch for every looping animation on the page:
+ * CSS loops pause through html.motion-paused (base.css); scripted loops
+ * (canvas, WebGL, intervals) subscribe with onPauseChange() and stop drawing.
+ * Scroll-driven motion is user-controlled and keeps working.
+ */
+const pauseListeners = new Set();
+const PAUSE_KEY = 'amptech:motion-paused';
+export const isPaused = () => document.documentElement.classList.contains('motion-paused');
+export function onPauseChange(fn) {
+  pauseListeners.add(fn);
+  return () => pauseListeners.delete(fn);
+}
+export function setPaused(paused) {
+  document.documentElement.classList.toggle('motion-paused', paused);
+  try {
+    if (paused) localStorage.setItem(PAUSE_KEY, '1');
+    else localStorage.removeItem(PAUSE_KEY);
+  } catch {}
+  pauseListeners.forEach((fn) => fn(paused));
+}
+function initPause() {
+  let stored = false;
+  try {
+    stored = localStorage.getItem(PAUSE_KEY) === '1';
+  } catch {}
+  if (stored) document.documentElement.classList.add('motion-paused');
+}
+
+// Lit sections: the floodlight switches on as the section arrives. A veil
+// element (not a pseudo-element) carries the mask, so tweening its own
+// non-inherited --reveal restyles one element instead of the whole section.
+// The final radius covers the whole section (tall sections on phones outgrow
+// any vmax value), and the veil is hidden once the light is fully on.
 function initLitReveals() {
   if (!motionOK()) return;
   gsap.utils.toArray('[data-lit-reveal]').forEach((section) => {
+    const veil = document.createElement('div');
+    veil.className = 'lit-veil';
+    veil.setAttribute('aria-hidden', 'true');
+    section.prepend(veil);
     const full = () => `${Math.ceil(Math.hypot(section.offsetWidth / 2, section.offsetHeight) + 40)}px`;
     gsap.fromTo(
-      section,
+      veil,
       { '--reveal': '0px' },
       {
         '--reveal': full,

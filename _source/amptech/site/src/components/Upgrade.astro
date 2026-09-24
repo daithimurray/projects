@@ -3,7 +3,8 @@
 // yellowed beige keypad blinking FAULT; after, a slim touchscreen keypad and a
 // phone with an app notification. The divider is a real <input type="range">.
 // Robert C.'s testimonial closes the section as its proof.
-import { upgrade, testimonial, upgradeScene as scene } from '../data/content.js';
+import { upgrade, testimonials, upgradeVoices, upgradeScene as scene } from '../data/content.js';
+const testimonial = testimonials[upgradeVoices[0]];
 
 // ---- 14-segment LCD text for the old keypad, built as two paths (lit, ghost) ----
 const T = 4.2;
@@ -61,7 +62,7 @@ const keys = keyLabels.map((label, i) => ({
 const titleSentences = upgrade.title.split(/(?<=[?.!])\s+/).map((s) => s.replace(/\s+(\S+)$/, '\u00a0$1'));
 
 // ---- The testimonial, with its strongest phrase marked ----
-const phrase = 'second to none';
+const phrase = 'didn’t have to change much';
 const at = testimonial.quote.indexOf(phrase);
 const quoteParts =
   at === -1

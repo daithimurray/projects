@@ -5,52 +5,58 @@
  * Colours come from those light sources, never from a generic UI palette.
  */
 :root {
-  /* Night field (the page ground). Blue, never black. */
-  --night-950: #070d19;
-  --night-900: #0c1628;
-  --night-850: #111d33;
-  --night-800: #16243d;
-  --night-700: #213252;
-  --night-600: #33466b;
-  --night-500: #4c5f86;
+  /* Night field (the page ground): dusk blue under an overcast sky, never navy-black.
+     Night sections also carry a sodium cast from above (base.css). */
+  --night-950: #0a1222;
+  --night-900: #111c33;
+  --night-850: #15213b;
+  --night-800: #1a2945;
+  --night-700: #253656;
+  --night-600: #374b72;
+  --night-500: #4f6490;
 
   /* Text on night */
-  --dusk-50: #eef1f8;   /* primary text on night, 16:1 on night-900 */
-  --dusk-200: #c3cde1;  /* secondary text, 11.3:1 */
-  --dusk-300: #9fb0cf;  /* tertiary / captions, 8.3:1 */
-  --dusk-400: #7d90b4;  /* hairline labels only, 5.6:1 (4.8:1 on night-800) */
+  --dusk-50: #eef1f8;   /* primary text on night, 15:1 on night-900 */
+  --dusk-200: #c3cde1;  /* secondary text, 10.6:1 */
+  --dusk-300: #9fb0cf;  /* tertiary / captions, 7.7:1 */
+  --dusk-400: #7d90b4;  /* hairline labels only, 5.3:1 on night-900, 4.5:1 on night-800 */
 
   /* Sodium streetlight: the only warm accent */
   --sodium-300: #ffc27a;
   --sodium-400: #ffae52;
-  --sodium-500: #ff9e3d;  /* accent on night, 8.8:1 on night-900 */
+  --sodium-500: #ff9e3d;  /* accent on night, 8.3:1 on night-900 */
   --sodium-600: #e67e14;
-  --sodium-800: #9a4b00;  /* sodium as text on floodlight white, 5.7:1 */
+  --sodium-800: #9a4b00;  /* sodium as text on floodlight white, 5.6:1 on flood-50 */
   --sodium-glow: rgb(255 158 61 / 0.35);
 
-  /* Floodlight white: lit panels for dense reading */
+  /* Floodlight white: lit panels for dense reading. Cold LED white like the
+     hero's floodlight, never warm cream. Lit sections fall off from a lamp
+     at their top centre (base.css). */
   --flood-0: #ffffff;
-  --flood-50: #f6f5f0;
-  --flood-100: #ecebe3;
-  --flood-200: #dcdad0;
-  --flood-300: #c4c1b4;
-  --ink-900: #0c1628;    /* text on flood, 16.6:1 */
-  --ink-700: #2c3a55;    /* secondary text on flood, 10.4:1 */
-  --ink-500: #56627a;    /* captions on flood, 5.6:1 */
+  --flood-50: #f1f4f8;
+  --flood-100: #e5eaf1;
+  --flood-200: #d3dae4;
+  --flood-300: #b6c0ce;
+  --flood-rule: #76849a;  /* control borders on flood: 3.4:1 on flood-50, 3.8:1 on white */
+  --ink-900: #0c1628;    /* text on flood, 16.4:1 on flood-50 */
+  --ink-700: #2c3a55;    /* secondary text on flood, 10.3:1 */
+  --ink-500: #56627a;    /* captions on flood, 5.6:1 (5.1:1 on flood-100) */
 
   /* Materials (illustration only) */
   --tungsten: #ffd49a;   /* a lit window */
   --pebble: #a9a397;     /* pebbledash render */
   --slate: #2a3140;      /* roof slate */
+  /* Overcast grain: fine fractal noise, tiled. Barely there; it stops night fields reading as flat fills. */
+  --grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .62 0 0 0 0 .69 0 0 0 0 .81 0 0 0 .055 0'/%3E%3C/filter%3E%3Crect width='220' height='220' filter='url(%23n)'/%3E%3C/svg%3E");
   --tarmac: #151a22;
 
   /* Signals: use for state, not decoration */
   --strobe-400: #6aa0ff;
-  --strobe-500: #3d7cff;  /* bell-box beacon: alerts, notifications */
+  --strobe-500: #3d7cff;  /* bell-box beacon: alerts, notifications. Not for small text (4.5:1 on night-900) */
   --alarm-500: #ff5a4e;   /* smoke alarm LED, errors on night */
   --alarm-700: #b42318;   /* errors on flood, 6.1:1 */
   --clear-400: #5ee0a0;   /* "all clear" LED on night */
-  --clear-700: #1d7a4f;   /* success on flood */
+  --clear-700: #186a42;   /* success on flood, 5.9:1 on flood-50 */
 
   /* Type */
   --font-display: 'Archivo Variable', 'Archivo', 'Arial Narrow', sans-serif;
