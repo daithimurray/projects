@@ -425,7 +425,7 @@ const insetLines = (() => {
             <g class="an-tag" data-tag="0" data-dev="0" data-state="calm">
               <path class="an-tag__lead" d="M608 575H616V793H610" {...ns} />
               <circle class="an-tag__dot" cx="608" cy="575" r="2.3" />
-              <text class="an-tag__txt an-mono" x="605" y="793" text-anchor="end">{up(steps[0].zone)}</text>
+              <text class="an-tag__txt" x="605" y="793" text-anchor="end"><tspan class="an-mono">{up(steps[0].zone).split(' · ')[0]}</tspan><tspan> · {up(steps[0].zone).split(' · ')[1]}</tspan></text>
               <text class="an-tag__txt an-tag__status" x="605" y="793" dy="1.5em" text-anchor="end" data-an-status>
                 {up(anatomyArt.open)}
               </text>
@@ -433,8 +433,8 @@ const insetLines = (() => {
             <g class="an-tag" data-tag="1" data-dev="1" data-state="calm">
               <path class="an-tag__lead" d="M614 567H551" {...ns} />
               <circle class="an-tag__dot" cx="614" cy="567" r="2.3" />
-              <text class="an-tag__txt an-mono" x="545" y="567" text-anchor="end">
-                {up(steps[1].zone).split(' · ').map((part, i) => <tspan x="545" dy={i ? '1.3em' : 0}>{part}</tspan>)}
+              <text class="an-tag__txt" x="545" y="567" text-anchor="end">
+                {up(steps[1].zone).split(' · ').map((part, i) => <tspan x="545" dy={i ? '1.3em' : 0} class={i ? undefined : 'an-mono'}>{part}</tspan>)}
               </text>
             </g>
             <g class="an-tag" data-tag="2" data-dev="2" data-state="calm">
@@ -444,7 +444,7 @@ const insetLines = (() => {
             <g class="an-tag" data-tag="3" data-dev="3" data-state="calm">
               <path class="an-tag__lead" d="M352 399V360H358" {...ns} />
               <circle class="an-tag__dot" cx="352" cy="399" r="2.3" />
-              <text class="an-tag__txt an-mono" x="363" y="360">{up(steps[3].zone)}</text>
+              <text class="an-tag__txt" x="363" y="360"><tspan class="an-mono">{up(steps[3].zone).split(' · ')[0]}</tspan><tspan> · {up(steps[3].zone).split(' · ')[1]}</tspan></text>
             </g>
             <g class="an-tag" data-tag="4" data-dev="4" data-state="calm">
               <path class="an-tag__lead" d="M662 446H716" {...ns} />

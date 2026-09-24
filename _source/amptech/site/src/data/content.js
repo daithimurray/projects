@@ -56,7 +56,7 @@ export const nav = [
 export const hero = {
   title: 'Nobody reaches the door unseen.',
   lede:
-    'Intruder alarms, CCTV, fire detection and security lighting for homes and businesses across Dublin, Kildare and Meath. Installed and looked after by a PSA-licensed installer from Leixlip, for over 20 years.',
+    'Intruder alarms, CCTV, fire detection and security lighting for homes and businesses across Dublin, Kildare, Meath and beyond. Installed and looked after from Leixlip for over 20 years, by a PSA-licensed alarm and CCTV installer.',
   primary: { label: 'Call 01 615 5980', href: 'tel:+35316155980' },
   secondary: { label: 'Request a quote', href: '#contact' },
   proof: ['PSA licence 03019', 'Certificate of Compliance with every intruder install', '24/7 emergency call-out'],
@@ -72,8 +72,8 @@ export const trust = [
   { label: 'PSA licensed', value: 'Licence 03019, valid to 2028' },
   { label: 'Certificate of Compliance', value: 'Uniquely numbered, for your insurer' },
   { label: '24/7 call-out', value: '365 days a year' },
-  { label: 'Over 20 years', value: 'Big jobs, small jobs and everywhere in between' },
-  { label: 'Leixlip based', value: 'Dublin, Kildare and Meath' },
+  { label: 'Over 20 years', value: 'Homes, shops, workshops and warehouses' },
+  { label: 'Leixlip-based', value: 'Dublin, Kildare, Meath and beyond' },
 ];
 
 export const anatomy = {
@@ -85,7 +85,7 @@ export const anatomy = {
       id: 'contacts',
       zone: 'Zone 1 · Front door',
       title: 'Door and window contacts',
-      body: 'Magnetic contacts on doors and windows. Open one while the system is armed and the alarm knows exactly which one.',
+      body: 'Magnetic contacts on doors and windows. Open one while the system is set and the alarm knows exactly which one.',
     },
     {
       id: 'motion',
@@ -115,7 +115,7 @@ export const anatomy = {
       id: 'app',
       zone: 'HKC app',
       title: 'Alerts on your phone',
-      body: 'With the HKC app you can set and unset the alarm, check the log and see images from anywhere. Alerts and messages reach your phone as audible and text notifications.',
+      body: 'On HKC systems, alerts and images reach the app on your phone, wherever you are.',
     },
   ],
   footnote: 'Every intruder system we fit comes with a uniquely numbered Certificate of Compliance.',
@@ -177,7 +177,7 @@ export const services = {
         {
           id: 'monitoring',
           name: 'Monitoring services',
-          body: '24/7 monitored systems with keyholder calls and a Garda Unique Reference Number, so a confirmed alarm can get a Garda response. Or a GSM unit that texts your phone, with no landline and no monitoring fee.',
+          body: '24/7 monitored systems with keyholder calls and a Garda Unique Reference Number, so a confirmed alarm can get a Garda response. Or a GSM unit that texts your phone, with no landline and no annual monitoring fee.',
         },
         {
           id: 'callout',
@@ -187,7 +187,7 @@ export const services = {
         {
           id: 'app',
           name: 'HKC mobile app',
-          body: 'Set and unset, check the log, and get alerts and images from anywhere.',
+          body: 'Control and check an HKC alarm from your phone.',
           for: ['HKC systems'],
           href: '#app',
         },
@@ -263,8 +263,6 @@ export const googleReviews = [
     quote:
       'Got CCTV, intruder alarm and smoke detectors installed. Top drawer service and products. Great value for money and sound advice on what we needed. Would highly recommend.',
     name: 'Google reviewer',
-    // No place was given; the Reviews street labels this building by its source.
-    street: 'Google review',
     job: 'CCTV, intruder alarm and smoke detectors',
     rating: 5,
   },
@@ -293,7 +291,7 @@ export const app = {
   title: 'Your alarm, in your pocket.',
   lede:
     'On HKC systems, the HKC app lets you set and unset your alarm, check the log and capture images from anywhere. Alerts, images and messages reach your phone as audible and text notifications.',
-  points: ['Set and unset from anywhere', 'Alerts and images the moment something happens', 'Check the log, and capture an image on demand'],
+  points: ['Set and unset from anywhere', 'Alerts and images when something happens', 'Check the log, and capture an image on demand'],
   demoButton: 'Send a test alert',
   illustrationNote: 'Illustration of the HKC app. Not a live system.',
   // Synthetic demo feed for the phone illustration.
@@ -349,8 +347,8 @@ export const process = {
 export const about = {
   title: 'Leixlip-based. Working countrywide.',
   body: [
-    'Amptech is the trading name of Robert Farnan Electrical & Alarms Limited, a PSA-licensed installer based in Leixlip, on the Kildare edge of Dublin. For over 20 years we’ve done big jobs, small jobs and everywhere in between: alarms, CCTV and fire systems for homes and businesses throughout the country.',
-    'Customers include homes in Clonsilla, Lucan, Donaghmede and Sutton, and a regional distribution warehouse in Co. Meath.',
+    'Amptech is the trading name of Robert Farnan Electrical & Alarms Limited, based in Leixlip on the Kildare edge of Dublin and licensed by the PSA for intruder alarms, CCTV and access control. For over 20 years we’ve installed alarms, CCTV and fire systems for homes and businesses across Dublin, Kildare and Meath, and throughout the country.',
+    'Our customers are in Clonsilla, Lucan, Donaghmede and Sutton, and include a regional distribution warehouse in Co. Meath.',
   ],
   facts: [
     { label: 'Company', value: 'Robert Farnan Electrical & Alarms Limited, trading as Amptech' },
@@ -386,7 +384,7 @@ export const faq = {
     },
     {
       q: 'Can I check my alarm from my phone?',
-      a: 'Yes, if it’s an HKC system: the HKC mobile app lets you set and unset it, check the log and see images from anywhere. On any system, a GSM unit can text alerts to your phone. Have a different make? Ask us about an upgrade.',
+      a: 'Yes, if it’s an HKC system: the HKC app lets you control and check it from anywhere. Have a different make? Ask us about an upgrade, or about a GSM unit that texts alerts to your phone.',
     },
     {
       q: 'Do you do maintenance contracts?',
@@ -398,7 +396,7 @@ export const faq = {
     },
     {
       q: 'What areas do you cover?',
-      a: 'We’re based in Leixlip, Co. Kildare. Our customers include homes in Clonsilla, Lucan, Donaghmede and Sutton and businesses in Co. Meath, and we work throughout the country.',
+      a: 'We’re based in Leixlip, Co. Kildare. Our customers are in Clonsilla, Lucan, Donaghmede, Sutton and Co. Meath, and we work throughout the country.',
     },
     {
       q: 'How much does a system cost?',
@@ -496,7 +494,7 @@ export const upgradeScene = {
     ['Z2 Hall', 'OK'],
     ['Z3 Back door', 'OK'],
   ],
-  modes: ['Away', 'Night', 'Off'],
+  modes: ['Set', 'Night', 'Unset'],
   notifyApp: 'Alarm',
   notifyWhen: 'now',
   notifyTitle: 'System set',

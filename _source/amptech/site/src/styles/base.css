@@ -35,7 +35,12 @@ html.lenis body {
 body {
   margin: 0;
   min-height: 100vh;
-  background: var(--night-900);
+  /* One continuous night sky behind every night section (they're transparent),
+     so consecutive sections never meet at a seam */
+  background-color: var(--night-900);
+  background-image: var(--lamps), var(--overcast), var(--grain);
+  background-size: 100% 2200px, 100% 2200px, 1400px 700px, 220px 220px;
+  background-repeat: repeat-y, repeat-y, repeat, repeat;
   color: var(--dusk-50);
   font-family: var(--font-body);
   font-size: var(--step-0);
@@ -203,24 +208,10 @@ a {
   padding-block: var(--section-y);
 }
 
-/* Night sections: an overcast sky lit orange from below by sodium streetlights.
-   Each one carries a lamp's cast from above, alternating sides like lamps along
-   a road, over a fine overcast grain. The cast fades out before the top edge,
-   so sections meet without a seam. Sections with their own sky keep it. */
+/* Night sections show the page's sky (body): an overcast lit orange from
+   below, with a streetlight's cast every ~1100px down the page. */
 .section.is-night {
-  --cast-x: 50%;
-  background-color: var(--night-900);
-  background-image:
-    radial-gradient(900px 560px at var(--cast-x) 300px, rgb(255 158 61 / 0.075), rgb(255 158 61 / 0.025) 45%, transparent 70%),
-    var(--grain);
-  background-repeat: no-repeat, repeat;
-  background-size: auto, 220px 220px;
-}
-main > .section.is-night:nth-of-type(odd) {
-  --cast-x: 16%;
-}
-main > .section.is-night:nth-of-type(even) {
-  --cast-x: 84%;
+  background: transparent;
 }
 
 /* A lit section: floodlight white ground for dense reading. */

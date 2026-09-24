@@ -139,6 +139,7 @@ function keepPlaceOnResize(lenis) {
     raf = requestAnimationFrame(() => {
       const box = (anchor.el.closest('.pin-spacer') || anchor.el).getBoundingClientRect();
       lenis.reset(); // Lenis still holds the old target; scrollTo() is a no-op when y equals it
+      lenis.resize(); // and its scroll limit is from the old layout (debounced), which would clamp the restore
       lenis.scrollTo(box.top + window.scrollY + anchor.frac * box.height, { immediate: true, force: true });
       ScrollTrigger.update();
       frozen = false;

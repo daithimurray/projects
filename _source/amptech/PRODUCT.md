@@ -28,7 +28,7 @@ A PSA-licensed installer (licence 03019, valid to 12/04/2028) based in Leixlip, 
 
 - Enquiry path today: a phone call for a competitive quote ("Call us on 01-615 5980 for a competitive quote" in every page header), plus a contact form.
 - Survey, then proposal, then installation, then a Certificate of Compliance for intruder systems, then ongoing backup, service and maintenance.
-- HKC app (verified): alerts, images, set/unset, log checks and image capture from any location.
+- HKC app (verified): alerts, images, set/unset, log checks and image capture from any location. The client's HKC page also describes alarm alerts, images and messages delivered as audible and text notifications (from search results of amptech.ie/hkc-mobile-app/; used once, in the App section's lede).
 
 ## Capabilities and Constraints
 

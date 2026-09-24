@@ -259,9 +259,23 @@ const letters = 'AMPTECH'.split('');
     display: block;
     color: var(--bulb);
     color: color-mix(in oklab, var(--night-700), var(--bulb) calc(var(--on) * 100%));
-    text-shadow:
-      0 0 0.03em color-mix(in oklab, var(--tungsten) calc(var(--on) * 60%), transparent),
-      0 0 0.22em color-mix(in oklab, var(--sodium-500) calc(var(--on) * 30%), transparent);
+  }
+  /* The lit windows spill a little warm light onto the ground below them: a
+     pool on the ground, not a halo around the letters */
+  .footer__mark {
+    position: relative;
+    isolation: isolate;
+  }
+  .footer__mark::after {
+    content: '';
+    position: absolute;
+    left: 4%;
+    right: 4%;
+    bottom: -18%;
+    height: 45%;
+    z-index: -1;
+    pointer-events: none;
+    background: radial-gradient(50% 50% at 50% 50%, color-mix(in oklab, var(--tungsten) 16%, transparent), transparent 75%);
   }
 
   /* The small print: copyright and the company's registered particulars */
@@ -388,6 +402,7 @@ const letters = 'AMPTECH'.split('');
     // wordmark is on screen, and never while animation is paused.
     let visible = false;
     let next: gsap.core.Tween | null = null;
+    const pending = new Set<gsap.core.Tween>(); // "switch back on" calls, cancelled by pause
     const schedule = () => {
       next?.kill();
       next = gsap.delayedCall(gsap.utils.random(5, 9), () => {
@@ -396,17 +411,21 @@ const letters = 'AMPTECH'.split('');
         if (!busy.has(el)) {
           busy.add(el);
           switchOff(el);
-          gsap.delayedCall(gsap.utils.random(1.4, 3), () => {
+          const back = gsap.delayedCall(gsap.utils.random(1.4, 3), () => {
+            pending.delete(back);
             switchOn(el);
             busy.delete(el);
           });
+          pending.add(back);
         }
         schedule();
       });
     };
     let living = false;
     function live() {
-      if (living) return;
+      // Only where the page offers a pause control (the privacy page has none),
+      // the windows keep switching; otherwise the street stays lit and still.
+      if (living || !document.querySelector('[data-pause-toggle]')) return;
       living = true;
       new IntersectionObserver(([entry]) => {
         visible = entry.isIntersecting;
@@ -417,6 +436,8 @@ const letters = 'AMPTECH'.split('');
     onPauseChange((paused) => {
       if (paused) {
         next?.kill();
+        pending.forEach((c) => c.kill());
+        pending.clear();
         if (street.isActive()) street.progress(1);
         allOn();
       } else if (living && visible) schedule();

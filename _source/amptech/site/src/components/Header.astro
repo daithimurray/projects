@@ -21,8 +21,8 @@ import { company, nav, ui } from '../data/content.js';
     </nav>
 
     <div class="site-header__actions">
-      <button class="pause-toggle" type="button" aria-pressed="false" data-pause-toggle data-pause={ui.pause} data-play={ui.play}>
-        <span class="visually-hidden" data-pause-label>{ui.pause}</span>
+      <button class="pause-toggle" type="button" aria-pressed="false" data-pause-toggle title={ui.pause}>
+        <span class="visually-hidden">{ui.pause}</span>
         <svg class="pause-toggle__icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
           <g class="pause-toggle__pause"><rect x="7" y="5.5" width="3.2" height="13" rx="1" /><rect x="13.8" y="5.5" width="3.2" height="13" rx="1" /></g>
           <path class="pause-toggle__play" d="M8 5.8v12.4a.8.8 0 0 0 1.2.7l10-6.2a.8.8 0 0 0 0-1.4l-10-6.2A.8.8 0 0 0 8 5.8Z" />
@@ -69,7 +69,7 @@ import { company, nav, ui } from '../data/content.js';
       <a class="btn btn--primary" href={company.phoneHref}>
         <Icon name="phone" /> Call {company.phoneDisplay}
       </a>
-      <p class="data">PSA licence {company.psaLicence} · {company.address.town}, {company.address.county}</p>
+      <p class="mobile-menu__meta">PSA licence <span class="data">{company.psaLicence}</span> · {company.address.town}, {company.address.county}</p>
     </div>
   </div>
 </header>
@@ -335,8 +335,13 @@ import { company, nav, ui } from '../data/content.js';
     display: grid;
     gap: var(--space-4);
   }
-  .mobile-menu__foot .data {
+  .mobile-menu__meta {
     color: var(--dusk-300);
+    font-size: var(--step--1);
+  }
+  .mobile-menu__meta .data {
+    font-size: 0.92em;
+    text-transform: none;
   }
 
   @media (max-width: 1023px) {
@@ -355,6 +360,22 @@ import { company, nav, ui } from '../data/content.js';
   @media (max-height: 420px) {
     .site-header {
       position: absolute;
+    }
+  }
+  /* Small phones (and 400% zoom): wordmark, pause, call and menu must all fit
+     at 44px each, so tighten the gaps and the wordmark, never the targets */
+  @media (max-width: 379px) {
+    .site-header__bar {
+      gap: var(--space-2);
+    }
+    .site-header__actions {
+      gap: var(--space-1);
+    }
+    .wordmark {
+      padding-right: 12px;
+    }
+    .wordmark__text {
+      font-size: 1.05rem;
     }
   }
   @media (max-width: 519px) {
@@ -395,7 +416,8 @@ import { company, nav, ui } from '../data/content.js';
       const y = self.scroll();
       header.classList.toggle('is-solid', y > 24);
       // Never slide away while a header control has keyboard focus
-      if (!header.classList.contains('menu-open') && !header.contains(document.activeElement)) {
+      // Keyboard focus pins the header; a mouse click or tap on a control doesn't
+      if (!header.classList.contains('menu-open') && !header.querySelector(':focus-visible')) {
         header.classList.toggle('is-hidden', self.direction === 1 && y > window.innerHeight * 0.9);
       }
       if (bar) bar.style.transform = `scaleX(${self.progress.toFixed(4)})`;
@@ -423,13 +445,8 @@ import { company, nav, ui } from '../data/content.js';
 
   // Pause every looping animation (WCAG 2.2.2)
   const pauseBtn = header.querySelector('[data-pause-toggle]');
-  const pauseLabel = header.querySelector('[data-pause-label]');
-  const syncPause = () => {
-    const paused = isPaused();
-    pauseBtn.setAttribute('aria-pressed', String(paused));
-    pauseLabel.textContent = paused ? pauseBtn.dataset.play : pauseBtn.dataset.pause;
-    pauseBtn.title = pauseLabel.textContent;
-  };
+  // The name stays "Pause animations"; aria-pressed carries the state.
+  const syncPause = () => pauseBtn.setAttribute('aria-pressed', String(isPaused()));
   pauseBtn.addEventListener('click', () => {
     setPaused(!isPaused());
     syncPause();
@@ -438,9 +455,12 @@ import { company, nav, ui } from '../data/content.js';
 
   // Mobile menu. While it is open, everything behind it is inert, so Tab
   // cycles through the menu and the header controls only.
-  const behind = () => [document.querySelector('main'), document.querySelector('footer'), document.querySelector('[data-mobile-bar]')].filter(Boolean);
+  const behind = () => [document.querySelector('.skip-link'), document.querySelector('main'), document.querySelector('footer')].filter(Boolean);
+  const quickBar = document.querySelector('[data-mobile-bar]');
   const setOpen = (open) => {
     behind().forEach((el) => el.toggleAttribute('inert', open));
+    // The mobile bar manages its own inert state while hidden; respect it on close
+    quickBar?.toggleAttribute('inert', open || !quickBar.classList.contains('is-shown'));
     toggle.setAttribute('aria-expanded', String(open));
     label.textContent = open ? toggle.dataset.close : toggle.dataset.open;
     header.classList.toggle('menu-open', open);
@@ -467,6 +487,10 @@ import { company, nav, ui } from '../data/content.js';
   toggle.addEventListener('click', () => setOpen(toggle.getAttribute('aria-expanded') !== 'true'));
   menu.addEventListener('click', (e) => {
     if (e.target.closest('a')) setOpen(false);
+  });
+  // "Back to top" from the wordmark must close the menu first so the page can scroll
+  header.querySelector('.wordmark').addEventListener('click', () => {
+    if (toggle.getAttribute('aria-expanded') === 'true') setOpen(false);
   });
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape' && toggle.getAttribute('aria-expanded') === 'true') {

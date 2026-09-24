@@ -18,7 +18,6 @@ type Voice = {
   quote: string;
   name: string;
   place?: string;
-  street?: string;
   job: string;
   source: 'site' | 'google';
 };
@@ -392,7 +391,8 @@ const items = plan.map((p) => {
     ...p,
     v,
     b,
-    label: v.street || (v.place ? v.place.split(',')[0] : v.name),
+    // Street captions are places only; a building with no known place goes uncaptioned
+    label: v.place ? v.place.split(',')[0] : '',
     // Desktop: leader offset inside the grid item, in container units (1200 street units = 100cqw).
     pxd: `${f((b.fx - p.x0) / 12)}cqw`,
     // Phones: leader offset from the vignette's centre, in street units.
@@ -528,7 +528,7 @@ for (const { id: k } of plan) {
     <div class="vo-street" aria-hidden="true">
       <svg class="vo-street__svg" viewBox={`0 ${TOP} 1200 ${H}`} focusable="false" set:html={street} />
       <div class="vo-street__labels">
-        {items.map((it) => <span class="vo-lbl" data-b={it.id} style={`--cx:${it.b.cx}`}>{it.label}</span>)}
+        {items.filter((it) => it.label).map((it) => <span class="vo-lbl" data-b={it.id} style={`--cx:${it.b.cx}`}>{it.label}</span>)}
       </div>
     </div>
   </div>
@@ -1252,8 +1252,10 @@ for (const { id: k } of plan) {
     }
 
     // Now and then: a camera pans, the bell-box LEDs blink, the smoke LED flashes.
+    // Two passes, then the street rests: an endless loop kept the main thread
+    // busy on slow phones for no extra meaning.
     function idle(b, phase) {
-      const tl = gsap.timeline({ repeat: -1, paused: true, delay: phase });
+      const tl = gsap.timeline({ repeat: 1, paused: true, delay: phase });
       cams(b).forEach((cam, i) => {
         const dir = i % 2 ? -1 : 1;
         const o = cam.dataset.o;
@@ -1274,7 +1276,7 @@ for (const { id: k } of plan) {
     }
     const startIdle = (blds) => {
       blds.forEach((b, i) => {
-        const tl = idle(b, i * 0.7);
+        const tl = idle(b, i * 3.1); // one building at a time, not all at once
         loops.add(tl);
       });
       sync();
