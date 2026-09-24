@@ -1,0 +1,38 @@
+---
+import Base from '../layouts/Base.astro';
+import Header from '../components/Header.astro';
+import Hero from '../components/Hero.astro';
+import TrustCheck from '../components/TrustCheck.astro';
+import Anatomy from '../components/Anatomy.astro';
+import Services from '../components/Services.astro';
+import Upgrade from '../components/Upgrade.astro';
+import AppDemo from '../components/AppDemo.astro';
+import Process from '../components/Process.astro';
+import About from '../components/About.astro';
+import Faq from '../components/Faq.astro';
+import Contact from '../components/Contact.astro';
+import Footer from '../components/Footer.astro';
+import MobileBar from '../components/MobileBar.astro';
+
+const title = 'Amptech | Intruder alarms, CCTV & fire detection · Leixlip, Co. Kildare';
+const description =
+  'PSA-licensed (03019) installer of intruder alarms, CCTV, fire detection and security lighting for homes and businesses. Based in Leixlip, working countrywide for over 20 years. Call 01 615 5980.';
+---
+
+<Base title={title} description={description}>
+  <Header />
+  <main id="main" tabindex="-1">
+    <Hero />
+    <TrustCheck />
+    <Anatomy />
+    <Services />
+    <Upgrade />
+    <AppDemo />
+    <Process />
+    <About />
+    <Faq />
+    <Contact />
+  </main>
+  <Footer />
+  <MobileBar />
+</Base>

@@ -1,0 +1,386 @@
+---
+import Icon from './Icon.astro';
+import { company, nav } from '../data/content.js';
+---
+
+<header class="site-header" data-header>
+  <div class="site-header__bar container">
+    <a class="wordmark" href="#top" aria-label={`${company.name}, back to top`}>
+      <span class="wordmark__text" aria-hidden="true">AMPTECH</span>
+      <span class="wordmark__led" aria-hidden="true"></span>
+    </a>
+
+    <nav class="site-nav" aria-label="Main">
+      <ul role="list">
+        {nav.map((item) => (
+          <li>
+            <a href={item.href} data-nav-link>{item.label}</a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+
+    <div class="site-header__actions">
+      <a class="btn btn--primary site-header__call" href={company.phoneHref}>
+        <Icon name="phone" />
+        <span class="site-header__call-text">{company.phoneDisplay}</span>
+        <span class="visually-hidden site-header__call-sr">Call {company.phoneDisplay}</span>
+      </a>
+      <button
+        class="menu-toggle"
+        type="button"
+        aria-expanded="false"
+        aria-controls="mobile-menu"
+        data-menu-toggle
+      >
+        <span class="visually-hidden" data-menu-label>Open menu</span>
+        <span class="menu-toggle__lines" aria-hidden="true"><span></span><span></span></span>
+      </button>
+    </div>
+  </div>
+  <div class="site-header__progress" aria-hidden="true"><span data-progress></span></div>
+
+  <div class="mobile-menu" id="mobile-menu" data-menu hidden>
+    <nav aria-label="Main (mobile)">
+      <ul role="list">
+        {nav.map((item) => (
+          <li>
+            <a href={item.href} data-menu-link>{item.label}</a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+    <div class="mobile-menu__foot">
+      <a class="btn btn--primary" href={company.phoneHref}>
+        <Icon name="phone" /> Call {company.phoneDisplay}
+      </a>
+      <p class="data">PSA licence {company.psaLicence} · {company.address.town}, {company.address.county}</p>
+    </div>
+  </div>
+</header>
+
+<style>
+  .site-header {
+    position: fixed;
+    inset: 0 0 auto;
+    z-index: 100;
+    color: var(--dusk-50);
+    transition: transform var(--dur-med) var(--ease-out);
+  }
+  .site-header::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: linear-gradient(to bottom, rgb(7 13 25 / 0.7), rgb(7 13 25 / 0));
+    transition: background var(--dur-med) var(--ease-out), opacity var(--dur-med);
+  }
+  .site-header.is-solid::before {
+    background: rgb(12 22 40 / 0.9);
+    -webkit-backdrop-filter: blur(14px) saturate(1.3);
+    backdrop-filter: blur(14px) saturate(1.3);
+    box-shadow: 0 1px 0 var(--night-700);
+  }
+  .site-header.is-hidden {
+    transform: translateY(-100%);
+  }
+  .site-header.menu-open {
+    transform: none;
+  }
+
+  .site-header__bar {
+    display: flex;
+    align-items: center;
+    gap: var(--space-5);
+    height: var(--header-h);
+  }
+
+  .wordmark {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    padding-right: 14px;
+    text-decoration: none;
+    color: var(--dusk-50);
+  }
+  .wordmark__text {
+    font-family: var(--font-display);
+    font-stretch: 125%;
+    font-weight: 820;
+    font-size: 1.28rem;
+    letter-spacing: 0.04em;
+    line-height: 1;
+  }
+  /* A panel status LED: breathing sodium, the site's heartbeat */
+  .wordmark__led {
+    position: absolute;
+    top: 9px;
+    right: 2px;
+    width: 7px;
+    height: 7px;
+    border-radius: 2px;
+    background: var(--sodium-500);
+    box-shadow: 0 0 10px 2px var(--sodium-glow);
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .wordmark__led {
+      animation: breathe 3.2s var(--ease-in-out) infinite;
+    }
+  }
+  @keyframes breathe {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.35; box-shadow: 0 0 4px 0 var(--sodium-glow); }
+  }
+
+  .site-nav {
+    margin-left: auto;
+  }
+  .site-nav ul {
+    display: flex;
+    gap: clamp(1rem, 2vw, 2rem);
+  }
+  .site-nav a {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    color: var(--dusk-200);
+    text-decoration: none;
+    font-size: var(--step--1);
+    font-weight: 600;
+    letter-spacing: 0.01em;
+    transition: color var(--dur-fast) var(--ease-out);
+  }
+  .site-nav a::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 10px;
+    height: 1.5px;
+    background: var(--sodium-500);
+    transform: scaleX(0);
+    transform-origin: right;
+    transition: transform var(--dur-med) var(--ease-out);
+  }
+  .site-nav a:hover,
+  .site-nav a[aria-current='true'] {
+    color: var(--dusk-50);
+  }
+  .site-nav a:hover::after,
+  .site-nav a[aria-current='true']::after {
+    transform: scaleX(1);
+    transform-origin: left;
+  }
+
+  .site-header__actions {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+  }
+  .site-header__call {
+    min-height: 44px;
+    padding: 0.55rem 1rem;
+    font-size: var(--step--1);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .menu-toggle {
+    display: none;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    border: 1px solid var(--night-600);
+    border-radius: var(--radius-sm);
+    background: rgb(12 22 40 / 0.5);
+  }
+  .menu-toggle__lines {
+    position: relative;
+    display: block;
+    width: 18px;
+    height: 10px;
+  }
+  .menu-toggle__lines span {
+    position: absolute;
+    left: 0;
+    width: 100%;
+    height: 1.6px;
+    border-radius: 2px;
+    background: currentColor;
+    transition: transform var(--dur-med) var(--ease-out), top var(--dur-med) var(--ease-out);
+  }
+  .menu-toggle__lines span:first-child { top: 0; }
+  .menu-toggle__lines span:last-child { top: 8px; }
+  .menu-toggle[aria-expanded='true'] .menu-toggle__lines span:first-child {
+    top: 4px;
+    transform: rotate(45deg);
+  }
+  .menu-toggle[aria-expanded='true'] .menu-toggle__lines span:last-child {
+    top: 4px;
+    transform: rotate(-45deg);
+  }
+
+  .site-header__progress {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -1px;
+    height: 2px;
+    pointer-events: none;
+  }
+  .site-header__progress span {
+    display: block;
+    height: 100%;
+    background: linear-gradient(90deg, var(--sodium-600), var(--sodium-400));
+    box-shadow: 0 0 12px var(--sodium-glow);
+    transform: scaleX(0);
+    transform-origin: left;
+  }
+
+  .mobile-menu {
+    position: fixed;
+    inset: var(--header-h) 0 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: var(--space-7);
+    padding: var(--space-6) var(--gutter) calc(var(--space-6) + env(safe-area-inset-bottom));
+    background: var(--night-950);
+    overflow-y: auto;
+  }
+  .mobile-menu[hidden] {
+    display: none;
+  }
+  .mobile-menu ul {
+    display: grid;
+    gap: var(--space-2);
+  }
+  .mobile-menu a[data-menu-link] {
+    display: flex;
+    align-items: center;
+    min-height: 56px;
+    border-bottom: 1px solid var(--night-800);
+    font-family: var(--font-display);
+    font-stretch: 118%;
+    font-weight: 720;
+    font-size: var(--step-3);
+    letter-spacing: -0.02em;
+    text-decoration: none;
+  }
+  .mobile-menu__foot {
+    display: grid;
+    gap: var(--space-4);
+  }
+  .mobile-menu__foot .data {
+    color: var(--dusk-300);
+  }
+
+  @media (max-width: 1023px) {
+    .site-nav {
+      display: none;
+    }
+    .menu-toggle {
+      display: grid;
+    }
+    .site-header__actions {
+      margin-left: auto;
+    }
+  }
+  @media (max-width: 519px) {
+    .site-header__call {
+      width: 44px;
+      padding: 0;
+    }
+    .site-header__call-text {
+      display: none;
+    }
+  }
+  @media (min-width: 520px) {
+    .site-header__call-sr {
+      display: none;
+    }
+  }
+</style>
+
+<script>
+  import { boot, gsap, ScrollTrigger, motionOK } from '../scripts/motion.js';
+
+  const { lenis } = boot();
+  const header = document.querySelector('[data-header]');
+  const bar = header.querySelector('[data-progress]');
+  const toggle = header.querySelector('[data-menu-toggle]');
+  const label = header.querySelector('[data-menu-label]');
+  const menu = header.querySelector('[data-menu]');
+
+  // Solid once past the hero's top edge; hide on the way down, show on the way up.
+  ScrollTrigger.create({
+    start: 0,
+    end: 'max',
+    onUpdate(self) {
+      const y = self.scroll();
+      header.classList.toggle('is-solid', y > 24);
+      if (!header.classList.contains('menu-open')) {
+        header.classList.toggle('is-hidden', self.direction === 1 && y > window.innerHeight * 0.9);
+      }
+      if (bar) bar.style.transform = `scaleX(${self.progress.toFixed(4)})`;
+    },
+  });
+  header.addEventListener('focusin', () => header.classList.remove('is-hidden'));
+
+  // Current section in the nav
+  const links = [...document.querySelectorAll('[data-nav-link]')];
+  links.forEach((link) => {
+    const section = document.querySelector(link.getAttribute('href'));
+    if (!section) return;
+    ScrollTrigger.create({
+      trigger: section,
+      start: 'top 45%',
+      end: 'bottom 45%',
+      onToggle: ({ isActive }) => {
+        if (isActive) links.forEach((l) => l.removeAttribute('aria-current'));
+        if (isActive) link.setAttribute('aria-current', 'true');
+        else link.removeAttribute('aria-current');
+      },
+    });
+  });
+
+  // Mobile menu
+  const setOpen = (open) => {
+    toggle.setAttribute('aria-expanded', String(open));
+    label.textContent = open ? 'Close menu' : 'Open menu';
+    header.classList.toggle('menu-open', open);
+    header.classList.add('is-solid');
+    if (open) {
+      menu.hidden = false;
+      lenis?.stop();
+      document.body.style.overflow = 'hidden';
+      if (motionOK()) {
+        gsap.fromTo(menu, { clipPath: 'inset(0 0 100% 0)' }, { clipPath: 'inset(0 0 0% 0)', duration: 0.6, ease: 'expo.out' });
+        gsap.fromTo(
+          menu.querySelectorAll('li, .mobile-menu__foot'),
+          { opacity: 0.2, y: 16 },
+          { opacity: 1, y: 0, duration: 0.7, ease: 'expo.out', stagger: 0.05, delay: 0.08 },
+        );
+      }
+      menu.querySelector('a')?.focus();
+    } else {
+      menu.hidden = true;
+      lenis?.start();
+      document.body.style.overflow = '';
+    }
+  };
+  toggle.addEventListener('click', () => setOpen(toggle.getAttribute('aria-expanded') !== 'true'));
+  menu.addEventListener('click', (e) => {
+    if (e.target.closest('a')) setOpen(false);
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && toggle.getAttribute('aria-expanded') === 'true') {
+      setOpen(false);
+      toggle.focus();
+    }
+  });
+  window.matchMedia('(min-width: 1024px)').addEventListener('change', (e) => {
+    if (e.matches) setOpen(false);
+  });
+</script>

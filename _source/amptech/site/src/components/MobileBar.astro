@@ -1,0 +1,85 @@
+---
+import Icon from './Icon.astro';
+import { company } from '../data/content.js';
+---
+
+<div class="mobile-bar" data-mobile-bar aria-label="Quick contact" role="region">
+  <a class="btn btn--primary" href={company.phoneHref}>
+    <Icon name="phone" /> Call now
+  </a>
+  <a class="btn btn--ghost" href="#contact">Get a quote</a>
+</div>
+
+<style>
+  .mobile-bar {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 90;
+    display: none;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-3);
+    padding: var(--space-3) var(--gutter) calc(var(--space-3) + env(safe-area-inset-bottom));
+    background: rgb(7 13 25 / 0.92);
+    -webkit-backdrop-filter: blur(12px);
+    backdrop-filter: blur(12px);
+    border-top: 1px solid var(--night-700);
+    transform: translateY(110%);
+    transition: transform var(--dur-med) var(--ease-out);
+  }
+  .mobile-bar .btn {
+    min-height: 48px;
+    padding-inline: 0.75rem;
+  }
+  .mobile-bar.is-shown {
+    transform: none;
+  }
+  @media (max-width: 767px) {
+    .mobile-bar {
+      display: grid;
+    }
+    :global(body) {
+      padding-bottom: calc(76px + env(safe-area-inset-bottom));
+    }
+  }
+</style>
+
+<script>
+  import { boot, ScrollTrigger } from '../scripts/motion.js';
+
+  boot();
+  const bar = document.querySelector('[data-mobile-bar]');
+  const hero = document.querySelector('#top');
+  const contact = document.querySelector('#contact');
+  let pastHero = false;
+  let atContact = false;
+  const sync = () => bar.classList.toggle('is-shown', pastHero && !atContact);
+
+  if (hero) {
+    ScrollTrigger.create({
+      trigger: hero,
+      start: 'bottom 60%',
+      onToggle: (self) => {
+        pastHero = self.isActive;
+        sync();
+      },
+      end: 'max',
+    });
+  }
+  if (contact) {
+    ScrollTrigger.create({
+      trigger: contact,
+      start: 'top 85%',
+      end: 'bottom top',
+      onToggle: (self) => {
+        atContact = self.isActive;
+        sync();
+      },
+    });
+  }
+  // Hidden bar must not take focus
+  const inert = () => bar.toggleAttribute('inert', !bar.classList.contains('is-shown'));
+  new MutationObserver(inert).observe(bar, { attributes: true, attributeFilter: ['class'] });
+  inert();
+</script>
