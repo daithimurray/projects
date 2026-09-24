@@ -598,7 +598,7 @@ html:not(.js) .tag, html:not(.js) .bloom-finder { display: none; }
 
 /* ---------- Motion setup (only when JS + motion allowed) ---------- */
 html.motion [data-bg] { background-color: transparent; }
-html.motion .story, html.motion .foot { background-color: var(--dusk); }
+html.motion .story, html.motion .weddings, html.motion .foot { background-color: var(--dusk); }
 html.motion .offer { background-color: var(--offer-bg, var(--lilac-pale)); }
 html.motion .offer:nth-child(2) { --offer-bg: var(--lilac-mist); }
 html.motion .offer:nth-child(3) { --offer-bg: var(--lilac); }
