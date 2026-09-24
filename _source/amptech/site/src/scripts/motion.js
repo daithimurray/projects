@@ -43,10 +43,13 @@ export function boot() {
     gsap.ticker.add((time) => lenis.raf(time * 1000));
     gsap.ticker.lagSmoothing(0);
     window.__lenis = lenis;
+    keepPlaceOnResize(lenis);
   }
 
   // In-page anchors: glide with Lenis, keep focus and history correct.
   document.addEventListener('click', (event) => {
+    // Leave new-tab, new-window and download gestures to the browser
+    if (event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
     const link = event.target.closest('a[href^="#"]');
     if (!link) return;
     const id = link.getAttribute('href');
@@ -77,8 +80,9 @@ export function boot() {
   return { gsap, ScrollTrigger, lenis };
 }
 
+// Both paths honour html's scroll-padding-top (header height + 16px), so no
+// manual offset: Lenis subtracts scroll-padding for element targets itself.
 export function scrollToTarget(target, { focus = true } = {}) {
-  const offset = -(parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--header-h')) || 72) - 8;
   const done = () => {
     if (!focus) return;
     if (!target.hasAttribute('tabindex') && !/^(A|BUTTON|INPUT|SELECT|TEXTAREA)$/.test(target.tagName)) {
@@ -87,12 +91,59 @@ export function scrollToTarget(target, { focus = true } = {}) {
     target.focus({ preventScroll: true });
   };
   if (lenis) {
-    lenis.scrollTo(target, { offset, duration: 1.2, onComplete: done });
+    lenis.scrollTo(target, { duration: 1.2, onComplete: done });
   } else {
-    const top = target.getBoundingClientRect().top + window.scrollY + offset;
-    window.scrollTo({ top, behavior: motionOK() ? 'smooth' : 'auto' });
+    target.scrollIntoView({ behavior: motionOK() ? 'smooth' : 'auto', block: 'start' });
     done();
   }
+}
+
+/*
+ * Crossing a gsap.matchMedia breakpoint (rotating a tablet, resizing a window)
+ * reverts and rebuilds pins, and Lenis would otherwise snap the page to the
+ * top. Remember which section the reader is in, and how far through it, then
+ * put them back there once ScrollTrigger has finished refreshing.
+ */
+function keepPlaceOnResize(lenis) {
+  const sections = [...document.querySelectorAll('main > section')];
+  let anchor = null;
+  let frozen = false;
+  let raf = 0;
+  const measure = () => {
+    if (frozen) return;
+    const el = sections.find((s) => (s.closest('.pin-spacer') || s).getBoundingClientRect().bottom > 0);
+    if (!el) return;
+    const box = (el.closest('.pin-spacer') || el).getBoundingClientRect();
+    anchor = { el, frac: -box.top / Math.max(1, box.height) };
+  };
+  lenis.on('scroll', measure);
+  measure();
+  // Only real layout changes: phones fire resize when the URL bar slides, and
+  // a stale anchor must never be replayed on some later, unrelated refresh.
+  let last = { w: window.innerWidth, h: window.innerHeight };
+  let thaw = 0;
+  window.addEventListener('resize', () => {
+    const w = window.innerWidth;
+    const h = window.innerHeight;
+    if (w === last.w && Math.abs(h - last.h) < 160) return;
+    last = { w, h };
+    frozen = true;
+    clearTimeout(thaw);
+    thaw = setTimeout(() => {
+      frozen = false;
+    }, 1500);
+  });
+  ScrollTrigger.addEventListener('refresh', () => {
+    if (!frozen || !anchor) return;
+    cancelAnimationFrame(raf); // wait for the last of several refresh cycles
+    raf = requestAnimationFrame(() => {
+      const box = (anchor.el.closest('.pin-spacer') || anchor.el).getBoundingClientRect();
+      lenis.reset(); // Lenis still holds the old target; scrollTo() is a no-op when y equals it
+      lenis.scrollTo(box.top + window.scrollY + anchor.frac * box.height, { immediate: true, force: true });
+      ScrollTrigger.update();
+      frozen = false;
+    });
+  });
 }
 
 /**
@@ -123,21 +174,28 @@ export function lightsOn(targets, { trigger, start = 'top 82%', stagger = 0.09, 
  */
 export function sweepIn(heading, { trigger, start = 'top 80%', delay = 0 } = {}) {
   if (!motionOK() || !heading) return null;
-  const split = SplitText.create(heading, {
+  // autoSplit re-splits when the width changes or fonts arrive late; returning
+  // the tween from onSplit lets SplitText carry its progress over to the new lines.
+  return SplitText.create(heading, {
     type: 'lines',
     mask: 'lines',
     linesClass: 'sweep-line',
     aria: 'auto',
     reduceWhiteSpace: false,
-  });
-  gsap.set(split.lines, { yPercent: 105 });
-  return gsap.to(split.lines, {
-    yPercent: 0,
-    duration: 1.05,
-    ease: 'expo.out',
-    stagger: 0.09,
-    delay,
-    scrollTrigger: { trigger: trigger || heading, start, once: true },
+    autoSplit: true,
+    onSplit: (self) =>
+      gsap.fromTo(
+        self.lines,
+        { yPercent: 105 },
+        {
+          yPercent: 0,
+          duration: 1.05,
+          ease: 'expo.out',
+          stagger: 0.09,
+          delay,
+          scrollTrigger: { trigger: trigger || heading, start, once: true },
+        },
+      ),
   });
 }
 

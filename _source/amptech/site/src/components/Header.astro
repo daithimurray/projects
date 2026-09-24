@@ -1,6 +1,6 @@
 ---
 import Icon from './Icon.astro';
-import { company, nav } from '../data/content.js';
+import { company, nav, ui } from '../data/content.js';
 ---
 
 <header class="site-header" data-header>
@@ -21,8 +21,8 @@ import { company, nav } from '../data/content.js';
     </nav>
 
     <div class="site-header__actions">
-      <button class="pause-toggle" type="button" aria-pressed="false" data-pause-toggle>
-        <span class="visually-hidden" data-pause-label>Pause animations</span>
+      <button class="pause-toggle" type="button" aria-pressed="false" data-pause-toggle data-pause={ui.pause} data-play={ui.play}>
+        <span class="visually-hidden" data-pause-label>{ui.pause}</span>
         <svg class="pause-toggle__icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
           <g class="pause-toggle__pause"><rect x="7" y="5.5" width="3.2" height="13" rx="1" /><rect x="13.8" y="5.5" width="3.2" height="13" rx="1" /></g>
           <path class="pause-toggle__play" d="M8 5.8v12.4a.8.8 0 0 0 1.2.7l10-6.2a.8.8 0 0 0 0-1.4l-10-6.2A.8.8 0 0 0 8 5.8Z" />
@@ -39,15 +39,23 @@ import { company, nav } from '../data/content.js';
         aria-expanded="false"
         aria-controls="mobile-menu"
         data-menu-toggle
+        data-open={ui.openMenu}
+        data-close={ui.closeMenu}
+        hidden
       >
-        <span class="visually-hidden" data-menu-label>Open menu</span>
+        <span class="visually-hidden" data-menu-label>{ui.openMenu}</span>
         <span class="menu-toggle__lines" aria-hidden="true"><span></span><span></span></span>
       </button>
+      <!-- Without JavaScript the menu can't open, so this jumps to the footer's links instead -->
+      <a class="menu-toggle menu-toggle--nojs" href="#footer-nav" data-menu-nojs>
+        <span class="visually-hidden">{ui.menu}</span>
+        <span class="menu-toggle__lines" aria-hidden="true"><span></span><span></span></span>
+      </a>
     </div>
   </div>
   <div class="site-header__progress" aria-hidden="true"><span data-progress></span></div>
 
-  <div class="mobile-menu" id="mobile-menu" data-menu hidden>
+  <div class="mobile-menu" id="mobile-menu" data-menu data-lenis-prevent hidden>
     <nav aria-label="Main (mobile)">
       <ul role="list">
         {nav.map((item) => (
@@ -237,6 +245,9 @@ import { company, nav } from '../data/content.js';
     }
   }
 
+  .menu-toggle[hidden] {
+    display: none !important;
+  }
   .menu-toggle {
     display: none;
     place-items: center;
@@ -299,6 +310,7 @@ import { company, nav } from '../data/content.js';
     padding: var(--space-6) var(--gutter) calc(var(--space-6) + env(safe-area-inset-bottom));
     background: var(--night-950);
     overflow-y: auto;
+    overscroll-behavior: contain;
   }
   .mobile-menu[hidden] {
     display: none;
@@ -338,6 +350,13 @@ import { company, nav } from '../data/content.js';
       margin-left: auto;
     }
   }
+  /* Very short viewports (landscape phones, 400% zoom): the header scrolls away
+     with the page instead of sliding back over the little room there is */
+  @media (max-height: 420px) {
+    .site-header {
+      position: absolute;
+    }
+  }
   @media (max-width: 519px) {
     .site-header__call {
       width: 44px;
@@ -361,6 +380,8 @@ import { company, nav } from '../data/content.js';
   const header = document.querySelector('[data-header]');
   const bar = header.querySelector('[data-progress]');
   const toggle = header.querySelector('[data-menu-toggle]');
+  header.querySelector('[data-menu-nojs]')?.remove();
+  toggle.hidden = false;
   const label = header.querySelector('[data-menu-label]');
   const menu = header.querySelector('[data-menu]');
 
@@ -368,6 +389,8 @@ import { company, nav } from '../data/content.js';
   ScrollTrigger.create({
     start: 0,
     end: 'max',
+    // After a direct load at a #hash, refresh restores the scroll position without an update
+    onRefresh: (self) => header.classList.toggle('is-solid', self.scroll() > 24),
     onUpdate(self) {
       const y = self.scroll();
       header.classList.toggle('is-solid', y > 24);
@@ -389,6 +412,7 @@ import { company, nav } from '../data/content.js';
       trigger: section,
       start: 'top 45%',
       end: 'bottom 45%',
+      refreshPriority: -1, // measure after the How it works pin adds its spacing
       onToggle: ({ isActive }) => {
         if (isActive) links.forEach((l) => l.removeAttribute('aria-current'));
         if (isActive) link.setAttribute('aria-current', 'true');
@@ -403,7 +427,7 @@ import { company, nav } from '../data/content.js';
   const syncPause = () => {
     const paused = isPaused();
     pauseBtn.setAttribute('aria-pressed', String(paused));
-    pauseLabel.textContent = paused ? 'Play animations' : 'Pause animations';
+    pauseLabel.textContent = paused ? pauseBtn.dataset.play : pauseBtn.dataset.pause;
     pauseBtn.title = pauseLabel.textContent;
   };
   pauseBtn.addEventListener('click', () => {
@@ -418,7 +442,7 @@ import { company, nav } from '../data/content.js';
   const setOpen = (open) => {
     behind().forEach((el) => el.toggleAttribute('inert', open));
     toggle.setAttribute('aria-expanded', String(open));
-    label.textContent = open ? 'Close menu' : 'Open menu';
+    label.textContent = open ? toggle.dataset.close : toggle.dataset.open;
     header.classList.toggle('menu-open', open);
     header.classList.add('is-solid');
     if (open) {

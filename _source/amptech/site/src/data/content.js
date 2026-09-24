@@ -32,6 +32,18 @@ export const company = {
   geo: { lat: 53.3659, lng: -6.4955 },
 };
 
+// Interface strings for the header, menu, pause control and mobile bar.
+export const ui = {
+  skip: 'Skip to content',
+  openMenu: 'Open menu',
+  closeMenu: 'Close menu',
+  menu: 'Menu',
+  pause: 'Pause animations',
+  play: 'Play animations',
+  quickContact: 'Quick contact',
+  call: 'Call',
+};
+
 export const nav = [
   { href: '#how-it-works', label: 'How it works' },
   { href: '#services', label: 'Services' },
@@ -154,7 +166,7 @@ export const services = {
         {
           id: 'upgrades',
           name: 'System upgrades',
-          body: 'Outdated panels, sensors and cameras replaced, and new doors and windows added after an extension. You don’t always need to start again.',
+          body: 'Repair or upgrade the system you already have, or extend it after building work.',
           href: '#upgrades',
         },
         {
@@ -278,7 +290,7 @@ export const voices = {
 export const app = {
   title: 'Your alarm, in your pocket.',
   lede:
-    'With the HKC app you can set and unset your alarm, check the log and capture images from anywhere. Alerts, images and messages reach your phone as audible and text notifications.',
+    'On HKC systems, the HKC app lets you set and unset your alarm, check the log and capture images from anywhere. Alerts, images and messages reach your phone as audible and text notifications.',
   points: ['Set and unset from anywhere', 'Alerts and images the moment something happens', 'Check the log, and capture an image on demand'],
   demoButton: 'Send a test alert',
   illustrationNote: 'Illustration of the HKC app. Not a live system.',
@@ -352,7 +364,7 @@ export const faq = {
   items: [
     {
       q: 'Can you upgrade the alarm I already have?',
-      a: 'Often, yes. We repair and upgrade many of the systems already installed in Ireland, and we can add new doors and windows to an existing alarm after an extension. Tell us the make and model if you know it, or describe the keypad, and we’ll advise.',
+      a: 'Often, yes, and we can add new doors and windows to it after an extension. Tell us the make and model if you know it, or describe the keypad, and we’ll advise.',
     },
     {
       q: 'What if my alarm goes off in the middle of the night?',
@@ -364,7 +376,7 @@ export const faq = {
     },
     {
       q: 'What do I get when the installation is finished?',
-      a: 'A demonstration of the system before we leave. For intruder alarms, you also get a uniquely numbered Certificate of Compliance, which shows the system was installed by a professional company to the appropriate standard (EN 50131-1). Your insurer may ask for it, and it may help with your premium.',
+      a: 'A demonstration of the system before we leave. For intruder alarms, you also get a uniquely numbered Certificate of Compliance to EN 50131-1. Your insurer may ask for it, and it may help with your premium.',
     },
     {
       q: 'Can my alarm be monitored?',
@@ -372,7 +384,7 @@ export const faq = {
     },
     {
       q: 'Can I check my alarm from my phone?',
-      a: 'Yes, with the HKC mobile app. You can set and unset the alarm, check the log and capture images from anywhere, and alerts, images and messages reach your phone as audible and text notifications.',
+      a: 'Yes, if it’s an HKC system: the HKC mobile app lets you set and unset it, check the log and see images from anywhere. On any system, a GSM unit can text alerts to your phone. Have a different make? Ask us about an upgrade.',
     },
     {
       q: 'Do you do maintenance contracts?',
@@ -605,6 +617,7 @@ export const privacy = {
         [
           'Your name and phone number. If you choose to give them, also your email address, the type of property, the services you’re interested in, your town or area, and anything you write in the message.',
         ],
+        ['You don’t have to give us your details, but without a name and phone number we can’t ring you back.'],
       ],
     },
     {
@@ -625,7 +638,8 @@ export const privacy = {
         [
           'The Amptech team dealing with your request. The form is delivered to us by ',
           { tbc: 'form service provider, name and location to confirm' },
-          ', which handles it on our behalf and may not use it for anything else.',
+          ', which handles it on our behalf and may not use it for anything else. ',
+          { tbc: 'if the form service stores data outside the EEA, name the safeguard (for example the EU–US Data Privacy Framework or Standard Contractual Clauses)' },
         ],
       ],
     },
@@ -648,7 +662,7 @@ export const privacy = {
       title: 'Your rights',
       paragraphs: [
         [
-          'Under the GDPR you can ask for a copy of the personal data we hold about you, ask us to correct or delete it, object to how we use it, or ask us to restrict its use.',
+          'Under the GDPR you can ask for a copy of the personal data we hold about you, ask us to correct or delete it, ask us to restrict its use, or ask for the details you gave us in a common electronic format so you can take them elsewhere (data portability).',
         ],
         [
           'If you’re unhappy with how we’ve handled your data, you can complain to the Data Protection Commission at ',

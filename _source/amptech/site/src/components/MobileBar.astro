@@ -1,13 +1,13 @@
 ---
 import Icon from './Icon.astro';
-import { company } from '../data/content.js';
+import { company, hero, ui } from '../data/content.js';
 ---
 
-<div class="mobile-bar" data-mobile-bar aria-label="Quick contact" role="region">
-  <a class="btn btn--primary" href={company.phoneHref}>
-    <Icon name="phone" /> Call now
+<div class="mobile-bar" data-mobile-bar aria-label={ui.quickContact} role="region">
+  <a class="btn btn--primary mobile-bar__call" href={company.phoneHref}>
+    <Icon name="phone" /><span class="visually-hidden">{ui.call} </span>{company.phoneDisplay}
   </a>
-  <a class="btn btn--ghost" href="#contact">Get a quote</a>
+  <a class="btn btn--ghost" href={hero.secondary.href}>{hero.secondary.label}</a>
 </div>
 
 <style>
@@ -31,6 +31,10 @@ import { company } from '../data/content.js';
   .mobile-bar .btn {
     min-height: 48px;
     padding-inline: 0.75rem;
+  }
+  .mobile-bar__call {
+    font-variant-numeric: tabular-nums;
+    gap: 0.45em;
   }
   .mobile-bar.is-shown {
     transform: none;

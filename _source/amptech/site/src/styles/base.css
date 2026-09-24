@@ -130,6 +130,13 @@ strong {
   border-radius: var(--radius-xs);
 }
 
+/* Sections and main take focus after in-page navigation so the next Tab starts
+   there; the page scrolling to them is the visible cue, not a giant ring. */
+main:focus-visible,
+main > section[tabindex='-1']:focus-visible {
+  outline: none;
+}
+
 .is-lit :focus-visible,
 .on-flood :focus-visible {
   outline-color: var(--night-900);
