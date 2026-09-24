@@ -548,6 +548,7 @@ html:not(.js) .reviews__controls { display: none; }
 .order__intro p { margin-top: 28px; font-size: var(--step-1); line-height: 1.5; color: var(--plum-2); max-width: 30rem; }
 .order__alt a { font-weight: 600; }
 .composer {
+  min-width: 0;
   grid-column: 7 / span 6;
   background: var(--lilac-pale);
   border-radius: 36px 10px 36px 10px;
@@ -584,7 +585,7 @@ html:not(.js) .reviews__controls { display: none; }
   margin: 8px 0 28px; padding: 20px 22px 22px;
   background: #fff; border-radius: 14px; border: 1.5px solid rgba(42, 20, 51, .16);
 }
-.draft__meta { margin: 0 0 6px; font-size: 0.9rem; color: var(--plum-2); display: flex; gap: 10px; }
+.draft__meta { margin: 0 0 6px; font-size: 0.9rem; color: var(--plum-2); display: flex; gap: 10px; min-width: 0; overflow-wrap: anywhere; }
 .draft__meta span:first-child { flex: none; width: 4.5rem; font-weight: 600; color: var(--plum); }
 .draft__meta + .draft__body { margin-top: 16px; padding-top: 16px; border-top: 1px solid rgba(42, 20, 51, .12); }
 .draft__body { font-family: var(--serif); font-size: var(--step-1); line-height: 1.4; margin: 0; min-height: 4.2em; white-space: pre-line; transition: opacity .35s var(--ease); }
