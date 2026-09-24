@@ -368,8 +368,8 @@
     this._last = now;
     this.time += dt;
     this.state.spin += dt * this.state.spinSpeed;
-    if (this.onBeforeRender) this.onBeforeRender(this, dt);
-    this.render();
+    // onBeforeRender may return false to skip drawing (e.g. while the flower is fully covered).
+    if (!this.onBeforeRender || this.onBeforeRender(this, dt) !== false) this.render();
     this._raf = requestAnimationFrame(this._frame);
   };
   Flower.prototype.start = function () {

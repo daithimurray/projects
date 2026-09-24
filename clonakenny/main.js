@@ -13,7 +13,7 @@
     if (window.SplitText) gsap.registerPlugin(window.SplitText);
   }
 
-  var PHONE = '353872766413';
+  var EMAIL = 'ali@clonakennyflowerfarm.com';
   var COLORS = { lilac: '#C8A2C8', dusk: '#1B0E21', pale: '#F3EAF3' };
   var isDesktop = function () { return window.matchMedia('(min-width: 861px)').matches; };
   var finePointer = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
@@ -85,7 +85,7 @@
     if (!target) return;
     e.preventDefault();
     closeMenu();
-    if (a.dataset.occasion) setOccasion(a.dataset.occasion, a.dataset.month);
+    if (a.dataset.want) setWant(a.dataset.want);
     scrollToTarget(target);
     history.replaceState(null, '', id);
   });
@@ -135,7 +135,7 @@
     if (!motion) { flower.render(); return; }
     new IntersectionObserver(function (entries) {
       entries.forEach(function (en) { if (en.isIntersecting) flower.start(); else flower.stop(); });
-    }, { rootMargin: '100px' }).observe(el);
+    }, { rootMargin: '0px' }).observe(el);
     document.addEventListener('visibilitychange', function () {
       if (document.hidden) flower.stop();
     });
@@ -153,7 +153,7 @@
   var hero = makeFlower($('.hero__canvas'), { preset: 'dahlia', bloom: motion ? 0 : 1, maxDpr: small ? 1.6 : 2 });
   var heroBase = { offsetX: 0, offsetY: 0, dist: 9 };
   var intro = { b: motion ? 0 : 0.9 };
-  var heroScroll = { center: 0, dive: 0 };
+  var heroScroll = { center: 0, dive: 0, covered: false };
   function layoutHero() {
     if (!hero) return;
     var w = window.innerWidth, h = window.innerHeight, aspect = w / h;
@@ -173,6 +173,8 @@
       f.state.dist = heroBase.dist + (heroBase.dist * 0.82 - heroBase.dist) * c;
       f.state.bloom = Math.min(1, intro.b + 0.12 * c);
       f.state.dive = heroScroll.dive;
+      // Once the dusk has closed over the flower there is nothing to see: skip the draw.
+      return heroScroll.covered !== true;
     };
     hero.onBeforeRender(hero);
     watch(hero, $('.hero'));
@@ -198,45 +200,71 @@
   }
 
   /* ------------------------------------------------------------------
-     Composer
+     What grows when (drives the date hint in the enquiry)
+     ------------------------------------------------------------------ */
+  var SEASONS = [
+    'January is quiet on the farm: Liz is sowing. Winter weddings are by arrangement, so ask Ali.',
+    'February is sowing time under the polytunnels. Winter weddings are by arrangement, so ask Ali.',
+    'March is spring: tulips, narcissi and blossom for the first weddings of the season.',
+    'April is spring: tulips, narcissi and blossom from the tunnels.',
+    'May is late spring: the last tulips and the first of the early summer flowers.',
+    'June is early summer: peonies, sweet william and the first sweet peas.',
+    'July is high summer: sweet peas, cornflowers and the meadow in full swing.',
+    'August is the start of dahlia season, with gladioli and cornflowers.',
+    'September is dahlia season at its peak, with astilbe and gladioli.',
+    'October is the last of the dahlias, in rust, amber, pink and lilac, until the first frosts.',
+    'November is candlelit and dried: flowers dried on the farm and foraged greenery. Ask Ali what’s possible.',
+    'December is candlelit and dried: foraged greenery, berries and dried flowers. Ask Ali what’s possible.'
+  ];
+
+  /* ------------------------------------------------------------------
+     Enquiry: pick what fits, the email writes itself
      ------------------------------------------------------------------ */
   var form = $('[data-composer]');
   var tagText = $('[data-tag-text]');
   var tag = $('.tag');
-  var OPENERS = {
-    bouquet: "I'd love to order a bouquet",
-    wedding: "I'm getting married and I'd love to talk about wedding flowers",
-    event: "I'm looking for flowers for an event",
-    wreath: "I'd love to order a December wreath",
-    other: 'I have a question about flowers'
-  };
+  var seasonEl = $('[data-season]');
   function formatDate(value) {
     if (!value) return '';
     var d = new Date(value + 'T12:00:00');
     if (isNaN(d)) return '';
     return d.toLocaleDateString('en-IE', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
   }
+  function listJoin(items) {
+    if (items.length < 2) return items.join('');
+    return items.slice(0, -1).join(', ') + ' and ' + items[items.length - 1];
+  }
   function buildMessage() {
     var data = new FormData(form);
-    var occ = data.get('occasion') || 'bouquet';
+    var wants = data.getAll('want').map(function (w) { return w.toLowerCase(); });
+    var feels = data.getAll('feel');
     var date = formatDate(data.get('date'));
+    var venue = (data.get('venue') || '').trim();
     var name = (data.get('name') || '').trim();
     var notes = (data.get('notes') || '').trim();
-    var msg = 'Hi Ali, ' + OPENERS[occ];
-    if (date) msg += (occ === 'wedding' ? '. The date is ' : ' for ') + date;
-    msg += '.';
-    if (notes) msg += '\n' + notes;
-    msg += '\n' + (name ? 'Thanks, ' + name : 'Thanks!');
-    return msg;
+    var lines = ["Hello Ali! We're planning our wedding and would love to talk flowers."];
+    if (date || venue) lines.push('It’s ' + (date ? 'on ' + date : 'happening') + (venue ? ' at ' + venue : '') + '.');
+    if (wants.length) lines.push('We’d love ' + listJoin(wants) + '.');
+    if (feels.length) lines.push('The feeling: ' + listJoin(feels) + '.');
+    if (notes) lines.push(notes);
+    lines.push(name ? 'Thanks, ' + name : 'Thanks!');
+    return { body: lines.join('\n'), date: date };
   }
   var swingT;
   function updateComposer(swing) {
     if (!form) return;
     var msg = buildMessage();
-    tagText.textContent = msg;
-    var enc = encodeURIComponent(msg);
-    $('[data-send="whatsapp"]').href = 'https://wa.me/' + PHONE + '?text=' + enc;
-    $('[data-send="sms"]').href = 'sms:+' + PHONE + '?&body=' + enc;
+    tagText.textContent = msg.body;
+    var subject = 'Wedding enquiry' + (msg.date ? ', ' + msg.date : '');
+    $('[data-send="email"]').href = 'mailto:' + EMAIL + '?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(msg.body);
+    var dateVal = form.querySelector('#c-date').value;
+    if (dateVal) {
+      var m = new Date(dateVal + 'T12:00:00').getMonth();
+      seasonEl.textContent = SEASONS[m];
+      seasonEl.hidden = false;
+    } else {
+      seasonEl.hidden = true;
+    }
     if (swing && motion) {
       clearTimeout(swingT);
       swingT = setTimeout(function () {
@@ -246,21 +274,9 @@
       }, 250);
     }
   }
-  function setOccasion(occ, monthIndex) {
+  function setWant(value) {
     if (!form) return;
-    var radio = form.querySelector('input[name="occasion"][value="' + occ + '"]');
-    if (radio) radio.checked = true;
-    if (monthIndex != null && monthIndex !== '') {
-      var now = new Date();
-      var m = parseInt(monthIndex, 10);
-      var y = now.getFullYear() + (m < now.getMonth() ? 1 : 0);
-      var dateInput = form.querySelector('#c-date');
-      if (!dateInput.value) {
-        var notes = form.querySelector('#c-notes');
-        var monthName = new Date(y, m, 1).toLocaleDateString('en-IE', { month: 'long', year: 'numeric' });
-        if (!notes.value) notes.value = 'We are thinking of ' + monthName + '.';
-      }
-    }
+    $$('input[name="want"]', form).forEach(function (box) { if (box.value === value) box.checked = true; });
     updateComposer(true);
   }
   if (form) {
@@ -273,62 +289,41 @@
   }
 
   /* ------------------------------------------------------------------
-     Wedding bloom-finder
+     Reviews: one at a time, no autoplay; buttons, arrow keys and swipe
      ------------------------------------------------------------------ */
-  var SEASONS = [
-    { name: 'The quiet season', text: "January is the farm's quietest month. Ask Ali what's possible with dried flowers." },
-    { name: 'Sowing season', text: "Seeds are going in and very little is ready to cut. Ask Ali what's possible for an early spring wedding." },
-    { name: 'Sowing season', text: "Seeds are going in and very little is ready to cut. Ask Ali what's possible for an early spring wedding." },
-    { name: 'First flowers', text: 'The first cut flowers of the year come from the polytunnels. Soft, early and limited, so book ahead.' },
-    { name: 'First flowers', text: 'The first cut flowers of the year come from the polytunnels. Soft, early and limited, so book ahead.' },
-    { name: 'High summer', text: 'The meadow and raised beds are in full swing. Big, bright, generous flowers.' },
-    { name: 'High summer', text: 'The meadow and raised beds are in full swing. Big, bright, generous flowers.' },
-    { name: 'Dahlia season', text: 'Dahlias at their peak, the flower Clonakenny is known for, with late-summer flowers around them.' },
-    { name: 'Dahlia season', text: 'Dahlias at their peak, the flower Clonakenny is known for, with late-summer flowers around them.' },
-    { name: 'Dahlia season', text: 'The last big month for dahlias, right up to the first frosts.' },
-    { name: 'The last of the season', text: 'The final flowers of the year, with flowers dried on the farm.' },
-    { name: 'Dried and foraged', text: 'Dried flowers from the farm with foraged foliage, berries and twigs. Wintry and textured.' }
-  ];
-  var MONTH_NAMES = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-  var finder = $('[data-finder]');
-  if (finder) {
-    var buttons = $$('[data-month]', finder);
-    var seasonEl = $('[data-finder-season]', finder);
-    var textEl = $('[data-finder-text]', finder);
-    var cta = $('[data-finder-cta]', finder);
-    var pick = function (btn) {
-      var m = parseInt(btn.dataset.month, 10);
-      buttons.forEach(function (b) {
-        var on = b === btn;
-        b.setAttribute('aria-checked', on ? 'true' : 'false');
-        b.tabIndex = on ? 0 : -1;
+  var reviewsEl = $('[data-reviews]');
+  if (reviewsEl) {
+    var slides = $$('.review', reviewsEl);
+    var idxEl = $('[data-review-index]', reviewsEl);
+    $('[data-review-total]', reviewsEl).textContent = slides.length;
+    var current = 0;
+    var show = function (i) {
+      current = (i + slides.length) % slides.length;
+      slides.forEach(function (sl, j) {
+        var on = j === current;
+        sl.classList.toggle('is-active', on);
+        sl.setAttribute('aria-hidden', on ? 'false' : 'true');
       });
-      var s = SEASONS[m];
-      var apply = function () {
-        seasonEl.textContent = MONTH_NAMES[m] + ': ' + s.name.toLowerCase();
-        textEl.textContent = s.text;
-      };
-      if (motion) {
-        gsap.to([seasonEl, textEl], {
-          opacity: 0, y: -8, duration: 0.2, ease: 'power2.in',
-          onComplete: function () {
-            apply();
-            gsap.fromTo([seasonEl, textEl], { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.5, stagger: 0.06, ease: 'expo.out' });
-          }
-        });
-      } else apply();
-      cta.dataset.month = String(m);
-      cta.querySelector('span').textContent = 'Ask about ' + MONTH_NAMES[m];
+      idxEl.textContent = current + 1;
     };
-    buttons.forEach(function (b, i) {
-      b.tabIndex = i === 0 ? 0 : -1;
-      b.addEventListener('click', function () { pick(b); });
-      b.addEventListener('keydown', function (e) {
-        var k = e.key, idx = buttons.indexOf(b), next = null;
-        if (k === 'ArrowRight' || k === 'ArrowDown') next = buttons[(idx + 1) % buttons.length];
-        if (k === 'ArrowLeft' || k === 'ArrowUp') next = buttons[(idx - 1 + buttons.length) % buttons.length];
-        if (next) { e.preventDefault(); next.focus(); pick(next); }
-      });
+    slides.forEach(function (sl, j) {
+      sl.setAttribute('aria-roledescription', 'slide');
+      sl.setAttribute('aria-label', (j + 1) + ' of ' + slides.length);
+    });
+    show(0);
+    $('[data-review-next]', reviewsEl).addEventListener('click', function () { show(current + 1); });
+    $('[data-review-prev]', reviewsEl).addEventListener('click', function () { show(current - 1); });
+    reviewsEl.addEventListener('keydown', function (e) {
+      if (e.key === 'ArrowRight') { e.preventDefault(); show(current + 1); }
+      if (e.key === 'ArrowLeft') { e.preventDefault(); show(current - 1); }
+    });
+    var startX = null;
+    reviewsEl.addEventListener('touchstart', function (e) { startX = e.touches[0].clientX; }, { passive: true });
+    reviewsEl.addEventListener('touchend', function (e) {
+      if (startX == null) return;
+      var dx = e.changedTouches[0].clientX - startX;
+      if (Math.abs(dx) > 40) show(current + (dx < 0 ? 1 : -1));
+      startX = null;
     });
   }
 
@@ -356,14 +351,14 @@
     line.style.marginBottom = '-0.1em';
   });
   gsap.set('.hero__title .line-inner', { yPercent: 110 });
-  gsap.set(['.hero__place', '.hero__lede', '.hero__actions', '.hero__note'], { opacity: 0, y: 18 });
+  gsap.set(['.hero__place', '.hero__lede', '.hero__actions', '.hero__diary', '.hero__note'], { opacity: 0, y: 18 });
   var fontsReady = document.fonts && document.fonts.ready ? Promise.race([document.fonts.ready, new Promise(function (r) { setTimeout(r, 900); })]) : Promise.resolve();
   fontsReady.then(function () {
     var tl = gsap.timeline({ delay: 0.15 });
     tl.to(intro, { b: 0.88, duration: 3.4, ease: 'power3.out' }, 0);
     tl.to('.hero__place', { opacity: 1, y: 0, duration: 1, ease: ease }, 0.2);
     tl.to('.hero__title .line-inner', { yPercent: 0, duration: 1.4, stagger: 0.12, ease: ease }, 0.3);
-    tl.to(['.hero__lede', '.hero__actions'], { opacity: 1, y: 0, duration: 1.2, stagger: 0.1, ease: ease }, 0.9);
+    tl.to(['.hero__lede', '.hero__actions', '.hero__diary'], { opacity: 1, y: 0, duration: 1.2, stagger: 0.1, ease: ease }, 0.9);
     tl.to('.hero__note', { opacity: 1, y: 0, duration: 1.2, ease: ease }, 1.6);
   });
 
@@ -376,7 +371,7 @@
     .to(['.hero__note', '.hero__cue'], { opacity: 0, duration: 0.15 }, 0)
     .to(heroScroll, { center: 1, duration: 0.4, ease: 'power1.inOut' }, 0)
     .to(heroScroll, { dive: 1, duration: 0.55, ease: 'power2.in' }, 0.38)
-    .to('.hero__dusk', { opacity: 1, duration: 0.16, ease: 'none' }, 0.8)
+    .to('.hero__dusk', { opacity: 1, duration: 0.16, ease: 'none', onUpdate: function () { heroScroll.covered = this.progress() > 0.99; } }, 0.8)
     .to({}, { duration: 0.05 });
   if (!hero) {
     heroTl.to('.hero__poster', { scale: 1.6, opacity: 0, duration: 0.5 }, 0.3);
@@ -384,7 +379,7 @@
 
   /* Headings: lines rise out of a mask */
   if (window.SplitText) {
-    $$('h2.display, .offer__title').forEach(function (h) {
+    $$('h2.display, .offer__title, .band__title').forEach(function (h) {
       var split = new window.SplitText(h, { type: 'lines', mask: 'lines', linesClass: 'split-line' });
       gsap.from(split.lines, {
         yPercent: 105, duration: 1.3, stagger: 0.1, ease: ease,
@@ -412,7 +407,7 @@
   }
 
   /* Soft rise for supporting copy */
-  $$('.story__body, .facts .fact, .gallery__head p, .offers__head, .year__intro, .weddings__copy p, .bloom-finder, .order__intro p, .composer, .press, .find > *:not(h2)').forEach(function (el) {
+  $$('.story__body, .story__ground-intro, .story__ground-note, .facts .fact, .gallery__head p, .offers__head p, .offers__venues, .year__intro, .kind__head p, .reviews, .kind__more, .order__intro p, .composer, .press, .find > *:not(h2)').forEach(function (el) {
     gsap.from(el, { opacity: 0, y: 36, duration: 1.2, ease: ease, scrollTrigger: { trigger: el, start: 'top 90%', once: true } });
   });
 
@@ -475,6 +470,19 @@
     $$('.gallery__item .photo__frame').forEach(function (f) { bloomPhoto(f, f); });
   });
 
+  /* The ground's three trades: the line draws itself, then the flower farm lights up */
+  var trades = $('.trades');
+  if (trades) {
+    gsap.set(trades, { '--trace': 0 });
+    gsap.set('.trade', { opacity: 0, y: 14 });
+    var ttl = gsap.timeline({ scrollTrigger: { trigger: trades, start: 'top 82%', once: true } });
+    ttl.to(trades, { '--trace': 1, duration: 1.6, ease: 'power2.inOut' }, 0)
+       .to('.trade', { opacity: 1, y: 0, duration: 0.9, stagger: 0.45, ease: ease }, 0)
+       .fromTo('.trade--now .trade__n', { scale: 0.6 }, { scale: 1, duration: 0.9, ease: 'back.out(2.2)' }, 1.05);
+  }
+  var quote = $('.offer__quote');
+  if (quote) gsap.from(quote, { clipPath: 'circle(8% at 50% 55%)', duration: 1.8, ease: 'expo.out', scrollTrigger: { trigger: quote, start: 'top 86%', once: true }, onComplete: function () { gsap.set(quote, { clearProps: 'clipPath' }); } });
+
   /* Offers: each panel settles back as the next one slides over it */
   var offers = $$('.offer');
   offers.forEach(function (panel, i) {
@@ -522,8 +530,10 @@
   function setBg(name) {
     gsap.to(document.body, { backgroundColor: COLORS[name] || name, duration: 0.9, ease: 'power2.out', overwrite: 'auto' });
   }
+  // Only the light sections wash the page colour. Dusk sections paint their own solid ground,
+  // so they never tint the neighbours that are still half on screen.
   $$('[data-bg]').forEach(function (sec) {
-    if (sec.classList.contains('hero')) return;
+    if (sec.classList.contains('hero') || sec.dataset.bg === 'dusk') return;
     ST.create({
       trigger: sec, start: 'top 55%', end: 'bottom 55%',
       onToggle: function (self) { if (self.isActive) setBg(sec.dataset.bg); }

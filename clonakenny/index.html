@@ -3,13 +3,13 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Clonakenny Flower Farm | Seasonal flowers grown from seed in Tipperary</title>
-<meta name="description" content="Bespoke bouquets, wedding flowers and December wreaths from Ali and Kenny's flower farm in Clonakenny, near Roscrea, Co. Tipperary. Every flower grown from seed.">
+<title>Clonakenny Flower Farm | Wedding flowers grown in Tipperary</title>
+<meta name="description" content="Wedding flowers grown without chemicals on a two-acre flower farm in Clonakenny, Co. Tipperary. A small number of weddings each season, picked, arranged and delivered by the mother-and-daughter team who grew them.">
 <meta name="theme-color" content="#C8A2C8">
 <link rel="canonical" href="https://getawebsite.ie/clonakenny/">
 <meta property="og:type" content="website">
-<meta property="og:title" content="Clonakenny Flower Farm">
-<meta property="og:description" content="Seasonal flowers grown from seed in Clonakenny, Co. Tipperary. Bouquets, weddings, events and wreaths.">
+<meta property="og:title" content="Clonakenny Flower Farm · Wedding flowers grown in Tipperary">
+<meta property="og:description" content="Picked fresh & just a little wild. A small number of weddings each season, grown and arranged by Ali and Liz.">
 <meta property="og:image" content="https://getawebsite.ie/clonakenny/img/og.jpg">
 <meta property="og:url" content="https://getawebsite.ie/clonakenny/">
 <meta name="twitter:card" content="summary_large_image">
@@ -24,11 +24,11 @@
   "@context": "https://schema.org",
   "@type": "Florist",
   "name": "Clonakenny Flower Farm",
-  "description": "Seasonal cut-flower farm growing every flower from seed. Bespoke bouquets, wedding flowers, event flowers and December wreaths.",
+  "description": "Wedding flowers grown without chemicals and arranged without floral foam by a mother-and-daughter team in Clonakenny, Co. Tipperary.",
   "url": "https://getawebsite.ie/clonakenny/",
-  "telephone": "+353872766413",
+  "email": "ali@clonakennyflowerfarm.com",
   "foundingDate": "2020",
-  "founder": [{ "@type": "Person", "name": "Ali Franks" }, { "@type": "Person", "name": "Kenny Franks" }],
+  "founder": [{ "@type": "Person", "name": "Ali Franks" }, { "@type": "Person", "name": "Liz Watkins" }],
   "address": {
     "@type": "PostalAddress",
     "streetAddress": "Clonakenny",
@@ -46,16 +46,16 @@
 </head>
 <body>
 <!--
-THESIS: Ali's favourite colour, lilac, is the whole field; her real photos carry the romance, and a live
-WebGL dahlia (golden-angle phyllotaxis) proves "grown from seed" by growing in front of you. Refuses
-the cream-and-sage florist template and the dark-luxury opposite.
-OWN-WORLD: drenched lilac #C8A2C8 with plum ink #2A1433; dusk #1B0E21 for immersive passages;
-Bodoni Moda display (romantic italic), Hanken Grotesk text; photos framed as petals (soft-cornered,
-bloom-from-centre reveals); pill buttons that open like a bud.
-STORY: this is a real Tipperary farm, every stem grown here from seed; the season decides what you get;
-order by sending Ali a note.
-FIRST VIEWPORT: lilac field, three-line Bodoni headline left, the dahlia blooming right at 70vh,
-"Order flowers" pill under the headline; scroll dives the camera into the flower's centre.
+THESIS: Ali's favourite colour, lilac, is the whole field; the farm's real flowers and people carry the
+romance; a live WebGL dahlia (golden-angle phyllotaxis) proves "grown from seed" by growing in front of you.
+Refuses the cream-and-sage florist template (and v12's muted mauve template) and the dark-luxury opposite.
+OWN-WORLD: drenched lilac #C8A2C8, plum ink #2A1433, dusk #1B0E21 for immersive passages, studio purple
+#9C3D8E (the wall of the purple studio) as the one accent; Bodoni Moda display with romantic italics,
+Hanken Grotesk text; photos framed as petals (two soft corners), bloom-from-centre reveals; pill buttons.
+STORY: wedding flowers grown and arranged by Liz and Ali; the season decides; couples love them; tell Ali
+about your day.
+FIRST VIEWPORT: lilac field, three-line Bodoni headline left, the dahlia blooming right at 70vh, "Enquire
+for your date" pill under the headline and the diary status beside it; scroll dives into the flower.
 FORM: user-pinned brief (photo-led + immersive + lilac) over roll 6a3b6932.
 FINISH: unreviewed and undocumented is unfinished; this build ends with the finish review, the verdict, DESIGN.md, and every shipping raster carrying its provenance
 -->
@@ -67,12 +67,12 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
     <span class="nav__sub">Flower Farm</span>
   </a>
   <nav class="nav__links" aria-label="Main">
-    <a href="#flowers">Flowers</a>
     <a href="#weddings">Weddings</a>
-    <a href="#year">The year</a>
     <a href="#story">Our story</a>
+    <a href="#year">The year</a>
+    <a href="#kind-words">Kind words</a>
   </nav>
-  <a class="btn btn--small nav__cta" href="#order"><span>Order flowers</span></a>
+  <a class="btn btn--small nav__cta" href="#enquire"><span>Enquire</span></a>
   <button class="nav__toggle" type="button" aria-expanded="false" aria-controls="menu">
     <span class="nav__toggle-label">Menu</span>
     <span class="nav__toggle-lines" aria-hidden="true"><i></i><i></i></span>
@@ -82,14 +82,14 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
 <div class="menu" id="menu" hidden>
   <nav aria-label="Mobile">
     <ol class="menu__list">
-      <li><a href="#flowers">Flowers</a></li>
       <li><a href="#weddings">Weddings</a></li>
-      <li><a href="#year">The flower year</a></li>
       <li><a href="#story">Our story</a></li>
-      <li><a href="#order">Order flowers</a></li>
+      <li><a href="#year">The flower year</a></li>
+      <li><a href="#kind-words">Kind words</a></li>
+      <li><a href="#enquire">Enquire for your date</a></li>
     </ol>
   </nav>
-  <p class="menu__foot"><a href="tel:+353872766413">087 276 6413</a> · <a href="https://www.instagram.com/clonakenny_flower_farm/" rel="noopener" target="_blank">Instagram</a></p>
+  <p class="menu__foot"><a href="mailto:ali@clonakennyflowerfarm.com">ali@clonakennyflowerfarm.com</a> · <a href="https://www.instagram.com/clonakenny_flower_farm/" rel="noopener" target="_blank">Instagram</a></p>
 </div>
 
 <main id="main">
@@ -103,15 +103,16 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
       <div class="hero__copy">
         <p class="hero__place">Clonakenny, Co. Tipperary</p>
         <h1 class="hero__title" id="hero-title">
-          <span class="line">Flowers grown</span>
-          <span class="line"><em>from seed</em> in</span>
-          <span class="line">Clonakenny</span>
+          <span class="line">Wedding flowers,</span>
+          <span class="line">picked fresh &amp;</span>
+          <span class="line"><em>just a little wild</em></span>
         </h1>
-        <p class="hero__lede">Bespoke bouquets, wedding flowers and December wreaths from Ali and Kenny's farm near Roscrea. Everything we sell, we grow.</p>
+        <p class="hero__lede">Grown without chemicals on our two-acre flower farm in the middle of the village. A small number of weddings each season, picked, arranged and delivered by the mother-and-daughter team who grew them.</p>
         <div class="hero__actions">
-          <a class="btn" href="#order"><span>Order flowers</span></a>
-          <a class="link" href="#weddings">Wedding flowers</a>
+          <a class="btn" href="#enquire"><span>Enquire for your date</span></a>
+          <a class="link" href="#story">Our story</a>
         </div>
+        <p class="hero__diary"><span class="hero__diary-dot" aria-hidden="true"></span>2026 diary closed · a limited number of 2027 &amp; 2028 dates</p>
       </div>
       <p class="hero__note">
         <svg class="hero__note-mark" viewBox="0 0 24 24" aria-hidden="true"><g fill="currentColor"><circle cx="12" cy="12" r="1.6"/><circle cx="13.9" cy="11" r="1.5"/><circle cx="10.6" cy="14" r="1.5"/><circle cx="10.2" cy="9.8" r="1.4"/><circle cx="14.6" cy="13.9" r="1.4"/><circle cx="12.2" cy="8.2" r="1.3"/><circle cx="8.4" cy="12.4" r="1.3"/><circle cx="16.2" cy="11.8" r="1.3"/><circle cx="12.5" cy="16.2" r="1.3"/><circle cx="9" cy="8.1" r="1.2"/><circle cx="16" cy="8.6" r="1.2"/><circle cx="7.9" cy="15.8" r="1.2"/><circle cx="16.7" cy="15.8" r="1.1"/><circle cx="14.6" cy="5.8" r="1.1"/><circle cx="6.1" cy="10.3" r="1.1"/><circle cx="18.4" cy="9.8" r="1"/><circle cx="10.1" cy="18.4" r="1"/></g></svg>
@@ -124,83 +125,95 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
   <!-- 2. Story -->
   <section class="story" id="story" aria-labelledby="story-title" data-bg="dusk">
     <div class="wrap story__grid">
-      <h2 class="story__title display" id="story-title">From the kitchen<br><em>to the field</em></h2>
+      <h2 class="story__title display" id="story-title">A mum, a daughter<br><em>&amp; two acres</em></h2>
       <div class="story__text">
-        <p class="story__lit" data-lit>In 2020 Ali was head chef at Cloughjordan House, at home with her third baby, when lockdown closed the kitchen. Kenny had put up a polytunnel for vegetables. With Ali's mum, Liz, they filled it with flowers instead.</p>
-        <p class="story__body">Today the farm is about two acres of meadow and raised beds and four and a half polytunnels. Every flower starts as a seed here. Ali still works like a chef: use what's in season, at its best.</p>
+        <p class="story__lit" data-lit>Liz sows, propagates and grows. Her daughter Ali picks, arranges and runs the show. It started in the first lockdown of March 2020, when Ali, then head chef at Cloughjordan House, was at home with her third baby. They planted flowers, and never stopped.</p>
+        <p class="story__body">Today it's meadow and raised beds in the middle of our Tipperary village, grown without chemicals and arranged without floral foam, just chicken wire and moss. Every stem travels zero air miles from our field to your day.</p>
       </div>
-      <figure class="story__photo story__photo--a photo" data-photo="story-a">
-        <div class="photo__frame"><img src="img/story-a.jpg" alt="" loading="lazy" decoding="async"></div>
-        <figcaption></figcaption>
+      <figure class="story__photo story__photo--a photo" data-photo="story-hug">
+        <div class="photo__frame"><img src="img/story-hug.webp" alt="Liz and Ali sharing a hug behind an armful of spring flowers outside the purple studio" width="790" height="1186" loading="lazy" decoding="async"></div>
       </figure>
-      <figure class="story__photo story__photo--b photo" data-photo="story-b">
-        <div class="photo__frame"><img src="img/story-b.jpg" alt="" loading="lazy" decoding="async"></div>
-        <figcaption></figcaption>
-      </figure>
+      <div class="story__ground">
+        <p class="story__ground-intro">Ours is the third trade on this ground.</p>
+        <ol class="trades" aria-label="The trades on this ground, in order">
+          <li class="trade"><span class="trade__n">1</span><span class="trade__name">The forge</span></li>
+          <li class="trade"><span class="trade__n">2</span><span class="trade__name">The village post office</span></li>
+          <li class="trade trade--now"><span class="trade__n">3</span><span class="trade__name">The flower farm</span></li>
+        </ol>
+        <p class="story__ground-note">We arrange in <em>the purple studio</em>, a converted horse stable. Liz's own mother farmed flowers before us, and Ali's daughter already presses the wedding keepsakes. Three generations, and counting.</p>
+        <figure class="story__photo story__photo--b photo" data-photo="story-tulip-hair">
+          <div class="photo__frame"><img src="img/story-tulip-hair.webp" alt="Liz tucking tulips into Ali's hair out in the field" width="447" height="447" loading="lazy" decoding="async"></div>
+        </figure>
+      </div>
       <dl class="facts">
-        <div class="fact"><dt>Since</dt><dd><span class="fact__num">2020</span>Started in lockdown</dd></div>
+        <div class="fact"><dt>Since</dt><dd><span class="fact__num">2020</span>Started in the first lockdown</dd></div>
         <div class="fact"><dt>Land</dt><dd><span class="fact__num">2 acres</span>Meadow and raised beds</dd></div>
-        <div class="fact"><dt>Polytunnels</dt><dd><span class="fact__num">4½</span>Yes, and a half</dd></div>
-        <div class="fact"><dt>Seed</dt><dd><span class="fact__num">Every stem</span>Grown from seed, here</dd></div>
+        <div class="fact"><dt>Chemicals &amp; floral foam</dt><dd><span class="fact__num">None</span>Chicken wire and moss</dd></div>
+        <div class="fact"><dt>Air miles</dt><dd><span class="fact__num">Zero</span>Field to your day</dd></div>
       </dl>
     </div>
   </section>
 
-  <!-- 3. Gallery -->
-  <section class="gallery" id="flowers" aria-labelledby="gallery-title" data-bg="lilac">
+  <!-- 3. Weddings -->
+  <section class="offers" id="weddings" aria-labelledby="weddings-title" data-bg="pale">
+    <div class="wrap offers__head">
+      <h2 class="display" id="weddings-title">Wedding flowers<br><em>&amp; styling</em></h2>
+      <p>Everything for the day is grown on our farm and arranged by us, for a small number of weddings each season, March to October. Priced by enquiry.</p>
+    </div>
+    <div class="offers__stack">
+      <article class="offer" data-offer="bouquets">
+        <figure class="offer__photo photo" data-photo="bridal-bouquet"><div class="photo__frame"><img src="img/bridal-bouquet.webp" alt="A bride by a window holding a loose bouquet of delphinium, roses and iris" width="739" height="1105" loading="lazy" decoding="async"></div></figure>
+        <div class="offer__copy">
+          <p class="offer__num">01</p>
+          <h3 class="offer__title">Bridal bouquets <em>&amp; buttonholes</em></h3>
+          <p>Garden-gathered, light to carry and just a little wild, with buttonholes to match. Bouquets for mothers and grandmothers too.</p>
+          <a class="btn btn--ghost" href="#enquire" data-want="Bridal bouquets"><span>Ask about bouquets</span></a>
+        </div>
+      </article>
+      <article class="offer" data-offer="arches">
+        <figure class="offer__photo photo" data-photo="wedding-arch"><div class="photo__frame"><img src="img/wedding-arch.webp" alt="A woven ceremony arch in the woods, with pedestals of dahlias and gladioli" width="928" height="968" loading="lazy" decoding="async"></div></figure>
+        <div class="offer__copy">
+          <p class="offer__num">02</p>
+          <h3 class="offer__title">Arches <em>&amp; ceremony</em></h3>
+          <p>Woven arches, altar pieces and ceremony flowers, dressed with whatever is at its best the week you marry.</p>
+          <a class="btn btn--ghost" href="#enquire" data-want="Arch &amp; ceremony flowers"><span>Ask about arches</span></a>
+        </div>
+      </article>
+      <article class="offer offer--quote" data-offer="tables">
+        <blockquote class="offer__quote">
+          <p>“Ali made beautiful bouquets and button holes and our table flowers were so amazing.”</p>
+          <footer>Claire Keane, on Google</footer>
+        </blockquote>
+        <div class="offer__copy">
+          <p class="offer__num">03</p>
+          <h3 class="offer__title">Table <em>arrangements</em></h3>
+          <p>Centrepieces and table flowers for long banquet halls, glasshouses and weddings at home in the woods.</p>
+          <a class="btn btn--ghost" href="#enquire" data-want="Table arrangements"><span>Ask about tables</span></a>
+        </div>
+      </article>
+      <article class="offer" data-offer="styling">
+        <figure class="offer__photo offer__photo--wide photo" data-photo="styling-purple-studio"><div class="photo__frame"><img src="img/styling-purple-studio.webp" alt="Liz and Ali arranging tulips, narcissi and blossom against the purple studio wall" width="790" height="528" loading="lazy" decoding="async"></div></figure>
+        <div class="offer__copy">
+          <p class="offer__num">04</p>
+          <h3 class="offer__title">On-the-day <em>styling</em></h3>
+          <p>Ali on site on the morning to place and style it all, so you don't have to think about flowers again.</p>
+          <a class="btn btn--ghost" href="#enquire" data-want="On-the-day styling"><span>Ask about styling</span></a>
+        </div>
+      </article>
+    </div>
+    <p class="wrap offers__venues">You'll find our flowers most often at <strong>Kinnitty</strong>, <strong>Ashley Park</strong> and <strong>Cloughjordan House</strong>.</p>
+  </section>
+
+  <!-- 4. Gallery (appears once photos are listed in photos.js) -->
+  <section class="gallery" id="snaps" aria-labelledby="gallery-title" data-bg="lilac">
     <div class="gallery__pin">
       <div class="wrap gallery__head">
-        <h2 class="display" id="gallery-title">This season<br><em>in the field</em></h2>
-        <p>What goes in a bouquet depends on what's at its best that week. A few from the farm.</p>
+        <h2 class="display" id="gallery-title">Some of our<br><em>favourite snaps</em></h2>
+        <p>Weddings, posies and the odd bee, from the farm and the days it grew for.</p>
       </div>
       <div class="gallery__track" tabindex="0" aria-label="Photos from the farm, scroll sideways">
         <ul class="gallery__list" data-gallery></ul>
       </div>
-    </div>
-  </section>
-
-  <!-- 4. Offers -->
-  <section class="offers" aria-labelledby="offers-title" data-bg="pale">
-    <div class="wrap offers__head">
-      <h2 class="display" id="offers-title">Flowers <em>for</em></h2>
-    </div>
-    <div class="offers__stack">
-      <article class="offer" id="bouquets" data-offer="bouquet">
-        <figure class="offer__photo photo" data-photo="offer-bouquet"><div class="photo__frame"><img src="img/offer-bouquet.jpg" alt="" loading="lazy" decoding="async"></div></figure>
-        <div class="offer__copy">
-          <p class="offer__num">01</p>
-          <h3 class="offer__title">Bouquets</h3>
-          <p>Made to order from whatever is at its best that week. Birthdays, thank-yous, new babies, sympathy, or just because.</p>
-          <a class="btn btn--ghost" href="#order" data-occasion="bouquet"><span>Order a bouquet</span></a>
-        </div>
-      </article>
-      <article class="offer" data-offer="wedding">
-        <figure class="offer__photo photo" data-photo="offer-wedding"><div class="photo__frame"><img src="img/offer-wedding.jpg" alt="" loading="lazy" decoding="async"></div></figure>
-        <div class="offer__copy">
-          <p class="offer__num">02</p>
-          <h3 class="offer__title">Weddings</h3>
-          <p>Bridal bouquets and buttonholes grown for your date. Weddings are taken case by case, so get in touch early.</p>
-          <a class="btn btn--ghost" href="#weddings"><span>What's in bloom on your date</span></a>
-        </div>
-      </article>
-      <article class="offer" data-offer="event">
-        <figure class="offer__photo photo" data-photo="offer-event"><div class="photo__frame"><img src="img/offer-event.jpg" alt="" loading="lazy" decoding="async"></div></figure>
-        <div class="offer__copy">
-          <p class="offer__num">03</p>
-          <h3 class="offer__title">Hens, birthdays <em>&amp; parties</em></h3>
-          <p>Flowers for hens, birthday parties and all sorts of celebrations. Tell Ali the date, the place and the feeling you're after.</p>
-          <a class="btn btn--ghost" href="#order" data-occasion="event"><span>Plan event flowers</span></a>
-        </div>
-      </article>
-      <article class="offer" data-offer="wreath">
-        <figure class="offer__photo photo" data-photo="offer-wreath"><div class="photo__frame"><img src="img/offer-wreath.jpg" alt="" loading="lazy" decoding="async"></div></figure>
-        <div class="offer__copy">
-          <p class="offer__num">04</p>
-          <h3 class="offer__title">December wreaths</h3>
-          <p>When the growing season ends, the farm's own dried flowers meet foraged foliage, berries, twigs and dried wheat.</p>
-          <a class="btn btn--ghost" href="#order" data-occasion="wreath"><span>Ask about a wreath</span></a>
-        </div>
-      </article>
     </div>
   </section>
 
@@ -209,131 +222,190 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
     <div class="year__pin">
       <div class="year__visual">
         <canvas class="year__canvas" aria-hidden="true"></canvas>
-        <p class="year__label" aria-hidden="true">Drawn live. Illustrative, not a variety list.</p>
+        <p class="year__label" aria-hidden="true">The flower is drawn live and illustrative. The words are what we grow.</p>
       </div>
       <div class="year__copy">
         <h2 class="display year__title" id="year-title">The season <em>decides</em></h2>
-        <p class="year__intro">Everything is grown here, so what's in your flowers changes through the year.</p>
+        <p class="year__intro">Everything is grown here, so your date decides your flowers.</p>
         <ol class="year__months" aria-hidden="true">
-          <li>Feb</li><li>Mar</li><li>Apr</li><li>May</li><li>Jun</li><li>Jul</li><li>Aug</li><li>Sep</li><li>Oct</li><li>Nov</li><li>Dec</li>
+          <li>Jan</li><li>Feb</li><li>Mar</li><li>Apr</li><li>May</li><li>Jun</li><li>Jul</li><li>Aug</li><li>Sep</li><li>Oct</li><li>Nov</li><li>Dec</li>
         </ol>
         <ol class="year__stops">
-          <li class="stop" data-preset="seed" data-from="0" data-to="1">
-            <p class="stop__when">February to March</p>
+          <li class="stop" data-preset="seed">
+            <p class="stop__when">January to February</p>
             <h3 class="stop__name">Sowing</h3>
-            <p>Seeds go in under the polytunnels. Nothing to cut yet, plenty to plan. A good time to book summer weddings.</p>
+            <p>Liz sows and propagates under the polytunnels. The best time to book a summer date.</p>
           </li>
-          <li class="stop" data-preset="ranunculus" data-from="2" data-to="3">
-            <p class="stop__when">April to May</p>
-            <h3 class="stop__name">First flowers</h3>
-            <p>The tunnels give the first cut flowers of the year, soft and early.</p>
+          <li class="stop" data-preset="ranunculus">
+            <p class="stop__when">March to May</p>
+            <h3 class="stop__name">Spring</h3>
+            <p>Tulips, narcissi and blossom for the first weddings of the season.</p>
           </li>
-          <li class="stop" data-preset="cosmos" data-from="4" data-to="5">
+          <li class="stop" data-preset="cosmos">
             <p class="stop__when">June to July</p>
-            <h3 class="stop__name">High summer</h3>
-            <p>The meadow and raised beds come in. Bouquets get bigger, brighter and looser.</p>
+            <h3 class="stop__name">Early summer</h3>
+            <p>Peonies, sweet william and sweet peas: soft, scented and just a little wild.</p>
           </li>
-          <li class="stop" data-preset="dahlia" data-from="6" data-to="8">
+          <li class="stop" data-preset="dahlia">
             <p class="stop__when">August to October</p>
             <h3 class="stop__name">Dahlia season</h3>
-            <p>The flower Clonakenny is known for, at its peak until the first frosts.</p>
+            <p>Dahlias at their peak, with astilbe, gladioli and cornflowers, from rust and amber to pink and lilac.</p>
           </li>
-          <li class="stop" data-preset="strawflower" data-from="9" data-to="10">
+          <li class="stop" data-preset="strawflower">
             <p class="stop__when">November to December</p>
-            <h3 class="stop__name">Dried and foraged</h3>
-            <p>Flowers dried on the farm, with foraged foliage, berries, twigs and dried wheat, go into December wreaths.</p>
+            <h3 class="stop__name">Candlelit &amp; dried</h3>
+            <p>Dried flowers from the farm and foraged greenery, for winter tables and Christmas arrangements.</p>
           </li>
         </ol>
       </div>
     </div>
   </section>
 
-  <!-- 6. Weddings -->
-  <section class="weddings" id="weddings" aria-labelledby="weddings-title" data-bg="dusk">
-    <figure class="weddings__photo photo" data-photo="wedding-wide"><div class="photo__frame"><img src="img/wedding-wide.jpg" alt="" loading="lazy" decoding="async"></div></figure>
-    <div class="wrap weddings__grid">
-      <div class="weddings__copy">
-        <h2 class="display" id="weddings-title">Wedding flowers,<br><em>grown for your day</em></h2>
-        <p>Your flowers are cut from what's at its best the week you marry, grown in Tipperary rather than flown in. Bridal bouquets and buttonholes, with anything more talked through case by case.</p>
+  <!-- 6. Kind words -->
+  <section class="kind" id="kind-words" aria-labelledby="kind-title" data-bg="pale">
+    <div class="wrap kind__grid">
+      <div class="kind__head">
+        <h2 class="display" id="kind-title">Kind <em>words</em></h2>
+        <p class="kind__press">Featured in the <strong>Irish Farmers Journal</strong>, and named among The Gloss's <strong>Best Flower Farms To Visit In Ireland</strong>.</p>
+        <a class="link" href="https://www.google.com/maps/search/Clonakenny+Flower+Farm" rel="noopener" target="_blank">Read them on Google</a>
       </div>
-      <div class="bloom-finder" data-finder>
-        <h3 class="bloom-finder__q" id="finder-q">When's the wedding?</h3>
-        <div class="bloom-finder__months" role="radiogroup" aria-labelledby="finder-q">
-          <button type="button" role="radio" aria-checked="false" data-month="0">Jan</button>
-          <button type="button" role="radio" aria-checked="false" data-month="1">Feb</button>
-          <button type="button" role="radio" aria-checked="false" data-month="2">Mar</button>
-          <button type="button" role="radio" aria-checked="false" data-month="3">Apr</button>
-          <button type="button" role="radio" aria-checked="false" data-month="4">May</button>
-          <button type="button" role="radio" aria-checked="false" data-month="5">Jun</button>
-          <button type="button" role="radio" aria-checked="false" data-month="6">Jul</button>
-          <button type="button" role="radio" aria-checked="false" data-month="7">Aug</button>
-          <button type="button" role="radio" aria-checked="false" data-month="8">Sep</button>
-          <button type="button" role="radio" aria-checked="false" data-month="9">Oct</button>
-          <button type="button" role="radio" aria-checked="false" data-month="10">Nov</button>
-          <button type="button" role="radio" aria-checked="false" data-month="11">Dec</button>
+      <div class="reviews" data-reviews aria-roledescription="carousel" aria-label="Reviews from couples">
+        <div class="reviews__stars" aria-hidden="true">★★★★★</div>
+        <div class="reviews__stage" aria-live="polite">
+          <figure class="review is-active">
+            <blockquote><p>“Ali provided the most stunning flowers for our wedding. The bouquets were truly beautiful, far beyond what I ever could have imagined, and they smelled incredible. I’ve loved being able to tell everyone they were grown locally.”</p></blockquote>
+            <figcaption>Rachel and Conor <span>Google, 5 out of 5</span></figcaption>
+          </figure>
+          <figure class="review">
+            <blockquote><p>“The altarpiece, bouquets, and buttonholes were all stunning and everyone was complimenting them throughout the day. Alison's attention to detail is second to none.”</p></blockquote>
+            <figcaption>Eamon-Kate <span>Google review</span></figcaption>
+          </figure>
+          <figure class="review">
+            <blockquote><p>“Ali listened to what my ‘vision’ was and came up with something even more beautiful than I imagined. My bridal bouquet was exquisite and so light.”</p></blockquote>
+            <figcaption>Louise Fitzsimons <span>Google, 5 out of 5</span></figcaption>
+          </figure>
+          <figure class="review">
+            <blockquote><p>“Working with Ali from Clonakenny Farm for our woodland wedding at home was an absolute dream. From start to finish, Ali was an absolute pleasure to deal with.”</p></blockquote>
+            <figcaption>Orla Whelan <span>Google, 5 out of 5</span></figcaption>
+          </figure>
+          <figure class="review">
+            <blockquote><p>“Ali worked absolute magic with our wedding flowers! Aside from the arch and bouquet being beyond beautiful, she was great to work with: quick to respond, very reasonably priced, and day of set up was so fast!”</p></blockquote>
+            <figcaption>Claire &amp; Colin <span>Google, 5 out of 5</span></figcaption>
+          </figure>
+          <figure class="review">
+            <blockquote><p>“Ali and Liz designed beautiful flower arrangements for my wedding this year. The whole process was extremely easy and Ali was so lovely to work with.”</p></blockquote>
+            <figcaption>Hannah Mitten <span>Google, 5 out of 5</span></figcaption>
+          </figure>
+          <figure class="review">
+            <blockquote><p>“We wanted something classy but also a little ‘undone and relaxed’ for our at-home wedding and Ali listened throughout.”</p></blockquote>
+            <figcaption>Naomi Algeo <span>Google, 5 out of 5</span></figcaption>
+          </figure>
+          <figure class="review">
+            <blockquote><p>“Working with Ali was one of the highlights of our wedding day! She brought our vision, and more, to life.”</p></blockquote>
+            <figcaption>Julie Baker <span>Google, 5 out of 5</span></figcaption>
+          </figure>
         </div>
-        <div class="bloom-finder__result" aria-live="polite">
-          <p class="bloom-finder__season" data-finder-season>Pick a month</p>
-          <p class="bloom-finder__text" data-finder-text>See what the farm is usually growing that time of year.</p>
-          <a class="btn btn--light" href="#order" data-finder-cta data-occasion="wedding"><span>Ask about your date</span></a>
+        <div class="reviews__controls">
+          <button class="reviews__btn" type="button" data-review-prev aria-label="Previous review"><span aria-hidden="true">←</span></button>
+          <p class="reviews__count"><span data-review-index>1</span> / <span data-review-total>8</span></p>
+          <button class="reviews__btn" type="button" data-review-next aria-label="Next review"><span aria-hidden="true">→</span></button>
         </div>
       </div>
+      <details class="kind__more">
+        <summary><span>More kind words</span></summary>
+        <ul class="kind__list">
+          <li><p>“They were exactly what I had in mind (including the bluebells!). I really appreciate the care and time you put into them and being so communicative too.”</p><span>Jessica Horgan, Google</span></li>
+          <li><p>“Supplied the flowers for our wedding in Cloughjordan House, Tipperary in February! From the very first consultation, their passion and expertise shone through.”</p><span>Rebecca O Donovan, Google</span></li>
+          <li><p>“The bouquets, buttonholes and arrangements were all spectacular.”</p><span>Neil Andrews, Google</span></li>
+          <li><p>“Ali took my 100+ suggestions and was able to create something that was way above…”</p><span>Shauna Connolly, Google</span></li>
+          <li><p>“The flowers were absolutely out of this world! From the bouquets to decorating an arch for us! I was genuinely blown away with them!”</p><span>Hannah Bayford, Google</span></li>
+          <li><p>“Her flowers for our wedding were just flawless. I got so many compliments on just how beautiful Ali's flowers were.”</p><span>Sarah J Noone, Google</span></li>
+          <li><p>“Absolutely stunning wild flowers. Ali did the most amazing bouquets and button holes for our wedding, along with providing all the flowers for our table arrangements.”</p><span>Clodagh Louise Lehane, Google</span></li>
+          <li><p>“Always at end of phone when we had a question … beautiful bouquets for our mothers and grandmothers.”</p><span>Padraic Kennedy, weddingsonline.ie</span></li>
+          <li><p>“Ali is super easy to work with and puts her heart into her work.”</p><span>Amy Bermingham, Google</span></li>
+          <li><p>“Ali asked for a photo of the location I wanted to put it in so that she could make something perfect for us, and perfect it was!”</p><span>Jillian Cronin, Google, on a Christmas arrangement</span></li>
+        </ul>
+      </details>
     </div>
   </section>
 
-  <!-- 7. Order -->
-  <section class="order" id="order" aria-labelledby="order-title" data-bg="lilac">
+  <!-- 7. Band -->
+  <section class="band" aria-labelledby="band-title" data-bg="dusk">
+    <div class="wrap band__inner">
+      <h2 class="band__title" id="band-title">If your date is free,<br><em>we'll grow for it.</em></h2>
+      <a class="btn btn--light" href="#enquire"><span>Tell Ali about your day</span></a>
+    </div>
+  </section>
+
+  <!-- 8. Enquire -->
+  <section class="order" id="enquire" aria-labelledby="enquire-title" data-bg="lilac">
     <div class="wrap order__grid">
       <div class="order__intro">
-        <h2 class="display" id="order-title">Send Ali <em>a note</em></h2>
-        <p>Tell us what the flowers are for and when. Your note opens in WhatsApp or your messages app, ready to check and send. Nothing is sent from this page.</p>
-        <p class="order__alt">Rather talk? Ring <a href="tel:+353872766413">087 276 6413</a> or message <a href="https://www.instagram.com/clonakenny_flower_farm/" rel="noopener" target="_blank">@clonakenny_flower_farm</a>.</p>
+        <h2 class="display" id="enquire-title">Tell Ali <em>about your day</em></h2>
+        <p>The 2026 diary is closed. We keep the diary small on purpose, with a limited number of 2027 &amp; 2028 dates. Wedding flowers are priced by enquiry.</p>
+        <p>Pick what fits and your email writes itself. Nothing is sent from this page.</p>
+        <p class="order__alt">The Instagram DMs are the quickest way to reach Ali: <a href="https://www.instagram.com/clonakenny_flower_farm/" rel="noopener" target="_blank">@clonakenny_flower_farm</a>. Not a wedding? Ali makes bouquets, gifts and Christmas arrangements too. Just ask.</p>
       </div>
       <form class="composer" data-composer novalidate>
         <fieldset class="composer__field">
-          <legend>What are they for?</legend>
+          <legend>What you'd love <span class="opt">Pick any</span></legend>
           <div class="chips">
-            <label class="chip"><input type="radio" name="occasion" value="bouquet" checked><span>A bouquet</span></label>
-            <label class="chip"><input type="radio" name="occasion" value="wedding"><span>A wedding</span></label>
-            <label class="chip"><input type="radio" name="occasion" value="event"><span>An event</span></label>
-            <label class="chip"><input type="radio" name="occasion" value="wreath"><span>A wreath</span></label>
-            <label class="chip"><input type="radio" name="occasion" value="other"><span>Something else</span></label>
+            <label class="chip"><input type="checkbox" name="want" value="Bridal bouquets"><span>Bridal bouquets</span></label>
+            <label class="chip"><input type="checkbox" name="want" value="Arch &amp; ceremony flowers"><span>Arch &amp; ceremony flowers</span></label>
+            <label class="chip"><input type="checkbox" name="want" value="Table arrangements"><span>Table arrangements</span></label>
+            <label class="chip"><input type="checkbox" name="want" value="On-the-day styling"><span>On-the-day styling</span></label>
+          </div>
+        </fieldset>
+        <fieldset class="composer__field">
+          <legend>The feeling <span class="opt">Pick any</span></legend>
+          <div class="chips">
+            <label class="chip"><input type="checkbox" name="feel" value="wild"><span>Wild</span></label>
+            <label class="chip"><input type="checkbox" name="feel" value="soft &amp; romantic"><span>Soft &amp; romantic</span></label>
+            <label class="chip"><input type="checkbox" name="feel" value="bright &amp; colourful"><span>Bright &amp; colourful</span></label>
+            <label class="chip"><input type="checkbox" name="feel" value="fun &amp; funky"><span>Fun &amp; funky</span></label>
           </div>
         </fieldset>
         <div class="composer__row">
           <div class="composer__field">
-            <label for="c-date">When do you need them?</label>
-            <input id="c-date" name="date" type="date">
+            <label for="c-date">Your date</label>
+            <input id="c-date" name="date" type="date" aria-describedby="c-season">
           </div>
           <div class="composer__field">
-            <label for="c-name">Your name</label>
-            <input id="c-name" name="name" type="text" autocomplete="name" placeholder="e.g. Siobhán">
+            <label for="c-venue">Your venue</label>
+            <input id="c-venue" name="venue" type="text" placeholder="e.g. Cloughjordan House">
           </div>
         </div>
-        <div class="composer__field">
-          <label for="c-notes">Anything Ali should know? <span class="opt">Optional</span></label>
-          <textarea id="c-notes" name="notes" rows="3" placeholder="Colours you love, who they're for, a budget, collection or delivery."></textarea>
+        <p class="composer__season" id="c-season" data-season hidden></p>
+        <div class="composer__row">
+          <div class="composer__field">
+            <label for="c-name">Your names</label>
+            <input id="c-name" name="name" type="text" autocomplete="name" placeholder="e.g. Aoife &amp; Conor">
+          </div>
+          <div class="composer__field">
+            <label for="c-notes">Anything else <span class="opt">Optional</span></label>
+            <input id="c-notes" name="notes" type="text" placeholder="Colours, numbers, a budget">
+          </div>
         </div>
         <div class="tag" aria-hidden="true">
           <span class="tag__hole"></span>
           <p class="tag__text" data-tag-text></p>
         </div>
         <div class="composer__send">
-          <a class="btn" data-send="whatsapp" href="https://wa.me/353872766413" target="_blank" rel="noopener"><span>Send on WhatsApp</span></a>
-          <a class="btn btn--ghost" data-send="sms" href="sms:+353872766413"><span>Send as a text</span></a>
-          <a class="link" href="tel:+353872766413">Call 087 276 6413</a>
+          <a class="btn" data-send="email" href="mailto:ali@clonakennyflowerfarm.com?subject=Wedding%20enquiry"><span>Email Ali</span></a>
+          <a class="link" href="https://www.instagram.com/clonakenny_flower_farm/" rel="noopener" target="_blank">Message on Instagram</a>
         </div>
+        <p class="composer__plain">Or write to <a href="mailto:ali@clonakennyflowerfarm.com">ali@clonakennyflowerfarm.com</a></p>
       </form>
     </div>
   </section>
 
-  <!-- 8. Press + find us -->
+  <!-- 9. Press + find us -->
   <section class="visit" aria-labelledby="visit-title" data-bg="pale">
     <div class="wrap visit__grid">
       <div class="press">
         <h2 class="press__title">As featured in</h2>
         <ul class="press__list">
-          <li><a href="https://www.farmersjournal.ie/life/gardening/a-blooming-legacy-handpicked-with-love-860902" rel="noopener" target="_blank"><span class="press__name">Irish Country Living</span><span class="press__piece">A blooming legacy, handpicked with love</span></a></li>
+          <li><a href="https://www.farmersjournal.ie/life/gardening/a-blooming-legacy-handpicked-with-love-860902" rel="noopener" target="_blank"><span class="press__name">Irish Farmers Journal</span><span class="press__piece">A blooming legacy, handpicked with love</span></a></li>
           <li><a href="https://thegloss.ie/best-flower-farms-ireland/" rel="noopener" target="_blank"><span class="press__name">The Gloss</span><span class="press__piece">The best flower farms to visit in Ireland</span></a></li>
           <li><a href="https://thatsfarming.com/farming-news/flower-farmer-ireland/" rel="noopener" target="_blank"><span class="press__name">That's Farming</span><span class="press__piece">From head chef to flower farmer</span></a></li>
         </ul>
@@ -358,14 +430,14 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
   <div class="wrap">
     <p class="foot__word" aria-hidden="true">Clonakenny</p>
     <div class="foot__row">
-      <p>Flowers grown from seed in Clonakenny, Co. Tipperary, since 2020.</p>
+      <p>Chemical-free flowers, grown, picked and arranged by a mother-and-daughter team since 2020.</p>
       <ul class="foot__links">
+        <li><a href="mailto:ali@clonakennyflowerfarm.com">ali@clonakennyflowerfarm.com</a></li>
         <li><a href="https://www.instagram.com/clonakenny_flower_farm/" rel="noopener" target="_blank">Instagram</a></li>
         <li><a href="https://www.facebook.com/p/Clonakenny-Flower-Farm-100063519038710/" rel="noopener" target="_blank">Facebook</a></li>
-        <li><a href="tel:+353872766413">087 276 6413</a></li>
       </ul>
     </div>
-    <p class="foot__small">© <span data-year>2026</span> Clonakenny Flower Farm · Website by <a href="https://getawebsite.ie/">getawebsite.ie</a></p>
+    <p class="foot__small">© <span data-year>2026</span> Clonakenny Flower Farm · Photography: Clonakenny Flower Farm · Website by <a href="https://getawebsite.ie/">getawebsite.ie</a></p>
   </div>
 </footer>
 
