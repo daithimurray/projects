@@ -1,6 +1,8 @@
-// Hero controller: entrance, the CCTV on-screen display, scroll, and the lazy
-// three.js scene. All of this works without the scene; the poster stays put.
-import { boot, gsap, SplitText, motionOK, isTouch } from '../motion.js';
+// Hero controller: the CCTV on-screen display, the scroll lift, and the lazy
+// three.js scene. The entrance is pure CSS (Hero.astro): it starts at first
+// paint, so it never waits for this script and never replays when it lands.
+// Everything here works without the scene; the poster stays put.
+import { boot, gsap, motionOK, isTouch, isPaused, onPauseChange } from '../motion.js';
 import { hero as copy, heroScene } from '../../data/content.js';
 
 const params = new URLSearchParams(location.search);
@@ -13,13 +15,22 @@ export function initHero() {
   const q = (s) => root.querySelector(s);
   const content = q('[data-hero-content]');
   const hud = q('[data-hero-hud]');
-  const osd = q('[data-hero-osd]');
   const hint = q('[data-hero-hint]');
   const state = { scroll: 0 };
+  let scene = null;
 
-  runClock(q('[data-osd-time]'), poster);
-  if (poster) document.documentElement.classList.remove('hero-intro');
-  else entrance(content, osd);
+  // Loops (the OSD clock here, the scene in scene.js, the CSS blinks) run only
+  // while the hero is on screen, the tab is visible and nothing is paused.
+  const clock = runClock(q('[data-osd-time]'), poster);
+  let inView = true;
+  const syncLoops = () => clock.run(motionOK() && inView && !document.hidden && !isPaused());
+  new IntersectionObserver(([e]) => {
+    inView = e.isIntersecting;
+    root.classList.toggle('is-away', !inView);
+    syncLoops();
+  }).observe(root);
+  document.addEventListener('visibilitychange', syncLoops);
+  onPauseChange(syncLoops);
 
   // Scroll: the camera dollies toward the door (in the scene); the words lift away.
   if (motionOK() && !poster) {
@@ -32,7 +43,10 @@ export function initHero() {
           end: 'bottom top',
           scrub: true,
           invalidateOnRefresh: true,
-          onUpdate: (st) => (state.scroll = st.progress),
+          onUpdate: (st) => {
+            state.scroll = st.progress;
+            scene?.nudge(); // a still frame when the loop is paused
+          },
         },
       })
       .to(content, { y: () => -root.offsetHeight * 0.16, opacity: 0, ease: 'power1.in', duration: 0.75 }, 0)
@@ -40,14 +54,24 @@ export function initHero() {
       .fromTo(q('[data-hero-poster]'), { scale: 1 }, { scale: 1.1, duration: 1 }, 0);
   }
 
-  const allowed = poster || (motionOK() && !navigator.connection?.saveData && hasWebGL());
+  const conn = navigator.connection;
+  const allowed = poster || (motionOK() && !conn?.saveData && !/2g/.test(conn?.effectiveType || ''));
   if (!allowed) return;
   const touch = isTouch();
   hint.querySelector('[data-hint-text]').textContent = touch ? copy.hintTouch : copy.hintPointer;
   hint.classList.toggle('is-touch', touch);
   const ui = overlay(root, hint, q('[data-hero-track]'), q('[data-osd-cam]'));
 
-  const start = () =>
+  // The driveway hint appears once the scene has settled, never while paused
+  // (the scene can't answer then) and never after the visitor has tripped it.
+  let hintTimer = 0;
+  const scheduleHint = (delay) => {
+    clearTimeout(hintTimer);
+    if (!poster && root.classList.contains('is-live') && !isPaused()) hintTimer = setTimeout(ui.showHint, delay);
+  };
+
+  const start = () => {
+    if (!hasWebGL()) return;
     import('./scene.js')
       .then(({ createScene }) =>
         createScene({
@@ -55,24 +79,59 @@ export function initHero() {
           root,
           state,
           poster,
+          paused: isPaused(),
           hq: params.has('hq'), // test flag: fixed quality, real-time clock, window.__heroDebug
           decayEase: gsap.parseEase('decay'),
           onReady: () => {
             root.classList.add('is-live');
-            if (!poster) setTimeout(ui.showHint, 4300);
+            scheduleHint(4300);
           },
           onMotion: ui.motion,
           onFrame: ui.frame,
-          onLost: () => root.classList.remove('is-live'),
+          // Back to the poster, and the overlay with it: no tracking box or
+          // hint over a picture that can't answer.
+          onLost: () => {
+            root.classList.remove('is-live');
+            clearTimeout(hintTimer);
+            ui.reset();
+          },
+          onRestored: () => {
+            root.classList.add('is-live');
+            scheduleHint(2500);
+          },
         }),
       )
+      .then((api) => {
+        scene = api;
+        const follow = (paused) => {
+          api.setPaused(paused);
+          if (paused) {
+            clearTimeout(hintTimer);
+            ui.hideHint(true);
+          } else scheduleHint(1500);
+        };
+        onPauseChange(follow);
+        if (isPaused()) follow(true); // paused while the scene was loading
+      })
       .catch(() => root.classList.remove('is-live'));
+  };
 
   if (poster) start();
   else {
+    // Only when the hero is in, or near, view: a visitor who lands on #contact
+    // (or a restored scroll) never downloads, parses or compiles three.js.
     const idle = () => ('requestIdleCallback' in window ? requestIdleCallback(start, { timeout: 1600 }) : setTimeout(start, 250));
-    if (document.readyState === 'complete') idle();
-    else window.addEventListener('load', idle, { once: true });
+    const near = new IntersectionObserver(
+      ([e]) => {
+        if (!e.isIntersecting) return;
+        near.disconnect();
+        idle();
+      },
+      { rootMargin: '200px 0px' },
+    );
+    const arm = () => near.observe(root);
+    if (document.readyState === 'complete') arm();
+    else window.addEventListener('load', arm, { once: true });
   }
 }
 
@@ -86,7 +145,8 @@ function hasWebGL() {
   }
 }
 
-// OSD timestamp: Europe/Dublin, DD-MM-YYYY HH:MM:SS, ticking on the second.
+// OSD timestamp: Europe/Dublin, DD-MM-YYYY HH:MM:SS. It ticks on the second
+// only while run(true); otherwise it holds the last time shown.
 function runClock(el, poster) {
   const fmt = new Intl.DateTimeFormat('en-GB', {
     timeZone: 'Europe/Dublin',
@@ -98,46 +158,26 @@ function runClock(el, poster) {
     second: '2-digit',
     hourCycle: 'h23',
   });
-  const tick = () => {
+  const draw = () => {
     const p = {};
     for (const { type, value } of fmt.formatToParts(new Date())) p[type] = value;
-    if (!document.hidden) el.textContent = `${p.day}-${p.month}-${p.year} ${poster ? '22:47:12' : `${p.hour}:${p.minute}:${p.second}`}`;
-    if (!poster) setTimeout(tick, 1000 - (Date.now() % 1000) + 8);
+    el.textContent = `${p.day}-${p.month}-${p.year} ${poster ? '22:47:12' : `${p.hour}:${p.minute}:${p.second}`}`;
   };
-  tick();
-}
-
-// Heading lines sweep up through masks; the rest trips on like a floodlight.
-function entrance(content, osd) {
-  const html = document.documentElement;
-  const done = () => html.classList.remove('hero-intro');
-  if (!motionOK()) return done();
-  const title = content.querySelector('#hero-title');
-  gsap.set(title, { opacity: 0 }); // until its lines are measured with the real font
-  const fonts = Promise.race([document.fonts?.ready, new Promise((r) => setTimeout(r, 450))]);
-  fonts.then(() => {
-    const split = SplitText.create(title, { type: 'lines', mask: 'lines', linesClass: 'hero__line', aria: 'auto' });
-    gsap.set(title, { opacity: 1 });
-    gsap.from(split.lines, {
-      yPercent: 140,
-      duration: 0.95,
-      ease: 'expo.out',
-      stagger: 0.085,
-      onComplete: () => split.revert(),
-    });
-  });
-  const trips = [...content.querySelectorAll('[data-trip]'), osd];
-  gsap
-    .timeline({ delay: 0.32, onComplete: done })
-    .fromTo(trips, { opacity: 0 }, {
-      keyframes: [
-        { opacity: 0.9, duration: 0.05, ease: 'none' },
-        { opacity: 0.4, duration: 0.05, ease: 'none' },
-        { opacity: 1, duration: 0.45, ease: 'expo.out' },
-      ],
-      stagger: 0.08,
-    })
-    .fromTo(trips, { y: 12 }, { y: 0, duration: 0.8, ease: 'expo.out', stagger: 0.08, clearProps: 'transform' }, 0);
+  let timer = 0;
+  let on = false;
+  const tick = () => {
+    draw();
+    timer = setTimeout(tick, 1000 - (Date.now() % 1000) + 8);
+  };
+  draw();
+  return {
+    run(want) {
+      if (poster || want === on) return;
+      on = want;
+      clearTimeout(timer);
+      if (on) tick();
+    },
+  };
 }
 
 // The DOM layer over the canvas: the interaction hint and the motion box.
@@ -147,29 +187,40 @@ function overlay(root, hint, track, cam) {
   let userTripped = false;
   let boxOn = false;
   let lw = 0;
-  const hideHint = () => {
-    if (!hintOn) return;
+  let hideTimer = 0;
+  const hideHint = (now = false) => {
+    if (!hintOn && !now) return;
     hintOn = false;
     hint.classList.remove('is-on');
-    setTimeout(() => (hint.hidden = true), 700);
+    clearTimeout(hideTimer);
+    if (now) hint.hidden = true;
+    else hideTimer = setTimeout(() => (hint.hidden = true), 700);
+  };
+  const setBox = (on) => {
+    if (on === boxOn) return;
+    boxOn = on;
+    track.classList.toggle('is-on', on);
+  };
+  const motion = (on, source) => {
+    root.classList.toggle('is-motion', on);
+    hint.classList.toggle('is-muted', on);
+    cam.textContent = on ? heroScene.motionLabel : copy.camLabel;
+    if (on && source === 'user') {
+      userTripped = true;
+      hideHint();
+    }
   };
   return {
     showHint() {
       if (userTripped || hintOn) return;
+      clearTimeout(hideTimer);
       hint.hidden = false;
       lw = label.offsetWidth;
       hintOn = true;
-      requestAnimationFrame(() => hint.classList.add('is-on'));
+      requestAnimationFrame(() => hintOn && hint.classList.add('is-on'));
     },
-    motion(on, source) {
-      root.classList.toggle('is-motion', on);
-      hint.classList.toggle('is-muted', on);
-      cam.textContent = on ? heroScene.motionLabel : copy.camLabel;
-      if (on && source === 'user') {
-        userTripped = true;
-        hideHint();
-      }
-    },
+    hideHint,
+    motion,
     frame(info) {
       if (hintOn) {
         const w = root.clientWidth;
@@ -183,10 +234,12 @@ function overlay(root, hint, track, cam) {
         track.style.width = `${b.w.toFixed(1)}px`;
         track.style.height = `${b.h.toFixed(1)}px`;
       }
-      if (!!b !== boxOn) {
-        boxOn = !!b;
-        track.classList.toggle('is-on', boxOn);
-      }
+      setBox(!!b);
+    },
+    reset() {
+      motion(false);
+      setBox(false);
+      hideHint(true);
     },
   };
 }

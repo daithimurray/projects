@@ -1,6 +1,7 @@
 // The hero scene: a Kildare estate at night. Move onto the driveway and the
 // PIR floodlight trips, the CCTV head pans to follow, the OSD reports motion.
-// Loaded with dynamic import() after first paint; the poster is the fallback.
+// Loaded with dynamic import() once the hero is near view; the poster is the
+// fallback and the first frame, and the scene always starts exactly on it.
 import {
   AdditiveBlending,
   BackSide,
@@ -44,10 +45,12 @@ import { buildStreet, SPOTS, W, DRIVE, PITCH } from './street.js';
 import * as SH from './shaders.js';
 
 const V = (a) => new Vector3(...a);
+// The sky's upper half is the page's own night ground, read from the tokens.
+const token = (name, fallback) => getComputedStyle(document.documentElement).getPropertyValue(name).trim() || fallback;
 const COL = {
   fog: '#1a2236',
-  zenith: '#070d19',
-  mid: '#121c33',
+  zenith: token('--night-950', '#0a1222'),
+  mid: token('--night-900', '#111c33'),
   glow: '#5e3624',
   sodium: '#ff9a3c',
   flood: '#eef3ff',
@@ -57,8 +60,8 @@ const COL = {
 
 // Framing by aspect ratio: [aspect, camera, look-at, vertical fov, lens shift].
 // Level camera plus lens shift keeps verticals straight, like an architectural shot.
-// Below 0.6 the vertical fov holds, so narrower screens crop the sides exactly
-// as object-fit: cover crops the 900x1500 poster: poster and scene line up.
+// Each poster is rendered at its own aspect from these frames; the live scene
+// then takes the framing of whichever poster is on screen (see applyView).
 const FRAMES = [
   [0.6, [13.8, 3.3, 24.5], [5.0, 3.3, 0], 66, -0.47],
   [0.78, [14, 3.3, 23], [1.2, 3.3, 0], 50, -0.24],
@@ -82,7 +85,7 @@ const WALKS = [
 const WALK_SPEED = 1.35;
 const WALK_PAUSE = 1.4;
 
-export async function createScene({ canvas, root, state, poster, hq, decayEase, onReady, onMotion, onFrame, onLost }) {
+export async function createScene({ canvas, root, state, poster, hq, paused: startPaused, decayEase, onReady, onMotion, onFrame, onLost, onRestored }) {
   const renderer = new WebGLRenderer({ canvas, antialias: true, powerPreference: 'high-performance' });
   renderer.toneMapping = NeutralToneMapping;
   renderer.toneMappingExposure = 1.05;
@@ -117,12 +120,19 @@ export async function createScene({ canvas, root, state, poster, hq, decayEase, 
 
   // Light: dusk sky fill, a cool moon wash, sodium from two streetlights.
   // Image-based light from the same sky: wet slate and paving pick up its glow.
-  const pmrem = new PMREMGenerator(renderer);
+  // Rebuilt after a lost WebGL context: a render target's pixels don't survive it.
   const envScene = new Scene();
   envScene.add(new Mesh(sky.geometry, sky.material));
-  scene.environment = pmrem.fromScene(envScene, 0.02).texture;
+  let envRT = null;
+  const makeEnv = () => {
+    const pmrem = new PMREMGenerator(renderer);
+    envRT?.dispose();
+    envRT = pmrem.fromScene(envScene, 0.02);
+    scene.environment = envRT.texture;
+    pmrem.dispose();
+  };
+  makeEnv();
   scene.environmentIntensity = 0.9;
-  pmrem.dispose();
   scene.add(new HemisphereLight('#3b4d7a', '#0a0e17', 0.45));
   const moon = new DirectionalLight('#8ea3d6', 0.35);
   moon.position.set(-30, 40, 20);
@@ -263,6 +273,12 @@ export async function createScene({ canvas, root, state, poster, hq, decayEase, 
   scene.add(body);
 
   // ---------- Framing ----------
+  // The poster under the canvas is the design at first paint, so the live scene
+  // starts exactly on it: the camera takes the displayed poster's own framing
+  // (FRAMES at the poster's aspect), and a view offset reproduces
+  // object-fit: cover and object-position. The cross-fade from poster to canvas
+  // shows one image at every screen shape. More posters (Hero.astro) keep the
+  // composition right for tall, square, wide and very wide screens.
   const base = { pos: new Vector3(), look: new Vector3(), fov: 36, shift: 0 };
   const DOOR = V(SPOTS.door);
   const DOLLY = V([8.5, 2.7, 10]);
@@ -276,22 +292,51 @@ export async function createScene({ canvas, root, state, poster, hq, decayEase, 
     base.look.lerpVectors(V(l0), V(l1), k);
     base.fov = MathUtils.lerp(f0, f1, k);
     base.shift = MathUtils.lerp(s0, s1, k);
+  }
+
+  // The poster the browser is showing: the first <source> whose media matches
+  // (the same rule <picture> uses), its aspect and its object-position.
+  const posterImg = root.querySelector('[data-hero-poster]');
+  function shownPoster() {
+    if (!posterImg) return null;
+    const src = [...posterImg.parentElement.querySelectorAll('source')].find((el) => !el.media || matchMedia(el.media).matches) || posterImg;
+    const aspect = Number(src.getAttribute('width')) / Number(src.getAttribute('height'));
+    const [px, py] = getComputedStyle(posterImg)
+      .objectPosition.split(' ')
+      .map((v) => (v.endsWith('%') ? parseFloat(v) / 100 : 0.5));
+    return aspect > 0 ? { aspect, px, py: py ?? 0.5 } : null;
+  }
+
+  const view = { fullH: 1 };
+  function applyView(w, h, matchPoster) {
+    const shown = matchPoster ? shownPoster() : null;
+    const aspect = shown ? shown.aspect : w / h;
+    frame(aspect);
     camera.aspect = aspect;
     camera.fov = base.fov;
+    let fullH = h;
+    if (shown) {
+      // object-fit: cover — the smallest poster-shaped frame that covers w x h
+      const fullW = Math.max(w, h * aspect);
+      fullH = fullW / aspect;
+      camera.setViewOffset(fullW, fullH, (fullW - w) * shown.px, (fullH - h) * shown.py, w, h);
+    } else camera.clearViewOffset();
     camera.updateProjectionMatrix();
-    camera.projectionMatrix.elements[9] = base.shift;
+    // Lens shift is in full-frame units; the visible crop is h/fullH of it.
+    camera.projectionMatrix.elements[9] += (base.shift * fullH) / h;
     camera.projectionMatrixInverse.copy(camera.projectionMatrix).invert();
+    view.fullH = fullH;
   }
 
   let dpr = Math.min(window.devicePixelRatio || 1, 1.75);
   let size = { w: 0, h: 0 };
-  function resize(w = canvas.clientWidth, h = canvas.clientHeight, ratio = dpr) {
+  function resize(w = canvas.clientWidth, h = canvas.clientHeight, ratio = dpr, matchPoster = true) {
     if (!w || !h) return;
     size = { w, h };
     renderer.setPixelRatio(ratio);
     renderer.setSize(w, h, false);
-    frame(w / h);
-    rainU.uScale.value = (0.34 * h * ratio) / (2 * Math.tan(MathUtils.degToRad(base.fov) / 2));
+    applyView(w, h, matchPoster);
+    rainU.uScale.value = (0.34 * view.fullH * ratio) / (2 * Math.tan(MathUtils.degToRad(base.fov) / 2));
   }
 
   // ---------- Interaction ----------
@@ -391,9 +436,15 @@ export async function createScene({ canvas, root, state, poster, hq, decayEase, 
     return null;
   }
 
-  function update(dt) {
+  // frozen: time stands still (paused). Only the scroll dolly moves the camera.
+  const trackAt = new Vector3();
+  let trackOn = false;
+  function update(dt, frozen = false) {
     t += dt;
-    if (!poster) {
+    if (poster) {
+      level = 1;
+      led = 0.6;
+    } else if (!frozen) {
       // Idle passer-by so touch visitors see the mechanism too
       if (!walker && mode === 'off' && t - lastInteract > (walks ? 11 : 8) && t > 5) {
         const legs = WALKS[walks++ % WALKS.length];
@@ -439,38 +490,26 @@ export async function createScene({ canvas, root, state, poster, hq, decayEase, 
       sweepU.uProg.value = Math.min(1, sweepU.uProg.value + dt / 1.1);
 
       // CCTV: follow while the light is on and the target is in view
-      const tracking = mode === 'on' && p && inTrack(p);
-      if (tracking) setAim(v3.copy(p).setY(1.0), dt, 5);
-      else if (mode !== 'on') setAim(rest, dt, 1.4);
+      trackOn = !!(mode === 'on' && p && inTrack(p));
+      if (trackOn) {
+        trackAt.copy(p);
+        setAim(v3.copy(p).setY(1.0), dt, 5);
+      } else if (mode !== 'on') setAim(rest, dt, 1.4);
 
       body.visible = !!(p && inTrack(p) && level > 0.02);
       if (body.visible) body.position.set(p.x, 0.88, p.z);
-      info.box = null;
-      if (tracking) {
-        const [bx, by] = project(p);
-        const [, ty] = project(v3.copy(p).setY(1.75));
-        const h = Math.max(24, by - ty);
-        boxOut.w = h * 0.46;
-        boxOut.h = h;
-        boxOut.x = bx - boxOut.w / 2;
-        boxOut.y = ty;
-        info.box = boxOut;
-      }
 
       // Bell-box strobe: double blink every 2.5s
       const ph = t % 2.5;
       const blink = ph < 0.07 || (ph > 0.17 && ph < 0.24) ? 1 : 0;
       led += (blink - led) * (1 - Math.exp(-dt * 45));
-    } else {
-      level = 1;
-      led = 0.6;
     }
 
     // Parallax (mouse only) and scroll dolly
     const pk = 1 - Math.exp(-dt * 3);
     if (!poster && pointer.on) par.lerp(ndc.set(pointer.x, pointer.y), pk);
     else par.multiplyScalar(1 - pk);
-    scroll.v += (state.scroll - scroll.v) * (poster ? 1 : 1 - Math.exp(-dt * 7));
+    scroll.v += (state.scroll - scroll.v) * (poster || frozen ? 1 : 1 - Math.exp(-dt * 7));
     const s = MathUtils.smootherstep(scroll.v, 0, 1);
     camera.position.lerpVectors(base.pos, DOLLY, s * 0.38);
     v3.lerpVectors(base.look, DOOR, s * 0.5);
@@ -496,24 +535,51 @@ export async function createScene({ canvas, root, state, poster, hq, decayEase, 
     st.camMat.emissiveIntensity = 0.06 + level * 0.3;
     st.ir.material.color.setRGB(0.3 + 0.05 * Math.sin(t * 2), 0.01, 0.01);
 
+    // Screen positions for the DOM overlay, from this frame's camera
     [info.hx, info.hy] = project(HINT);
+    info.box = null;
+    if (trackOn) {
+      const [bx, by] = project(trackAt);
+      const [, ty] = project(v3.copy(trackAt).setY(1.75));
+      const h = Math.max(24, by - ty);
+      boxOut.w = h * 0.46;
+      boxOut.h = h;
+      boxOut.x = bx - boxOut.w / 2;
+      boxOut.y = ty;
+      info.box = boxOut;
+    }
   }
 
-  // ---------- Loop, visibility, adaptive quality ----------
+  // ---------- Loop, visibility, pause, adaptive quality ----------
+  // The loop runs only while the hero is on screen, the tab is visible, the
+  // visitor hasn't paused animation (header control, WCAG 2.2.2) and the GL
+  // context is alive. When stopped the canvas keeps its last frame; a resize
+  // or scroll while paused draws one still frame with time frozen.
   let running = false;
   let raf = 0;
+  let stillRaf = 0;
   let last = 0;
   let inView = true;
+  let paused = !!startPaused;
+  let lost = false;
+  let restored = false;
   let frames = 0;
   let acc = 0;
   let tier = 0;
+  function draw() {
+    renderer.render(scene, camera);
+    onFrame?.(info);
+    if (restored) {
+      restored = false;
+      onRestored?.();
+    }
+  }
   function tick(now) {
     raf = requestAnimationFrame(tick);
     const dt = Math.min(hq ? 1 : 0.1, (now - last) / 1000);
     last = now;
     update(dt);
-    renderer.render(scene, camera);
-    onFrame?.(info);
+    draw();
     if (!hq && ++frames > 40) {
       acc += dt;
       if (frames % 90 === 0) {
@@ -535,25 +601,51 @@ export async function createScene({ canvas, root, state, poster, hq, decayEase, 
     resize();
   }
   function setRunning() {
-    const want = inView && !document.hidden;
+    const want = inView && !document.hidden && !paused && !lost;
     if (want === running) return;
     running = want;
     if (running) {
+      cancelAnimationFrame(stillRaf);
       last = performance.now();
       raf = requestAnimationFrame(tick);
     } else cancelAnimationFrame(raf);
   }
+  function still() {
+    if (running || lost || poster || !inView || document.hidden) return;
+    cancelAnimationFrame(stillRaf);
+    stillRaf = requestAnimationFrame(() => {
+      if (running || lost) return;
+      update(0, true);
+      draw();
+    });
+  }
   const io = new IntersectionObserver(([e]) => {
     inView = e.isIntersecting;
     setRunning();
+    still();
   });
-  const ro = new ResizeObserver(() => resize());
+  const ro = new ResizeObserver(() => {
+    resize();
+    still();
+  });
   document.addEventListener('visibilitychange', setRunning);
   canvas.addEventListener('webglcontextlost', (e) => {
-    e.preventDefault();
-    inView = false;
+    e.preventDefault(); // ask for the context back
+    lost = true;
     setRunning();
+    cancelAnimationFrame(stillRaf);
     onLost?.();
+  });
+  // three.js re-creates its GL state first (its listener was added before this
+  // one); the env map is a render target, so it is rebuilt. onRestored fires
+  // after the first good frame, so the canvas never fades in blank.
+  canvas.addEventListener('webglcontextrestored', () => {
+    lost = false;
+    restored = true;
+    makeEnv();
+    resize();
+    setRunning();
+    still();
   });
 
   resize();
@@ -563,11 +655,12 @@ export async function createScene({ canvas, root, state, poster, hq, decayEase, 
   update(0);
   renderer.render(scene, camera);
 
-  if (hq) window.__heroDebug = () => ({ t, mode, level, body: body.visible, at: body.position.toArray(), target: target.toArray(), tier });
+  if (hq) window.__heroDebug = () => ({ t, mode, level, body: body.visible, at: body.position.toArray(), target: target.toArray(), tier, running, paused, lost });
 
-  // Poster capture for tools/capture-hero.mjs: deterministic, light on, no UI.
+  // Poster capture for tools/capture-hero.mjs: deterministic, light on, no UI,
+  // framed at the poster's own aspect (no crop).
   if (poster) window.__heroCapture = (w, h, q = 0.85) => {
-    resize(w, h, 1);
+    resize(w, h, 1, false);
     update(0);
     renderer.render(scene, camera);
     const url = canvas.toDataURL('image/webp', q);
@@ -587,4 +680,13 @@ export async function createScene({ canvas, root, state, poster, hq, decayEase, 
     ro.observe(canvas);
     setRunning();
   });
+
+  return {
+    setPaused(p) {
+      paused = !!p;
+      setRunning();
+    },
+    /** The scroll position changed while the loop is stopped. */
+    nudge: still,
+  };
 }

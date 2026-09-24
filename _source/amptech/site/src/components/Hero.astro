@@ -1,30 +1,39 @@
 ---
-// Hero: a street of Irish semi-ds at night. The poster (rendered from the
-// three.js scene by tools/capture-hero.mjs) is the LCP image and the static
-// fallback; the live scene fades in over it after load when motion is allowed.
+// Hero: a street of Irish semi-ds at night. Four posters, rendered from the
+// three.js scene by tools/capture-hero.mjs at tall, square, wide and very wide
+// shapes, are the static fallback and the first frame; the live scene fades in
+// over them when motion is allowed, framed exactly like the poster on screen.
 import Icon from './Icon.astro';
 import { hero, heroScene } from '../data/content.js';
 
 const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
-const posterWide = `${base}hero/poster-wide.webp`;
-const posterTall = `${base}hero/poster-tall.webp`;
-// Licence and standard numbers speak in the data voice.
-const withData = (s: string) => s.replace(/((?:EN )?\d[\d-]*\d)/g, '<span class="hero__num">$1</span>');
+const poster = (name: string) => `${base}hero/poster-${name}.webp`;
+// The licence number speaks in the data voice; nothing else in the proof line does.
+const withData = (s: string) => s.replace(/(licence\s+)(\d+)/gi, '$1<span class="hero__num">$2</span>');
 ---
 
 <section id="top" class="hero is-night" aria-labelledby="hero-title" data-hero>
   <script is:inline>
-    if (matchMedia('(prefers-reduced-motion: no-preference)').matches && !/[?&]poster/.test(location.search))
-      document.documentElement.classList.add('hero-intro');
+    (function () {
+      var paused = false;
+      try {
+        paused = localStorage.getItem('amptech:motion-paused') === '1';
+      } catch (e) {}
+      if (!paused && matchMedia('(prefers-reduced-motion: no-preference)').matches && !/[?&]poster/.test(location.search))
+        document.documentElement.classList.add('hero-intro');
+    })();
   </script>
 
   <div class="hero__stage" aria-hidden="true">
+    <!-- Media bands must match the .hero__poster object-position rules below; scene.js reads both. -->
     <picture>
-      <source media="(max-aspect-ratio: 4/5)" srcset={posterTall} type="image/webp" width="900" height="1500" />
+      <source media="(max-aspect-ratio: 4/5)" srcset={poster('tall')} type="image/webp" width="900" height="1500" />
+      <source media="(max-aspect-ratio: 5/4)" srcset={poster('square')} type="image/webp" width="1200" height="1200" />
+      <source media="(max-aspect-ratio: 37/20)" srcset={poster('wide')} type="image/webp" width="1600" height="1000" />
       <img
         class="hero__poster"
-        src={posterWide}
-        width="1600"
+        src={poster('ultra')}
+        width="2100"
         height="1000"
         alt=""
         fetchpriority="high"
@@ -118,10 +127,17 @@ const withData = (s: string) => s.replace(/((?:EN )?\d[\d-]*\d)/g, '<span class=
     width: 100%;
     height: 100%;
   }
+  /* One object-position per poster band (see the <source> media above).
+     scene.js reads the computed value to frame the live camera identically. */
   .hero__poster {
     object-fit: cover;
-    object-position: 64% 50%;
+    object-position: 80% 50%; /* keep the house and the floodlit drive; the words sit left */
     transform-origin: 70% 55%;
+  }
+  @media (max-aspect-ratio: 5/4) {
+    .hero__poster {
+      object-position: 72% 50%;
+    }
   }
   @media (max-aspect-ratio: 4/5) {
     .hero__poster {
@@ -136,14 +152,32 @@ const withData = (s: string) => s.replace(/((?:EN )?\d[\d-]*\d)/g, '<span class=
     opacity: 1;
   }
 
-  /* Scrims guarantee headline and lede contrast over any part of the scene. */
+  /* Scrims guarantee headline and lede contrast over any part of the scene.
+     The bottom runs into the page's dusk ground, overcast grain included, so
+     the next night section continues it without a seam. */
   .hero__scrim {
     position: absolute;
     inset: 0;
     background:
-      linear-gradient(to top, var(--night-900) 0%, rgb(12 22 40 / 0) 14%),
-      radial-gradient(ellipse 72% 88% at 0% 100%, rgb(7 13 25 / 0.9) 0%, rgb(7 13 25 / 0.74) 46%, rgb(7 13 25 / 0) 100%),
-      linear-gradient(to bottom, rgb(7 13 25 / 0.55) 0%, rgb(7 13 25 / 0) 22%);
+      linear-gradient(to top, var(--night-900) 0%, transparent 14%),
+      radial-gradient(
+        ellipse 72% 88% at 0% 100%,
+        color-mix(in srgb, var(--night-950) 90%, transparent) 0%,
+        color-mix(in srgb, var(--night-950) 74%, transparent) 46%,
+        transparent 100%
+      ),
+      linear-gradient(to bottom, color-mix(in srgb, var(--night-950) 55%, transparent) 0%, transparent 22%);
+  }
+  .hero__stage::after {
+    content: '';
+    position: absolute;
+    inset: auto 0 0;
+    height: 26%;
+    background: var(--grain);
+    background-size: 220px 220px;
+    -webkit-mask-image: linear-gradient(to top, #000, transparent);
+    mask-image: linear-gradient(to top, #000, transparent);
+    pointer-events: none;
   }
 
   /* ---------- Content ---------- */
@@ -154,11 +188,7 @@ const withData = (s: string) => s.replace(/((?:EN )?\d[\d-]*\d)/g, '<span class=
   .hero__title {
     max-width: 11.5ch;
     font-size: clamp(2.6rem, min(1.2rem + 4.6vw, 0.6rem + 9.5vh), 5.5rem);
-    text-shadow: 0 2px 30px rgb(7 13 25 / 0.55);
-  }
-  .hero__title :global(.hero__line-mask) {
-    padding-bottom: 0.14em;
-    margin-bottom: -0.14em;
+    text-shadow: 0 2px 30px color-mix(in srgb, var(--night-950) 55%, transparent);
   }
   .hero__lede {
     margin-top: clamp(1.1rem, 0.8rem + 1vw, 1.75rem);
@@ -175,11 +205,11 @@ const withData = (s: string) => s.replace(/((?:EN )?\d[\d-]*\d)/g, '<span class=
     font-variant-numeric: tabular-nums;
   }
   .hero__ghost {
-    --btn-bg: rgb(7 13 25 / 0.45);
-    --btn-border: rgb(195 205 225 / 0.38);
+    --btn-bg: color-mix(in srgb, var(--night-950) 45%, transparent);
+    --btn-border: color-mix(in srgb, var(--dusk-200) 38%, transparent);
   }
   .hero__ghost:hover {
-    --btn-bg: rgb(255 158 61 / 0.1);
+    --btn-bg: color-mix(in srgb, var(--sodium-500) 10%, transparent);
   }
 
   .hero__proof {
@@ -225,7 +255,7 @@ const withData = (s: string) => s.replace(/((?:EN )?\d[\d-]*\d)/g, '<span class=
     justify-items: end;
     gap: 0.3rem;
     color: var(--dusk-50);
-    text-shadow: 0 1px 2px rgb(3 7 15 / 0.8);
+    text-shadow: 0 1px 2px color-mix(in srgb, var(--night-950) 85%, transparent);
   }
   .hero__osd-row {
     display: flex;
@@ -237,6 +267,7 @@ const withData = (s: string) => s.replace(/((?:EN )?\d[\d-]*\d)/g, '<span class=
     align-items: center;
     gap: 0.4rem;
   }
+  /* The recording LED is a light source, so it may bloom */
   .hero__rec i {
     width: 7px;
     height: 7px;
@@ -288,7 +319,7 @@ const withData = (s: string) => s.replace(/((?:EN )?\d[\d-]*\d)/g, '<span class=
     bottom: 2px;
     width: 1px;
     height: 54px;
-    background: linear-gradient(to top, currentColor, rgb(246 245 240 / 0.15));
+    background: linear-gradient(to top, currentColor, color-mix(in srgb, currentColor 15%, transparent));
     transform: scaleY(0);
     transform-origin: 50% 100%;
     transition: transform 0.7s var(--ease-out) 0.15s;
@@ -304,9 +335,9 @@ const withData = (s: string) => s.replace(/((?:EN )?\d[\d-]*\d)/g, '<span class=
     align-items: center;
     gap: 0.45rem;
     padding: 0.45rem 0.75rem 0.45rem 0.6rem;
-    border: 1px solid rgb(246 245 240 / 0.18);
+    border: 1px solid color-mix(in srgb, var(--flood-50) 18%, transparent);
     border-radius: var(--radius-sm);
-    background: rgb(7 13 25 / 0.78);
+    background: color-mix(in srgb, var(--night-950) 80%, transparent);
     color: var(--flood-50);
     font-size: var(--step--1);
     font-weight: 600;
@@ -370,7 +401,9 @@ const withData = (s: string) => s.replace(/((?:EN )?\d[\d-]*\d)/g, '<span class=
     white-space: nowrap;
   }
 
-  /* ---------- Motion ---------- */
+  /* ---------- Loops ----------
+     The REC blink and the hint ring stop off screen (hero.js sets .is-away)
+     and with the header's pause control (html.motion-paused, base.css). */
   @media (prefers-reduced-motion: no-preference) {
     .hero__rec i {
       animation: rec 1.6s steps(1, end) infinite;
@@ -383,6 +416,10 @@ const withData = (s: string) => s.replace(/((?:EN )?\d[\d-]*\d)/g, '<span class=
     }
     .hero__track.is-on {
       animation: box-trip 0.28s linear;
+    }
+    .hero.is-away .hero__rec i,
+    .hero.is-away .hero__hint-ring {
+      animation-play-state: paused;
     }
   }
   @keyframes rec {
@@ -407,21 +444,87 @@ const withData = (s: string) => s.replace(/((?:EN )?\d[\d-]*\d)/g, '<span class=
     48%, 100% { opacity: 1; }
   }
 
-  /* Entrance: hidden only when motion is allowed and the script will reveal it.
-     The failsafe shows everything anyway if the script never runs. */
-  :global(.hero-intro) .hero__title,
-  :global(.hero-intro) [data-trip],
-  :global(.hero-intro) .hero__osd {
-    opacity: 0;
-    animation: hero-failsafe 0.01s 2.4s forwards;
+  /* ---------- Entrance ----------
+     Pure CSS from first paint, so it never waits for the scripts and can't
+     replay when they land. Nothing is ever invisible (the headline is the LCP
+     element and is painted in the first frame): it starts as a dim ghost and a
+     detection beam sweeps it lit; the rest trips on like a floodlight from a
+     low glow. The inline script adds .hero-intro only when motion is allowed
+     and not paused; with JS off or reduced motion everything is simply there.
+     Once started it finishes, even if the pause control is pressed mid-way. */
+  @media (prefers-reduced-motion: no-preference) {
+    :global(.hero-intro) .hero__title {
+      -webkit-mask-image: linear-gradient(100deg, #000 42%, rgb(0 0 0 / 0.16) 56%);
+      mask-image: linear-gradient(100deg, #000 42%, rgb(0 0 0 / 0.16) 56%);
+      -webkit-mask-size: 300% 100%;
+      mask-size: 300% 100%;
+      -webkit-mask-repeat: no-repeat;
+      mask-repeat: no-repeat;
+      animation: hero-sweep 1.2s cubic-bezier(0.45, 0, 0.2, 1) 0.14s both;
+    }
+    :global(.hero-intro) .hero__osd,
+    :global(.hero-intro) [data-trip] {
+      animation:
+        hero-trip 0.7s linear var(--d, 0s) both,
+        hero-rise 0.95s cubic-bezier(0.16, 1, 0.3, 1) var(--d, 0s) both;
+    }
+    :global(.hero-intro) .hero__osd {
+      --d: 0.04s;
+      animation-name: hero-trip, none;
+    }
+    :global(.hero-intro) .hero__lede {
+      --d: 0.42s;
+    }
+    :global(.hero-intro) .hero__ctas .btn--primary {
+      --d: 0.52s;
+    }
+    :global(.hero-intro) .hero__ghost {
+      --d: 0.6s;
+    }
+    :global(.hero-intro) .hero__proof {
+      --d: 0.68s;
+    }
+    :global(.motion-paused) .hero__title,
+    :global(.motion-paused) .hero__osd,
+    :global(.motion-paused) [data-trip] {
+      animation-play-state: running !important;
+    }
   }
-  @keyframes hero-failsafe {
+  @keyframes hero-sweep {
+    from {
+      -webkit-mask-position: 100% 0;
+      mask-position: 100% 0;
+    }
     to {
+      -webkit-mask-position: 0% 0;
+      mask-position: 0% 0;
+    }
+  }
+  @keyframes hero-trip {
+    0% {
+      opacity: 0.1;
+    }
+    7% {
+      opacity: 0.9;
+    }
+    13% {
+      opacity: 0.35;
+      animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    100% {
       opacity: 1;
     }
   }
+  @keyframes hero-rise {
+    from {
+      transform: translateY(10px);
+    }
+  }
 
-  /* ---------- Layout by shape ---------- */
+  /* ---------- Layout by shape ----------
+     Wide: full-bleed scene, words lower left. Tall or narrow: the scene on top,
+     words below it. Short (landscape phones, squat windows): the wide layout,
+     compacted so the headline and the call button fit the first screen. */
   @media (min-aspect-ratio: 5/4) and (min-width: 900px) {
     .hero {
       padding-top: calc(var(--header-h) + clamp(2rem, 9vh, 7rem));
@@ -429,18 +532,95 @@ const withData = (s: string) => s.replace(/((?:EN )?\d[\d-]*\d)/g, '<span class=
     .hero__title {
       max-width: 12ch;
     }
-  }
-  @media (max-aspect-ratio: 5/4), (max-width: 899px) {
-    .hero {
-      padding-top: calc(var(--header-h) + clamp(13rem, 36svh, 30rem));
+    /* The headline leads; the lede supports it and stays left of the lamp post */
+    .hero__lede {
+      max-width: 44ch;
+      font-size: clamp(1.125rem, 0.95rem + 0.35vw, 1.3rem);
     }
+  }
+  @media (max-aspect-ratio: 5/4), (max-width: 899px) and (min-height: 541px) {
+    .hero {
+      /* The scene gets 36% of the screen, less on short phones so the call
+         button still makes the first screen (~29rem of words sit above it). */
+      --scene: calc(var(--header-h) + clamp(6rem, min(100svh - 29rem, 36svh), 30rem));
+      --veil: 35%;
+      padding-top: var(--scene);
+    }
+    /* The veil starts where the words start, however far up a short phone pushes them */
     .hero__scrim {
       background:
-        linear-gradient(to top, var(--night-900) 0%, rgb(9 17 32 / 0.9) 42%, rgb(7 13 25 / 0.35) 58%, rgb(7 13 25 / 0) 70%),
-        linear-gradient(to bottom, rgb(7 13 25 / 0.55) 0%, rgb(7 13 25 / 0) 20%);
+        linear-gradient(
+          to bottom,
+          transparent calc(var(--scene) - 5.5rem),
+          color-mix(in srgb, var(--night-950) var(--veil), transparent) calc(var(--scene) + 1rem),
+          color-mix(in srgb, var(--night-900) 90%, transparent) calc(var(--scene) + 10rem),
+          var(--night-900) 100%
+        ),
+        linear-gradient(to bottom, color-mix(in srgb, var(--night-950) 55%, transparent) 0%, transparent 20%);
     }
     .hero__lede {
       font-size: var(--step-0);
+    }
+  }
+  /* On short phones the headline climbs over the lit house: a heavier veil */
+  @media (max-aspect-ratio: 5/4) and (max-height: 700px) {
+    .hero {
+      --veil: 62%;
+    }
+  }
+  @media (min-aspect-ratio: 5/4) and (max-height: 540px) {
+    .hero {
+      min-height: 100svh;
+      padding-top: calc(var(--header-h) + 0.75rem);
+      padding-bottom: 1rem;
+    }
+    /* The words take most of the width here, so the veil runs across, not up from a corner */
+    .hero__scrim {
+      background:
+        linear-gradient(to top, var(--night-900) 0%, transparent 18%),
+        linear-gradient(
+          to right,
+          color-mix(in srgb, var(--night-950) 88%, transparent) 0%,
+          color-mix(in srgb, var(--night-950) 78%, transparent) 45%,
+          color-mix(in srgb, var(--night-950) 40%, transparent) 68%,
+          transparent 86%
+        );
+    }
+    .hero__title {
+      max-width: 18ch;
+      font-size: clamp(1.9rem, 10svh, 3.25rem);
+    }
+    .hero__lede {
+      margin-top: 0.6rem;
+      max-width: 50ch;
+      font-size: var(--step-0);
+      line-height: 1.45;
+    }
+    .hero__ctas {
+      margin-top: 0.9rem;
+    }
+    .hero__ctas .btn {
+      min-height: 48px;
+      padding-block: 0.6rem;
+    }
+    .hero__proof {
+      margin-top: 0.8rem;
+    }
+    .hero__osd {
+      top: calc(var(--header-h) + 0.4rem);
+    }
+  }
+  /* Small landscape phones: the words span nearly the whole width */
+  @media (min-aspect-ratio: 5/4) and (max-height: 540px) and (max-width: 699px) {
+    .hero__scrim {
+      background:
+        linear-gradient(to top, var(--night-900) 0%, transparent 18%),
+        linear-gradient(
+          to right,
+          color-mix(in srgb, var(--night-950) 88%, transparent) 0%,
+          color-mix(in srgb, var(--night-950) 80%, transparent) 70%,
+          color-mix(in srgb, var(--night-950) 60%, transparent) 100%
+        );
     }
   }
   @media (max-width: 519px) {
@@ -454,6 +634,11 @@ const withData = (s: string) => s.replace(/((?:EN )?\d[\d-]*\d)/g, '<span class=
     .hero__proof {
       display: grid;
       gap: 0.4rem;
+    }
+  }
+  @media (max-width: 359px) {
+    .hero__title {
+      font-size: 2.3rem;
     }
   }
 </style>
