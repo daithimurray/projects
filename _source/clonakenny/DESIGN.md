@@ -112,6 +112,10 @@ components:
   button-round-hover:
     backgroundColor: "{colors.plum}"
     textColor: "{colors.lilac-pale}"
+  text-link:
+    textColor: "{colors.plum}"
+    typography: "{typography.button}"
+    height: "44px"
   chip:
     backgroundColor: "transparent"
     textColor: "{colors.plum}"

@@ -30,7 +30,6 @@
   --plum: #2A1433;
   --plum-2: #4A2656;
   --dusk: #1B0E21;
-  --dusk-2: #2A1733;
   --on-dusk: #EBDDEE;
   --on-dusk-2: #C9B3CF;
   --studio: #A23F78;
@@ -207,7 +206,7 @@ a { text-underline-offset: 0.2em; text-decoration-thickness: 1px; }
   }
   .menu[hidden] { display: flex; }
   .menu.is-open { clip-path: circle(150% at calc(100% - 40px) 32px); visibility: visible; transition: clip-path .8s var(--ease); }
-  .menu__list { list-style: none; margin: 0 0 40px; padding: 0; counter-reset: m; }
+  .menu__list { list-style: none; margin: 0 0 40px; padding: 0; }
   .menu__list li { overflow: hidden; }
   .menu__list a {
     display: block; padding: 6px 0;

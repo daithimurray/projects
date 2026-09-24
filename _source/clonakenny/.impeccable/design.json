@@ -1,0 +1,526 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-09-24T20:26:29+00:00",
+  "title": "Design System: Clonakenny Flower Farm",
+  "extensions": {
+    "colorMeta": {
+      "lilac": {
+        "role": "primary",
+        "displayName": "Lilac Field",
+        "canonical": "#C8A2C8",
+        "oklch": "oklch(75.9% 0.068 326.2)",
+        "tonalRamp": [
+          "#18001A",
+          "#361836",
+          "#553555",
+          "#765376",
+          "#987498",
+          "#BC97BC",
+          "#E1BAE1",
+          "#FFE5FF"
+        ]
+      },
+      "lilac-pale": {
+        "role": "primary",
+        "displayName": "Petal Pale",
+        "canonical": "#F3EAF3",
+        "oklch": "oklch(94.7% 0.015 325.7)",
+        "tonalRamp": [
+          "#0F090F",
+          "#292329",
+          "#463F46",
+          "#665E66",
+          "#877F87",
+          "#AAA2AA",
+          "#CFC6CF",
+          "#F4EBF4"
+        ]
+      },
+      "lilac-mist": {
+        "role": "primary",
+        "displayName": "Lilac Mist",
+        "canonical": "#E7D6E8",
+        "oklch": "oklch(89.5% 0.030 324.2)",
+        "tonalRamp": [
+          "#110712",
+          "#2D202D",
+          "#4A3D4B",
+          "#6A5C6B",
+          "#8C7C8D",
+          "#AF9FB0",
+          "#D4C3D5",
+          "#F9E8FA"
+        ]
+      },
+      "lilac-deep": {
+        "role": "primary",
+        "displayName": "Deep Lilac",
+        "canonical": "#B488B6",
+        "oklch": "oklch(68.4% 0.083 325.0)",
+        "tonalRamp": [
+          "#19001B",
+          "#38133B",
+          "#58315A",
+          "#79507B",
+          "#9C719E",
+          "#C093C2",
+          "#E5B7E7",
+          "#FEE5FF"
+        ]
+      },
+      "studio": {
+        "role": "secondary",
+        "displayName": "Studio Purple",
+        "canonical": "#A23F78",
+        "oklch": "oklch(52.0% 0.146 347.7)",
+        "tonalRamp": [
+          "#1C0010",
+          "#47002F",
+          "#741050",
+          "#993770",
+          "#BF5992",
+          "#E67CB5",
+          "#FFACD6",
+          "#FFE7F2"
+        ]
+      },
+      "plum": {
+        "role": "neutral",
+        "displayName": "Plum Ink",
+        "canonical": "#2A1433",
+        "oklch": "oklch(23.8% 0.063 315.3)",
+        "tonalRamp": [
+          "#15021D",
+          "#311A3A",
+          "#4F3759",
+          "#6F567A",
+          "#91779D",
+          "#B499C1",
+          "#D9BDE6",
+          "#F8E8FF"
+        ]
+      },
+      "plum-2": {
+        "role": "neutral",
+        "displayName": "Soft Plum",
+        "canonical": "#4A2656",
+        "oklch": "oklch(33.8% 0.091 317.1)",
+        "tonalRamp": [
+          "#17001F",
+          "#361241",
+          "#553161",
+          "#765083",
+          "#9971A6",
+          "#BC93CB",
+          "#E2B7F1",
+          "#F9E8FF"
+        ]
+      },
+      "dusk": {
+        "role": "neutral",
+        "displayName": "Dusk",
+        "canonical": "#1B0E21",
+        "oklch": "oklch(19.2% 0.041 314.5)",
+        "tonalRamp": [
+          "#110617",
+          "#2C1F33",
+          "#4A3B51",
+          "#6A5A72",
+          "#8C7B94",
+          "#AF9EB8",
+          "#D3C2DC",
+          "#F7E8FF"
+        ]
+      },
+      "on-dusk": {
+        "role": "neutral",
+        "displayName": "Dusk Text",
+        "canonical": "#EBDDEE",
+        "oklch": "oklch(91.4% 0.027 320.2)",
+        "tonalRamp": [
+          "#100712",
+          "#2B212D",
+          "#493D4B",
+          "#685C6B",
+          "#8A7D8D",
+          "#ADA0B0",
+          "#D1C4D4",
+          "#F7E9FA"
+        ]
+      },
+      "on-dusk-2": {
+        "role": "neutral",
+        "displayName": "Dusk Muted",
+        "canonical": "#C9B3CF",
+        "oklch": "oklch(79.4% 0.046 319.0)",
+        "tonalRamp": [
+          "#130517",
+          "#2F1E33",
+          "#4D3A52",
+          "#6D5972",
+          "#8F7A94",
+          "#B29CB8",
+          "#D6C0DD",
+          "#FAE7FF"
+        ]
+      },
+      "field-white": {
+        "role": "neutral",
+        "displayName": "Field White",
+        "canonical": "#FFFFFF",
+        "oklch": "oklch(100.0% 0.000 89.9)",
+        "tonalRamp": [
+          "#0B0B0B",
+          "#252525",
+          "#424242",
+          "#616161",
+          "#828282",
+          "#A5A5A5",
+          "#C9C9C9",
+          "#EEEEEE"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "Display",
+        "purpose": "The three-line hero headline only; the band and footer wordmark are larger one-offs."
+      },
+      "headline": {
+        "displayName": "Headline",
+        "purpose": "Every section heading, balanced, always carrying one italic phrase."
+      },
+      "title": {
+        "displayName": "Title",
+        "purpose": "Press and find-us headings, season names (italic), the quoted review on the plum panel (italic)."
+      },
+      "quote": {
+        "displayName": "Quote",
+        "purpose": "The serif reading voice: the story's lit paragraph (500), review quotes, press names."
+      },
+      "lead": {
+        "displayName": "Lead",
+        "purpose": "Ledes and section intros in soft plum."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "Running text, capped at 26 to 30rem."
+      },
+      "label": {
+        "displayName": "Label",
+        "purpose": "Diary status, season 'when' lines, captions, sources. Sentence case, never tracked."
+      },
+      "button": {
+        "displayName": "Button",
+        "purpose": "Pills, chips and text links."
+      }
+    },
+    "shadows": [
+      {
+        "name": "panel-seam",
+        "value": "0 -1px 0 rgba(42, 20, 51, .1)",
+        "purpose": "One-pixel plum edge on top of each stacked service panel after the first."
+      },
+      {
+        "name": "enquiry-lift",
+        "value": "0 40px 80px -50px rgba(42, 20, 51, .55)",
+        "purpose": "The only real drop shadow, under the enquiry card."
+      },
+      {
+        "name": "field-focus",
+        "value": "0 0 0 4px rgba(42, 20, 51, .14)",
+        "purpose": "Soft ring around a focused text field, with a plum border."
+      },
+      {
+        "name": "nav-glass",
+        "value": "background: color-mix(in srgb, #C8A2C8 82%, transparent); backdrop-filter: blur(14px) (dusk 78% over dark sections)",
+        "purpose": "The nav once the reader is past the hero."
+      },
+      {
+        "name": "hero-glow",
+        "value": "radial-gradient(52% 58% at 72% 52%, rgba(243, 234, 243, .72), rgba(243, 234, 243, 0) 72%)",
+        "purpose": "Pale light behind the hero flower; the only gradient light."
+      },
+      {
+        "name": "panel-settle",
+        "value": "scale 0.93 + dusk overlay opacity 0.38 (scrubbed)",
+        "purpose": "A stacked panel settling back as the next slides over it."
+      }
+    ],
+    "motion": [
+      {
+        "name": "ease",
+        "value": "cubic-bezier(0.22, 1, 0.36, 1)",
+        "purpose": "Every CSS state transition (0.35 to 0.6s) and the menu (0.8s)."
+      },
+      {
+        "name": "reveal-ease",
+        "value": "expo.out",
+        "purpose": "GSAP reveals: photo blooms, line rises, stop and hero intros."
+      },
+      {
+        "name": "bloom-photo",
+        "value": "clip-path circle(6% at 50% 58%) -> circle(76% at 50% 50%), 1.8s expo.out; img scale 1.35 -> 1.12 over 2.2s; clip-path cleared after",
+        "purpose": "Photographs entering (start: top 86%)."
+      },
+      {
+        "name": "button-fill",
+        "value": "clip-path circle(0% at 50% 100%) -> circle(140% at 50% 100%), 0.6s ease",
+        "purpose": "Pill hover and focus fill rising from the bottom."
+      },
+      {
+        "name": "menu-open",
+        "value": "clip-path circle(0% at calc(100% - 40px) 32px) -> circle(150% ...), 0.8s ease",
+        "purpose": "Mobile menu opening from its toggle."
+      },
+      {
+        "name": "line-rise",
+        "value": "SplitText lines, yPercent 105 -> 0, 1.3s, stagger 0.1, expo.out",
+        "purpose": "Only the story, weddings and band headings."
+      },
+      {
+        "name": "page-wash",
+        "value": "body background-color tween, 0.9s power2.out at top 55%",
+        "purpose": "Light sections washing the page ground; dusk sections excluded."
+      },
+      {
+        "name": "hero-intro-bloom",
+        "value": "flower bloom 0 -> 0.88, 3.4s power3.out",
+        "purpose": "The dahlia opening on load."
+      },
+      {
+        "name": "hero-dive",
+        "value": "pin +=125%, scrub 0.8; centre 0 to 0.4, dive 0.38 to 0.93 (power2.in), dusk veil 0.8 to 0.96",
+        "purpose": "Scroll into the flower."
+      },
+      {
+        "name": "season-morph",
+        "value": "pin +=320% desktop / +=260% phone; species morph in the middle 44% of each step (smoothstep)",
+        "purpose": "The flower year."
+      },
+      {
+        "name": "magnetic",
+        "value": "quickTo x 0.22, y 0.3, 0.5s power3; fine pointers only",
+        "purpose": "Buttons following the cursor."
+      },
+      {
+        "name": "smooth-scroll",
+        "value": "Lenis lerp 0.1",
+        "purpose": "Only when motion is allowed."
+      },
+      {
+        "name": "reduced-motion",
+        "value": "no Lenis, pins, washes or GSAP; CSS transitions and animations clamped to 0.01ms",
+        "purpose": "prefers-reduced-motion: reduce."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "phone",
+        "value": "max-width: 860px"
+      },
+      {
+        "name": "desktop",
+        "value": "min-width: 861px"
+      },
+      {
+        "name": "short-desktop",
+        "value": "max-height: 820px and min-width: 861px"
+      },
+      {
+        "name": "fine-pointer",
+        "value": "(hover: hover) and (pointer: fine)"
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Plum pill for the main action; a soft-plum fill rises from the bottom on hover and focus.",
+      "html": "<a class=\"ds-btn\" href=\"#\"><span>Enquire for your date</span></a>",
+      "css": ".ds-btn{--b-bg:var(--plum, #2A1433);--b-fg:var(--lilac-pale, #F3EAF3);--b-hover:var(--plum-2, #4A2656);position:relative;display:inline-flex;align-items:center;justify-content:center;min-height:52px;padding:0 28px;border-radius:999px;background:var(--b-bg);color:var(--b-fg);border:1.5px solid var(--b-bg);font-family:'Hanken Grotesk', system-ui, -apple-system, 'Segoe UI', sans-serif;font-weight:600;font-size:1rem;letter-spacing:0.005em;text-decoration:none;overflow:hidden;isolation:isolate;cursor:pointer;transition:color .45s var(--ease, cubic-bezier(0.22, 1, 0.36, 1)),border-color .45s var(--ease, cubic-bezier(0.22, 1, 0.36, 1)),transform .45s var(--ease, cubic-bezier(0.22, 1, 0.36, 1));}.ds-btn::before{content:'';position:absolute;inset:0;z-index:-1;background:var(--b-hover);border-radius:inherit;clip-path:circle(0% at 50% 100%);transition:clip-path .6s var(--ease, cubic-bezier(0.22, 1, 0.36, 1));}.ds-btn span{position:relative;}.ds-btn:hover::before,.ds-btn:focus-visible::before{clip-path:circle(140% at 50% 100%);}.ds-btn:focus-visible{outline:2px solid currentColor;outline-offset:4px;}.ds-btn:active{transform:scale(0.97);}"
+    },
+    {
+      "name": "Ghost Button",
+      "kind": "button",
+      "refersTo": "button-ghost",
+      "description": "Outlined pill for secondary actions on the service panels; the plum fill rises and the text flips to pale.",
+      "html": "<a class=\"ds-btn ds-btn--ghost\" href=\"#\"><span>Ask about bouquets</span></a>",
+      "css": ".ds-btn{--b-bg:var(--plum, #2A1433);--b-fg:var(--lilac-pale, #F3EAF3);--b-hover:var(--plum-2, #4A2656);position:relative;display:inline-flex;align-items:center;justify-content:center;min-height:52px;padding:0 28px;border-radius:999px;background:var(--b-bg);color:var(--b-fg);border:1.5px solid var(--b-bg);font-family:'Hanken Grotesk', system-ui, -apple-system, 'Segoe UI', sans-serif;font-weight:600;font-size:1rem;letter-spacing:0.005em;text-decoration:none;overflow:hidden;isolation:isolate;cursor:pointer;transition:color .45s var(--ease, cubic-bezier(0.22, 1, 0.36, 1)),border-color .45s var(--ease, cubic-bezier(0.22, 1, 0.36, 1)),transform .45s var(--ease, cubic-bezier(0.22, 1, 0.36, 1));}.ds-btn::before{content:'';position:absolute;inset:0;z-index:-1;background:var(--b-hover);border-radius:inherit;clip-path:circle(0% at 50% 100%);transition:clip-path .6s var(--ease, cubic-bezier(0.22, 1, 0.36, 1));}.ds-btn span{position:relative;}.ds-btn:hover::before,.ds-btn:focus-visible::before{clip-path:circle(140% at 50% 100%);}.ds-btn:focus-visible{outline:2px solid currentColor;outline-offset:4px;}.ds-btn:active{transform:scale(0.97);}.ds-btn--ghost{--b-bg:transparent;--b-fg:var(--plum, #2A1433);--b-hover:var(--plum, #2A1433);border-color:var(--plum, #2A1433);}.ds-btn--ghost:hover,.ds-btn--ghost:focus-visible{color:var(--lilac-pale, #F3EAF3);}"
+    },
+    {
+      "name": "Light Button on Dusk",
+      "kind": "button",
+      "refersTo": "button-light",
+      "description": "Lilac pill used on dusk grounds (the band, the dark nav); a pale fill rises on hover.",
+      "html": "<div class=\"ds-dusk\"><a class=\"ds-btn ds-btn--light\" href=\"#\"><span>Tell Ali about your day</span></a></div>",
+      "css": ".ds-btn{--b-bg:var(--plum, #2A1433);--b-fg:var(--lilac-pale, #F3EAF3);--b-hover:var(--plum-2, #4A2656);position:relative;display:inline-flex;align-items:center;justify-content:center;min-height:52px;padding:0 28px;border-radius:999px;background:var(--b-bg);color:var(--b-fg);border:1.5px solid var(--b-bg);font-family:'Hanken Grotesk', system-ui, -apple-system, 'Segoe UI', sans-serif;font-weight:600;font-size:1rem;letter-spacing:0.005em;text-decoration:none;overflow:hidden;isolation:isolate;cursor:pointer;transition:color .45s var(--ease, cubic-bezier(0.22, 1, 0.36, 1)),border-color .45s var(--ease, cubic-bezier(0.22, 1, 0.36, 1)),transform .45s var(--ease, cubic-bezier(0.22, 1, 0.36, 1));}.ds-btn::before{content:'';position:absolute;inset:0;z-index:-1;background:var(--b-hover);border-radius:inherit;clip-path:circle(0% at 50% 100%);transition:clip-path .6s var(--ease, cubic-bezier(0.22, 1, 0.36, 1));}.ds-btn span{position:relative;}.ds-btn:hover::before,.ds-btn:focus-visible::before{clip-path:circle(140% at 50% 100%);}.ds-btn:focus-visible{outline:2px solid currentColor;outline-offset:4px;}.ds-btn:active{transform:scale(0.97);}.ds-dusk{background:var(--dusk, #1B0E21);padding:32px;display:inline-block;}.ds-btn--light{--b-bg:var(--lilac, #C8A2C8);--b-fg:var(--plum, #2A1433);--b-hover:var(--lilac-pale, #F3EAF3);}"
+    },
+    {
+      "name": "Text Link",
+      "kind": "custom",
+      "refersTo": "text-link",
+      "description": "Secondary action beside a pill: a 1.5px underline that retracts to the right on hover while the trailing rule extends.",
+      "html": "<a class=\"ds-link\" href=\"#\">Our story</a>",
+      "css": ".ds-link{display:inline-flex;align-items:center;gap:10px;min-height:44px;font-family:'Hanken Grotesk', system-ui, -apple-system, 'Segoe UI', sans-serif;font-weight:600;color:var(--plum, #2A1433);text-decoration:none;background:linear-gradient(currentColor,currentColor) 0 calc(100% - 10px) / 100% 1.5px no-repeat;transition:background-size .5s var(--ease, cubic-bezier(0.22, 1, 0.36, 1));}.ds-link::after{content:'';width:18px;height:1.5px;background:currentColor;transform-origin:0 50%;transition:transform .5s var(--ease, cubic-bezier(0.22, 1, 0.36, 1));}.ds-link:hover{background-size:0% 1.5px;background-position:100% calc(100% - 10px);}.ds-link:hover::after{transform:translateX(4px) scaleX(1.5);}.ds-link:focus-visible{outline:2px solid currentColor;outline-offset:4px;border-radius:6px;}"
+    },
+    {
+      "name": "Choice Chip",
+      "kind": "chip",
+      "refersTo": "chip",
+      "description": "Pill checkbox in the enquiry; selected fills plum.",
+      "html": "<div class=\"ds-chips\"><label class=\"ds-chip\"><input type=\"checkbox\" checked><span>Bridal bouquets</span></label><label class=\"ds-chip\"><input type=\"checkbox\"><span>Table arrangements</span></label></div>",
+      "css": ".ds-chips{display:flex;flex-wrap:wrap;gap:8px;}.ds-chip{position:relative;cursor:pointer;}.ds-chip input{position:absolute;opacity:0;inset:0;margin:0;cursor:pointer;}.ds-chip span{display:inline-flex;align-items:center;min-height:44px;padding:0 18px;border-radius:999px;border:1.5px solid rgba(42,20,51,.45);font-family:'Hanken Grotesk', system-ui, -apple-system, 'Segoe UI', sans-serif;font-weight:600;font-size:0.95rem;color:var(--plum, #2A1433);transition:background-color .35s var(--ease, cubic-bezier(0.22, 1, 0.36, 1)),color .35s var(--ease, cubic-bezier(0.22, 1, 0.36, 1)),border-color .35s var(--ease, cubic-bezier(0.22, 1, 0.36, 1));}.ds-chip:hover span{border-color:var(--plum, #2A1433);}.ds-chip input:checked + span{background:var(--plum, #2A1433);color:var(--lilac-pale, #F3EAF3);border-color:var(--plum, #2A1433);}.ds-chip input:focus-visible + span{outline:2px solid var(--plum, #2A1433);outline-offset:3px;}"
+    },
+    {
+      "name": "Text Field",
+      "kind": "input",
+      "refersTo": "input",
+      "description": "White writing surface inside the enquiry card; plum border and soft ring on focus, studio caret.",
+      "html": "<div class=\"ds-field\"><label for=\"ds-venue\">Your venue</label><input id=\"ds-venue\" type=\"text\" placeholder=\"e.g. Cloughjordan House\"></div>",
+      "css": ".ds-field{font-family:'Hanken Grotesk', system-ui, -apple-system, 'Segoe UI', sans-serif;color:var(--plum, #2A1433);}.ds-field label{display:block;font-weight:600;margin-bottom:10px;font-size:1rem;}.ds-field input{width:100%;min-height:52px;padding:12px 16px;background:#fff;border:1.5px solid rgba(42,20,51,.45);border-radius:14px;font:inherit;font-size:1rem;line-height:1.4;color:inherit;caret-color:var(--studio, #A23F78);transition:border-color .3s var(--ease, cubic-bezier(0.22, 1, 0.36, 1)),box-shadow .3s var(--ease, cubic-bezier(0.22, 1, 0.36, 1));}.ds-field input::placeholder{color:#7A6280;}.ds-field input:focus{outline:none;border-color:var(--plum, #2A1433);box-shadow:0 0 0 4px rgba(42,20,51,.14);}"
+    },
+    {
+      "name": "Navigation",
+      "kind": "nav",
+      "refersTo": "nav",
+      "description": "Transparent fixed nav: Bodoni wordmark, four links with centre-out underlines, and the small Enquire pill. Turns to glass past the hero.",
+      "html": "<header class=\"ds-nav\"><a class=\"ds-nav__brand\" href=\"#\"><span class=\"ds-nav__word\">Clonakenny</span><span class=\"ds-nav__sub\">Flower Farm</span></a><nav class=\"ds-nav__links\"><a href=\"#\" aria-current=\"true\">Weddings</a><a href=\"#\">Our story</a><a href=\"#\">The year</a><a href=\"#\">Kind words</a></nav><a class=\"ds-btn ds-btn--small\" href=\"#\"><span>Enquire</span></a></header>",
+      "css": ".ds-btn{--b-bg:var(--plum, #2A1433);--b-fg:var(--lilac-pale, #F3EAF3);--b-hover:var(--plum-2, #4A2656);position:relative;display:inline-flex;align-items:center;justify-content:center;min-height:52px;padding:0 28px;border-radius:999px;background:var(--b-bg);color:var(--b-fg);border:1.5px solid var(--b-bg);font-family:'Hanken Grotesk', system-ui, -apple-system, 'Segoe UI', sans-serif;font-weight:600;font-size:1rem;letter-spacing:0.005em;text-decoration:none;overflow:hidden;isolation:isolate;cursor:pointer;transition:color .45s var(--ease, cubic-bezier(0.22, 1, 0.36, 1)),border-color .45s var(--ease, cubic-bezier(0.22, 1, 0.36, 1)),transform .45s var(--ease, cubic-bezier(0.22, 1, 0.36, 1));}.ds-btn::before{content:'';position:absolute;inset:0;z-index:-1;background:var(--b-hover);border-radius:inherit;clip-path:circle(0% at 50% 100%);transition:clip-path .6s var(--ease, cubic-bezier(0.22, 1, 0.36, 1));}.ds-btn span{position:relative;}.ds-btn:hover::before,.ds-btn:focus-visible::before{clip-path:circle(140% at 50% 100%);}.ds-btn:focus-visible{outline:2px solid currentColor;outline-offset:4px;}.ds-btn:active{transform:scale(0.97);}.ds-btn--small{min-height:44px;padding:0 20px;font-size:0.95rem;}.ds-nav{display:flex;align-items:center;gap:28px;padding:14px 32px;color:var(--plum, #2A1433);font-family:'Hanken Grotesk', system-ui, -apple-system, 'Segoe UI', sans-serif;background:color-mix(in srgb,var(--lilac, #C8A2C8) 82%,transparent);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);}.ds-nav__brand{display:flex;flex-direction:column;line-height:1;text-decoration:none;margin-right:auto;min-height:44px;justify-content:center;color:inherit;}.ds-nav__word{font-family:'Bodoni Moda', Didot, 'Bodoni 72', Georgia, serif;font-size:1.55rem;letter-spacing:-0.01em;}.ds-nav__sub{font-size:0.72rem;font-weight:600;letter-spacing:0.02em;margin-top:3px;opacity:.8;}.ds-nav__links{display:flex;gap:26px;}.ds-nav__links a{position:relative;text-decoration:none;color:inherit;font-weight:500;font-size:0.98rem;padding:12px 0;}.ds-nav__links a::after{content:'';position:absolute;left:50%;right:50%;bottom:8px;height:1.5px;background:currentColor;transition:left .45s var(--ease, cubic-bezier(0.22, 1, 0.36, 1)),right .45s var(--ease, cubic-bezier(0.22, 1, 0.36, 1));}.ds-nav__links a:hover::after,.ds-nav__links a[aria-current='true']::after{left:0;right:0;}.ds-nav__links a:focus-visible{outline:2px solid currentColor;outline-offset:4px;border-radius:6px;}"
+    },
+    {
+      "name": "Petal Photo Frame",
+      "kind": "custom",
+      "refersTo": "photo-frame",
+      "description": "Every photograph: two soft corners, two tips, a lilac-deep loading ground; it blooms open from a small circle at its centre.",
+      "html": "<figure class=\"ds-photo\"><div class=\"ds-photo__frame\"></div><figcaption>Hover to replay the bloom</figcaption></figure>",
+      "css": ".ds-photo{margin:0;width:240px;font-family:'Hanken Grotesk', system-ui, -apple-system, 'Segoe UI', sans-serif;color:var(--plum, #2A1433);}.ds-photo__frame{aspect-ratio:4/5;overflow:hidden;border-radius:var(--petal, clamp(28px, 6vw, 96px)) 10px var(--petal, clamp(28px, 6vw, 96px)) 10px;background:radial-gradient(60% 50% at 50% 45%,var(--lilac, #C8A2C8),var(--lilac-deep, #B488B6));clip-path:circle(76% at 50% 50%);transition:clip-path 1.8s cubic-bezier(0.16,1,0.3,1);}.ds-photo:hover .ds-photo__frame{animation:ds-bloom 1.8s cubic-bezier(0.16,1,0.3,1);}@keyframes ds-bloom{from{clip-path:circle(6% at 50% 58%);}to{clip-path:circle(76% at 50% 50%);}}.ds-photo figcaption{margin-top:12px;font-size:0.9rem;font-weight:500;}"
+    },
+    {
+      "name": "Email Draft Card",
+      "kind": "card",
+      "refersTo": "draft-card",
+      "description": "The enquiry's plain email draft: To and Subject rows, a hairline, and the message in Bodoni that rewrites itself from the form.",
+      "html": "<div class=\"ds-card\"><div class=\"ds-draft\"><p class=\"ds-draft__meta\"><span>To</span><span>ali@clonakennyflowerfarm.com</span></p><p class=\"ds-draft__meta\"><span>Subject</span><span>Wedding enquiry</span></p><p class=\"ds-draft__body\">Hello Ali! We're planning our wedding and would love to talk flowers.\nThanks!</p></div><a class=\"ds-btn\" href=\"#\"><span>Email Ali</span></a></div>",
+      "css": ".ds-btn{--b-bg:var(--plum, #2A1433);--b-fg:var(--lilac-pale, #F3EAF3);--b-hover:var(--plum-2, #4A2656);position:relative;display:inline-flex;align-items:center;justify-content:center;min-height:52px;padding:0 28px;border-radius:999px;background:var(--b-bg);color:var(--b-fg);border:1.5px solid var(--b-bg);font-family:'Hanken Grotesk', system-ui, -apple-system, 'Segoe UI', sans-serif;font-weight:600;font-size:1rem;letter-spacing:0.005em;text-decoration:none;overflow:hidden;isolation:isolate;cursor:pointer;transition:color .45s var(--ease, cubic-bezier(0.22, 1, 0.36, 1)),border-color .45s var(--ease, cubic-bezier(0.22, 1, 0.36, 1)),transform .45s var(--ease, cubic-bezier(0.22, 1, 0.36, 1));}.ds-btn::before{content:'';position:absolute;inset:0;z-index:-1;background:var(--b-hover);border-radius:inherit;clip-path:circle(0% at 50% 100%);transition:clip-path .6s var(--ease, cubic-bezier(0.22, 1, 0.36, 1));}.ds-btn span{position:relative;}.ds-btn:hover::before,.ds-btn:focus-visible::before{clip-path:circle(140% at 50% 100%);}.ds-btn:focus-visible{outline:2px solid currentColor;outline-offset:4px;}.ds-btn:active{transform:scale(0.97);}.ds-card{background:var(--lilac-pale, #F3EAF3);border-radius:36px 10px 36px 10px;padding:clamp(24px,3.6vw,52px);box-shadow:0 40px 80px -50px rgba(42,20,51,.55);font-family:'Hanken Grotesk', system-ui, -apple-system, 'Segoe UI', sans-serif;color:var(--plum, #2A1433);max-width:520px;}.ds-draft{margin:0 0 28px;padding:20px 22px 22px;background:#fff;border-radius:14px;border:1.5px solid rgba(42,20,51,.16);}.ds-draft__meta{margin:0 0 6px;font-size:0.9rem;color:var(--plum-2, #4A2656);display:flex;gap:10px;}.ds-draft__meta span:first-child{flex:none;width:4.5rem;font-weight:600;color:var(--plum, #2A1433);}.ds-draft__body{margin:16px 0 0;padding-top:16px;border-top:1px solid rgba(42,20,51,.12);font-family:'Bodoni Moda', Didot, 'Bodoni 72', Georgia, serif;font-size:clamp(1.2rem,1.1rem + 0.45vw,1.45rem);line-height:1.4;white-space:pre-line;}"
+    },
+    {
+      "name": "Diary Status",
+      "kind": "custom",
+      "refersTo": "label",
+      "description": "The studio dot marking the present: the diary line under the hero pill.",
+      "html": "<p class=\"ds-diary\"><span class=\"ds-diary__dot\"></span>2026 diary closed · a limited number of 2027 &amp; 2028 dates</p>",
+      "css": ".ds-diary{display:flex;align-items:center;gap:10px;margin:0;font-family:'Hanken Grotesk', system-ui, -apple-system, 'Segoe UI', sans-serif;font-size:clamp(0.84rem,0.8rem + 0.15vw,0.92rem);font-weight:600;color:var(--plum-2, #4A2656);}.ds-diary__dot{width:8px;height:8px;border-radius:50%;background:var(--studio, #A23F78);flex:none;}"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Lilac Field",
+    "overview": "The whole page is a field of Ali's favourite colour. Lilac is the ground under almost every section, and the farm's own photographs and one live, generative dahlia carry the romance on top of it. The flower is the proof of the claim \"grown from seed\": it is drawn petal by petal on the golden-angle spiral a real flower head grows on, it blooms as the page loads, and scrolling dives the camera down into its centre until dusk closes over it and the story begins. Dusk is the second place in the world: a near-black plum ground for the passages that should feel immersive (the story, the last service panel, the closing band, the footer).\n\nDensity is low and romantic but never vague. Big Bodoni Moda headlines turn on one italic phrase each; Hanken Grotesk carries every sentence and every label in plain sentence case. Photographs are framed as petals, two soft corners and two nearly square, and they arrive by blooming open from a small circle at their centre. Every action is a pill whose fill rises from the bottom edge. Colour moves with the reader: the page ground washes between lilac and pale as light sections pass, and tints through the seasons while the flower morphs species in the flower year.\n\nThe world rejects three things, as confirmed in the build's direction contract: the cream-and-sage florist template, the previous site's muted mauve (#845A8C with DM Serif Display and a system sans), and the dark-luxury opposite. Dusk here is a passage, never the default ground.",
+    "keyCharacteristics": [
+      "Drenched lilac ground with pale and mist as the only light alternates; dusk for immersive passages.",
+      "One accent, studio purple, used only as small marks of the present tense.",
+      "Bodoni Moda display with a romantic italic phrase in every headline; Hanken Grotesk for all text; no capitals.",
+      "Petal-framed photographs that bloom open from the centre as circles.",
+      "Pill actions with a fill that rises from the bottom; magnetic on fine pointers.",
+      "A raw-WebGL phyllotaxis flower: the hero dive and the season morph.",
+      "Complete without script or motion: every choreographed passage has a static reading."
+    ],
+    "rules": [
+      {
+        "name": "The Drenched Field Rule",
+        "body": "Every light section sits on lilac, pale or mist. Nothing turns cream, white or grey at section scale; pure white exists only as the writing surface inside the enquiry card.",
+        "section": "colors"
+      },
+      {
+        "name": "The Studio Is Now Rule",
+        "body": "Studio purple is the one accent and it marks the present tense, in small doses: dots, stars, the current step, the caret, the seed-head mark. It never sets running text on lilac (about 2.7:1 there) and never becomes a second button colour; when it is a fill, the text on it is lilac-pale (about 5.1:1).",
+        "section": "colors"
+      },
+      {
+        "name": "The Species Colour Rule",
+        "body": "Coral, gold, rust and green exist only inside the flower's species presets and in the photographs. The interface chrome never borrows them.",
+        "section": "colors"
+      },
+      {
+        "name": "The Romantic Italic Rule",
+        "body": "Every Bodoni headline turns on one italic phrase at the same weight (400), usually its second half: \"Kind *words*\", \"The season *decides*\", \"*just a little wild*\". On dusk the italic turns lilac; on light grounds it stays plum ink.",
+        "section": "typography"
+      },
+      {
+        "name": "The Sentence-Case Rule",
+        "body": "Nothing is set in capitals or tracked out. Hierarchy comes from the serif/sans switch, size and weight 600, never from uppercase or letterspacing; nothing sits above a heading to introduce it.",
+        "section": "typography"
+      },
+      {
+        "name": "The Optical Size Rule",
+        "body": "Bodoni Moda follows its rendered size (`font-optical-sizing: auto`). Never pin the opsz axis: the footer wordmark gets hairline contrast and the 1.55rem nav wordmark stays sturdy from the same file.",
+        "section": "typography"
+      },
+      {
+        "name": "The Sticky Intro Rule",
+        "body": "On desktop, a section's introducing column sticks (top 110 to 120px) while its partner column scrolls past: the story photo, the kind-words head, the enquiry intro.",
+        "section": "layout"
+      },
+      {
+        "name": "The 44px Floor Rule",
+        "body": "Every target is at least 44px tall: pills 52px, small pills and chips 44px, nav links and footer links padded to reach it, round review buttons 52px.",
+        "section": "layout"
+      },
+      {
+        "name": "The Dusk Paints Its Own Ground Rule",
+        "body": "With motion on, light sections go transparent and wash the page ground (lilac or pale, 0.9s, power2.out) as they cross 55% of the viewport. Dusk sections and the service panels never join the wash: they paint their own solid ground so they never tint a light neighbour still half on screen.",
+        "section": "elevation"
+      },
+      {
+        "name": "The Settle-Back Rule",
+        "body": "Stacked surfaces show depth by scaling back and dimming under dusk, never by casting a heavier shadow.",
+        "section": "elevation"
+      },
+      {
+        "name": "The Petal Rule",
+        "body": "A photograph is never a plain rectangle and never fully rounded: two soft corners, two tips. Only a small portrait vignette may go fully round.",
+        "section": "shapes"
+      },
+      {
+        "name": "The Bloom Rule",
+        "body": "Surfaces open as circles from their centre. Photos bloom from `circle(6% at 50% 58%)` to `circle(76% at 50% 50%)` over 1.8s expo.out while the image eases from scale 1.35 to 1.12, then the clip-path is cleared; the quote panel blooms from 8%; the mobile menu opens as a circle from its toggle; the button fill rises as a circle from the bottom edge. Nothing is revealed by a straight-edged wipe.",
+        "section": "shapes"
+      },
+      {
+        "name": "The Three Authored Moments Rule",
+        "body": "Only three section headings (the story, weddings and the band) rise line by line out of masks as they enter (1.3s, 0.1s stagger, expo.out), plus the hero headline on load and the footer wordmark by character. The story's lead paragraph lights word by word as it is read. Everything else is simply there.",
+        "section": "components"
+      },
+      {
+        "name": "The Still Page Rule",
+        "body": "With `prefers-reduced-motion`, or without GSAP, the page drops smooth scrolling, pins and washes: sections keep their own grounds, season stops and reviews stay readable, transitions shrink to near zero. Without JavaScript, reviews stack, the draft and season hint hide, and the phone nav shows the Enquire pill in place of the toggle. Nothing essential depends on the choreography.",
+        "section": "components"
+      }
+    ],
+    "dos": [
+      "Do set every light section on lilac (#C8A2C8), pale (#F3EAF3) or mist (#E7D6E8), and keep dusk (#1B0E21) for immersive passages that paint their own ground.",
+      "Do give every Bodoni headline one italic phrase at weight 400, lilac on dusk and plum on light grounds.",
+      "Do frame photographs as petals: two corners at clamp(28px, 6vw, 96px), two at 10px, mirrored on alternating panels, with a lilac-deep loading ground.",
+      "Do reveal photos and panels by blooming a circle from the centre with expo.out, then clear the clip-path.",
+      "Do make actions pills whose hover fill rises from the bottom edge as a circle over 0.6s on cubic-bezier(0.22, 1, 0.36, 1).",
+      "Do keep studio purple (#A23F78) to small marks of the present: a status dot, the current step, stars, the caret, the seed-head mark.",
+      "Do use the seed-head mark (dots on the golden angle, from the flower's own geometry) as the only ornament.",
+      "Do keep every target at least 44px and every text pair at WCAG AA: plum or soft plum on the light grounds, on-dusk or on-dusk-2 on dusk.",
+      "Do give every choreographed passage a static reading for reduced motion and for no JavaScript."
+    ],
+    "donts": [
+      "Don't drift toward the cream-and-sage florist template, the old muted mauve (#845A8C) with DM Serif Display, or a dark-luxury page; dusk is a passage, never the default ground.",
+      "Don't use studio purple for running text on lilac, or as a second button fill.",
+      "Don't set anything in uppercase or tracked capitals, or place an eyebrow or kicker above a heading.",
+      "Don't number sections (01, 02) or build a stats strip of big numbers over small labels.",
+      "Don't use glyph or icon-font icons; functional SVG (arrows, rating stars) stays small and plain.",
+      "Don't dress the enquiry as a craft object (a gift tag, label or envelope); it stays a plain email draft card.",
+      "Don't bring the flower's species colours (coral, gold, rust, green) into the interface.",
+      "Don't let dusk sections join the page colour wash.",
+      "Don't reveal a photo or panel with a straight-edged wipe; surfaces bloom as circles.",
+      "Don't pin Bodoni Moda's optical size; let it follow the rendered size."
+    ]
+  }
+}

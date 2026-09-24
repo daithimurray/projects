@@ -41,11 +41,8 @@
       li.querySelector('figcaption').textContent = p.caption || '';
       list.appendChild(li);
     });
-    if (!gallery.length) {
-      var gal = $('.gallery');
-      gal.hidden = true;
-      $$('a[href="#flowers"]').forEach(function (a) { a.setAttribute('href', '#bouquets'); });
-    }
+    // The section ships hidden, so it stays out of the way without JS or photos.
+    if (gallery.length) $('.gallery').hidden = false;
   }
 
   function markMissing(fig) {
@@ -221,7 +218,7 @@
      Enquiry: pick what fits, the email writes itself
      ------------------------------------------------------------------ */
   var form = $('[data-composer]');
-  var tagText = $('[data-tag-text]');
+  var draftBody = $('[data-draft-body]');
   var draft = $('.draft');
   var subjectEl = $('[data-draft-subject]');
   var seasonEl = $('[data-season]');
@@ -251,11 +248,11 @@
     lines.push(name ? 'Thanks, ' + name : 'Thanks!');
     return { body: lines.join('\n'), date: date };
   }
-  var swingT;
-  function updateComposer(swing) {
+  var writingT;
+  function updateComposer(writing) {
     if (!form) return;
     var msg = buildMessage();
-    tagText.textContent = msg.body;
+    draftBody.textContent = msg.body;
     var subject = 'Wedding enquiry' + (msg.date ? ', ' + msg.date : '');
     $('[data-send="email"]').href = 'mailto:' + EMAIL + '?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(msg.body);
     var dateVal = form.querySelector('#c-date').value;
@@ -267,11 +264,11 @@
       seasonEl.hidden = true;
     }
     subjectEl.textContent = subject;
-    if (swing && motion) {
+    if (writing && motion) {
       // The line being written dims for a beat, like ink settling.
       draft.classList.add('is-writing');
-      clearTimeout(swingT);
-      swingT = setTimeout(function () { draft.classList.remove('is-writing'); }, 160);
+      clearTimeout(writingT);
+      writingT = setTimeout(function () { draft.classList.remove('is-writing'); }, 160);
     }
   }
   function setWant(value) {
@@ -455,21 +452,19 @@
     if (img) gsap.fromTo(img, { scale: 1.35 }, { scale: 1.12, duration: 2.2, ease: 'expo.out', scrollTrigger: { trigger: trigger || frame, start: 'top 86%', once: true } });
   }
   $$('.story__photo .photo__frame, .offer__photo .photo__frame').forEach(function (f) { bloomPhoto(f); });
-  $$('.story__photo .photo__frame img, .weddings__photo img').forEach(function (img) {
+  $$('.story__photo .photo__frame img').forEach(function (img) {
     gsap.fromTo(img, { yPercent: -6 }, {
       yPercent: 6, ease: 'none',
       scrollTrigger: { trigger: img.closest('.photo'), start: 'top bottom', end: 'bottom top', scrub: true }
     });
   });
-  var wedImg = $('.weddings__photo img');
-  if (wedImg) gsap.set(wedImg, { scale: 1.14 });
 
   /* Gallery: sideways on desktop, with parallax inside each frame and a flutter on speed */
   var mm = gsap.matchMedia();
   mm.add('(min-width: 861px)', function () {
     var track = $('.gallery__list');
     if (!track || !track.children.length) return;
-    var distance = function () { return Math.max(0, track.scrollWidth - window.innerWidth + parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--gutter')) * 0 + 64); };
+    var distance = function () { return Math.max(0, track.scrollWidth - window.innerWidth + 64); };
     var tween = gsap.to(track, {
       x: function () { return -distance(); }, ease: 'none',
       scrollTrigger: {
