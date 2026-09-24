@@ -2,9 +2,11 @@
 // Upgrade: an interactive before/after of the same hall wall. Before, a
 // yellowed beige keypad blinking FAULT; after, a slim touchscreen keypad and a
 // phone with an app notification. The divider is a real <input type="range">.
-// Robert C.'s testimonial closes the section as its proof.
+// Three customers who upgraded close the section as its proof: Melanie R. as
+// the lead pull-quote, Mary T. and Dave G. beside each other beneath her.
+// Every quote is verbatim from content.js; never edit the wording.
 import { upgrade, testimonials, upgradeVoices, upgradeScene as scene } from '../data/content.js';
-const testimonial = testimonials[upgradeVoices[0]];
+const [lead, ...others] = upgradeVoices.map((id) => testimonials[id as keyof typeof testimonials]);
 
 // ---- 14-segment LCD text for the old keypad, built as two paths (lit, ghost) ----
 const T = 4.2;
@@ -61,13 +63,13 @@ const keys = keyLabels.map((label, i) => ({
 // The last two words of each sentence are bound, so no word is left alone on a line.
 const titleSentences = upgrade.title.split(/(?<=[?.!])\s+/).map((s) => s.replace(/\s+(\S+)$/, '\u00a0$1'));
 
-// ---- The testimonial, with its strongest phrase marked ----
+// ---- The lead testimonial, with its strongest phrase marked ----
 const phrase = 'didn’t have to change much';
-const at = testimonial.quote.indexOf(phrase);
+const at = lead.quote.indexOf(phrase);
 const quoteParts =
   at === -1
-    ? { pre: testimonial.quote, mark: '', post: '' }
-    : { pre: testimonial.quote.slice(0, at), mark: phrase, post: testimonial.quote.slice(at + phrase.length) };
+    ? { pre: lead.quote, mark: '', post: '' }
+    : { pre: lead.quote.slice(0, at), mark: phrase, post: lead.quote.slice(at + phrase.length) };
 ---
 
 <section id="upgrades" class="section upgrade is-night" aria-labelledby="upgrade-title" data-upgrade>
@@ -219,7 +221,7 @@ const quoteParts =
                 </linearGradient>
                 <linearGradient id="up-pscreen" x1="0" y1="0" x2="0" y2="1">
                   <stop offset="0" stop-color="#15233d" />
-                  <stop offset=".7" stop-color="#0c1628" />
+                  <stop offset=".7" style="stop-color: var(--night-900)" />
                   <stop offset="1" stop-color="#2b2433" />
                 </linearGradient>
                 <filter id="up-soft2" x="-20%" y="-20%" width="140%" height="140%">
@@ -347,20 +349,45 @@ const quoteParts =
       </figure>
     </div>
 
-    <figure class="quote" data-quote>
-      <svg class="quote__mark" viewBox="0 0 92 64" aria-hidden="true" focusable="false" data-quote-mark>
-        <path d="M19.5 64C8.4 64 0 55.9 0 44.4 0 24.6 13.7 7.8 34.6 0l3.6 6.8C25.7 12.6 18.6 21 17.7 29.6c1.4-.6 3-.9 4.8-.9 10 0 17.3 7.3 17.3 17.4C39.8 56.1 31.3 64 19.5 64Z" />
-        <path d="M71.7 64C60.6 64 52.2 55.9 52.2 44.4 52.2 24.6 65.9 7.8 86.8 0l3.6 6.8C77.9 12.6 70.8 21 69.9 29.6c1.4-.6 3-.9 4.8-.9 10 0 17.3 7.3 17.3 17.4C92 56.1 83.5 64 71.7 64Z" />
-      </svg>
-      <blockquote class="quote__text">
-        <p>{quoteParts.pre}{quoteParts.mark && <mark class="quote__mark-phrase" data-quote-phrase>{quoteParts.mark}</mark>}{quoteParts.post}</p>
-      </blockquote>
-      <figcaption class="quote__by">
-        <span class="quote__name">{testimonial.name}</span>
-        <span class="quote__place">{testimonial.place}</span>
-        <span class="quote__job data">{testimonial.job}</span>
-      </figcaption>
-    </figure>
+    <div class="proof">
+      <figure class="quote" data-quote>
+        <svg class="quote__mark" viewBox="0 0 92 64" aria-hidden="true" focusable="false" data-quote-mark>
+          <path d="M19.5 64C8.4 64 0 55.9 0 44.4 0 24.6 13.7 7.8 34.6 0l3.6 6.8C25.7 12.6 18.6 21 17.7 29.6c1.4-.6 3-.9 4.8-.9 10 0 17.3 7.3 17.3 17.4C39.8 56.1 31.3 64 19.5 64Z" />
+          <path d="M71.7 64C60.6 64 52.2 55.9 52.2 44.4 52.2 24.6 65.9 7.8 86.8 0l3.6 6.8C77.9 12.6 70.8 21 69.9 29.6c1.4-.6 3-.9 4.8-.9 10 0 17.3 7.3 17.3 17.4C92 56.1 83.5 64 71.7 64Z" />
+        </svg>
+        <blockquote class="quote__text">
+          <p>{quoteParts.pre}{quoteParts.mark && <mark class="quote__phrase" data-quote-phrase>{quoteParts.mark}</mark>}{quoteParts.post}</p>
+        </blockquote>
+        <figcaption class="byline byline--lead">
+          <span class="byline__who">
+            <span class="byline__name">{lead.name}</span><span class="visually-hidden">, </span>
+            <span class="byline__place">{lead.place}</span><span class="visually-hidden">. </span>
+          </span>
+          <span class="byline__job">{lead.job}</span>
+        </figcaption>
+      </figure>
+
+      <div class="voices">
+        {
+          others.map((t) => (
+            <figure class="voice" data-voice>
+              <blockquote class="voice__text">
+                <p>{t.quote}</p>
+              </blockquote>
+              <figcaption class="byline">
+                <span class="byline__who">
+                  <span class="byline__name">{t.name}</span>
+                  <span class="visually-hidden">, </span>
+                  <span class="byline__place">{t.place}</span>
+                  <span class="visually-hidden">. </span>
+                </span>
+                <span class="byline__job">{t.job}</span>
+              </figcaption>
+            </figure>
+          ))
+        }
+      </div>
+    </div>
   </div>
 </section>
 
@@ -492,10 +519,11 @@ const quoteParts =
     fill: var(--dusk-200);
   }
 
-  /* The FAULT display and red LED blink while the frame is on screen */
+  /* The FAULT display and red LED blink while the frame is on screen. Paused
+     (the header's pause control) or with reduced motion they rest lit. */
   @media (prefers-reduced-motion: no-preference) {
-    .cmp.is-live .cmp-lcd,
-    .cmp.is-live .cmp-fault {
+    :global(html:not(.motion-paused)) .cmp.is-live .cmp-lcd,
+    :global(html:not(.motion-paused)) .cmp.is-live .cmp-fault {
       animation: cmp-blink 1.3s steps(1, end) infinite;
     }
   }
@@ -512,7 +540,7 @@ const quoteParts =
     z-index: 2;
     padding: 0.3rem 0.6rem;
     border-radius: var(--radius-xs);
-    background: rgb(7 13 25 / 0.82);
+    background: color-mix(in srgb, var(--night-950) 84%, transparent);
     color: var(--dusk-50);
     font-family: var(--font-display);
     font-stretch: 112%;
@@ -549,7 +577,7 @@ const quoteParts =
     left: -1px;
     width: 2px;
     background: var(--dusk-50);
-    box-shadow: 0 0 0 1px rgb(7 13 25 / 0.35);
+    box-shadow: 0 0 0 1px color-mix(in srgb, var(--night-950) 35%, transparent);
   }
   .cmp__grip {
     position: absolute;
@@ -581,7 +609,17 @@ const quoteParts =
     outline-offset: 3px;
   }
 
-  /* The real control: a range input over the whole frame */
+  /* The real control: a range input over the whole frame. Once the script is
+     running, pointers are handled on the stage instead (see the script), so a
+     vertical swipe that starts on the frame scrolls the page and never snaps
+     the slider. Keyboard and assistive tech still use the range itself. */
+  .cmp.is-enhanced .cmp__stage {
+    cursor: ew-resize;
+    touch-action: pan-y;
+  }
+  .cmp.is-enhanced .cmp__range {
+    pointer-events: none;
+  }
   .cmp__range {
     position: absolute;
     inset: 0;
@@ -641,19 +679,23 @@ const quoteParts =
     color: var(--dusk-300);
   }
 
-  /* ---------- Testimonial ---------- */
+  /* ---------- Proof: three customers who upgraded ---------- */
+  .proof {
+    --q-gap: clamp(1.5rem, 0.5rem + 2vw, 3rem);
+    margin-top: clamp(5rem, 3rem + 7vw, 9rem);
+  }
   .quote {
     display: grid;
     grid-template-columns: minmax(0, 1fr);
     row-gap: var(--space-5);
-    margin-top: clamp(5rem, 3rem + 7vw, 9rem);
   }
   .quote__mark {
     width: clamp(3.5rem, 2.8rem + 3vw, 6rem);
     height: auto;
     fill: var(--sodium-500);
   }
-  .quote__text {
+  .quote__text,
+  .voice__text {
     margin: 0;
   }
   .quote__text p {
@@ -666,7 +708,8 @@ const quoteParts =
     color: var(--dusk-50);
     text-wrap: pretty;
   }
-  .quote__mark-phrase {
+  /* Her phrase: heavier, with a sodium underline drawn in as it arrives */
+  .quote__phrase {
     --u: 100%;
     padding-bottom: 0.04em;
     background-color: transparent;
@@ -677,26 +720,73 @@ const quoteParts =
     color: inherit;
     font-weight: 650;
   }
-  .quote__by {
+
+  /* The two supporting voices, side by side on wider screens */
+  .voices {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: clamp(2.75rem, 2rem + 2vw, 3.5rem) clamp(2rem, 1rem + 3vw, 4.5rem);
+    margin-top: clamp(3.5rem, 2.5rem + 3vw, 5.5rem);
+  }
+  .voice {
+    display: grid;
+    grid-template-rows: 1fr auto;
+    row-gap: var(--space-5);
+  }
+  .voice__text p {
+    max-width: 38ch;
+    font-size: var(--step-1);
+    line-height: 1.45;
+    color: var(--dusk-50);
+    hanging-punctuation: first last;
+  }
+  .voice__text p::before {
+    content: '\201C';
+    color: var(--sodium-500);
+  }
+  .voice__text p::after {
+    content: '\201D';
+    color: var(--sodium-500);
+  }
+
+  /* Attribution: name and place, then the job. Labels, so Atkinson, not the data face */
+  .byline {
+    display: grid;
+    row-gap: 0.3rem;
+    padding-top: var(--space-4);
+    border-top: 1px solid var(--rule);
+  }
+  .byline--lead {
+    padding-top: var(--space-5);
+    max-width: 44rem;
+  }
+  .byline__who {
     display: flex;
     flex-wrap: wrap;
     align-items: baseline;
-    gap: 0.35rem 1.1rem;
-    padding-top: var(--space-5);
-    border-top: 1px solid var(--rule);
-    max-width: 44rem;
+    gap: 0.1rem 0.85rem;
   }
-  .quote__name {
+  .byline__name {
     font-family: var(--font-display);
     font-stretch: 112%;
     font-weight: 700;
-    font-size: var(--step-1);
+    font-size: var(--step-0);
+    line-height: 1.2;
     color: var(--dusk-50);
   }
-  .quote__place {
+  .byline--lead .byline__name {
+    font-size: var(--step-1);
+  }
+  .byline__place {
+    font-size: var(--step--1);
     color: var(--dusk-200);
   }
-  .quote__job {
+  .byline--lead .byline__place {
+    font-size: var(--step-0);
+  }
+  .byline__job {
+    font-size: var(--step--1);
+    line-height: 1.4;
     color: var(--dusk-300);
   }
 
@@ -704,6 +794,9 @@ const quoteParts =
     .cmp__caption {
       grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) auto;
       align-items: baseline;
+    }
+    .voices {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
     }
   }
 
@@ -718,7 +811,7 @@ const quoteParts =
     }
     .quote {
       grid-template-columns: minmax(0, 2fr) minmax(0, 10fr);
-      column-gap: clamp(1.5rem, 0.5rem + 2vw, 3rem);
+      column-gap: var(--q-gap);
       align-items: start;
     }
     .quote__mark {
@@ -726,19 +819,24 @@ const quoteParts =
       justify-self: end;
       margin-top: 0.4rem;
     }
+    /* The voices hang from the lead quote's text column */
+    .voices {
+      margin-left: calc((100% - var(--q-gap)) / 6 + var(--q-gap));
+    }
   }
 </style>
 
 <script>
-  import { boot, gsap, ScrollTrigger, motionOK } from '../scripts/motion.js';
+  import { boot, gsap, ScrollTrigger, motionOK, later, lightsOn } from '../scripts/motion.js';
 
   boot();
 
   const root = document.querySelector('[data-upgrade]');
   const cmp = root?.querySelector('[data-cmp]');
+  const stage = cmp?.querySelector('.cmp__stage');
   const input = cmp?.querySelector('[data-cmp-range]');
 
-  if (root && cmp && input) {
+  if (root && cmp && stage && input) {
     const notif = cmp.querySelector('[data-notif]');
     const halo = cmp.querySelector('[data-notif-halo]');
     const template = input.dataset.valuetext || '';
@@ -801,95 +899,139 @@ const quoteParts =
       render(Number(input.value));
     });
 
-    // Touch: drag anywhere across the frame, while vertical swipes still scroll
+    /*
+     * Pointers are handled on the stage, not the range: a native range sets its
+     * value the moment a finger lands, so a vertical scroll that starts on the
+     * frame would snap the slider. Here a mouse press moves it straight away (as
+     * the native control did), but touch and pen only move it once the gesture
+     * is clearly horizontal; the stage's touch-action: pan-y leaves vertical
+     * swipes to the browser, which scrolls and cancels the pointer.
+     */
+    cmp.classList.add('is-enhanced');
     let drag = null;
     const setFromX = (clientX) => {
-      const r = input.getBoundingClientRect();
+      const r = stage.getBoundingClientRect();
       const v = Math.min(100, Math.max(0, ((clientX - r.left - 22) / (r.width - 44)) * 100));
-      input.value = String(Math.round(v));
+      const next = String(Math.round(v));
+      if (next === input.value) return;
+      input.value = next;
       input.dispatchEvent(new Event('input', { bubbles: true }));
     };
-    input.addEventListener('pointerdown', (e) => {
-      if (e.pointerType === 'mouse') return;
-      drag = { x: e.clientX, y: e.clientY, active: false };
+    stage.addEventListener('pointerdown', (e) => {
+      if (!e.isPrimary || e.button !== 0) return;
+      if (e.pointerType === 'mouse') {
+        input.focus({ preventScroll: true });
+        drag = { id: e.pointerId, active: true };
+        stage.setPointerCapture(e.pointerId);
+        setFromX(e.clientX);
+        return;
+      }
+      drag = { id: e.pointerId, x: e.clientX, y: e.clientY, active: false };
     });
-    input.addEventListener('pointermove', (e) => {
-      if (!drag) return;
+    // Keep focus on the range after a mouse press, and never start a text selection
+    stage.addEventListener('mousedown', (e) => e.preventDefault());
+    stage.addEventListener('pointermove', (e) => {
+      if (!drag || e.pointerId !== drag.id) return;
       if (!drag.active) {
         const dx = Math.abs(e.clientX - drag.x);
         const dy = Math.abs(e.clientY - drag.y);
-        if (dx < 6 && dy < 6) return;
-        if (dy > dx) {
+        if (dx < 8 && dy < 8) return;
+        if (dy >= dx) {
           drag = null;
           return;
         }
         drag.active = true;
+        stage.setPointerCapture(e.pointerId);
       }
       setFromX(e.clientX);
     });
-    const endDrag = () => (drag = null);
-    input.addEventListener('pointerup', endDrag);
-    input.addEventListener('pointercancel', endDrag);
+    const endDrag = (e) => {
+      if (drag && e.pointerId === drag.id) drag = null;
+    };
+    stage.addEventListener('pointerup', endDrag);
+    stage.addEventListener('pointercancel', endDrag);
+    // Taking capture from the child under the finger fires this on that child
+    // (it bubbles here), so only the stage's own loss ends the drag
+    stage.addEventListener('lostpointercapture', (e) => e.target === stage && endDrag(e));
 
     render(Number(input.value));
 
-    // The LCD only blinks while the frame is on screen
+    // The FAULT display only blinks while the frame is on screen (CSS pauses it
+    // with the header's pause control, and the browser stops it in hidden tabs)
     if ('IntersectionObserver' in window) {
       new IntersectionObserver(([entry]) => cmp.classList.toggle('is-live', entry.isIntersecting)).observe(cmp);
     }
 
+    // The rest is decoration, built after first paint in idle time. Anything
+    // the reader has already reached (a deep link) stays as it is.
     if (motion) {
-      // sweep: each sentence of the heading rises through its own mask
-      const sentences = root.querySelectorAll('[data-sentence]');
-      gsap.set(sentences, { yPercent: 108 });
-      gsap.to(sentences, {
-        yPercent: 0,
-        duration: 1.05,
-        ease: 'expo.out',
-        stagger: 0.11,
-        scrollTrigger: { trigger: root.querySelector('[data-upgrade-title]'), start: 'top 82%', once: true },
-      });
+      later(() => {
+        // All positions are read before any state is written (one layout pass)
+        const ahead = (el, at) => !!el && el.getBoundingClientRect().top > window.innerHeight * at;
+        const title = root.querySelector('[data-upgrade-title]');
+        const quote = root.querySelector('[data-quote]');
+        const qmark = root.querySelector('[data-quote-mark]');
+        const phrase = root.querySelector('[data-quote-phrase]');
+        const titleAhead = ahead(title, 0.82);
+        const quoteAhead = ahead(quote, 0.72);
+        const voices = [...root.querySelectorAll('[data-voice]')].filter((v) => ahead(v, 0.84));
 
-      // Teach the control: the handle nudges once, then the notification lands
-      hideNotif();
-      phoneShown = false;
-      const state = { v: 50 };
-      const apply = () => {
-        input.value = String(Math.round(state.v));
-        cmp.style.setProperty('--v', state.v.toFixed(2));
-      };
-      ScrollTrigger.create({
-        trigger: cmp,
-        start: 'top 70%',
-        once: true,
-        onEnter: () => {
-          if (introDone) return;
-          state.v = Number(input.value);
-          nudge = gsap
-            .timeline({ delay: 0.35, onUpdate: apply, onComplete: finishIntro })
-            .to(state, { v: 58, duration: 0.55, ease: 'power2.inOut' })
-            .to(state, { v: 45, duration: 0.7, ease: 'power2.inOut' })
-            .to(state, { v: 50, duration: 0.55, ease: 'power2.out' });
-        },
-      });
+        // sweep: each sentence of the heading rises through its own mask
+        if (titleAhead) {
+          const sentences = title.querySelectorAll('[data-sentence]');
+          gsap.set(sentences, { yPercent: 108 });
+          gsap.to(sentences, {
+            yPercent: 0,
+            duration: 1.05,
+            ease: 'expo.out',
+            stagger: 0.11,
+            scrollTrigger: { trigger: title, start: 'top 82%', once: true },
+          });
+        }
 
-      // Testimonial: the quote mark trips on, then the underline is drawn in
-      const quote = root.querySelector('[data-quote]');
-      const qmark = root.querySelector('[data-quote-mark]');
-      const phrase = root.querySelector('[data-quote-phrase]');
-      if (quote && qmark) {
-        gsap.set(qmark, { opacity: 0.12 });
-        if (phrase) gsap.set(phrase, { '--u': '0%' });
-        const tl = gsap.timeline({ scrollTrigger: { trigger: quote, start: 'top 72%', once: true } });
-        tl.to(qmark, {
-          keyframes: [
-            { opacity: 1, duration: 0.06, ease: 'none' },
-            { opacity: 0.45, duration: 0.05, ease: 'none' },
-            { opacity: 1, duration: 0.8, ease: 'expo.out' },
-          ],
-        });
-        if (phrase) tl.to(phrase, { '--u': '100%', duration: 1.1, ease: 'power2.inOut' }, 0.45);
-      }
+        // Teach the control: the handle nudges once, then the notification lands
+        if (!introDone) {
+          hideNotif();
+          phoneShown = false;
+          const state = { v: 50 };
+          const apply = () => {
+            input.value = String(Math.round(state.v));
+            cmp.style.setProperty('--v', state.v.toFixed(2));
+          };
+          ScrollTrigger.create({
+            trigger: cmp,
+            start: 'top 70%',
+            once: true,
+            onEnter: () => {
+              if (introDone) return;
+              state.v = Number(input.value);
+              nudge = gsap
+                .timeline({ delay: 0.35, onUpdate: apply, onComplete: finishIntro })
+                .to(state, { v: 58, duration: 0.55, ease: 'power2.inOut' })
+                .to(state, { v: 45, duration: 0.7, ease: 'power2.inOut' })
+                .to(state, { v: 50, duration: 0.55, ease: 'power2.out' });
+            },
+          });
+        }
+
+        // The lead quote: its mark trips on, then her phrase is underlined
+        if (quoteAhead && qmark) {
+          gsap.set(qmark, { opacity: 0.12 });
+          if (phrase) gsap.set(phrase, { '--u': '0%' });
+          const tl = gsap.timeline({ scrollTrigger: { trigger: quote, start: 'top 72%', once: true } });
+          tl.to(qmark, {
+            keyframes: [
+              { opacity: 1, duration: 0.06, ease: 'none' },
+              { opacity: 0.45, duration: 0.05, ease: 'none' },
+              { opacity: 1, duration: 0.8, ease: 'expo.out' },
+            ],
+          });
+          if (phrase) tl.to(phrase, { '--u': '100%', duration: 1.1, ease: 'power2.inOut' }, 0.45);
+        }
+
+        // The two supporting voices trip on together as they arrive
+        if (voices.length) lightsOn(voices, { trigger: voices[0], start: 'top 84%', stagger: 0.14 });
+      });
     }
   }
 </script>

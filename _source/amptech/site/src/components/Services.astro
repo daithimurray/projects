@@ -1,9 +1,12 @@
 ---
-// Services: a lit, ruled index of zones, like an alarm panel's zone list.
-// Left: heading, lede, a floodlight-on-a-wall vignette and the phone CTA
-// (sticky on wide screens). Right: seven rows. Each row "trips" as it scrolls
-// in, and lights up under the pointer or keyboard focus, where its drawn
-// glyph plays its own small movement. Hovering a row also re-trips the lamp.
+// Services: a lit, ruled index, like an alarm panel's zone list, in two groups
+// ("New systems", "Looking after them") that use the client's own service names.
+// Left: heading, lede, then a floodlight-on-a-wall vignette with the phone CTA.
+// On wide screens the vignette and CTA stay beside the list while it scrolls
+// (the heading scrolls away, so the stuck block always fits a laptop screen).
+// Each row "trips" as it scrolls in and lights up under the pointer or keyboard
+// focus, where its drawn glyph plays its own small movement. Hovering a row
+// also re-trips the lamp.
 import Icon from './Icon.astro';
 import { company, hero, services, servicesUi } from '../data/content.js';
 
@@ -27,13 +30,34 @@ const glyphs: Record<string, string> = {
   lighting:
     '<path d="M3.5 4.6v7"/><path d="M3.5 8.1h2.2"/><path d="M6.1 5.2 13 7.6l-1.6 4.8-6.6-2.4Z"/>' +
     '<path class="g-lit g-beam" pathLength="1" d="M14.3 8.8 20.6 11"/><path class="g-lit g-beam" pathLength="1" d="m13.5 11.8 5.3 4.8"/><path class="g-lit g-beam" pathLength="1" d="m12.2 14 3 5.8"/>',
+  // Door and a fob reader: the reader goes green, then the door swings open
+  access:
+    '<path d="M2 20.5h20"/><path d="M3.3 20.5V3.8h11.8v16.7"/>' +
+    '<g class="g-leaf"><path d="M5.9 20.5V6.4h6.6v14.1"/><path d="M10.7 12.6v1.8"/></g>' +
+    '<rect x="18" y="8.4" width="3.5" height="6.2" rx="1.1"/><path d="M19.05 12.6h1.4"/>' +
+    '<circle class="g-reader" cx="19.75" cy="10.3" r=".8" stroke="none"/>',
   // Wrench: turns on the nut
   upgrades:
     '<g class="g-wrench"><path d="M14.5 4a4.5 4.5 0 0 0-4.2 6.1l-6 6a1.8 1.8 0 0 0 2.6 2.6l6-6A4.5 4.5 0 0 0 19.5 8l-2.8 2.8-2.5-.7-.7-2.5L16.3 4.8A4.5 4.5 0 0 0 14.5 4Z"/></g>',
-  // Service clock: the minute hand ticks round
+  // The engineer's report on a clipboard: the checks tick off, then it is signed
   maintenance:
-    '<circle cx="12" cy="12" r="8.5"/><path d="M12 3.5v1.4"/><path d="M20.5 12h-1.4"/><path d="M12 20.5v-1.4"/><path d="M3.5 12h1.4"/>' +
-    '<path d="m12 12 3.1 1.8"/><path class="g-min g-lit" d="M12 12V6.6"/>',
+    '<path d="M8.6 4.6H6.9a1.4 1.4 0 0 0-1.4 1.4v14.1a1.4 1.4 0 0 0 1.4 1.4h10.2a1.4 1.4 0 0 0 1.4-1.4V6a1.4 1.4 0 0 0-1.4-1.4h-1.7"/>' +
+    '<rect x="8.6" y="2.9" width="6.8" height="3.3" rx="1"/>' +
+    '<path class="g-lit g-tick g-tick-1" pathLength="1" d="m8.3 10.4 1.3 1.3 2.3-2.5"/><path d="M13.9 10.4h2.2"/>' +
+    '<path class="g-lit g-tick g-tick-2" pathLength="1" d="m8.3 14.6 1.3 1.3 2.3-2.5"/><path d="M13.9 14.6h2.2"/>' +
+    '<path class="g-sign" pathLength="1" d="M8.4 18.6h7.4"/>',
+  // A GSM unit on the wall: its antenna sends the signal out, arc by arc
+  monitoring:
+    '<rect x="4" y="12.2" width="15" height="8.3" rx="1.6"/><path d="M10.6 16.35h5"/>' +
+    '<circle class="g-mled" cx="7.5" cy="16.35" r=".95" stroke="none"/><path d="M16 12.2V6.6"/>' +
+    '<path class="g-lit g-sig g-sig-1" d="M17.6 4.6a2.3 2.3 0 0 1 0 3.3M14.4 4.6a2.3 2.3 0 0 0 0 3.3"/>' +
+    '<path class="g-lit g-sig g-sig-2" d="M19 3.2a4.3 4.3 0 0 1 0 6.1M13 3.2a4.3 4.3 0 0 0 0 6.1"/>',
+  // The call-out van: it rolls in and brakes, its headlight on
+  callout:
+    '<path class="g-speed" d="M.9 9.6h2M.4 12.6h2.5M1.4 15.6h1.5"/>' +
+    '<g class="g-van"><path d="M6.6 17H4.5V7.7a1.2 1.2 0 0 1 1.2-1.2H15l3.3 3.9 2.2.6a1.2 1.2 0 0 1 .8 1.1V17h-1.6"/><path d="M10.2 17h5.9"/>' +
+    '<path d="M15 6.5v3.9h3.3"/><circle cx="8.4" cy="17.1" r="1.8"/><circle cx="17.9" cy="17.1" r="1.8"/>' +
+    '<path class="g-lit g-lamp" d="M21.3 13.3h-1.3"/></g>',
   // Phone: buzzes, and a notification lands
   app:
     '<g class="g-phone"><rect x="7" y="3" width="10" height="18" rx="2.2"/><path d="M10.5 18h3"/><path d="M9.6 7.6h4.8"/><path d="M9.6 10.6h3"/></g>' +
@@ -42,6 +66,12 @@ const glyphs: Record<string, string> = {
 };
 
 const linkLabel = (id: string) => (servicesUi.links as Record<string, string>)[id];
+
+// A body that names the phone number gets it as a tap-to-call link.
+const splitPhone = (text: string) => {
+  const at = text.indexOf(company.phoneDisplay);
+  return at === -1 ? null : [text.slice(0, at), text.slice(at + company.phoneDisplay.length)];
+};
 
 // Rain streaks inside the floodlight beam: one 300-unit tile, repeated to loop.
 const rain = Array.from({ length: 26 }, (_, i) => {
@@ -54,7 +84,7 @@ const rain = Array.from({ length: 26 }, (_, i) => {
 
 <section id="services" class="section services is-lit" data-lit-reveal aria-labelledby="services-title" data-services>
   <div class="container services__layout">
-    <div class="services__aside" data-services-aside>
+    <div class="services__aside">
       <div class="services__intro">
         <h2 id="services-title" class="h-section services__title">{services.title}</h2>
         <p class="lede services__lede">{services.lede}</p>
@@ -65,49 +95,50 @@ const rain = Array.from({ length: 26 }, (_, i) => {
           <svg class="lamp__svg" viewBox="0 0 480 300" aria-hidden="true" focusable="false" preserveAspectRatio="xMidYMid slice">
             <defs>
               <linearGradient id="svc-sky" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0" stop-color="#0e1a2f" />
-                <stop offset=".7" stop-color="#1a2440" />
-                <stop offset="1" stop-color="#3a2f35" />
+                <stop offset="0" style="stop-color: var(--night-950)" />
+                <stop offset=".62" style="stop-color: var(--night-800)" />
+                <stop offset="1" style="stop-color: color-mix(in oklab, var(--night-700), var(--sodium-600) 24%)" />
               </linearGradient>
               <radialGradient id="svc-horizon" cx="400" cy="232" r="210" gradientUnits="userSpaceOnUse">
-                <stop offset="0" stop-color="#ff9e3d" stop-opacity=".42" />
-                <stop offset=".55" stop-color="#ff9e3d" stop-opacity=".08" />
-                <stop offset="1" stop-color="#ff9e3d" stop-opacity="0" />
+                <stop offset="0" style="stop-color: var(--sodium-500)" stop-opacity=".4" />
+                <stop offset=".55" style="stop-color: var(--sodium-500)" stop-opacity=".08" />
+                <stop offset="1" style="stop-color: var(--sodium-500)" stop-opacity="0" />
               </radialGradient>
               <pattern id="svc-pebble" width="13" height="11" patternUnits="userSpaceOnUse">
-                <circle cx="2" cy="2.4" r="1" fill="#3a404c" />
-                <circle cx="8.6" cy="3.6" r=".8" fill="#232831" />
-                <circle cx="4.8" cy="7.6" r=".7" fill="#383e4a" />
-                <circle cx="11.2" cy="9.2" r=".9" fill="#252a33" />
-                <circle cx="10.4" cy="0.8" r=".5" fill="#40464f" />
+                <circle cx="2" cy="2.4" r="1" fill="#3f4656" />
+                <circle cx="8.6" cy="3.6" r=".8" fill="#252b38" />
+                <circle cx="4.8" cy="7.6" r=".7" fill="#3c4353" />
+                <circle cx="11.2" cy="9.2" r=".9" fill="#272d3a" />
+                <circle cx="10.4" cy="0.8" r=".5" fill="#454c5b" />
               </pattern>
               <filter id="svc-soft" x="-10%" y="-10%" width="120%" height="120%">
                 <feGaussianBlur stdDeviation="3.5" />
               </filter>
               <radialGradient id="svc-street" cx=".5" cy=".5" r=".5">
-                <stop offset="0" stop-color="#ffb461" stop-opacity=".55" />
-                <stop offset=".35" stop-color="#ff9e3d" stop-opacity=".18" />
-                <stop offset="1" stop-color="#ff9e3d" stop-opacity="0" />
+                <stop offset="0" style="stop-color: var(--sodium-400)" stop-opacity=".55" />
+                <stop offset=".35" style="stop-color: var(--sodium-500)" stop-opacity=".18" />
+                <stop offset="1" style="stop-color: var(--sodium-500)" stop-opacity="0" />
               </radialGradient>
+              <!-- The floodlight is a cold LED white, like the hero's -->
               <radialGradient id="svc-spill" cx="206" cy="66" r="190" gradientUnits="userSpaceOnUse">
-                <stop offset="0" stop-color="#fff6e6" stop-opacity=".7" />
-                <stop offset=".35" stop-color="#ffe7c4" stop-opacity=".22" />
-                <stop offset="1" stop-color="#ffe7c4" stop-opacity="0" />
+                <stop offset="0" stop-color="#f4f8ff" stop-opacity=".68" />
+                <stop offset=".35" stop-color="#dfe8f8" stop-opacity=".2" />
+                <stop offset="1" stop-color="#dfe8f8" stop-opacity="0" />
               </radialGradient>
               <linearGradient id="svc-beam" gradientUnits="userSpaceOnUse" x1="210" y1="66" x2="360" y2="290">
-                <stop offset="0" stop-color="#fffaf0" stop-opacity=".78" />
-                <stop offset=".55" stop-color="#fff1da" stop-opacity=".24" />
-                <stop offset="1" stop-color="#fff1da" stop-opacity=".05" />
+                <stop offset="0" stop-color="#f7faff" stop-opacity=".8" />
+                <stop offset=".55" stop-color="#e4ecfb" stop-opacity=".24" />
+                <stop offset="1" stop-color="#e4ecfb" stop-opacity=".05" />
               </linearGradient>
               <radialGradient id="svc-pool" cx="352" cy="272" r="140" gradientTransform="matrix(1 0 0 .2 0 217.6)" gradientUnits="userSpaceOnUse">
-                <stop offset="0" stop-color="#fff5e4" stop-opacity=".62" />
-                <stop offset=".6" stop-color="#ffe2b8" stop-opacity=".16" />
-                <stop offset="1" stop-color="#ffe2b8" stop-opacity="0" />
+                <stop offset="0" stop-color="#eef3fc" stop-opacity=".6" />
+                <stop offset=".6" stop-color="#d6e0f2" stop-opacity=".15" />
+                <stop offset="1" stop-color="#d6e0f2" stop-opacity="0" />
               </radialGradient>
               <radialGradient id="svc-bulb" cx=".5" cy=".5" r=".5">
-                <stop offset="0" stop-color="#fffdf6" />
-                <stop offset=".4" stop-color="#fff2d6" stop-opacity=".55" />
-                <stop offset="1" stop-color="#ffe0ad" stop-opacity="0" />
+                <stop offset="0" stop-color="#ffffff" />
+                <stop offset=".4" stop-color="#eaf1ff" stop-opacity=".55" />
+                <stop offset="1" stop-color="#d4e2fb" stop-opacity="0" />
               </radialGradient>
               <clipPath id="svc-beam-clip">
                 <path d="M207 58 214 76 236 300H480V236Z" />
@@ -117,28 +148,28 @@ const rain = Array.from({ length: 26 }, (_, i) => {
             <!-- Sky, the sodium glow of the estate beyond, a terrace roofline -->
             <rect width="480" height="300" fill="url(#svc-sky)" />
             <rect width="480" height="300" fill="url(#svc-horizon)" />
-            <path d="M232 204h248v-50l-34-22-34 22v-8h-16v12l-28-20-44 28-26-16-22 14-44 14Z" fill="#161d2b" />
-            <rect x="330" y="168" width="11" height="14" rx="1" fill="#ffd49a" opacity=".85" />
-            <rect x="418" y="160" width="11" height="14" rx="1" fill="#ffd49a" opacity=".5" />
+            <path class="t-roof" d="M232 204h248v-50l-34-22-34 22v-8h-16v12l-28-20-44 28-26-16-22 14-44 14Z" />
+            <rect class="t-window" x="330" y="168" width="11" height="14" rx="1" opacity=".85" />
+            <rect class="t-window" x="418" y="160" width="11" height="14" rx="1" opacity=".5" />
             <!-- A distant sodium streetlight -->
-            <path d="M462 204v-66h-10" fill="none" stroke="#10151f" stroke-width="2" />
+            <path class="t-pole" d="M462 204v-66h-10" fill="none" stroke-width="2" />
             <circle cx="451" cy="139" r="26" fill="url(#svc-street)" />
-            <circle cx="451" cy="139" r="2.4" fill="#ffc27a" />
+            <circle class="t-sodium" cx="451" cy="139" r="2.4" />
 
             <!-- Driveway -->
-            <rect y="236" width="480" height="64" fill="#151a22" />
-            <path d="M230 236h250" stroke="#262c37" stroke-width="2" />
+            <rect class="t-tarmac" y="236" width="480" height="64" />
+            <path d="M230 236h250" stroke="#262d3a" stroke-width="2" />
             <ellipse class="lamp__pool" cx="352" cy="272" rx="140" ry="28" fill="url(#svc-pool)" />
 
             <!-- Pebbledash gable wall and its corner -->
-            <rect width="232" height="240" fill="#2b303a" />
+            <rect class="t-render" width="232" height="240" />
             <rect width="232" height="240" fill="url(#svc-pebble)" />
             <rect class="lamp__spill" width="232" height="240" fill="url(#svc-spill)" />
-            <path d="M231 0v240" stroke="#3e4450" stroke-width="3" />
-            <path d="M0 236h232" stroke="#1b2029" stroke-width="6" />
+            <path d="M231 0v240" stroke="#434a58" stroke-width="3" />
+            <path d="M0 236h232" stroke="#1b202b" stroke-width="6" />
 
             <!-- A teal front door with a lit fanlight -->
-            <rect x="46" y="92" width="80" height="18" rx="9" fill="#ffd49a" opacity=".82" />
+            <rect class="t-window" x="46" y="92" width="80" height="18" rx="9" opacity=".82" />
             <path d="M46 101h80M66 92v18M86 92v18M106 92v18" stroke="#6f5530" stroke-width="1.6" />
             <rect x="42" y="112" width="88" height="124" rx="2" fill="#16504f" />
             <rect class="lamp__door-lit" x="42" y="112" width="88" height="124" rx="2" fill="#2d8f8a" />
@@ -146,28 +177,28 @@ const rain = Array.from({ length: 26 }, (_, i) => {
             <rect x="90" y="124" width="30" height="42" rx="2" fill="none" stroke="#0f3a3a" stroke-width="2" />
             <rect x="52" y="178" width="30" height="46" rx="2" fill="none" stroke="#0f3a3a" stroke-width="2" />
             <rect x="90" y="178" width="30" height="46" rx="2" fill="none" stroke="#0f3a3a" stroke-width="2" />
-            <rect x="72" y="170" width="28" height="5" rx="1.5" fill="#c9a24a" />
-            <circle cx="118" cy="174" r="2.6" fill="#c9a24a" />
+            <rect x="72" y="170" width="28" height="5" rx="1.5" fill="#1a2230" />
+            <circle cx="118" cy="174" r="2.6" fill="#1a2230" />
 
             <!-- Floodlight, PIR detector and cable -->
-            <path d="M194 18v26" stroke="#10151f" stroke-width="2" />
+            <path class="t-pole" d="M194 18v26" stroke-width="2" />
             <rect x="186" y="44" width="14" height="22" rx="3" fill="#1b2230" />
             <g transform="rotate(24 200 64)">
               <rect x="194" y="50" width="30" height="24" rx="4" fill="#232b3a" />
               <path d="M198 50h22" stroke="#394358" stroke-width="2" stroke-linecap="round" />
-              <rect class="lamp__lens" x="219" y="52" width="6" height="20" rx="2" fill="#fffaf0" />
+              <rect class="lamp__lens" x="219" y="52" width="6" height="20" rx="2" fill="#f7faff" />
             </g>
             <circle class="lamp__bloom" cx="218" cy="72" r="34" fill="url(#svc-bulb)" />
             <rect x="185" y="84" width="16" height="10" rx="2" fill="#1b2230" />
             <path d="M186 94h14v4a7 7 0 0 1-14 0Z" fill="#5d6678" />
             <path d="M189 96h8" stroke="#8b94a6" stroke-width="1.4" stroke-linecap="round" opacity=".6" />
-            <rect class="lamp__pir" x="191" y="86.5" width="4" height="4" rx="1" fill="#ff9e3d" />
+            <rect class="lamp__pir t-sodium" x="191" y="86.5" width="4" height="4" rx="1" />
 
             <!-- The beam, with rain falling through it -->
             <path class="lamp__beam" d="M207 58 214 76 240 300H480V232Z" fill="url(#svc-beam)" filter="url(#svc-soft)" />
             <g clip-path="url(#svc-beam-clip)">
-              <g class="lamp__rain" stroke="#fff4e0" stroke-width="1.2" stroke-linecap="round" fill="none">
-                <path class="lamp__rain-tile" d={rain} />
+              <g class="lamp__rain" stroke="#eef4ff" stroke-width="1.2" stroke-linecap="round" fill="none">
+                <path d={rain} />
                 <path d={rain} transform="translate(0 -300)" />
               </g>
             </g>
@@ -184,43 +215,65 @@ const rain = Array.from({ length: 26 }, (_, i) => {
       </div>
     </div>
 
-    <ul class="svc-index" role="list">
+    <div class="svc-index">
       {
-        services.groups.flatMap((g) => g.items).map((item) => (
-          <li class={`svc svc--${item.id}`} data-svc data-pointer-light>
-            <span class="svc__icon" aria-hidden="true">
-              <svg
-                class="svc__glyph"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="1.6"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                focusable="false"
-                set:html={glyphs[item.id]}
-              />
-            </span>
-            <h3 class="svc__name">{item.name}</h3>
-            <p class="svc__body">{item.body}</p>
-            {item.for && (
-              <p class="svc__for">
-                <span class="visually-hidden">{servicesUi.forLabel} </span>
-                {item.for.map((tag) => (
-                  <span class="svc__chip">{tag}</span>
-                ))}
-              </p>
-            )}
-            {item.href && linkLabel(item.id) && (
-              <a class="svc__link" href={item.href}>
-                <span>{linkLabel(item.id)}</span>
-                <Icon name="arrow" size={18} />
-              </a>
-            )}
-          </li>
+        services.groups.map((group) => (
+          <div class="svc-group" data-svc-group>
+            <h3 id={`svc-group-${group.id}`} class="svc-group__title" data-svc-group-title>
+              {group.title}
+            </h3>
+            <ul class="svc-list" role="list" aria-labelledby={`svc-group-${group.id}`}>
+              {group.items.map((item) => {
+                const phone = splitPhone(item.body);
+                return (
+                  <li class={`svc svc--${item.id}`} data-svc data-pointer-light>
+                    <span class="svc__icon" aria-hidden="true">
+                      <svg
+                        class="svc__glyph"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="1.6"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        focusable="false"
+                        set:html={glyphs[item.id] || ''}
+                      />
+                    </span>
+                    <h4 class="svc__name">{item.name}</h4>
+                    <p class="svc__body">
+                      {phone ? (
+                        <Fragment>
+                          {phone[0]}
+                          <a href={company.phoneHref}>{company.phoneDisplay}</a>
+                          {phone[1]}
+                        </Fragment>
+                      ) : (
+                        item.body
+                      )}
+                    </p>
+                    {item.for && (
+                      <p class="svc__for">
+                        <span class="visually-hidden">{servicesUi.forLabel} </span>
+                        {item.for.map((tag) => (
+                          <span class="svc__chip">{tag}</span>
+                        ))}
+                      </p>
+                    )}
+                    {item.href && linkLabel(item.id) && (
+                      <a class="svc__link" href={item.href}>
+                        <span>{linkLabel(item.id)}</span>
+                        <Icon name="arrow" size={18} />
+                      </a>
+                    )}
+                  </li>
+                );
+              })}
+            </ul>
+          </div>
         ))
       }
-    </ul>
+    </div>
   </div>
 </section>
 
@@ -267,6 +320,25 @@ const rain = Array.from({ length: 26 }, (_, i) => {
     width: 100%;
     height: 100%;
   }
+  .t-roof {
+    fill: color-mix(in oklab, var(--night-900) 88%, black);
+  }
+  .t-window {
+    fill: var(--tungsten);
+  }
+  .t-pole {
+    stroke: var(--tarmac);
+  }
+  .t-sodium {
+    fill: var(--sodium-500);
+  }
+  .t-tarmac {
+    fill: var(--tarmac);
+  }
+  /* Pebbledash render at night: the pebble colour, deep in shadow */
+  .t-render {
+    fill: color-mix(in oklab, var(--pebble) 20%, var(--night-900));
+  }
   .lamp__beam {
     opacity: calc(var(--flood) * 0.95);
     mix-blend-mode: screen;
@@ -311,9 +383,32 @@ const rain = Array.from({ length: 26 }, (_, i) => {
     margin-top: var(--space-5);
   }
 
-  /* ---------- The index ---------- */
-  .svc-index {
-    border-top: 1px solid var(--flood-300);
+  /* ---------- The index: two groups, each a ruled list ---------- */
+  .svc-group + .svc-group {
+    margin-top: clamp(3.5rem, 2.5rem + 3vw, 5.5rem);
+  }
+  .svc-group__title {
+    --draw: 1;
+    position: relative;
+    padding-bottom: clamp(0.85rem, 0.7rem + 0.5vw, 1.15rem);
+    font-size: clamp(1.55rem, 1.2rem + 1.4vw, 2.35rem);
+    font-stretch: 112%;
+    font-weight: 740;
+    letter-spacing: -0.02em;
+    line-height: 1.05;
+    color: var(--ink-900);
+  }
+  /* The group's heavy rule, drawn in like a cable run as the group arrives */
+  .svc-group__title::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 2px;
+    background: var(--ink-900);
+    transform-origin: 0 50%;
+    scale: var(--draw) 1;
   }
 
   .svc {
@@ -331,11 +426,11 @@ const rain = Array.from({ length: 26 }, (_, i) => {
       'link link';
     column-gap: 0.9rem;
     align-items: center;
-    padding: clamp(1.4rem, 1.1rem + 1vw, 2.1rem) clamp(0.25rem, -0.4rem + 2vw, 1.5rem);
+    padding: clamp(1.2rem, 1rem + 0.8vw, 1.75rem) clamp(0.25rem, -0.4rem + 2vw, 1.25rem);
     border-bottom: 1px solid var(--flood-300);
   }
 
-  /* The light pool that follows the pointer inside a lit row */
+  /* The light pool that follows the pointer inside a lit row: cold floodlight white */
   .svc::before,
   .svc::after {
     content: '';
@@ -346,16 +441,16 @@ const rain = Array.from({ length: 26 }, (_, i) => {
   }
   .svc::before {
     background:
-      radial-gradient(30rem 15rem at var(--mx) var(--my), rgb(255 255 255 / 1), rgb(255 250 240 / 0.7) 38%, rgb(255 250 240 / 0) 72%),
-      radial-gradient(14rem 9rem at var(--mx) var(--my), rgb(255 190 110 / 0.22), rgb(255 190 110 / 0) 70%),
+      radial-gradient(30rem 15rem at var(--mx) var(--my), var(--flood-0), color-mix(in srgb, var(--flood-0) 70%, transparent) 38%, transparent 72%),
+      radial-gradient(12rem 8rem at var(--mx) var(--my), color-mix(in srgb, var(--sodium-300) 16%, transparent), transparent 70%),
       var(--flood-100);
-    box-shadow: 0 1px 0 var(--flood-300), 0 16px 30px -22px rgb(12 22 40 / 0.35);
+    box-shadow: 0 1px 0 var(--flood-300), 0 16px 30px -22px color-mix(in srgb, var(--ink-900) 35%, transparent);
     opacity: 0;
     transition: opacity var(--dur-decay) var(--ease-out);
   }
   /* Arrival: the zone trips once as it scrolls into view */
   .svc::after {
-    background: radial-gradient(22rem 11rem at 2.5rem 50%, rgb(255 206 145 / 0.42), rgb(255 206 145 / 0) 72%);
+    background: radial-gradient(22rem 11rem at 2.5rem 50%, color-mix(in srgb, var(--sodium-300) 40%, transparent), transparent 72%);
     opacity: var(--flash);
   }
 
@@ -382,24 +477,24 @@ const rain = Array.from({ length: 26 }, (_, i) => {
     color: var(--ink-900);
   }
   .svc__glyph {
-    width: 2.6rem;
-    height: 2.6rem;
+    width: 2.35rem;
+    height: 2.35rem;
     overflow: visible;
   }
 
   .svc__name {
     grid-area: name;
-    font-size: clamp(1.45rem, 1.05rem + 1.5vw, 2.45rem);
-    font-stretch: var(--wide);
-    font-weight: 720;
-    letter-spacing: -0.022em;
-    line-height: 1.02;
+    font-size: clamp(1.2rem, 1rem + 0.7vw, 1.6rem);
+    font-stretch: 112%;
+    font-weight: 700;
+    letter-spacing: -0.015em;
+    line-height: 1.1;
     color: var(--ink-900);
     transition: translate var(--dur-decay) var(--ease-out);
   }
   .svc:hover .svc__name,
   .svc:focus-within .svc__name {
-    translate: 0.35rem 0;
+    translate: 0.3rem 0;
     transition-duration: var(--dur-med);
   }
 
@@ -421,15 +516,16 @@ const rain = Array.from({ length: 26 }, (_, i) => {
     display: inline-flex;
     align-items: center;
     min-height: 1.75rem;
-    padding: 0.1rem 0.55rem;
-    border: 1px solid var(--flood-300);
+    padding: 0.1rem 0.6rem;
+    border: 1px solid var(--flood-rule);
     border-radius: var(--radius-xs);
-    background: rgb(255 255 255 / 0.55);
+    background: color-mix(in srgb, var(--flood-0) 60%, transparent);
     color: var(--ink-700);
     font-size: var(--step--2);
-    font-weight: 600;
+    font-weight: 650;
     letter-spacing: 0.01em;
     line-height: 1.2;
+    white-space: nowrap;
   }
 
   .svc__link {
@@ -446,7 +542,7 @@ const rain = Array.from({ length: 26 }, (_, i) => {
     font-weight: 680;
     font-size: var(--step-0);
     text-decoration: underline;
-    text-decoration-color: rgb(154 75 0 / 0.35);
+    text-decoration-color: color-mix(in srgb, var(--sodium-800) 35%, transparent);
     text-underline-offset: 0.3em;
     transition: text-decoration-color var(--dur-fast) var(--ease-out), color var(--dur-fast);
   }
@@ -476,8 +572,11 @@ const rain = Array.from({ length: 26 }, (_, i) => {
     stroke: var(--sodium-600);
     transition-duration: var(--dur-trip);
   }
-  .svc__glyph :global(.g-led) {
+  .svc__glyph :global(.g-led),
+  .svc__glyph :global(.g-reader),
+  .svc__glyph :global(.g-mled) {
     fill: var(--ink-500);
+    transition: fill var(--dur-decay) var(--ease-out);
   }
   .svc__glyph :global(.g-dot) {
     fill: var(--strobe-500);
@@ -487,14 +586,6 @@ const rain = Array.from({ length: 26 }, (_, i) => {
   .svc__glyph :global(.g-buzz) {
     opacity: 0;
   }
-  .svc__glyph :global(.g-min) {
-    transform-origin: 12px 12px;
-    transition: rotate 0.9s steps(3, end);
-  }
-  .svc:hover .svc__glyph :global(.g-min),
-  .svc:focus-within .svc__glyph :global(.g-min) {
-    rotate: 90deg;
-  }
   .svc:hover .svc__glyph :global(.g-dot),
   .svc:focus-within .svc__glyph :global(.g-dot) {
     opacity: 1;
@@ -502,6 +593,18 @@ const rain = Array.from({ length: 26 }, (_, i) => {
   .svc:hover .svc__glyph :global(.g-led),
   .svc:focus-within .svc__glyph :global(.g-led) {
     fill: var(--alarm-700);
+  }
+  /* The reader accepts the fob */
+  .svc:hover .svc__glyph :global(.g-reader),
+  .svc:focus-within .svc__glyph :global(.g-reader) {
+    fill: var(--clear-700);
+    transition-duration: var(--dur-trip);
+  }
+  /* The unit reports in */
+  .svc:hover .svc__glyph :global(.g-mled),
+  .svc:focus-within .svc__glyph :global(.g-mled) {
+    fill: var(--strobe-500);
+    transition-duration: var(--dur-trip);
   }
 
   @media (prefers-reduced-motion: no-preference) {
@@ -528,16 +631,49 @@ const rain = Array.from({ length: 26 }, (_, i) => {
     }
     .svc:is(:hover, :focus-within) .svc__glyph :global(.g-beam) {
       stroke-dasharray: 1;
-      animation: g-beam 0.9s var(--ease-snap) both;
+      animation: g-draw 0.9s var(--ease-snap) both;
     }
     .svc:is(:hover, :focus-within) .svc__glyph :global(.g-beam:nth-of-type(n + 5)) {
       animation-delay: 60ms;
+    }
+    /* Access: the door leaf swings open on its hinge once the reader is green */
+    .svc__glyph :global(.g-leaf) {
+      transform-origin: 5.9px 13px;
+    }
+    .svc:is(:hover, :focus-within) .svc__glyph :global(.g-leaf) {
+      animation: g-swing 1.7s var(--ease-in-out);
     }
     .svc__glyph :global(.g-wrench) {
       transform-origin: 15.2px 8.6px;
     }
     .svc:is(:hover, :focus-within) .svc__glyph :global(.g-wrench) {
       animation: g-turn 1s var(--ease-in-out);
+    }
+    /* Maintenance: each check ticks off in turn, then the report is signed */
+    .svc:is(:hover, :focus-within) .svc__glyph :global(.g-tick) {
+      stroke-dasharray: 1;
+      animation: g-draw 0.45s var(--ease-out) both;
+    }
+    .svc:is(:hover, :focus-within) .svc__glyph :global(.g-tick-2) {
+      animation-delay: 0.3s;
+    }
+    .svc:is(:hover, :focus-within) .svc__glyph :global(.g-sign) {
+      stroke-dasharray: 1;
+      animation: g-draw 0.6s var(--ease-in-out) 0.6s both;
+    }
+    /* Monitoring: the signal goes out, inner arc then outer, twice */
+    .svc:is(:hover, :focus-within) .svc__glyph :global(.g-sig) {
+      animation: g-sig 0.7s steps(1, end) 2;
+    }
+    .svc:is(:hover, :focus-within) .svc__glyph :global(.g-sig-2) {
+      animation-delay: 0.14s;
+    }
+    /* Call-out: the van rolls in and brakes; the air streams off behind it */
+    .svc:is(:hover, :focus-within) .svc__glyph :global(.g-van) {
+      animation: g-arrive 0.9s var(--ease-out);
+    }
+    .svc:is(:hover, :focus-within) .svc__glyph :global(.g-speed) {
+      animation: g-stream 0.9s var(--ease-out);
     }
     .svc:is(:hover, :focus-within) .svc__glyph :global(.g-phone) {
       animation: g-buzz 0.5s linear 2;
@@ -570,14 +706,34 @@ const rain = Array.from({ length: 26 }, (_, i) => {
   @keyframes g-blink {
     50% { fill: var(--ink-500); }
   }
-  @keyframes g-beam {
+  @keyframes g-draw {
     0% { stroke-dashoffset: 1; }
     100% { stroke-dashoffset: 0; }
+  }
+  @keyframes g-swing {
+    0%, 18% { scale: 1 1; }
+    42%, 72% { scale: 0.42 1; }
+    100% { scale: 1 1; }
   }
   @keyframes g-turn {
     0%, 100% { rotate: 0deg; }
     45% { rotate: -32deg; }
     65% { rotate: -28deg; }
+  }
+  @keyframes g-sig {
+    0% { opacity: 0.15; }
+    30% { opacity: 1; }
+  }
+  @keyframes g-arrive {
+    0% { translate: -2.2px 0; }
+    55% { translate: 0.7px 0; }
+    78% { translate: -0.2px 0; }
+    100% { translate: 0 0; }
+  }
+  @keyframes g-stream {
+    0% { translate: 1.2px 0; opacity: 1; }
+    60% { translate: -1.4px 0; opacity: 0.2; }
+    100% { translate: 0 0; opacity: 1; }
   }
   @keyframes g-buzz {
     0%, 100% { translate: 0 0; }
@@ -599,7 +755,7 @@ const rain = Array.from({ length: 26 }, (_, i) => {
   /* ---------- Wider rows: chips sit opposite the name ---------- */
   @media (min-width: 640px) {
     .svc {
-      grid-template-columns: 3.5rem minmax(0, 1fr) auto;
+      grid-template-columns: 3rem minmax(0, 1fr) auto;
       grid-template-areas:
         'icon name for'
         '. body body'
@@ -607,12 +763,12 @@ const rain = Array.from({ length: 26 }, (_, i) => {
       column-gap: 1.25rem;
     }
     .svc__icon {
-      width: 3.5rem;
-      height: 3.5rem;
+      width: 3rem;
+      height: 3rem;
     }
     .svc__glyph {
-      width: 3.1rem;
-      height: 3.1rem;
+      width: 2.6rem;
+      height: 2.6rem;
     }
     .svc__for {
       margin-top: 0;
@@ -621,7 +777,7 @@ const rain = Array.from({ length: 26 }, (_, i) => {
     }
   }
 
-  /* ---------- Desktop: sticky left column beside the index ---------- */
+  /* ---------- Desktop: the lamp and CTA stay beside the index ---------- */
   @media (min-width: 1024px) {
     .services__layout {
       grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
@@ -632,6 +788,7 @@ const rain = Array.from({ length: 26 }, (_, i) => {
       display: flex;
       flex-direction: column;
       gap: clamp(2rem, 1rem + 2vw, 3rem);
+      align-self: stretch;
     }
     .services__intro,
     .svc-index,
@@ -642,77 +799,109 @@ const rain = Array.from({ length: 26 }, (_, i) => {
       margin-top: 0.4rem;
     }
   }
-  @media (min-width: 1024px) and (min-height: 760px) {
-    .services__aside {
+  /* Only the vignette and its buttons stick (about 360-420px tall), centred in
+     the viewport where there is room, never under the header. */
+  @media (min-width: 1024px) and (min-height: 620px) {
+    .services__lamp {
       position: sticky;
-      top: calc(var(--header-h) + 1.5rem);
+      top: max(calc(var(--header-h) + 1.5rem), calc(50svh - 13rem));
     }
   }
 </style>
 
 <script>
-  import { boot, gsap, ScrollTrigger, motionOK, isTouch } from '../scripts/motion.js';
+  import { boot, gsap, ScrollTrigger, motionOK, isTouch, later } from '../scripts/motion.js';
 
   boot();
 
-  const root = document.querySelector('[data-services]');
-  const lamp = root?.querySelector('[data-lamp]');
-  const rows = root ? [...root.querySelectorAll('[data-svc]')] : [];
+  // Nothing here is needed to read or use the section, so it is built after
+  // first paint, in idle time.
+  later(() => {
+    const root = document.querySelector('[data-services]');
+    const lamp = root?.querySelector('[data-lamp]');
+    if (!root || !lamp) return;
+    const rows = [...root.querySelectorAll('[data-svc]')];
+    const heads = [...root.querySelectorAll('[data-svc-group-title]')];
 
-  // Keep the rain running only while the vignette is on screen
-  if (lamp && 'IntersectionObserver' in window) {
-    new IntersectionObserver(([entry]) => lamp.classList.toggle('is-live', entry.isIntersecting), {
-      rootMargin: '80px',
-    }).observe(lamp);
-  }
+    // Keep the rain running only while the vignette is on screen
+    if ('IntersectionObserver' in window) {
+      new IntersectionObserver(([entry]) => lamp.classList.toggle('is-live', entry.isIntersecting), {
+        rootMargin: '80px',
+      }).observe(lamp);
+    }
 
-  if (root && lamp && motionOK()) {
+    if (!motionOK()) return;
+
+    // Anything the reader has already reached (a deep link, a fast scroll)
+    // stays lit: only what is still below the fold waits to switch on.
+    // All positions are read before any state is written (one layout pass).
+    const ahead = (el, at) => el.getBoundingClientRect().top > window.innerHeight * at;
+    const lampAhead = ahead(lamp, 0.78);
+    const headsAhead = heads.filter((h) => ahead(h, 0.86));
+    const waiting = rows.filter((row) => ahead(row, 0.86));
+
     // trip: the floodlight snaps on when the vignette arrives, flickers, settles
-    gsap.set(lamp, { '--flood': 0 });
-    gsap
-      .timeline({ scrollTrigger: { trigger: lamp, start: 'top 78%', once: true } })
-      .to(lamp, { '--flood': 1.12, duration: 0.07, ease: 'none' }, 0.25)
-      .to(lamp, { '--flood': 0.55, duration: 0.06, ease: 'none' })
-      .to(lamp, { '--flood': 1.05, duration: 0.05, ease: 'none' })
-      .to(lamp, { '--flood': 1, duration: 1.2, ease: 'decay' });
+    if (lampAhead) {
+      gsap.set(lamp, { '--flood': 0 });
+      gsap
+        .timeline({ scrollTrigger: { trigger: lamp, start: 'top 78%', once: true } })
+        .to(lamp, { '--flood': 1.12, duration: 0.07, ease: 'none' }, 0.25)
+        .to(lamp, { '--flood': 0.55, duration: 0.06, ease: 'none' })
+        .to(lamp, { '--flood': 1.05, duration: 0.05, ease: 'none' })
+        .to(lamp, { '--flood': 1, duration: 1.2, ease: 'decay' });
+    }
+
+    // cable: each group's rule is drawn in as its heading arrives
+    headsAhead.forEach((head) => {
+      gsap.set(head, { '--draw': 0 });
+      gsap.to(head, {
+        '--draw': 1,
+        duration: 1,
+        ease: 'power2.inOut',
+        scrollTrigger: { trigger: head, start: 'top 86%', once: true },
+      });
+    });
 
     // Each zone trips once as it scrolls in: the row lights, then decays
-    const parts = rows.map((row) => row.querySelectorAll('.svc__icon, .svc__name, .svc__body, .svc__for, .svc__link'));
-    parts.forEach((p) => gsap.set(p, { opacity: 0.18, y: 12 }));
+    const parts = new Map(
+      waiting.map((row) => [row, row.querySelectorAll('.svc__icon, .svc__name, .svc__body, .svc__for, .svc__link')]),
+    );
+    parts.forEach((els) => gsap.set(els, { opacity: 0.18, y: 12 }));
 
-    ScrollTrigger.batch(rows, {
-      start: 'top 86%',
-      once: true,
-      onEnter: (batch) => {
-        batch.forEach((row, i) => {
-          const els = parts[rows.indexOf(row)];
-          const at = i * 0.12;
-          gsap
-            .timeline({ delay: at })
-            .to(els, {
-              keyframes: [
-                { opacity: 0.9, duration: 0.06, ease: 'none' },
-                { opacity: 0.55, duration: 0.05, ease: 'none' },
-                { opacity: 1, duration: 0.7, ease: 'expo.out' },
-              ],
-              stagger: 0.05,
-            })
-            .to(els, { y: 0, duration: 0.9, ease: 'expo.out', stagger: 0.05, clearProps: 'transform' }, 0)
-            .fromTo(
-              row,
-              { '--flash': 0 },
-              {
+    if (waiting.length) {
+      ScrollTrigger.batch(waiting, {
+        start: 'top 86%',
+        once: true,
+        onEnter: (batch) => {
+          batch.forEach((row, i) => {
+            const els = parts.get(row);
+            gsap
+              .timeline({ delay: i * 0.12 })
+              .to(els, {
                 keyframes: [
-                  { '--flash': 1, duration: 0.07, ease: 'none' },
-                  { '--flash': 0.6, duration: 0.06, ease: 'none' },
-                  { '--flash': 0, duration: 1.3, ease: 'decay' },
+                  { opacity: 0.9, duration: 0.06, ease: 'none' },
+                  { opacity: 0.55, duration: 0.05, ease: 'none' },
+                  { opacity: 1, duration: 0.7, ease: 'expo.out' },
                 ],
-              },
-              0,
-            );
-        });
-      },
-    });
+                stagger: 0.05,
+              })
+              .to(els, { y: 0, duration: 0.9, ease: 'expo.out', stagger: 0.05, clearProps: 'transform' }, 0)
+              .fromTo(
+                row,
+                { '--flash': 0 },
+                {
+                  keyframes: [
+                    { '--flash': 1, duration: 0.07, ease: 'none' },
+                    { '--flash': 0.6, duration: 0.06, ease: 'none' },
+                    { '--flash': 0, duration: 1.3, ease: 'decay' },
+                  ],
+                },
+                0,
+              );
+          });
+        },
+      });
+    }
 
     // A row under the pointer is someone walking past the sensor: re-trip the lamp
     let last = null;
@@ -734,5 +923,5 @@ const rain = Array.from({ length: 26 }, (_, i) => {
     };
     if (!isTouch()) rows.forEach((row) => row.addEventListener('pointerenter', () => retrip(row)));
     rows.forEach((row) => row.addEventListener('focusin', () => retrip(row)));
-  }
+  });
 </script>
