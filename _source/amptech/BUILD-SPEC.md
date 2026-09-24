@@ -100,3 +100,38 @@ Keep each section's root element, `id` and tone class as in the stub (`#top`, `#
 3. Open the PNGs and look at them properly. Fix overflow, console errors, contrast, cramped spacing and awkward wraps. Then do one more round. Two rounds maximum, then stop polishing.
 4. `npx astro build` must pass.
 5. Commit your files with a clear message.
+
+---
+
+## Revision 2 (after review and the client dossier)
+
+These rules override anything above that conflicts with them.
+
+**Facts.** `dossier.md` is now the source of truth, via `PRODUCT.md`. The company is **Robert Farnan Electrical & Alarms Limited, trading as Amptech**. Never write "Amptech Ltd". The PSA licence covers intruder alarms, CCTV and access control only. The address is a home office, so no "visit us" or directions links. Every testimonial is verbatim in `content.js` (`testimonials`, `googleReviews`). Never change their wording or swap attributions.
+
+**Grounds.** Night sections are dusk blue with a sodium cast from above and overcast grain, from `base.css` `.section.is-night`. Lit sections are cold floodlight white that falls off from a lamp at the top centre (`.section.is-lit`). Keep these grounds. Don't paint a flat colour over them. If your section needs its own sky, build it from the same tokens. Never hard-code old token values such as `rgb(12 22 40 / …)`, `#0c1628`, `#070d19`, `#f6f5f0` or `#ecebe3`. Use `var(--night-900)` and the other tokens, or `color-mix()` with them.
+
+**Materials.** Don't fake hardware: no CSS screw heads, no engraved or embossed `text-shadow` plates, no brass. The world's materials are pebbledash, slate, tarmac, tungsten light, sodium light, floodlight, paper for the certificate, and screens.
+
+**Glow.** Only real light sources may bloom: lamps, LEDs, screens, the floodlight. Text such as the phone number, and hover states, never get a zero-offset glow.
+
+**Mono.** Martian Mono (`.data`) is **only** for times, dates, zone codes (Z1, CAM 1), licence and certificate numbers, and coordinates. Labels ("Address", "HKC app", "External", "All zones OK", testimonial jobs) use Atkinson, in small caps or at a small size, never mono.
+
+**Performance.**
+- Build non-critical section motion inside `later(() => { … })` from `motion.js`, so it runs in idle time after first paint. Pinned sections (How it works) stay eager.
+- Subscribe continuous loops to `onPauseChange(paused => …)` and check `isPaused()` at start. That covers canvas, WebGL, intervals and JS-driven blinking. The header's pause control (WCAG 2.2.2) must stop them. CSS keyframe loops already pause through `html.motion-paused`.
+- Loops also stop when off-screen and when the tab is hidden.
+
+**Resize.** `motion.js` now restores the reader's place after `gsap.matchMedia` breakpoint changes. Don't add your own scroll restoration. Do give pins `refreshPriority: 1`, and don't create ScrollTriggers from resize handlers.
+
+**Anchors.** In-page scrolling honours `scroll-padding-top`. Don't add manual header offsets.
+
+**Ownership in this round.**
+- Hero: `Hero.astro`, `scripts/hero/**`, `public/hero/**`, `public/og.*`, `tools/capture-hero.mjs`
+- Anatomy: `Anatomy.astro`, `scripts/anatomy.js`
+- Services, trust, upgrade: `TrustCheck.astro`, `Services.astro`, `Upgrade.astro`
+- App, process: `AppDemo.astro`, `Process.astro`
+- About, FAQ, contact, footer: `About.astro`, `Faq.astro`, `Contact.astro`, `Footer.astro`, `pages/privacy.astro`
+- Reviews: `Voices.astro` (new, `#reviews`)
+
+`content.js`, `Icon.astro`, the tokens, `base.css`, `motion.js`, `Header.astro`, `MobileBar.astro` and `Base.astro` belong to the integrator. You may append new exports to `content.js` and new icons to `Icon.astro` only.
