@@ -1,10 +1,1338 @@
 ---
-// STUB: replaced by the section builder. See _source/amptech/BUILD-SPEC.md.
-import { voices } from '../data/content.js';
+// Reviews: "the street". The customers live and work along one night street,
+// one building per voice, each drawn true to the job Amptech did there. A
+// leader drops from every quote to the thing that was fitted: Brian's bell box,
+// Robert's cameras, the smoke detector on a landing, the warehouse's corner
+// camera, McCoy's repair-bay lights. As the street scrolls in, it comes on left
+// to right. Hovering or focusing a quote lights its building, and vice versa.
+// Phones get the same buildings as vignettes under each quote.
+//
+// Every quote is verbatim from content.js. No aggregate rating, count or average.
+import { voices, testimonials, googleReviews } from '../data/content.js';
+
+// ---------- Voices, in reading order ----------
+const slug = (s: string) => s.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+
+type Voice = {
+  id: string;
+  quote: string;
+  name: string;
+  place?: string;
+  job: string;
+  source: 'site' | 'google';
+};
+const all = new Map<string, Voice>();
+voices.featured.forEach((id) => all.set(id, { id, ...testimonials[id], source: 'site' }));
+googleReviews.forEach((r) => all.set(slug(r.name), { id: slug(r.name), ...r, source: 'google' }));
+
+// Which building each voice lives in, where its leader lands, and where it sits
+// on the desktop grid. The grid's column lines are street coordinates (0–1200):
+// 0 · 360 · 420 · 660 · 720 · 780 · 840 · 1200, so the leaders of the two top
+// quotes drop through the gutters at 390 and 810.
+const plan = [
+  { id: 'robert', kind: 'cams', area: '1 / 1 / 2 / 4', x0: 0, tier: 1 },
+  { id: 'distributor', kind: 'shed', area: '1 / 5 / 2 / 8', x0: 720, tier: 1 },
+  { id: 'brian', kind: 'semi', area: '2 / 1 / 3 / 2', x0: 0, tier: 2 },
+  { id: 'google-reviewer', kind: 'smoke', area: '2 / 3 / 3 / 6', x0: 420, tier: 2 },
+  { id: 'mccoy-motors', kind: 'unit', area: '2 / 7 / 3 / 8', x0: 840, tier: 2 },
+];
+plan.forEach((p) => {
+  if (!all.has(p.id)) throw new Error(`Voices: no testimonial or Google review for "${p.id}"`);
+});
+
+// ---------- Drawing helpers (street units; ground line y = 240) ----------
+const f = (n: number) => Math.round(n * 10) / 10;
+const box = (x: number, y: number, w: number, h: number) => `M${f(x)} ${f(y)}h${f(w)}v${f(h)}h${f(-w)}Z`;
+// Mullions (n) and a transom (t from the top) for a window, plus its sill.
+const bars = (x: number, y: number, w: number, h: number, n = 0, t = 0) => {
+  let d = '';
+  for (let i = 1; i <= n; i++) d += `M${f(x + (w * i) / (n + 1))} ${y}v${h}`;
+  if (t) d += `M${x} ${y + t}h${w}`;
+  return d;
+};
+const sill = (x: number, y: number, w: number, h: number) => `M${x - 2} ${y + h + 1.2}h${w + 4}`;
+
+type Win = [number, number, number, number, number?, number?, ('soft' | 'off')?];
+// Glass, lit panes (full and soft), mullions and sills for a set of windows.
+function windows(list: Win[]) {
+  let glass = '';
+  let lit = '';
+  let soft = '';
+  let frame = '';
+  let sills = '';
+  for (const [x, y, w, h, n = 0, t = 0, mode] of list) {
+    glass += box(x, y, w, h);
+    if (mode === 'soft') soft += box(x, y, w, h);
+    else if (mode !== 'off') lit += box(x, y, w, h);
+    frame += bars(x, y, w, h, n, t);
+    if (w > 14) sills += sill(x, y, w, h);
+  }
+  return { glass, lit, soft, frame, sills };
+}
+const drawWindows = (w: ReturnType<typeof windows>, litClass = 'vo-lit') =>
+  `<path class="vo-glass" d="${w.glass}"/>` +
+  (w.lit ? `<path class="${litClass}" d="${w.lit}"/>` : '') +
+  (w.soft ? `<path class="${litClass} vo-lit--soft" d="${w.soft}"/>` : '') +
+  (w.frame ? `<path class="vo-bars" d="${w.frame}"/>` : '') +
+  (w.sills ? `<path class="vo-sill" d="${w.sills}"/>` : '');
+
+// A CCTV camera: head and view cone drawn pointing +x, turned to its rest
+// angle. The outer group is what the script pans, around the pivot.
+function camera(px: number, py: number, angle: number, len: number, spread: number, bracket: string) {
+  const s = (spread * Math.PI) / 180;
+  const dy = f(Math.tan(s) * len);
+  return (
+    `<path class="vo-bracket" d="${bracket}"/>` +
+    // The view stops at the ground: the clip sits outside the part that turns.
+    `<g clip-path="url(#vo-above-ground)"><g class="vo-cam" data-cam data-o="${px} ${py}">` +
+    `<g transform="translate(${px} ${py}) rotate(${angle})">` +
+    `<path class="vo-cone" d="M0 0L${len} ${-dy}V${dy}Z"/>` +
+    `<path class="vo-cone-edge" d="M4 ${f(-dy * (4 / len))}L${len} ${-dy}M4 ${f(dy * (4 / len))}L${len} ${dy}"/>` +
+    `<path class="vo-cam-head" d="M-3 -3.4h11a3.4 3.4 0 0 1 0 6.8h-11Z"/><path class="vo-cam-hood" d="M-4 -4.6h14.5v1.8h-14.5Z"/>` +
+    `<circle class="vo-cam-lens" cx="10.4" cy="0" r="1.5"/></g></g></g>`
+  );
+}
+
+const door = (x: number, y: number, w: number, h: number, paint: string) =>
+  `<path class="vo-door" style="--door:var(--vo-${paint})" d="${box(x, y, w, h)}"/>`;
+
+// A pool of window light on the ground in front, only while its building is lit up.
+const spillGlow = (cx: number, rx: number) => `<ellipse class="vo-warm" cx="${cx}" cy="245" rx="${rx}" ry="9"/>`;
+
+// ---------- Semi-detached pair (Brian's, and plain ones further down the road) ----------
+function semiShell(x0: number) {
+  return (
+    `<path class="vo-roof" d="M${x0 + 117} 106V84H${x0 + 133}V106ZM${x0 + 119} 84v-5h5v5ZM${x0 + 127} 84v-5h5v5Z"/>` +
+    `<path class="vo-wall" d="${box(x0, 152, 250, 88)}"/><path class="vo-tex" d="${box(x0, 152, 250, 88)}"/>` +
+    `<path class="vo-roof" d="M${x0 - 6} 152L${x0 + 30} 104H${x0 + 220}L${x0 + 256} 152Z"/>` +
+    `<path class="vo-rtex" d="M${x0 - 6} 152L${x0 + 30} 104H${x0 + 220}L${x0 + 256} 152Z"/>` +
+    `<path class="vo-shade" d="${box(x0, 152, 250, 4)}"/><path class="vo-edge" d="M${x0 + 125} 156V240"/>`
+  );
+}
+// Left half (a) and right half (b) of a pair; the right half mirrors the left.
+function semiHalf(x0: number, side: 'a' | 'b', lit: Array<'soft' | 'off' | undefined>, paint: string) {
+  const L = side === 'a';
+  const X = (x: number, w: number) => (L ? x0 + x : x0 + 250 - x - w);
+  const w = windows([
+    [X(14, 42), 164, 42, 28, 1, 9, lit[0]],
+    [X(92, 14), 162, 14, 22, 0, 0, lit[1]],
+    [X(12, 54), 206, 54, 26, 2, 8, lit[2]],
+    [X(100, 10), 209, 10, 12, 0, 0, lit[3]],
+  ]);
+  const bay = X(12, 54);
+  const porch = X(96, 18);
+  return {
+    windows: w,
+    parts:
+      `<path class="vo-canopy" d="M${bay - 4} 206L${bay} 200H${bay + 54}L${bay + 58} 206Z"/>` +
+      door(porch, 204, 18, 36, paint) +
+      `<path class="vo-canopy" d="M${porch - 6} 204L${porch - 2} 198H${porch + 20}L${porch + 24} 204Z"/>`,
+  };
+}
+function plainPair(x0: number, litA: Array<'soft' | 'off' | undefined>, litB: Array<'soft' | 'off' | undefined>) {
+  const a = semiHalf(x0, 'a', litA, 'yellow');
+  const b = semiHalf(x0, 'b', litB, 'red');
+  return semiShell(x0) + drawWindows(a.windows, 'vo-amb') + a.parts + drawWindows(b.windows, 'vo-amb') + b.parts;
+}
+
+// ---------- The five buildings ----------
+type Building = {
+  kind: string;
+  cx: number; // centre, for the label and the phone vignette
+  fx: number; // where the leader lands
+  fy: number;
+  base?: string; // static parts that belong to the lot (Brian's neighbour)
+  body: string; // lights up with the building
+  sil: string; // outline: hover target, and the neighbour silhouette in vignettes
+  lit: string; // its lit windows, for the neighbour silhouette
+};
+
+// Brian W., Clonsilla: a semi-detached house, new intruder alarm. Bell box on the front.
+const semi = (() => {
+  const x0 = 20;
+  const nb = semiHalf(x0, 'a', ['off', 'off', 'soft', 'off'], 'yellow');
+  const me = semiHalf(x0, 'b', [undefined, 'soft', undefined, undefined], 'teal');
+  const base = semiShell(x0) + drawWindows(nb.windows, 'vo-amb') + nb.parts;
+  const body =
+    spillGlow(208, 56) +
+    drawWindows(me.windows) +
+    me.parts +
+    `<circle class="vo-strobe" data-strobe cx="195" cy="163" r="26"/>` +
+    `<rect class="vo-bell" x="188" y="160" width="14" height="20" rx="2.2"/>` +
+    `<path class="vo-bell-lens" d="M189.4 161.4h11.2v3.6h-11.2Z"/>` +
+    `<path class="vo-bell-line" d="M190.5 169h9M190.5 172h9"/>` +
+    `<g class="vo-led" data-led><circle cx="191" cy="177" r="1"/><circle cx="199" cy="177" r="1"/></g>`;
+  return {
+    kind: 'semi',
+    cx: 172,
+    fx: 195,
+    fy: 160,
+    base,
+    body,
+    sil: `M145 104H240L276 152H270V240H145Z`,
+    lit: me.windows.lit,
+  };
+})();
+
+// Robert C., Donaghmede: a detached house with a large-scale CCTV system.
+const cams = (() => {
+  const w = windows([
+    [306, 162, 40, 28, 1, 9],
+    [381, 164, 16, 22, 0, 0, 'soft'],
+    [408, 162, 18, 28, 0, 9, 'soft'],
+    [306, 204, 46, 28, 2, 8],
+    [408, 206, 18, 24, 0, 7],
+    [384, 208, 10, 12],
+  ]);
+  const body =
+    spillGlow(370, 80) +
+    `<path class="vo-roof" d="M318 114V84H332V114ZM320 84v-5h4.5v5ZM326.5 84v-5h4.5v5Z"/>` +
+    `<path class="vo-wall" d="${box(296, 150, 136, 90)}"/><path class="vo-tex" d="${box(296, 150, 136, 90)}"/>` +
+    `<path class="vo-wall-2" d="${box(432, 194, 52, 46)}"/><path class="vo-tex" d="${box(432, 194, 52, 46)}"/>` +
+    `<path class="vo-canopy" d="${box(430, 190, 56, 5)}"/>` +
+    `<path class="vo-roof" d="M290 150L324 100H404L438 150Z"/><path class="vo-rtex" d="M290 150L324 100H404L438 150Z"/>` +
+    `<path class="vo-shade" d="${box(296, 150, 136, 4)}"/>` +
+    drawWindows(w) +
+    door(380, 204, 18, 36, 'green') +
+    `<path class="vo-canopy" d="M374 204L378 198H400L404 204Z"/>` +
+    `<path class="vo-garage" d="${box(440, 202, 38, 38)}"/><path class="vo-edge" d="M440 211.5h38M440 221h38M440 230.5h38"/>` +
+    camera(300, 157, 158, 118, 13, 'M300 150v7') +
+    camera(390, 157, 76, 92, 16, 'M390 150v7') +
+    camera(482, 199, 22, 110, 13, 'M482 195v4');
+  return {
+    kind: 'cams',
+    cx: 390,
+    fx: 390,
+    fy: 152,
+    body,
+    sil: 'M318 84H332V100H404L438 150H432V190H486V240H296V150H290L324 100H318Z',
+    lit: w.lit,
+  };
+})();
+
+// The Google reviewer: CCTV, intruder alarm and smoke detectors. A gable-fronted
+// house; the smoke detector's LED glows on the landing ceiling.
+const smoke = (() => {
+  const w = windows([
+    [572, 160, 32, 28, 1, 8, 'soft'],
+    [622, 154, 16, 40, 0, 0],
+    [656, 160, 32, 28, 1, 8],
+    [572, 206, 36, 26, 1, 8],
+    [652, 206, 38, 26, 1, 8],
+    [708, 208, 20, 18, 0, 0, 'soft'],
+    [625, 208, 10, 12],
+  ]);
+  const body =
+    spillGlow(634, 78) +
+    `<path class="vo-roof" d="M644 112V84H656V112ZM646 84v-5h4v5ZM651.5 84v-5h4v5Z"/>` +
+    `<path class="vo-wall" d="M560 152L630 98L700 152V240H560Z"/><path class="vo-tex" d="M560 152L630 98L700 152V240H560Z"/>` +
+    `<path class="vo-wall-2" d="${box(700, 196, 35, 44)}"/><path class="vo-tex" d="${box(700, 196, 35, 44)}"/>` +
+    `<path class="vo-canopy" d="${box(698, 192, 39, 5)}"/>` +
+    `<path class="vo-roof" d="M552 153L630 92L708 153H700L630 99L560 153Z"/>` +
+    drawWindows(w) +
+    door(620, 204, 20, 36, 'red') +
+    `<path class="vo-canopy" d="M614 204L618 198H642L646 204Z"/>` +
+    `<rect class="vo-bell" x="662" y="134" width="11" height="15" rx="1.8"/><path class="vo-bell-lens" d="M663.2 135.2h8.6v2.8h-8.6Z"/>` +
+    `<g class="vo-smoke" data-smoke><circle class="vo-smoke-glow" cx="632" cy="158.4" r="12"/>` +
+    `<ellipse class="vo-smoke-body" cx="630" cy="157" rx="5.2" ry="1.9"/><circle class="vo-smoke-led" cx="632" cy="158.4" r="1.25"/></g>` +
+    camera(569, 158, 152, 84, 12, 'M569 151v7');
+  return {
+    kind: 'smoke',
+    cx: 634,
+    fx: 630,
+    fy: 154,
+    body,
+    sil: 'M552 153L630 92L644 103V84H656V112L708 153H700V192H737V240H560V153Z',
+    lit: w.lit,
+  };
+})();
+
+// Retail goods distributor, Co. Meath: a new distribution warehouse. Cameras
+// on the corners, floodlights over the loading doors.
+const shed = (() => {
+  const office = windows([[958, 150, 72, 14, 3, 0]]);
+  const flood = (x: number) =>
+    `<path class="vo-fbeam" d="M${x - 4} 162H${x + 4}L${x + 34} 246H${x - 34}Z"/>` +
+    `<ellipse class="vo-fpool" cx="${x}" cy="248" rx="48" ry="7.5"/>` +
+    `<path class="vo-fbody" d="M${x - 6} 156h12l-2 5h-8Z"/><path class="vo-fface" d="M${x - 4} 161.6h8"/>`;
+  const body =
+    `<path class="vo-clad" d="M800 134L922 108L1045 134V240H800Z"/><path class="vo-rib" d="M800 134L922 108L1045 134V240H800Z"/>` +
+    `<path class="vo-roof" d="M794 136L922 103L1051 136H1045L922 109L800 136Z"/>` +
+    `<path class="vo-plinth" d="${box(800, 224, 245, 16)}"/>` +
+    `<path class="vo-fascia" d="${box(819, 164, 58, 5)}${box(885, 164, 58, 5)}"/>` +
+    `<path class="vo-shutter" d="${box(822, 169, 52, 71)}${box(888, 169, 52, 71)}"/>` +
+    `<path class="vo-slat" d="${box(822, 169, 52, 71)}${box(888, 169, 52, 71)}"/>` +
+    drawWindows(office) +
+    `<path class="vo-steel" d="${box(1002, 206, 16, 34)}"/><path class="vo-lit vo-lit--soft" d="${box(1006, 210, 8, 10)}"/>` +
+    flood(848) +
+    flood(914) +
+    camera(810, 142, 160, 112, 13, 'M810 134v8') +
+    camera(1036, 142, 20, 112, 13, 'M1036 134v8');
+  return {
+    kind: 'shed',
+    cx: 922,
+    fx: 810,
+    fy: 137,
+    body,
+    sil: 'M794 136L922 103L1051 136H1045V240H800V136Z',
+    lit: office.lit,
+  };
+})();
+
+// McCoy Motors: a workshop unit. Lighting in the reception and the repair bay.
+const unit = (() => {
+  const rec = windows([[1066, 188, 32, 52, 1, 10]]);
+  const body =
+    `<path class="vo-spill" d="M1110 240H1182L1208 258H1084Z"/>` +
+    `<path class="vo-clad-2" d="${box(1060, 152, 180, 88)}"/><path class="vo-rib vo-rib--fine" d="${box(1060, 152, 180, 88)}"/>` +
+    `<path class="vo-plinth" d="${box(1060, 226, 180, 14)}"/>` +
+    `<path class="vo-fascia" d="${box(1056, 144, 188, 9)}${box(1062, 184, 40, 3)}"/>` +
+    drawWindows(rec) +
+    `<path class="vo-bay-dark" d="${box(1110, 172, 72, 68)}"/><path class="vo-bay" d="${box(1110, 172, 72, 68)}"/>` +
+    `<path class="vo-bayfloor" d="${box(1110, 236.5, 72, 3.5)}"/>` +
+    `<path class="vo-car" d="M1117 238V231.4q0-3 3-3.6l7-1.4 7.4-6.1q1.5-1.3 3.5-1.3h16q2 0 3.4 1.4l6 6 6.8 1.3q2.7.5 2.7 3.2V238Z"/>` +
+    `<circle class="vo-wheel" cx="1128" cy="237" r="4.4"/><circle class="vo-wheel" cx="1164" cy="237" r="4.4"/>` +
+    `<path class="vo-fascia" d="${box(1106, 164, 80, 8)}"/>` +
+    `<path class="vo-baylamp" d="${box(1128, 175, 36, 2.2)}"/>`;
+  return {
+    kind: 'unit',
+    cx: 1150,
+    fx: 1146,
+    fy: 175,
+    body,
+    sil: 'M1056 144H1244V153H1240V240H1060V153H1056Z',
+    lit: rec.lit,
+  };
+})();
+
+const buildings: Record<string, Building> = { semi, cams, smoke, shed, unit };
+
+// ---------- The rest of the street ----------
+const rng = (seed: number) => {
+  let s = seed;
+  return () => ((s = (s * 16807) % 2147483647) - 1) / 2147483646;
+};
+// Rooftops of the next road over, seen in the gaps.
+let far = '';
+let farWin = '';
+{
+  const r = rng(7);
+  for (let x = -660; x < 1860; ) {
+    const w = 96 + r() * 60;
+    const eave = 184 + r() * 8;
+    const ridge = eave - 22 - r() * 9;
+    const hip = 16 + r() * 14;
+    far += `M${f(x)} 240V${f(eave)}L${f(x + hip)} ${f(ridge)}H${f(x + w - hip)}L${f(x + w)} ${f(eave)}V240Z`;
+    if (r() > 0.45) {
+      const cx = x + hip + r() * (w - 2 * hip - 8);
+      far += `M${f(cx)} ${f(ridge + 1)}V${f(ridge - 9)}h7V${f(ridge + 1)}Z`;
+    }
+    for (const at of [0.22, 0.62]) if (r() > 0.62) farWin += box(f(x + w * at), f(eave + 9), 8, 6);
+    x += w + 6 + r() * 26;
+  }
+}
+const farLayer = `<path class="vo-far" d="${far}"/><path class="vo-farwin" d="${farWin}"/>`;
+
+// More units down the far end, more houses at the near end: only seen on wide screens.
+const moreUnits =
+  `<path class="vo-clad-2" d="${box(1244, 154, 176, 86)}${box(1428, 150, 190, 90)}"/>` +
+  `<path class="vo-fascia" d="${box(1240, 146, 184, 9)}${box(1424, 142, 198, 9)}"/>` +
+  `<path class="vo-shutter" d="${box(1292, 172, 70, 68)}${box(1470, 170, 76, 70)}"/>` +
+  `<path class="vo-slat" d="${box(1292, 172, 70, 68)}${box(1470, 170, 76, 70)}"/>` +
+  `<path class="vo-steel" d="${box(1380, 206, 16, 34)}${box(1560, 206, 16, 34)}"/>`;
+const bleed =
+  plainPair(-300, ['off', 'off', 'soft', 'off'], ['soft', 'off', 'off', 'off']) +
+  plainPair(-570, ['off', 'soft', 'off', 'off'], ['off', 'off', 'soft', 'off']) +
+  moreUnits;
+const bleedSil = [
+  { cx: -175, sil: 'M-306 152L-270 104H-80L-44 152H-50V240H-300V152Z', lit: '' },
+  { cx: 1332, sil: `M1240 146H1424V240H1244Z`, lit: '' },
+];
+
+// Sodium streetlights: a column, a lantern, a pool on the pavement, and bloom.
+const lampXs: Array<[number, number]> = [
+  [-330, -1],
+  [-14, -1],
+  [284, -1],
+  [506, -1],
+  [772, -1],
+  [1270, 1],
+  [1640, 1],
+];
+function lamp(x: number, dir: number) {
+  const lx = x + dir * 24;
+  return {
+    x,
+    pool: `<ellipse class="vo-pool" cx="${lx}" cy="249" rx="80" ry="9.5"/>`,
+    post:
+      `<path class="vo-lamp" d="M${x} 240V131q0-7 ${dir * 7}-7h${dir * 12}"/>` +
+      `<path class="vo-lamp-head" d="M${lx - 8} 121.5h16l-3.2 5h-9.6Z${box(x - 2.6, 232, 5.2, 8)}"/>` +
+      `<ellipse class="vo-lens" cx="${lx}" cy="127" rx="5.4" ry="1.5"/>`,
+    light:
+      `<path class="vo-beam" d="M${lx - 5} 128H${lx + 5}L${lx + 60} 250H${lx - 60}Z"/>` +
+      `<circle class="vo-bloom" cx="${lx}" cy="128" r="48"/>`,
+  };
+}
+const lamps = lampXs.map(([x, dir]) => lamp(x, dir));
+
+const ground =
+  `<path class="vo-pave" d="${box(-760, 240, 2720, 13)}"/>` +
+  `<path class="vo-kerb" d="${box(-760, 253, 2720, 2.4)}"/>` +
+  `<path class="vo-road" d="${box(-760, 255.4, 2720, 44.6)}"/>`;
+
+const TOP = 70; // top of the drawing: the leaders enter here
+const H = 230;
+
+// ---------- Assemble ----------
+const items = plan.map((p) => {
+  const v = all.get(p.id)!;
+  const b = buildings[p.kind];
+  return {
+    ...p,
+    v,
+    b,
+    label: v.place ? v.place.split(',')[0] : v.name,
+    // Desktop: leader offset inside the grid item, in container units (1200 street units = 100cqw).
+    pxd: `${f((b.fx - p.x0) / 12)}cqw`,
+    // Phones: leader offset from the vignette's centre, in street units.
+    dx: b.fx - b.cx,
+  };
+});
+
+const bldGroup = (it: (typeof items)[number]) =>
+  `<g class="vo-bld vo-bld--${it.b.kind}" data-b="${it.id}" data-kind="${it.b.kind}" data-x="${it.b.cx}">` +
+  it.b.body +
+  `<path class="vo-hit" d="${it.b.sil}"/></g>`;
+const postFor = (it: (typeof items)[number], top: number) =>
+  `<path class="vo-post" data-b="${it.id}" d="M${it.b.fx} ${top}V${it.b.fy - 2}"/>` +
+  `<circle class="vo-dot" data-b="${it.id}" cx="${it.b.fx}" cy="${it.b.fy}" r="2.4"/>`;
+
+const street =
+  ground +
+  farLayer +
+  bleed +
+  lamps.map((l) => l.pool).join('') +
+  items.map((it) => (it.b.base || '') + bldGroup(it)).join('') +
+  lamps.map((l) => l.post).join('') +
+  lamps.map((l) => l.light).join('') +
+  items.map((it) => postFor(it, TOP)).join('');
+
+// A phone vignette: the customer's building in full, the neighbours as dark
+// shapes with a few lights on, the lamps and the pavement either side.
+const REACH = 640;
+function vignette(it: (typeof items)[number]) {
+  const near = (x: number) => Math.abs(x - it.b.cx) < REACH;
+  const others = [
+    ...items.filter((o) => o.id !== it.id).map((o) => ({ cx: o.b.cx, sil: o.b.sil, lit: o.b.lit })),
+    ...bleedSil,
+  ].filter((o) => near(o.cx));
+  // Brian's neighbour is part of his pair; everyone else sees it as a silhouette.
+  if (it.b.kind !== 'semi' && near(semi.cx)) others.push({ cx: 82, sil: 'M14 152L50 104H145V240H20V152Z', lit: '' });
+  const ls = lamps.filter((l) => near(l.x));
+  return (
+    ground +
+    farLayer +
+    ls.map((l) => l.pool).join('') +
+    others.map((o) => `<path class="vo-sil" d="${o.sil}"/>` + (o.lit ? `<path class="vo-sil-lit" d="${o.lit}"/>` : '')).join('') +
+    (it.b.base || '') +
+    bldGroup(it) +
+    ls.map((l) => l.post).join('') +
+    ls.map((l) => l.light).join('') +
+    postFor(it, TOP)
+  );
+}
+
+// Five drawn stars, one path.
+const star = 'M7 .3L8.68 4.99 13.66 5.14 9.71 8.18 11.11 12.96 7 10.15 2.89 12.96 4.29 8.18.34 5.14 5.32 4.99Z';
+const stars = [0, 1, 2, 3, 4].map((i) => `<path transform="translate(${i * 15.5} 0)" d="${star}"/>`).join('');
+
+// Linking: a quote lights its building and its leader, a building lights its quote.
+// Written out per voice because :has() needs a concrete pair to match.
+const figOn = (k: string) => `.voice[data-v="${k}"] .voice__fig:is(:hover, :focus-visible)`;
+const bldOn = (k: string) => `.vo-street [data-b="${k}"]:hover`;
+const hot = '--hot:1;--dim:0;--t:var(--dur-trip);--vo-line:var(--sodium-500);--vo-lbl:var(--sodium-400);--vo-name:var(--sodium-400);';
+const lanes: Record<string, string> = { robert: '--lane1-c', distributor: '--lane2-c' };
+let linkCss =
+  `.vo-scene:has(.voice__fig:is(:hover, :focus-visible)) .vo-street .vo-bld{--dim:1}` +
+  `@media (hover:hover){.vo-scene:has(.vo-street .vo-bld:hover) .vo-street .vo-bld{--dim:1}}`;
+for (const { id: k } of plan) {
+  const targets = `:is(.vo-street [data-b="${k}"], .vo-lbl[data-b="${k}"])`;
+  linkCss += `.vo-scene:has(${figOn(k)}) ${targets}{${hot}}`;
+  linkCss += `@media (hover:hover){.vo-scene:has(${bldOn(k)}) :is(${targets}, .voice[data-v="${k}"]){${hot}}}`;
+  if (lanes[k]) {
+    linkCss += `.vo-scene:has(${figOn(k)}) .voices__list{${lanes[k]}:var(--sodium-500)}`;
+    linkCss += `@media (hover:hover){.vo-scene:has(${bldOn(k)}) .voices__list{${lanes[k]}:var(--sodium-500)}}`;
+  }
+}
 ---
 
-<section id="reviews" class="section is-night" aria-labelledby="voices-title">
-  <div class="container">
+<section id="reviews" class="section is-night voices" aria-labelledby="voices-title" data-voices>
+  <div class="container voices__head">
     <h2 class="h-section" id="voices-title">{voices.title}</h2>
+    <p class="lede">{voices.lede}</p>
   </div>
+
+  <div class="container vo-scene">
+    <ul class="voices__list" role="list">
+      {
+        items.map((it) => (
+          <li
+            class="voice"
+            data-v={it.id}
+            data-tier={it.tier}
+            style={`--area:${it.area};--px-d:${it.pxd};--dx:${it.dx}`}
+          >
+            <figure class="voice__fig" id={`v-${it.id}`} tabindex="0">
+              <blockquote class="voice__quote">
+                <p>{it.v.quote}</p>
+              </blockquote>
+              <figcaption class="voice__by">
+                <span class="voice__name">{it.v.name}</span>
+                {it.v.place && <span class="voice__place">{it.v.place}</span>}
+                <span class="voice__meta">
+                  <span class="voice__job">{it.v.job}</span>
+                  {it.v.source === 'google' ? (
+                    <span class="voice__src">
+                      <svg
+                        class="voice__stars"
+                        role="img"
+                        aria-label={voices.ratingLabel}
+                        viewBox="0 0 76 14"
+                        width="76"
+                        height="14"
+                        set:html={stars}
+                      />
+                      <span>{voices.googleLabel}</span>
+                    </span>
+                  ) : (
+                    <span class="voice__src">{voices.siteLabel}</span>
+                  )}
+                </span>
+              </figcaption>
+            </figure>
+            <span class="voice__post" aria-hidden="true" />
+            <div class="voice__lot" aria-hidden="true">
+              <svg
+                class="vo-vig"
+                viewBox={`${it.b.cx - 130} ${TOP} 260 ${H}`}
+                focusable="false"
+                set:html={vignette(it)}
+              />
+            </div>
+          </li>
+        ))
+      }
+    </ul>
+
+    <div class="vo-street" aria-hidden="true">
+      <svg class="vo-street__svg" viewBox={`0 ${TOP} 1200 ${H}`} focusable="false" set:html={street} />
+      <div class="vo-street__labels">
+        {items.map((it) => <span class="vo-lbl" data-b={it.id} style={`--cx:${it.b.cx}`}>{it.label}</span>)}
+      </div>
+    </div>
+  </div>
+
+  <svg class="vo-defs" aria-hidden="true" focusable="false" width="0" height="0">
+    <defs>
+      <radialGradient id="vo-g-bloom">
+        <stop offset="0" class="vo-s-sod3" stop-opacity=".62"></stop>
+        <stop offset=".22" class="vo-s-sod" stop-opacity=".24"></stop>
+        <stop offset="1" class="vo-s-sod" stop-opacity="0"></stop>
+      </radialGradient>
+      <radialGradient id="vo-g-pool">
+        <stop offset="0" class="vo-s-sod4" stop-opacity=".5"></stop>
+        <stop offset=".55" class="vo-s-sod" stop-opacity=".14"></stop>
+        <stop offset="1" class="vo-s-sod" stop-opacity="0"></stop>
+      </radialGradient>
+      <linearGradient id="vo-g-beam" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" class="vo-s-sod4" stop-opacity=".2"></stop>
+        <stop offset="1" class="vo-s-sod" stop-opacity=".03"></stop>
+      </linearGradient>
+      <linearGradient id="vo-g-fbeam" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" class="vo-s-flood0" stop-opacity=".55"></stop>
+        <stop offset="1" class="vo-s-flood" stop-opacity=".05"></stop>
+      </linearGradient>
+      <radialGradient id="vo-g-fpool">
+        <stop offset="0" class="vo-s-flood0" stop-opacity=".62"></stop>
+        <stop offset=".5" class="vo-s-flood" stop-opacity=".2"></stop>
+        <stop offset="1" class="vo-s-flood" stop-opacity="0"></stop>
+      </radialGradient>
+      <radialGradient id="vo-g-cone" cx="0" cy=".5" r="1">
+        <stop offset="0" class="vo-s-flood" stop-opacity=".3"></stop>
+        <stop offset=".7" class="vo-s-flood" stop-opacity=".07"></stop>
+        <stop offset="1" class="vo-s-flood" stop-opacity="0"></stop>
+      </radialGradient>
+      <linearGradient id="vo-g-bay" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" class="vo-s-flood0"></stop>
+        <stop offset="1" class="vo-s-flood2"></stop>
+      </linearGradient>
+      <linearGradient id="vo-g-spill" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" class="vo-s-flood" stop-opacity=".45"></stop>
+        <stop offset="1" class="vo-s-flood" stop-opacity="0"></stop>
+      </linearGradient>
+      <radialGradient id="vo-g-warm">
+        <stop offset="0" class="vo-s-tung" stop-opacity=".34"></stop>
+        <stop offset="1" class="vo-s-tung" stop-opacity="0"></stop>
+      </radialGradient>
+      <radialGradient id="vo-g-red">
+        <stop offset="0" class="vo-s-red" stop-opacity=".95"></stop>
+        <stop offset=".35" class="vo-s-red" stop-opacity=".32"></stop>
+        <stop offset="1" class="vo-s-red" stop-opacity="0"></stop>
+      </radialGradient>
+      <radialGradient id="vo-g-blue">
+        <stop offset="0" class="vo-s-blue4" stop-opacity=".95"></stop>
+        <stop offset=".3" class="vo-s-blue" stop-opacity=".42"></stop>
+        <stop offset="1" class="vo-s-blue" stop-opacity="0"></stop>
+      </radialGradient>
+      <linearGradient id="vo-g-glass" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" class="vo-s-n700"></stop>
+        <stop offset="1" class="vo-s-n950"></stop>
+      </linearGradient>
+      <linearGradient id="vo-g-road" gradientUnits="userSpaceOnUse" x1="0" y1="255" x2="0" y2="300">
+        <stop offset="0" class="vo-s-tarmac"></stop>
+        <stop offset=".62" class="vo-s-tarmac"></stop>
+        <stop offset="1" class="vo-s-n900"></stop>
+      </linearGradient>
+      <clipPath id="vo-above-ground">
+        <rect x="-800" y="0" width="2800" height="241"></rect>
+      </clipPath>
+      <pattern id="vo-pebble" width="7" height="7" patternUnits="userSpaceOnUse">
+        <circle class="vo-speck" cx="1.2" cy="1.6" r=".55"></circle>
+        <circle class="vo-speck" cx="4.6" cy="3.1" r=".45"></circle>
+        <circle class="vo-speck" cx="2.8" cy="5.6" r=".5"></circle>
+        <circle class="vo-speck vo-speck--dark" cx="5.9" cy="6.2" r=".5"></circle>
+        <circle class="vo-speck vo-speck--dark" cx="3.3" cy=".6" r=".4"></circle>
+      </pattern>
+      <pattern id="vo-slate" width="9" height="4.6" patternUnits="userSpaceOnUse">
+        <path class="vo-course" d="M0 4.3h9"></path>
+      </pattern>
+      <pattern id="vo-rib" width="6" height="12" patternUnits="userSpaceOnUse">
+        <path class="vo-ribline" d="M3 0v12"></path>
+      </pattern>
+      <pattern id="vo-slat-p" width="10" height="4" patternUnits="userSpaceOnUse">
+        <path class="vo-slatline" d="M0 3.6h10"></path>
+      </pattern>
+    </defs>
+  </svg>
 </section>
+
+<style is:inline set:html={linkCss}></style>
+
+<style is:global>
+  /* Everything in the drawing is injected markup, so these styles are global
+     and namespaced (.voices, .vo-*). */
+  .voices {
+    --vo-wall: color-mix(in srgb, var(--pebble) 22%, var(--night-800));
+    --vo-wall-2: color-mix(in srgb, var(--pebble) 15%, var(--night-800));
+    --vo-clad: color-mix(in srgb, var(--night-500) 46%, var(--night-800));
+    --vo-clad-2: color-mix(in srgb, var(--night-600) 66%, var(--night-850));
+    --vo-plinth: color-mix(in srgb, var(--pebble) 14%, var(--night-850));
+    --vo-shutter: color-mix(in srgb, var(--flood-300) 22%, var(--night-800));
+    --vo-pave: color-mix(in srgb, var(--night-600) 52%, var(--night-800));
+    /* Front doors, painted the Irish way: small local notes of colour */
+    --vo-red: #b2362d;
+    --vo-teal: #1d7571;
+    --vo-green: #2d6041;
+    --vo-yellow: #d3a12e;
+    --vo-rule: color-mix(in srgb, var(--dusk-400) 50%, var(--night-900));
+    --vig-h: clamp(150px, 18vw + 90px, 230px);
+    overflow: clip;
+  }
+
+  /* ---------- Heading ---------- */
+  .voices__head {
+    display: grid;
+    gap: var(--space-5);
+  }
+  .voices__head .lede {
+    max-width: 40ch;
+  }
+  /* The narrowest phones: keep "small jobs and" on one line */
+  @media (max-width: 359.98px) {
+    .voices .h-section {
+      font-size: 1.95rem;
+    }
+  }
+
+  /* ---------- The quotes ---------- */
+  .vo-scene {
+    position: relative;
+    container-type: inline-size;
+    margin-top: clamp(3.5rem, 2rem + 4vw, 6rem);
+  }
+  .voices__list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: grid;
+    gap: clamp(3.25rem, 2.2rem + 4vw, 5rem);
+  }
+  .voice {
+    --hot: 0;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+  }
+  .voice__fig {
+    border-radius: var(--radius-sm);
+  }
+  .voice__fig:focus-visible {
+    outline-offset: 10px;
+  }
+  .voice__quote {
+    margin: 0;
+  }
+  .voice__quote p {
+    position: relative;
+    max-width: 26em; /* about 58 characters in Atkinson */
+    font-family: var(--font-body);
+    font-size: clamp(1.0625rem, 1rem + 0.3vw, 1.1875rem);
+    font-weight: 420;
+    line-height: 1.5;
+    color: var(--dusk-50);
+  }
+  /* Hanging quotation marks keep the text's left edge clean */
+  .voice__quote p::before {
+    content: '\201C';
+    content: '\201C' / '';
+    position: absolute;
+    right: 100%;
+    padding-right: 0.06em;
+    color: var(--dusk-300);
+  }
+  .voice__quote p::after {
+    content: '\201D';
+    content: '\201D' / '';
+    color: var(--dusk-300);
+  }
+  .voice[data-v='robert'] .voice__quote p {
+    max-width: 24em;
+    font-size: clamp(1.3rem, 0.55rem + 1.55vw, 2.05rem);
+    font-weight: 400;
+    line-height: 1.3;
+    letter-spacing: -0.012em;
+  }
+  .voice[data-v='distributor'] .voice__quote p {
+    font-size: clamp(1.125rem, 0.72rem + 0.72vw, 1.5rem);
+    line-height: 1.42;
+    letter-spacing: -0.006em;
+  }
+  .voice[data-v='mccoy-motors'] .voice__quote p {
+    font-size: clamp(1.15rem, 0.78rem + 0.62vw, 1.4rem);
+    line-height: 1.4;
+  }
+
+  .voice__by {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.2rem 0.65em;
+    margin-top: 1.15rem;
+    padding-bottom: 0.95rem;
+    border-bottom: 1px solid var(--vo-line, var(--vo-rule));
+    transition: border-color var(--t, var(--dur-decay)) var(--ease-out);
+  }
+  .voice__name {
+    font-family: var(--font-display);
+    font-size: var(--step-0);
+    font-stretch: 112%;
+    font-weight: 700;
+    letter-spacing: -0.005em;
+    color: var(--vo-name, var(--dusk-50));
+    transition: color var(--t, var(--dur-decay)) var(--ease-out);
+  }
+  .voice__place {
+    font-size: var(--step--1);
+    color: var(--dusk-200);
+  }
+  .voice__meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    flex-basis: 100%;
+    gap: 0.2rem 1.25em;
+    font-size: var(--step--1);
+    line-height: 1.45;
+    color: var(--dusk-300);
+  }
+  .voice__src {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45em;
+    font-variant-caps: all-small-caps;
+    letter-spacing: 0.045em;
+  }
+  .voice__stars {
+    flex: none;
+    width: 4.2em;
+    height: auto;
+    fill: var(--sodium-400);
+  }
+
+  /* The leader from a quote down to its building */
+  .voice__post {
+    --px: calc(50% + var(--dx) * var(--vig-h) / 230);
+    position: relative;
+    height: 2.25rem;
+  }
+  .voice__post::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: calc(var(--px) - 0.5px);
+    width: 1px;
+    background: var(--vo-line, var(--vo-rule));
+    transform: scaleY(var(--draw, 1));
+    transform-origin: 50% 100%;
+    transition: background-color var(--t, var(--dur-decay)) var(--ease-out);
+  }
+
+  /* Phones and tablets: each quote over its own slice of the street */
+  /* The slice of street fades out at its sides and into the ground below */
+  .voice__lot {
+    --fade-x: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent);
+    --fade-y: linear-gradient(to top, transparent, #000 16%);
+    height: var(--vig-h);
+    -webkit-mask-image: var(--fade-x), var(--fade-y);
+    -webkit-mask-composite: source-in;
+    mask-image: var(--fade-x), var(--fade-y);
+    mask-composite: intersect;
+  }
+  .vo-vig {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+  .vo-street {
+    display: none;
+  }
+
+  @media (min-width: 700px) and (max-width: 1023.98px) {
+    .voice {
+      width: min(100%, 36rem);
+    }
+    .voice[data-v='robert'] {
+      width: min(100%, 44rem);
+    }
+    .voice:nth-child(even) {
+      margin-left: auto;
+    }
+  }
+
+  /* ---------- Desktop: the quotes stand over one street ---------- */
+  @media (min-width: 1024px) {
+    .voices.section {
+      padding-bottom: 0;
+    }
+    .voices__head {
+      grid-template-columns: minmax(0, 660fr) minmax(0, 60fr) minmax(0, 480fr);
+      align-items: end;
+    }
+    .voices__head .lede {
+      grid-column: 3;
+      padding-bottom: 0.35rem;
+    }
+    /* Column lines are street coordinates: 0 360 420 660 720 780 840 1200 */
+    .voices__list {
+      grid-template-columns:
+        minmax(0, 360fr) minmax(0, 60fr) minmax(0, 240fr) minmax(0, 60fr)
+        minmax(0, 60fr) minmax(0, 60fr) minmax(0, 360fr);
+      grid-template-rows: auto auto;
+      gap: 0;
+    }
+    .voice {
+      grid-area: var(--area);
+      width: auto;
+    }
+    .voice__post {
+      --px: var(--px-d);
+      flex: 1 1 auto;
+      height: auto;
+      min-height: 3rem;
+    }
+    .voice[data-tier='1'] .voice__post {
+      min-height: 2.5rem;
+    }
+    .voice[data-tier='2'] {
+      margin-top: 2.75rem;
+    }
+    .voice[data-v='google-reviewer'] {
+      margin-top: 5.25rem;
+      padding-right: 0.5rem;
+    }
+    .voice[data-v='mccoy-motors'] {
+      margin-top: 3.75rem;
+    }
+    .voice[data-v='brian'] .voice__fig {
+      padding-right: 0.25rem;
+    }
+    /* The two top quotes' leaders pass down between the lower quotes */
+    .voices__list::before,
+    .voices__list::after {
+      content: '';
+      grid-row: 2;
+      background: linear-gradient(var(--c), var(--c)) 50% 0 / 1px 100% no-repeat;
+      transform: scaleY(var(--s, 1));
+      transform-origin: 50% 100%;
+      transition: background-color var(--dur-decay) var(--ease-out);
+    }
+    .voices__list::before {
+      --c: var(--lane1-c, var(--vo-rule));
+      --s: var(--lane1, 1);
+      grid-column: 2;
+    }
+    .voices__list::after {
+      --c: var(--lane2-c, var(--vo-rule));
+      --s: var(--lane2, 1);
+      grid-column: 6;
+    }
+    .voice__quote p {
+      font-size: clamp(1rem, 0.72rem + 0.42vw, 1.1875rem);
+      max-width: none;
+    }
+    .voice[data-v='robert'] .voice__quote p {
+      max-width: 25em;
+      font-size: clamp(1.45rem, 0.5rem + 1.6vw, 2.1rem);
+    }
+    .voice[data-v='distributor'] .voice__quote p {
+      font-size: clamp(1.15rem, 0.7rem + 0.75vw, 1.5rem);
+    }
+    .voice[data-v='mccoy-motors'] .voice__quote p {
+      font-size: clamp(1.1rem, 0.62rem + 0.72vw, 1.4rem);
+    }
+    .voice__lot {
+      display: none;
+    }
+    .vo-street {
+      display: block;
+      position: relative;
+    }
+    /* The overcast over the street, lit orange from below */
+    .vo-street::before {
+      content: '';
+      position: absolute;
+      left: 50%;
+      bottom: 0;
+      width: 100vw;
+      height: 190%;
+      transform: translateX(-50%);
+      background:
+        radial-gradient(55% 60% at 50% 100%, color-mix(in srgb, var(--sodium-500) 13%, transparent), transparent 72%),
+        linear-gradient(to top, color-mix(in srgb, var(--sodium-600) 7%, transparent), transparent 60%);
+      pointer-events: none;
+    }
+    .vo-street__svg {
+      position: relative;
+      display: block;
+      width: 100%;
+      height: auto;
+      overflow: visible;
+    }
+    .vo-street__labels {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+    }
+    .vo-lbl {
+      position: absolute;
+      left: calc(var(--cx) * 1cqw / 12);
+      top: calc((277 - 70) * 1cqw / 12);
+      transform: translate(-50%, -50%);
+      font-size: var(--step--1);
+      font-variant-caps: all-small-caps;
+      letter-spacing: 0.06em;
+      line-height: 1;
+      white-space: nowrap;
+      color: var(--vo-lbl, var(--dusk-300));
+      transition: color var(--t, var(--dur-decay)) var(--ease-out);
+    }
+  }
+
+  /* A focused or hovered quote lights its own leader */
+  .voice:has(.voice__fig:is(:hover, :focus-visible)) {
+    --hot: 1;
+    --t: var(--dur-trip);
+    --vo-line: var(--sodium-500);
+    --vo-name: var(--sodium-400);
+  }
+  .voice:has(.voice__fig:is(:hover, :focus-visible)) .voice__lot :is(.vo-bld, .vo-post, .vo-dot) {
+    --hot: 1;
+    --t: var(--dur-trip);
+    --vo-line: var(--sodium-500);
+  }
+  @media (hover: hover) {
+    .voice:has(.voice__lot:hover) {
+      --t: var(--dur-trip);
+      --vo-line: var(--sodium-500);
+      --vo-name: var(--sodium-400);
+    }
+    .voice:has(.voice__lot:hover) .voice__lot :is(.vo-bld, .vo-post, .vo-dot) {
+      --hot: 1;
+      --t: var(--dur-trip);
+      --vo-line: var(--sodium-500);
+    }
+  }
+
+  /* ---------- The drawing ---------- */
+  .vo-defs {
+    position: absolute;
+    width: 0;
+    height: 0;
+    overflow: hidden;
+  }
+  .vo-s-sod { stop-color: var(--sodium-500); }
+  .vo-s-sod3 { stop-color: var(--sodium-300); }
+  .vo-s-sod4 { stop-color: var(--sodium-400); }
+  .vo-s-flood { stop-color: var(--flood-50); }
+  .vo-s-flood0 { stop-color: var(--flood-0); }
+  .vo-s-flood2 { stop-color: var(--flood-200); }
+  .vo-s-tung { stop-color: var(--tungsten); }
+  .vo-s-red { stop-color: var(--alarm-500); }
+  .vo-s-blue { stop-color: var(--strobe-500); }
+  .vo-s-blue4 { stop-color: var(--strobe-400); }
+  .vo-s-n700 { stop-color: var(--night-700); }
+  .vo-s-n900 { stop-color: var(--night-900); }
+  .vo-s-n950 { stop-color: var(--night-950); }
+  .vo-s-tarmac { stop-color: var(--tarmac); }
+  .vo-speck { fill: color-mix(in srgb, var(--pebble) 55%, var(--night-800)); opacity: 0.55; }
+  .vo-speck--dark { fill: var(--night-950); opacity: 0.4; }
+  .vo-course { fill: none; stroke: var(--night-950); stroke-width: 0.6; stroke-opacity: 0.55; }
+  .vo-ribline { fill: none; stroke: var(--night-950); stroke-width: 1; stroke-opacity: 0.32; }
+  .vo-slatline { fill: none; stroke: var(--night-950); stroke-width: 0.7; stroke-opacity: 0.45; }
+
+  .voices svg :is(path, circle, ellipse, rect) {
+    pointer-events: none;
+  }
+  .vo-hit {
+    fill: transparent;
+    pointer-events: fill !important;
+  }
+
+  /* Ground, sky, the rest of the road */
+  .vo-pave { fill: var(--vo-pave); }
+  .vo-kerb { fill: color-mix(in srgb, var(--pebble) 30%, var(--night-800)); }
+  .vo-road { fill: url(#vo-g-road); }
+  .vo-far { fill: var(--night-850); }
+  .vo-farwin { fill: var(--tungsten); opacity: 0.26; }
+  .vo-sil { fill: color-mix(in srgb, var(--pebble) 9%, var(--night-850)); }
+  .vo-sil-lit { fill: var(--tungsten); opacity: 0.28; }
+  .vo-amb { fill: var(--tungsten); opacity: 0.34; }
+  .vo-amb.vo-lit--soft { opacity: 0.2; }
+
+  /* Streetlights */
+  .vo-lamp { fill: none; stroke: var(--night-950); stroke-width: 3; stroke-linecap: round; }
+  .vo-lamp-head { fill: var(--night-950); }
+  .vo-lens { fill: var(--sodium-300); }
+  .vo-bloom { fill: url(#vo-g-bloom); }
+  .vo-beam { fill: url(#vo-g-beam); }
+  .vo-pool { fill: url(#vo-g-pool); }
+
+  /* Materials */
+  .vo-wall { fill: var(--vo-wall); }
+  .vo-wall-2 { fill: var(--vo-wall-2); }
+  .vo-tex { fill: url(#vo-pebble); }
+  .vo-roof, .vo-canopy { fill: var(--slate); }
+  .vo-rtex { fill: url(#vo-slate); }
+  .vo-shade { fill: var(--night-950); opacity: 0.45; }
+  .vo-edge { fill: none; stroke: var(--night-950); stroke-width: 1; stroke-opacity: 0.5; }
+  .vo-glass { fill: url(#vo-g-glass); }
+  .vo-bars { fill: none; stroke: var(--night-850); stroke-width: 1.7; }
+  .vo-sill { fill: none; stroke: color-mix(in srgb, var(--pebble) 42%, var(--night-800)); stroke-width: 1.5; }
+  .vo-door { fill: color-mix(in srgb, var(--door) 70%, var(--night-900)); }
+  .vo-garage { fill: color-mix(in srgb, var(--flood-300) 17%, var(--night-800)); }
+  .vo-clad { fill: var(--vo-clad); }
+  .vo-clad-2 { fill: var(--vo-clad-2); }
+  .vo-rib { fill: url(#vo-rib); }
+  .vo-rib--fine { opacity: 0.6; }
+  .vo-plinth { fill: var(--vo-plinth); }
+  .vo-shutter { fill: var(--vo-shutter); }
+  .vo-slat { fill: url(#vo-slat-p); }
+  .vo-fascia { fill: var(--night-950); }
+  .vo-steel { fill: color-mix(in srgb, var(--night-500) 40%, var(--night-900)); }
+
+  /* Light levels. --on is the switch the script flips; --hot and --dim come
+     from hovering or focusing. Everything that glows reads --lv. */
+  .vo-bld {
+    --on: 1;
+    --hot: 0;
+    --dim: 0;
+    --lv: calc(max(var(--on) * 0.82, var(--hot)) * (1 - var(--dim) * 0.45));
+  }
+  .vo-lit { fill: var(--tungsten); opacity: var(--lv); }
+  .vo-lit.vo-lit--soft { opacity: calc(var(--lv) * 0.62); }
+  .vo-warm { fill: url(#vo-g-warm); opacity: calc(var(--hot) * 1); }
+  .vo-cone { fill: url(#vo-g-cone); opacity: var(--lv); }
+  .vo-cone-edge {
+    fill: none;
+    stroke: var(--dusk-200);
+    stroke-width: 0.8;
+    stroke-dasharray: 2 4;
+    opacity: calc(var(--lv) * 0.55);
+  }
+  .vo-cam-head { fill: color-mix(in srgb, var(--flood-200) 72%, var(--night-800)); }
+  .vo-cam-hood { fill: color-mix(in srgb, var(--flood-300) 55%, var(--night-800)); }
+  .vo-cam-lens { fill: var(--night-950); }
+  .vo-bracket { fill: none; stroke: var(--night-950); stroke-width: 1.6; }
+  .vo-bell { fill: color-mix(in srgb, var(--flood-100) 74%, var(--night-800)); }
+  .vo-bell-lens { fill: var(--strobe-500); }
+  .vo-bell-line { fill: none; stroke: var(--night-700); stroke-width: 0.8; }
+  .vo-led { fill: var(--strobe-400); }
+  .vo-strobe { fill: url(#vo-g-blue); opacity: 0; }
+  .vo-smoke-glow { fill: url(#vo-g-red); }
+  .vo-smoke-body { fill: var(--flood-50); }
+  .vo-smoke-led { fill: var(--alarm-500); }
+  .vo-fbody { fill: var(--night-950); }
+  .vo-fface { fill: none; stroke: var(--flood-0); stroke-width: 1.8; stroke-linecap: round; opacity: calc(0.25 + var(--lv) * 0.75); }
+  .vo-fbeam { fill: url(#vo-g-fbeam); opacity: var(--lv); }
+  .vo-fpool { fill: url(#vo-g-fpool); opacity: var(--lv); }
+  .vo-bay-dark { fill: var(--night-950); }
+  .vo-bay { fill: url(#vo-g-bay); opacity: calc(var(--lv) * 0.92); }
+  .vo-bayfloor { fill: var(--flood-100); opacity: calc(var(--lv) * 0.6); }
+  .vo-baylamp { fill: var(--flood-0); opacity: calc(0.3 + var(--lv) * 0.7); }
+  .vo-spill { fill: url(#vo-g-spill); opacity: var(--lv); }
+  .vo-car { fill: var(--night-850); }
+  .vo-wheel { fill: var(--night-950); }
+
+  .vo-bld :is(.vo-lit, .vo-warm, .vo-cone, .vo-cone-edge, .vo-fbeam, .vo-fpool, .vo-fface, .vo-bay, .vo-bayfloor, .vo-baylamp, .vo-spill) {
+    transition: opacity var(--t, var(--dur-decay)) var(--ease-out);
+  }
+
+  /* Leaders inside the drawing */
+  .vo-post {
+    fill: none;
+    stroke: var(--vo-line, var(--vo-rule));
+    stroke-width: 1.1;
+    transition: stroke var(--t, var(--dur-decay)) var(--ease-out);
+  }
+  .vo-dot {
+    fill: var(--vo-line, var(--dusk-300));
+    transition: fill var(--t, var(--dur-decay)) var(--ease-out);
+  }
+
+  /* Before the street comes on (motion only; with scripts off or reduced
+     motion everything is lit from the start) */
+  .motion-ok .vo-bld:not(.is-on) {
+    --on: 0;
+  }
+  .motion-ok .vo-bld:not(.is-on) * {
+    transition: none;
+  }
+  .motion-ok .vo-post:not(.is-on),
+  .motion-ok .vo-dot:not(.is-on) {
+    visibility: hidden;
+  }
+  .motion-ok .voice:not(.is-on) .voice__post {
+    --draw: 0;
+  }
+  .motion-ok .voices__list:not(.is-on) {
+    --lane1: 0;
+    --lane2: 0;
+  }
+</style>
+
+<script>
+  import { boot, gsap, ScrollTrigger, motionOK, later, onPauseChange, isPaused, sweepIn } from '../scripts/motion.js';
+
+  boot();
+
+  const root = document.querySelector('[data-voices]');
+  if (root && motionOK()) later(() => initVoices(root));
+
+  function initVoices(root) {
+    const list = root.querySelector('.voices__list');
+    const lis = new Map([...root.querySelectorAll('.voice')].map((li) => [li.dataset.v, li]));
+    const lane = { robert: '--lane1', distributor: '--lane2' };
+
+    sweepIn(root.querySelector('#voices-title'));
+
+    // ---- Loops: pan the cameras now and then, blink the LEDs. They stop when
+    // paused, off screen or in a hidden tab.
+    const loops = new Set();
+    let inView = false;
+    const sync = () => {
+      const run = inView && !isPaused() && !document.hidden;
+      loops.forEach((tl) => (run ? tl.play() : tl.pause()));
+    };
+    ScrollTrigger.create({
+      trigger: root,
+      start: 'top bottom',
+      end: 'bottom top',
+      onToggle: (self) => {
+        inView = self.isActive;
+        sync();
+      },
+    });
+    onPauseChange(sync);
+    document.addEventListener('visibilitychange', sync);
+
+    const cams = (b) => [...b.querySelectorAll('[data-cam]')];
+
+    // Run once the reader has reached a point, however they got there: a slow
+    // scroll, a flick past it, an anchor jump, or a reload further down.
+    function reached(trigger, start, fn) {
+      let done = false;
+      let st = null;
+      const go = () => {
+        if (done) return;
+        done = true;
+        fn();
+        st?.kill();
+      };
+      st = ScrollTrigger.create({ trigger, start, end: 'max', onToggle: go, onLeave: go });
+      if (done) st.kill();
+      else if (st.scroll() >= st.start) go();
+    }
+
+    // One building switching on: the windows trip, then its own hardware wakes.
+    function comeOn(b) {
+      const tl = gsap.timeline();
+      if (b.dataset.kind === 'unit') {
+        // Workshop tubes strike: flicker, catch, hold.
+        tl.to(b, {
+          keyframes: [
+            { '--on': 0.7, duration: 0.04 },
+            { '--on': 0, duration: 0.1 },
+            { '--on': 0.9, duration: 0.04 },
+            { '--on': 0.12, duration: 0.16 },
+            { '--on': 1, duration: 0.45, ease: 'expo.out' },
+          ],
+          ease: 'none',
+        });
+      } else {
+        tl.to(b, {
+          keyframes: [
+            { '--on': 1, duration: 0.07, ease: 'none' },
+            { '--on': 0.55, duration: 0.05, ease: 'none' },
+            { '--on': 1, duration: 0.6, ease: 'expo.out' },
+          ],
+        });
+      }
+      cams(b).forEach((cam, i) => {
+        tl.fromTo(
+          cam,
+          { rotation: i % 2 ? 26 : -26, svgOrigin: cam.dataset.o },
+          { rotation: 0, duration: 1.35, ease: 'power2.inOut', svgOrigin: cam.dataset.o },
+          0.08 + i * 0.12,
+        );
+      });
+      const flash = b.querySelector('[data-strobe]');
+      if (flash) tl.fromTo(flash, { opacity: 0 }, { keyframes: { opacity: [0, 1, 0.08, 1, 0] }, duration: 0.5, ease: 'none' }, 0.2);
+      const smoke = b.querySelector('[data-smoke]');
+      if (smoke) tl.fromTo(smoke, { opacity: 0.3 }, { keyframes: { opacity: [0.3, 1, 0.3, 1] }, duration: 0.7, ease: 'none' }, 0.15);
+      tl.call(() => {
+        b.classList.add('is-on');
+        gsap.set(b, { clearProps: '--on' });
+      });
+      return tl;
+    }
+
+    // The leader rises from the fitting to the quote, like a cable being run.
+    function drawLeader(svg, id, withGrid) {
+      const tl = gsap.timeline();
+      const post = svg.querySelector(`.vo-post[data-b="${id}"]`);
+      const dot = svg.querySelector(`.vo-dot[data-b="${id}"]`);
+      const li = lis.get(id);
+      const tail = li?.querySelector('.voice__post');
+      tl.set([post, dot], { visibility: 'visible' })
+        .fromTo(dot, { scale: 0, transformOrigin: '50% 50%' }, { scale: 1, duration: 0.35, ease: 'back.out(3)' }, 0)
+        .fromTo(post, { drawSVG: '100% 100%' }, { drawSVG: '0% 100%', duration: 0.32, ease: 'none' }, 0.05);
+      if (withGrid && lane[id]) tl.fromTo(list, { [lane[id]]: 0 }, { [lane[id]]: 1, duration: 0.3, ease: 'none' });
+      if (tail) tl.fromTo(tail, { '--draw': 0 }, { '--draw': 1, duration: 0.36, ease: 'power2.out' });
+      tl.call(() => {
+        post.classList.add('is-on');
+        dot.classList.add('is-on');
+        li?.classList.add('is-on');
+        gsap.set([post, dot], { clearProps: 'all' });
+        if (tail) gsap.set(tail, { clearProps: '--draw' });
+      });
+      return tl;
+    }
+
+    // Now and then: a camera pans, the bell-box LEDs blink, the smoke LED flashes.
+    function idle(b, phase) {
+      const tl = gsap.timeline({ repeat: -1, paused: true, delay: phase });
+      cams(b).forEach((cam, i) => {
+        const dir = i % 2 ? -1 : 1;
+        const o = cam.dataset.o;
+        const t = 1.2 + i * 2.6;
+        tl.to(cam, { rotation: 9 * dir, duration: 1.7, ease: 'sine.inOut', svgOrigin: o }, t)
+          .to(cam, { rotation: -5 * dir, duration: 2.1, ease: 'sine.inOut', svgOrigin: o }, t + 4.2)
+          .to(cam, { rotation: 0, duration: 1.6, ease: 'sine.inOut', svgOrigin: o }, t + 8.1);
+      });
+      const led = b.querySelector('[data-led]');
+      if (led) [2.4, 6.6, 10.8].forEach((t) => tl.fromTo(led, { opacity: 0.35 }, { keyframes: { opacity: [0.35, 1, 0.35] }, duration: 0.3, ease: 'none' }, t));
+      const smoke = b.querySelector('[data-smoke]');
+      if (smoke) {
+        tl.set(smoke, { opacity: 0.55 }, 0);
+        [3.2, 9.2].forEach((t) => tl.to(smoke, { keyframes: { opacity: [0.55, 1, 0.55] }, duration: 0.28, ease: 'none' }, t));
+      }
+      tl.to({}, { duration: 12.6 }, 0);
+      return tl;
+    }
+    const startIdle = (blds) => {
+      blds.forEach((b, i) => {
+        const tl = idle(b, i * 0.7);
+        loops.add(tl);
+      });
+      sync();
+    };
+
+    const mm = gsap.matchMedia();
+
+    // Desktop: the whole street comes on, left to right, once.
+    mm.add('(min-width: 1024px)', () => {
+      const svg = root.querySelector('.vo-street__svg');
+      const blds = [...svg.querySelectorAll('.vo-bld')].sort((a, b) => a.dataset.x - b.dataset.x);
+      const mine = new Set();
+      const tl = gsap.timeline({
+        paused: true,
+        onComplete: () => {
+          list.classList.add('is-on');
+          startIdle(blds);
+          loops.forEach((l) => mine.add(l));
+        },
+      });
+      blds.forEach((b, i) => {
+        const at = i * 0.42;
+        tl.add(comeOn(b), at).add(drawLeader(svg, b.dataset.b, true), at + 0.2);
+      });
+      reached(svg, 'top 88%', () => (isPaused() ? tl.progress(1) : tl.play()));
+      return () => {
+        tl.kill();
+        mine.forEach((l) => {
+          l.kill();
+          loops.delete(l);
+        });
+      };
+    });
+
+    // Phones and tablets: each vignette comes on as it scrolls into view.
+    mm.add('(max-width: 1023.98px)', () => {
+      const mine = [];
+      root.querySelectorAll('.voice').forEach((li, i) => {
+        const svg = li.querySelector('.vo-vig');
+        const b = svg.querySelector('.vo-bld');
+        const tl = gsap.timeline({
+          paused: true,
+          onComplete: () => {
+            const l = idle(b, 0);
+            loops.add(l);
+            mine.push(l);
+            sync();
+          },
+        });
+        tl.add(comeOn(b), 0).add(drawLeader(svg, b.dataset.b, false), 0.2);
+        mine.push(tl);
+        reached(svg, 'top 90%', () => (isPaused() ? tl.progress(1) : tl.play()));
+      });
+      return () => {
+        mine.forEach((l) => {
+          l.kill();
+          loops.delete(l);
+        });
+      };
+    });
+  }
+</script>
