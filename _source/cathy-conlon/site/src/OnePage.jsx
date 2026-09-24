@@ -12,7 +12,8 @@ import { Select } from "@ds/components/forms/Select.jsx";
 import { author, novel, collection, readOnline, publications, events, prizes, publisher, festival } from "./content.js";
 
 // Forms only render when a provider is configured, so nothing on the page pretends to send.
-const FORM_ENDPOINT = import.meta.env.VITE_FORM_ENDPOINT || "";           // Formspree-style JSON endpoint
+const FORM_ENDPOINT = import.meta.env.VITE_FORM_ENDPOINT                  // any JSON form endpoint, or
+  || (author.formTo ? `https://formsubmit.co/ajax/${author.formTo}` : ""); // FormSubmit, delivering to author.formTo
 const NEWSLETTER_ENDPOINT = import.meta.env.VITE_NEWSLETTER_ENDPOINT || ""; // list provider's embed-subscribe URL
 const CONTACT_EMAIL = import.meta.env.VITE_CONTACT_EMAIL || "";
 
@@ -28,7 +29,7 @@ function Cover({ book, className }) {
 }
 
 function ContactForm() {
-  const [v, setV] = React.useState({ name: "", email: "", topic: "", message: "" });
+  const [v, setV] = React.useState({ name: "", email: "", topic: "", message: "", _honey: "" });
   const [err, setErr] = React.useState({});
   const [status, setStatus] = React.useState("idle"); // idle | sending | sent | failed
   // After a send, move focus to the outcome so keyboard and screen-reader users land on it.
@@ -45,7 +46,9 @@ function ContactForm() {
     if (first) { document.getElementById("cc-" + first)?.focus(); return; }
     setStatus("sending");
     try {
-      const res = await fetch(FORM_ENDPOINT, { method: "POST", headers: { "Content-Type": "application/json", Accept: "application/json" }, body: JSON.stringify(v) });
+      const res = await fetch(FORM_ENDPOINT, { method: "POST", headers: { "Content-Type": "application/json", Accept: "application/json" }, body: JSON.stringify({ ...v, _subject: `Website message from ${v.name}${v.topic ? ` (${v.topic})` : ""}`, _replyto: v.email, _template: "table", _captcha: "false" }) });
+      const data = await res.json().catch(() => ({}));
+      if (data.success === false || data.success === "false") throw new Error(data.message || "rejected");
       setStatus(res.ok ? "sent" : "failed");
     } catch { setStatus("failed"); }
   };
@@ -60,6 +63,7 @@ function ContactForm() {
     </div>
     <Select id="cc-topic" name="topic" label="Topic" optional placeholder="Choose one" value={v.topic} onChange={set("topic")} options={["Readings and festivals", "Book clubs", "Rights and permissions", "Press", "Something else"]} />
     <TextArea id="cc-message" name="message" label="Message" serif rows={5} value={v.message} onChange={set("message")} error={err.message} />
+    <div className="visually-hidden" aria-hidden="true"><label htmlFor="cc-honey">Leave this empty</label><input id="cc-honey" name="_honey" tabIndex={-1} autoComplete="off" value={v._honey} onChange={set("_honey")} /></div>
     <div><Button type="submit" loading={status === "sending"}>{status === "sending" ? "Sending" : "Send"}</Button></div>
   </form>;
 }

@@ -7,6 +7,9 @@ export const author = {
   place: "Celbridge, Co. Kildare",
   x: "https://x.com/cat_conlon",
   portrait: null, // e.g. "/cathyconlon/img/portrait.jpg" once supplied
+  // Where contact-form messages are delivered (via FormSubmit). After the one-time activation email,
+  // swap the address for the random alias FormSubmit provides so it is not visible in the page source.
+  formTo: "",
 };
 
 export const novel = {
