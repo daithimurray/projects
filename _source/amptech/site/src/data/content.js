@@ -288,3 +288,10 @@ export const contact = {
 export const footer = {
   tagline: 'Intruder alarms, CCTV, fire detection and security lighting. Leixlip, Co. Kildare.',
 };
+
+// Hero scene overlay: the CCTV on-screen display. Data voice only.
+export const heroScene = {
+  motionLabel: 'MOTION · DRIVEWAY',
+  trackLabel: 'MOTION',
+  rec: 'REC',
+};
