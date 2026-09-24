@@ -42,7 +42,7 @@ the snapshot, download, preview, promote and rollback steps. Only the Amptech sp
 ## Verify live
 
 - `https://getawebsite.ie/amptech` redirects to `/amptech/`, renders styled, and the Hanken Grotesk font loads.
-- `/amptech/#/cctv` shows "Cameras placed where they actually see something."
+- `/amptech/#/alarms`, `/amptech/#/cctv` and `/amptech/#/fire` each show their service page with a plan drawing.
 - `/amptech/#/survey`: Continue → Continue → Request survey returns home with a "Survey requested" toast.
 - The getawebsite.ie homepage and all other client paths are unchanged.
 

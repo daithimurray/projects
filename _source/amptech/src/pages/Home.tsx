@@ -42,9 +42,9 @@ export function Home() {
       <Section id="services">
         <SectionHeader title="Three systems, one installer" description="Most customers start with an alarm and add the others later. Everything we fit works together and is maintained under one agreement." />
         <div className="ds-grid ds-grid-2" style={{ marginTop: 48 }}>
-          <ServiceCard className="ds-span-2" icon="shield" title="Intruder alarms" description="Wired and wireless Grade 2 & 3 systems with app control. New installs, upgrades of older panels and extensions after building work. Most homes are finished in a day." features={["HKC & Ajax systems", "Arm, disarm and get alerts on your phone", "Existing sensors reused where they can be"]} href="#/survey" cta="Request a survey" />
+          <ServiceCard className="ds-span-2" icon="shield" title="Intruder alarms" description="Wired and wireless Grade 2 & 3 systems with app control. New installs, upgrades of older panels and extensions after building work. Most homes are finished in a day." features={["HKC & Ajax systems", "Arm, disarm and get alerts on your phone", "Existing sensors reused where they can be"]} href="#/alarms" cta="See how we plan alarms" />
           <ServiceCard icon="camera" title="CCTV" description="IP camera systems designed around what each camera needs to see, not how many you buy. Remote viewing on your phone." features={["4K cameras", "30-day recording", "GDPR signage supplied"]} href="#/cctv" cta="See how we plan cameras" />
-          <ServiceCard icon="flame" title="Fire detection" description="Smoke and heat detection for homes, and I.S. 3218 fire alarm systems for commercial premises." features={["Domestic & commercial", "Certified to I.S. 3218", "Annual servicing"]} href="#/survey" cta="Request a survey" />
+          <ServiceCard icon="flame" title="Fire detection" description="Smoke and heat detection for homes, and I.S. 3218 fire alarm systems for commercial premises." features={["Domestic & commercial", "Certified to I.S. 3218", "Annual servicing"]} href="#/fire" cta="See where detectors go" />
         </div>
       </Section>
 
@@ -55,7 +55,7 @@ export function Home() {
             <Stepper steps={["Free survey", "Fixed quote", "Install & handover", "Maintenance"]} current={-1} />
             <div><Button variant="secondary" onClick={() => go("survey")}>Request a survey</Button></div>
           </div>
-          <CoveragePlan variant="home" />
+          <CoveragePlan plan="cctv-home" />
         </div>
       </Section>
 

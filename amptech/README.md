@@ -16,5 +16,6 @@ To rebuild: `cd _source/amptech && npm ci && npm run build`, then copy `dist/amp
 3. **Photos**: striped placeholders need real installation photography.
 4. **Survey form**: validates and shows a confirmation screen, but sends nothing yet. Wire a backend (see `TODO(launch)` in `_source/amptech/src/pages/Survey.tsx`).
 6. **Urgent strip**: the top bar invites break-in and fault calls. Confirm Amptech takes them.
-7. **Missing pages**: alarm and fire service pages, privacy/terms/cookies.
+7. **Missing pages**: privacy, terms and cookies.
+8. **Service copy**: confirm alarm and fire details (grades, install times, servicing) in `_source/amptech/src/services.ts`.
 5. **noindex**: `index.html` has `noindex` and `robots.txt` disallows all. Remove both at launch.

@@ -1,14 +1,17 @@
 import { useEffect, useState } from "react";
 
+import type { ServiceKey } from "./services";
+
 export type Page = "home" | "service" | "survey";
 
-/** Home-page sections reachable from the nav. `alarms` and `fire` land on services until they have pages. */
-const SECTIONS: Record<string, string> = { services: "services", alarms: "services", fire: "services", reviews: "reviews", questions: "questions" };
+/** Home-page sections reachable from the nav. */
+const SECTIONS: Record<string, string> = { services: "services", reviews: "reviews", questions: "questions" };
+const SERVICE_ROUTES: ServiceKey[] = ["alarms", "cctv", "fire"];
 
-export function parseHash(hash: string): { page: Page; section?: string } {
+export function parseHash(hash: string): { page: Page; section?: string; service?: ServiceKey } {
   const h = hash.replace("#/", "");
   if (h === "survey") return { page: "survey" };
-  if (h === "cctv") return { page: "service" };
+  if ((SERVICE_ROUTES as string[]).includes(h)) return { page: "service", service: h as ServiceKey };
   if (SECTIONS[h]) return { page: "home", section: SECTIONS[h] };
   return { page: "home" };
 }

@@ -17,12 +17,12 @@ function UrgentStrip() {
 }
 
 export function App() {
-  const { hash, page } = useHashRoute();
+  const { hash, page, service } = useHashRoute();
   return (
     <div>
       <UrgentStrip />
       <Navbar links={NAV} activeHref={hash} phone={PHONE_DISPLAY} sticky onCta={() => go("survey")} />
-      {page === "survey" ? <Survey /> : page === "service" ? <Service /> : <Home />}
+      {page === "survey" ? <Survey /> : page === "service" && service ? <Service key={service} service={service} /> : <Home />}
       <Footer columns={FOOTER_COLS} legal={LEGAL} phone={PHONE_DISPLAY} licence={"PSA licence no. " + PSA_LICENCE} />
     </div>
   );
