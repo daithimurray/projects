@@ -4,7 +4,7 @@
 // street wakes up. Decorative, so it's hidden from assistive tech; the
 // company name is in the text around it.
 import Icon from './Icon.astro';
-import { company, footer, footerLinks, nav } from '../data/content.js';
+import { company, footer, footerLinks, nav, ui } from '../data/content.js';
 
 interface Props {
   /** False on pages other than the home page: section links then point home. */
@@ -16,10 +16,25 @@ const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
 const link = (href: string) => (onHome ? href : `${base}${href}`);
 const links = [...nav, ...footerLinks.extra];
 const privacyHref = `${base}privacy/`;
-const year = new Date().getFullYear();
+
+// Keep the company number and the Eircode whole when the small print wraps.
+// "Co. Kildare" stays on one line too.
+const nb = (text: string) =>
+  text
+    .replace(/\bno\. (\d)/, 'no.\u00a0$1')
+    .replace(/\bCo\. /g, 'Co.\u00a0')
+    .replace(company.eircode, company.eircode.replace(' ', '\u00a0'));
 
 // Every window has its own bulb.
-const bulbs = ['var(--tungsten)', 'var(--sodium-300)', 'var(--tungsten)', '#fff0d8', 'var(--sodium-400)', 'var(--tungsten)', 'var(--sodium-300)'];
+const bulbs = [
+  'var(--tungsten)',
+  'var(--sodium-300)',
+  'var(--tungsten)',
+  'color-mix(in oklab, var(--tungsten) 45%, var(--flood-0))',
+  'var(--sodium-400)',
+  'var(--tungsten)',
+  'var(--sodium-300)',
+];
 const letters = 'AMPTECH'.split('');
 ---
 
@@ -30,11 +45,12 @@ const letters = 'AMPTECH'.split('');
         <p class="footer__tagline">{footer.tagline}</p>
         <a class="btn btn--primary footer__call" href={company.phoneHref}>
           <Icon name="phone" />
-          <span>Call {company.phoneDisplay}</span>
+          <span>{ui.call} {company.phoneDisplay}</span>
         </a>
       </div>
 
-      <nav class="footer__col" aria-labelledby="footer-explore">
+      <!-- id: the header's no-JavaScript menu link lands here -->
+      <nav class="footer__col" id="footer-nav" aria-labelledby="footer-explore">
         <h2 class="footer__h" id="footer-explore">{footerLinks.explore}</h2>
         <ul role="list">
           {
@@ -56,7 +72,8 @@ const letters = 'AMPTECH'.split('');
           <li>
             <address class="footer__address">
               {company.address.street},<br />
-              {company.address.town}, {company.address.county}
+              {company.address.town}, {nb(company.address.county)}<br />
+              {company.eircode}
             </address>
           </li>
         </ul>
@@ -77,12 +94,19 @@ const letters = 'AMPTECH'.split('');
     </div>
 
     <div class="footer__base">
-      <p>© {year} {company.legalName}</p>
-      <a class="footer__link" href={privacyHref}>{footerLinks.privacy}</a>
-      <a class="footer__link footer__top" href="#top">
-        <Icon name="arrow-up" size={18} />
-        {footerLinks.top}
-      </a>
+      <div class="footer__legal">
+        <p class="footer__copy">{footer.copyright}</p>
+        <p>{nb(footer.legal)}</p>
+      </div>
+      <ul class="footer__base-links" role="list">
+        <li><a class="footer__link" href={privacyHref}>{footerLinks.privacy}</a></li>
+        <li>
+          <a class="footer__link footer__top" href="#top">
+            <Icon name="arrow-up" size={18} />
+            {footerLinks.top}
+          </a>
+        </li>
+      </ul>
     </div>
   </div>
 </footer>
@@ -91,7 +115,10 @@ const letters = 'AMPTECH'.split('');
   .site-footer {
     position: relative;
     padding-block: var(--space-9) var(--space-6);
-    background: var(--night-950);
+    /* Deepest night, with the same overcast grain as the sections above */
+    background-color: var(--night-950);
+    background-image: var(--grain);
+    background-size: 220px 220px;
     color: var(--dusk-200);
     overflow: clip;
   }
@@ -103,7 +130,7 @@ const letters = 'AMPTECH'.split('');
     right: 0;
     bottom: 0;
     height: 60%;
-    background: radial-gradient(70% 70% at 50% 100%, rgb(255 158 61 / 0.1), transparent 70%);
+    background: radial-gradient(70% 70% at 50% 100%, color-mix(in oklab, var(--sodium-500) 10%, transparent), transparent 70%);
     pointer-events: none;
   }
   .site-footer > .container {
@@ -233,23 +260,37 @@ const letters = 'AMPTECH'.split('');
     color: var(--bulb);
     color: color-mix(in oklab, var(--night-700), var(--bulb) calc(var(--on) * 100%));
     text-shadow:
-      0 0 0.03em rgb(255 214 160 / calc(var(--on) * 0.6)),
-      0 0 0.22em rgb(255 158 61 / calc(var(--on) * 0.3));
+      0 0 0.03em color-mix(in oklab, var(--tungsten) calc(var(--on) * 60%), transparent),
+      0 0 0.22em color-mix(in oklab, var(--sodium-500) calc(var(--on) * 30%), transparent);
   }
 
+  /* The small print: copyright and the company's registered particulars */
   .footer__base {
+    display: grid;
+    gap: var(--space-4) var(--space-7);
+    margin-top: var(--space-6);
+    padding-top: var(--space-5);
+    border-top: 1px solid var(--night-800);
+    font-size: var(--step--1);
+    line-height: 1.55;
+    color: var(--dusk-300);
+  }
+  .footer__legal {
+    display: grid;
+    gap: var(--space-1);
+    max-width: 76ch;
+  }
+  .footer__copy {
+    color: var(--dusk-200);
+  }
+  .footer__base-links {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    gap: var(--space-1) var(--space-6);
-    margin-top: var(--space-6);
-    padding-top: var(--space-4);
-    border-top: 1px solid var(--night-800);
-    font-size: var(--step--1);
-    color: var(--dusk-300);
-  }
-  .footer__base p {
-    margin-right: auto;
+    gap: 0 var(--space-6);
+    margin: 0;
+    padding: 0;
+    list-style: none;
   }
   .footer__base .footer__link {
     color: var(--dusk-300);
@@ -262,6 +303,15 @@ const letters = 'AMPTECH'.split('');
   }
   .footer__top:hover :global(svg) {
     transform: translateY(-3px);
+  }
+  @media (min-width: 900px) {
+    .footer__base {
+      grid-template-columns: minmax(0, 1fr) auto;
+      align-items: start;
+    }
+    .footer__base-links {
+      margin-top: -10px;
+    }
   }
 
   @media (min-width: 900px) {
@@ -282,19 +332,16 @@ const letters = 'AMPTECH'.split('');
       padding-bottom: calc(var(--space-6) + 76px + env(safe-area-inset-bottom));
     }
   }
-  @media (max-width: 479px) {
-    .footer__base p {
-      flex-basis: 100%;
-    }
-  }
 </style>
 
 <script>
-  import { boot, gsap, motionOK, isTouch } from '../scripts/motion.js';
+  import { boot, gsap, later, motionOK, isTouch, isPaused, onPauseChange, ScrollTrigger } from '../scripts/motion.js';
 
   boot();
   const mark = document.querySelector<HTMLElement>('[data-footer-mark]');
-  if (mark && motionOK()) {
+  if (mark && motionOK()) later(() => initStreet(mark));
+
+  function initStreet(mark: HTMLElement) {
     const letters = gsap.utils.toArray<HTMLElement>(mark.querySelectorAll('.footer__l'));
     const busy = new WeakSet<HTMLElement>();
 
@@ -311,26 +358,40 @@ const letters = 'AMPTECH'.split('');
         overwrite: true,
       });
     const switchOff = (el: HTMLElement) => gsap.to(el, { '--on': 0, duration: 0.12, ease: 'power2.out', overwrite: true });
+    const allOn = () => {
+      letters.forEach((el) => busy.delete(el));
+      gsap.to(letters, { '--on': 1, duration: 0.4, ease: 'power2.out', overwrite: true });
+    };
 
+    // The street wakes up: every window, one at a time, in a random order.
     gsap.set(letters, { '--on': 0 });
-    const street = gsap.timeline({
-      scrollTrigger: { trigger: mark, start: 'top 88%', once: true },
-      onComplete: () => live(),
-    });
+    const street = gsap.timeline({ paused: true, onComplete: () => live() });
     gsap.utils.shuffle([...letters]).forEach((el, k) => {
       street.add(() => {
         switchOn(el);
       }, 0.2 + k * 0.3 + Math.random() * 0.14);
     });
     street.add(() => {}, '+=1');
+    ScrollTrigger.create({
+      trigger: mark,
+      start: 'top 88%',
+      once: true,
+      onEnter: () => {
+        if (isPaused()) {
+          allOn();
+          live();
+        } else street.play();
+      },
+    });
 
-    // Now and then someone goes to bed, or comes home. Only while visible.
+    // Now and then someone goes to bed, or comes home. Only while the
+    // wordmark is on screen, and never while animation is paused.
     let visible = false;
     let next: gsap.core.Tween | null = null;
     const schedule = () => {
       next?.kill();
       next = gsap.delayedCall(gsap.utils.random(5, 9), () => {
-        if (!visible) return;
+        if (!visible || isPaused()) return;
         const el = gsap.utils.random(letters);
         if (!busy.has(el)) {
           busy.add(el);
@@ -343,13 +404,23 @@ const letters = 'AMPTECH'.split('');
         schedule();
       });
     };
+    let living = false;
     function live() {
+      if (living) return;
+      living = true;
       new IntersectionObserver(([entry]) => {
         visible = entry.isIntersecting;
-        if (visible) schedule();
+        if (visible && !isPaused()) schedule();
         else next?.kill();
-      }).observe(mark!);
+      }).observe(mark);
     }
+    onPauseChange((paused) => {
+      if (paused) {
+        next?.kill();
+        if (street.isActive()) street.progress(1);
+        allOn();
+      } else if (living && visible) schedule();
+    });
 
     // A hand on the light switch.
     if (!isTouch()) {

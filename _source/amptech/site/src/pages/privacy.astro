@@ -36,33 +36,37 @@ type Part = string | { link: string; href: string } | { tbc: string };
         </div>
       </aside>
 
-      <h1 class="privacy__title">{privacy.title}</h1>
-      <p class="privacy__intro">{privacy.intro}</p>
-      <p class="privacy__updated">
-        {
-          (privacy.updated as Part[]).map((part) =>
-            typeof part === 'string' ? part : 'tbc' in part ? <mark class="tbc">[{part.tbc}]</mark> : null,
-          )
-        }
-      </p>
+      <div class="privacy__head">
+        <h1 class="privacy__title">{privacy.title}</h1>
+        <p class="privacy__intro">{privacy.intro}</p>
+        <p class="privacy__updated">
+          {
+            (privacy.updated as Part[]).map((part) =>
+              typeof part === 'string' ? part : 'tbc' in part ? <mark class="tbc">[{part.tbc}]</mark> : null,
+            )
+          }
+        </p>
+      </div>
 
       {
         privacy.sections.map((section) => (
           <section class="privacy__section">
             <h2>{section.title}</h2>
-            {section.paragraphs.map((paragraph) => (
-              <p>
-                {(paragraph as Part[]).map((part) =>
-                  typeof part === 'string' ? (
-                    part
-                  ) : 'tbc' in part ? (
-                    <mark class="tbc">[{part.tbc}]</mark>
-                  ) : (
-                    <a href={part.href}>{part.link}</a>
-                  ),
-                )}
-              </p>
-            ))}
+            <div class="privacy__body">
+              {section.paragraphs.map((paragraph) => (
+                <p>
+                  {(paragraph as Part[]).map((part) =>
+                    typeof part === 'string' ? (
+                      part
+                    ) : 'tbc' in part ? (
+                      <mark class="tbc">[{part.tbc}]</mark>
+                    ) : (
+                      <a href={part.href}>{part.link}</a>
+                    ),
+                  )}
+                </p>
+              ))}
+            </div>
           </section>
         ))
       }
@@ -114,7 +118,7 @@ type Part = string | { link: string; href: string } | { tbc: string };
     height: 7px;
     border-radius: 2px;
     background: var(--sodium-500);
-    box-shadow: 0 0 10px 2px var(--sodium-glow);
+    box-shadow: 0 0 10px 2px var(--sodium-glow); /* the wordmark's status LED */
   }
   .pbar__call {
     min-height: 44px;
@@ -137,16 +141,17 @@ type Part = string | { link: string; href: string } | { tbc: string };
     }
   }
 
+  /* A lit page: floodlight white falling off from a lamp at the top centre,
+     the same light as the lit sections on the home page. */
   .privacy {
     display: block;
     padding-block: var(--space-8) var(--space-9);
-    /* Floodlight from above onto the page */
-    background:
-      radial-gradient(60% 320px at 50% 0%, var(--flood-0), transparent),
-      var(--flood-50);
+    background-color: var(--flood-50);
+    background-image: radial-gradient(1200px 820px at 50% -80px, var(--flood-0) 0%, var(--flood-50) 55%, var(--flood-100) 100%);
+    background-repeat: no-repeat;
   }
   .privacy__doc {
-    max-width: calc(68ch + var(--gutter) * 2);
+    width: min(100% - var(--gutter) * 2, 62rem);
     color: var(--ink-700);
   }
 
@@ -154,20 +159,24 @@ type Part = string | { link: string; href: string } | { tbc: string };
     display: grid;
     grid-template-columns: auto minmax(0, 1fr);
     gap: var(--space-4);
+    max-width: 68ch;
     margin-bottom: var(--space-8);
     padding: var(--space-4) var(--space-5);
     border: 1px dashed var(--sodium-800);
     border-radius: var(--radius-md);
-    background: #fff4e4;
+    background: color-mix(in oklab, var(--sodium-300) 16%, var(--flood-0));
     color: var(--ink-900);
   }
+  /* An amber status LED in its housing: a light source, so it may bloom */
   .privacy__draft-led {
     width: 10px;
     height: 10px;
     margin-top: 0.5em;
     border-radius: 3px;
     background: var(--sodium-600);
-    box-shadow: 0 0 0 3px var(--night-900), 0 0 10px 3px rgb(255 158 61 / 0.5);
+    box-shadow:
+      0 0 0 3px var(--night-900),
+      0 0 10px 3px color-mix(in oklab, var(--sodium-500) 50%, transparent);
   }
   .privacy__draft-title {
     font-family: var(--font-display);
@@ -181,44 +190,69 @@ type Part = string | { link: string; href: string } | { tbc: string };
     color: var(--ink-700);
   }
 
+  .privacy__head {
+    padding-bottom: var(--space-7);
+  }
   .privacy__title {
     font-size: var(--step-4);
     letter-spacing: -0.03em;
     color: var(--ink-900);
   }
   .privacy__intro {
+    max-width: 44ch;
     margin-top: var(--space-4);
     font-size: var(--step-1);
     line-height: 1.5;
     color: var(--ink-700);
   }
   .privacy__updated {
-    margin-top: var(--space-3);
+    margin-top: var(--space-4);
     font-size: var(--step--1);
     color: var(--ink-500);
   }
 
+  /* Each section: a rule, room under it, then the heading and its text */
   .privacy__section {
-    margin-top: var(--space-8);
-    padding-top: var(--space-5);
-    border-top: 1px solid var(--flood-200);
+    display: grid;
+    gap: var(--space-4);
+    padding-block: var(--space-6) var(--space-7);
+    border-top: 1px solid var(--flood-300);
   }
   .privacy__section h2 {
-    margin-bottom: var(--space-3);
     font-size: var(--step-2);
     font-stretch: 112%;
     letter-spacing: -0.02em;
     line-height: var(--leading-snug);
     color: var(--ink-900);
   }
-  .privacy__section p + p {
-    margin-top: var(--space-4);
+  .privacy__body {
+    display: grid;
+    gap: var(--space-4);
+    max-width: 66ch;
+  }
+  .privacy__section:last-of-type {
+    border-bottom: 1px solid var(--flood-300);
+  }
+
+  /* Wide screens: headings in their own column, text in a reading measure */
+  @media (min-width: 960px) {
+    .privacy__section {
+      grid-template-columns: minmax(0, 15rem) minmax(0, 1fr);
+      column-gap: var(--space-7);
+      padding-block: var(--space-6) var(--space-7);
+    }
+    .privacy__section h2 {
+      font-size: var(--step-1);
+      line-height: 1.25;
+      padding-top: 0.15em;
+    }
   }
 
   .tbc {
     padding: 0.05em 0.3em;
     border-radius: var(--radius-xs);
-    background: #ffe2b8;
+    background: color-mix(in oklab, var(--sodium-300) 42%, var(--flood-0));
+    box-shadow: inset 0 -1px 0 color-mix(in oklab, var(--sodium-800) 45%, transparent);
     color: var(--ink-900);
     font-weight: 600;
     box-decoration-break: clone;
@@ -230,7 +264,7 @@ type Part = string | { link: string; href: string } | { tbc: string };
     align-items: center;
     gap: 0.5em;
     min-height: 44px;
-    margin-top: var(--space-8);
+    margin-top: var(--space-7);
     color: var(--ink-900);
     font-family: var(--font-display);
     font-stretch: 108%;
@@ -245,6 +279,9 @@ type Part = string | { link: string; href: string } | { tbc: string };
   }
   .privacy__back:hover {
     text-decoration-color: var(--sodium-800);
+  }
+  .privacy__back:active {
+    transform: translateY(1px);
   }
   .privacy__back:hover :global(svg) {
     transform: rotate(180deg) translateX(4px);

@@ -7,6 +7,11 @@ import { company, faq, faqAside } from '../data/content.js';
 
 // Phone numbers inside answers become tel links.
 const withPhone = (text: string) => text.split(company.phoneDisplay);
+
+// The arrow travels with the link's last word, so it never wraps alone.
+const orWords = faqAside.or.trim().split(/\s+/);
+const orLast = orWords.pop();
+const orHead = orWords.join(' ');
 ---
 
 <section id="faq" class="section is-lit faq" data-lit-reveal aria-labelledby="faq-title">
@@ -21,8 +26,10 @@ const withPhone = (text: string) => text.split(company.phoneDisplay);
             <span>{faqAside.call}</span>
           </a>
           <a class="faq__form" href="#contact">
-            <span>{faqAside.or}</span>
-            <Icon name="arrow" size={20} />
+            {orHead}{' '}
+            <span class="faq__nowrap">
+              {orLast}<Icon name="arrow" size={20} />
+            </span>
           </a>
         </div>
       </div>
@@ -97,16 +104,21 @@ const withPhone = (text: string) => text.split(company.phoneDisplay);
   .faq__form {
     display: inline-block;
     padding-block: 0.6rem;
+    text-wrap: balance;
     color: var(--ink-700);
     font-weight: 600;
     text-decoration: underline;
     text-decoration-color: var(--flood-300);
+    text-decoration-thickness: 1px;
     text-underline-offset: 0.25em;
     transition: color var(--dur-fast) var(--ease-out), text-decoration-color var(--dur-fast) var(--ease-out);
   }
+  .faq__nowrap {
+    white-space: nowrap;
+  }
   .faq__form :global(svg) {
     display: inline-block;
-    margin-left: 0.4em;
+    margin-left: 0.35em;
     vertical-align: -0.25em;
     transition: transform var(--dur-med) var(--ease-out);
   }
@@ -116,6 +128,9 @@ const withPhone = (text: string) => text.split(company.phoneDisplay);
   }
   .faq__form:hover :global(svg) {
     transform: translateX(4px);
+  }
+  .faq__form:active {
+    color: var(--ink-900);
   }
 
   /* ---------- The questions ---------- */
@@ -150,7 +165,7 @@ const withPhone = (text: string) => text.split(company.phoneDisplay);
     z-index: -1;
     border-radius: var(--radius-md);
     background:
-      radial-gradient(90% 120% at 22% -30%, rgb(255 255 255 / 1), rgb(255 255 255 / 0) 70%),
+      radial-gradient(90% 120% at 22% -30%, var(--flood-0), color-mix(in oklab, var(--flood-0) 0%, transparent) 70%),
       var(--flood-0);
     box-shadow: var(--shadow-flood);
     opacity: 0;
@@ -203,7 +218,7 @@ const withPhone = (text: string) => text.split(company.phoneDisplay);
     border-radius: var(--radius-sm);
     background: var(--flood-0);
     color: var(--ink-900);
-    box-shadow: 0 1px 0 rgb(12 22 40 / 0.06);
+    box-shadow: 0 1px 0 color-mix(in oklab, var(--ink-900) 6%, transparent);
     transition:
       background-color var(--dur-fast) var(--ease-out),
       border-color var(--dur-fast) var(--ease-out),
@@ -291,22 +306,51 @@ const withPhone = (text: string) => text.split(company.phoneDisplay);
 </style>
 
 <script>
-  import { boot, gsap, motionOK, sweepIn } from '../scripts/motion.js';
+  import { boot, gsap, later, motionOK, ScrollTrigger, sweepIn } from '../scripts/motion.js';
 
   boot();
   const section = document.querySelector<HTMLElement>('#faq');
-  if (section && motionOK()) {
-    sweepIn(section.querySelector('[data-faq-title]'), { start: 'top 72%' });
 
-    // Hairlines run in, row by row, like cable being laid.
-    const rows = section.querySelectorAll('.faq__item');
-    gsap.set(rows, { '--draw': 0 });
-    gsap.to(rows, {
-      '--draw': 1,
-      duration: 1.1,
-      ease: 'power2.inOut',
-      stagger: 0.08,
-      scrollTrigger: { trigger: section.querySelector('[data-faq-list]'), start: 'top 78%', once: true },
+  if (section) {
+    // Opening or closing an answer changes the page height below it. Re-measure
+    // every later trigger (contact arrival, the mobile call bar, nav highlight)
+    // once the ::details-content transition (420ms) has finished. `toggle`
+    // doesn't bubble, so listen in the capture phase. Runs with or without
+    // motion: the mobile bar and nav triggers exist either way. Skipped when
+    // the height is what ScrollTrigger last measured (the first answer's
+    // initial `toggle` at load, or an open and close in quick succession).
+    const height = () => document.documentElement.scrollHeight;
+    let measured = height();
+    ScrollTrigger.addEventListener('refresh', () => {
+      measured = height();
+    });
+    let settle = 0;
+    section.addEventListener(
+      'toggle',
+      () => {
+        clearTimeout(settle);
+        settle = window.setTimeout(() => {
+          if (height() !== measured) ScrollTrigger.refresh();
+        }, 460);
+      },
+      true,
+    );
+  }
+
+  if (section && motionOK()) {
+    later(() => {
+      sweepIn(section.querySelector('[data-faq-title]'), { start: 'top 72%' });
+
+      // Hairlines run in, row by row, like cable being laid.
+      const rows = section.querySelectorAll('.faq__item');
+      gsap.set(rows, { '--draw': 0 });
+      gsap.to(rows, {
+        '--draw': 1,
+        duration: 1.1,
+        ease: 'power2.inOut',
+        stagger: 0.06,
+        scrollTrigger: { trigger: section.querySelector('[data-faq-list]'), start: 'top 78%', once: true },
+      });
     });
   }
 </script>
