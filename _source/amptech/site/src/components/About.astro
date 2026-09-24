@@ -1,10 +1,711 @@
 ---
-// STUB: replaced by the section builder. See _source/amptech/BUILD-SPEC.md.
-import { about } from '../data/content.js';
+// About: Ireland at night from orbit. Leixlip glows on the Kildare edge of
+// Dublin; rings of detection light sweep out from it across the whole island.
+// Canvas when scripts run; a static SVG (outline, dot field, city lights) when
+// they don't. The copy side carries the facts on an engraved equipment plate.
+import { about, aboutMap, company } from '../data/content.js';
+import { viewBox, outline, grid, leixlip, kmPerUnit, gridPoints, glow } from '../data/ireland.js';
+
+const [W, H] = viewBox;
+const [LX, LY] = leixlip;
+const pct = (v: number, of: number) => `${((v / of) * 100).toFixed(3)}%`;
+
+const lat = `${company.geo.lat.toFixed(2)}°N`;
+const lng = `${Math.abs(company.geo.lng).toFixed(2)}°W`;
+
+// Static fallback: the city lights as zero-length round-capped strokes,
+// three brightness bands, one path each (keeps the node count tiny).
+const pts = gridPoints();
+const bands = [
+  { min: 0.62, d: '' },
+  { min: 0.32, d: '' },
+  { min: 0.14, d: '' },
+];
+for (let i = 0; i < pts.length; i += 2) {
+  const g = glow(pts[i], pts[i + 1]);
+  const band = bands.find((b) => g >= b.min);
+  if (band) band.d += `M${pts[i]} ${+pts[i + 1].toFixed(2)}h0`;
+}
+
+// Scale bar: 100 km in viewBox units, parked in the sea off north Mayo.
+const scaleUnits = 100 / kmPerUnit;
 ---
 
-<section id="about" class="section is-night" aria-label="About">
-  <div class="container">
-    <h2 class="h-section">{about.title}</h2>
+<section id="about" class="section is-night about" aria-labelledby="about-title">
+  <div class="container about__grid">
+    <div class="about__copy">
+      <h2 id="about-title" class="h-section">{about.title}</h2>
+      <div class="about__body">
+        {about.body.map((p) => <p>{p}</p>)}
+      </div>
+    </div>
+
+    <figure
+      class="about__map"
+      role="img"
+      aria-label={about.mapLabel}
+      data-about-map
+      style={`--ar:${W}/${H}`}
+    >
+      <svg class="about__static" viewBox={`0 0 ${W} ${H}`} aria-hidden="true" focusable="false">
+        <defs>
+          <pattern
+            id="about-dots"
+            patternUnits="userSpaceOnUse"
+            width={grid.step}
+            height={grid.rowStep * 2}
+            x={grid.x0 - grid.step / 4}
+            y={grid.y0 - grid.rowStep / 2}
+          >
+            <circle cx={grid.step / 4} cy={grid.rowStep / 2} r="1.15"></circle>
+            <circle cx={(grid.step * 3) / 4} cy={(grid.rowStep * 3) / 2} r="1.15"></circle>
+          </pattern>
+          <clipPath id="about-island"><path d={outline}></path></clipPath>
+          <radialGradient id="about-city">
+            <stop offset="0" stop-color="#ff9e3d" stop-opacity=".34"></stop>
+            <stop offset="1" stop-color="#ff9e3d" stop-opacity="0"></stop>
+          </radialGradient>
+        </defs>
+        <path class="about__land" d={outline} data-outline></path>
+        <rect class="about__field" width={W} height={H} fill="url(#about-dots)" clip-path="url(#about-island)"></rect>
+        <circle cx={LX + 10} cy={LY + 2} r="46" fill="url(#about-city)"></circle>
+        <path class="about__lights about__lights--3" d={bands[2].d}></path>
+        <path class="about__lights about__lights--2" d={bands[1].d}></path>
+        <path class="about__lights about__lights--1" d={bands[0].d}></path>
+      </svg>
+
+      <canvas class="about__canvas" aria-hidden="true"></canvas>
+
+      <div class="about__scale" aria-hidden="true" style={`left:${pct(40, W)};top:${pct(54, H)};width:${pct(scaleUnits, W)}`}>
+        <span class="about__scale-bar"></span>
+        <span class="data">{aboutMap.scale}</span>
+      </div>
+
+      <div class="about__marker" aria-hidden="true" style={`left:${pct(LX, W)};top:${pct(LY, H)}`} data-about-marker>
+        <span class="about__halo"></span>
+        <span class="about__led"></span>
+        <span class="about__tag data">
+          <span class="about__tag-place">{aboutMap.place}</span>
+          <span class="about__tag-sep"> · </span>
+          <span class="about__tag-coord">{lat} {lng}</span>
+        </span>
+      </div>
+    </figure>
+
+    <div class="about__plate">
+      <span class="about__screw" aria-hidden="true"></span>
+      <span class="about__screw" aria-hidden="true"></span>
+      <span class="about__screw" aria-hidden="true"></span>
+      <span class="about__screw" aria-hidden="true"></span>
+      <p class="about__plate-head" aria-hidden="true">{company.legalName}</p>
+      <dl>
+        {
+          about.facts.map((fact) => (
+            <div class="about__fact">
+              <dt class="data">{fact.label}</dt>
+              <dd>{fact.href ? <a href={fact.href}>{fact.value}</a> : fact.value}</dd>
+            </div>
+          ))
+        }
+      </dl>
+    </div>
   </div>
 </section>
+
+<style>
+  .about {
+    overflow: clip;
+    background:
+      radial-gradient(60% 55% at 72% 48%, rgb(33 50 82 / 0.42), transparent 70%),
+      var(--night-900);
+  }
+
+  .about__grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-7);
+    align-items: start;
+  }
+
+  .about__copy .h-section {
+    max-width: 14ch;
+  }
+  .about__body {
+    display: grid;
+    gap: var(--space-4);
+    margin-top: var(--space-6);
+    max-width: 52ch;
+    color: var(--dusk-200);
+  }
+  .about__body p:first-child {
+    font-size: var(--step-1);
+    line-height: 1.5;
+    color: var(--dusk-50);
+  }
+
+  /* ---------- The map ---------- */
+
+  .about__map {
+    position: relative;
+    container-type: inline-size;
+    width: 100%;
+    max-width: 640px;
+    aspect-ratio: var(--ar);
+    margin: 0 auto;
+  }
+
+  .about__static,
+  .about__canvas {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+  }
+  .about__canvas {
+    opacity: 0;
+    transition: opacity var(--dur-slow) var(--ease-out);
+  }
+  .about__map.is-live .about__canvas {
+    opacity: 1;
+  }
+  .about__map.is-live .about__static {
+    visibility: hidden;
+  }
+
+  .about__land {
+    fill: rgb(33 50 82 / 0.3);
+    stroke: rgb(159 176 207 / 0.45);
+    stroke-width: 1;
+    vector-effect: non-scaling-stroke;
+  }
+  .about__field {
+    fill-opacity: 1;
+  }
+  #about-dots circle {
+    fill: rgb(125 144 180 / 0.42);
+  }
+  .about__lights {
+    fill: none;
+    stroke-linecap: round;
+  }
+  .about__lights--1 {
+    stroke: var(--tungsten);
+    stroke-width: 3.6;
+  }
+  .about__lights--2 {
+    stroke: var(--sodium-400);
+    stroke-width: 3;
+  }
+  .about__lights--3 {
+    stroke: rgb(255 158 61 / 0.7);
+    stroke-width: 2.4;
+  }
+
+  /* Leixlip: a panel LED with its OSD tag */
+  .about__marker {
+    position: absolute;
+    width: 0;
+    height: 0;
+  }
+  .about__led {
+    position: absolute;
+    left: -5px;
+    top: -5px;
+    width: 10px;
+    height: 10px;
+    border-radius: 3px;
+    background: var(--sodium-300);
+    box-shadow:
+      0 0 0 1.5px var(--night-950),
+      0 0 10px 3px var(--sodium-glow),
+      0 0 34px 10px rgb(255 158 61 / 0.2);
+  }
+  .about__halo {
+    position: absolute;
+    left: -16px;
+    top: -16px;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: 1px solid rgb(255 158 61 / 0.6);
+  }
+  .about__marker.is-ping .about__halo {
+    animation: about-ping 1.6s var(--ease-out);
+  }
+  .about__marker.is-ping .about__led {
+    animation: about-trip 1.3s linear;
+  }
+  @keyframes about-ping {
+    0% { transform: scale(0.3); opacity: 1; }
+    100% { transform: scale(2.6); opacity: 0; }
+  }
+  @keyframes about-trip {
+    0% { background: var(--flood-0); }
+    6% { background: var(--sodium-300); }
+    10% { background: var(--flood-0); }
+    100% { background: var(--sodium-300); }
+  }
+
+  /* Leader line from the LED to the tag */
+  .about__marker::before {
+    content: '';
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    width: 22px;
+    height: 1px;
+    background: rgb(255 158 61 / 0.7);
+    transform-origin: 100% 50%;
+    transform: rotate(40deg);
+  }
+  .about__tag {
+    position: absolute;
+    right: 16px;
+    bottom: 13px;
+    display: grid;
+    padding: 5px 8px 6px;
+    border: 1px solid var(--night-600);
+    border-radius: var(--radius-xs);
+    background: rgb(7 13 25 / 0.88);
+    color: var(--dusk-200);
+    line-height: 1.45;
+    white-space: nowrap;
+  }
+  .about__tag-place {
+    color: var(--sodium-400);
+  }
+  .about__tag-sep {
+    display: none;
+  }
+
+  /* Wide map: the tag sits out in the Irish Sea to the right */
+  @container (min-width: 520px) {
+    .about__marker::before {
+      left: 0;
+      right: auto;
+      transform-origin: 0 50%;
+      transform: rotate(-40deg);
+    }
+    .about__tag {
+      left: 16px;
+      right: auto;
+    }
+  }
+
+  .about__scale {
+    position: absolute;
+    display: grid;
+    gap: 6px;
+    color: var(--dusk-300);
+  }
+  .about__scale-bar {
+    height: 6px;
+    border: 1px solid rgb(159 176 207 / 0.6);
+    border-top: 0;
+  }
+
+  /* ---------- The equipment plate ---------- */
+
+  .about__plate {
+    position: relative;
+    padding: var(--space-5) var(--space-5) var(--space-3);
+    border: 1px solid var(--night-700);
+    border-radius: var(--radius-md);
+    background: linear-gradient(180deg, #1b2a46, var(--night-850) 60%);
+    box-shadow:
+      inset 0 1px 0 rgb(255 255 255 / 0.07),
+      inset 0 -1px 0 rgb(0 0 0 / 0.3),
+      var(--shadow-2);
+  }
+  .about__screw {
+    position: absolute;
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 35% 30%, #6a7ca2, #1c2a45 72%);
+    box-shadow: inset 0 0 0 1px rgb(0 0 0 / 0.4), 0 1px 0 rgb(255 255 255 / 0.07);
+  }
+  .about__screw::after {
+    content: '';
+    position: absolute;
+    left: 1.5px;
+    right: 1.5px;
+    top: 4px;
+    height: 1px;
+    background: rgb(7 13 25 / 0.85);
+    transform: rotate(var(--turn, 30deg));
+  }
+  .about__screw:nth-of-type(1) { top: 10px; left: 10px; --turn: 28deg; }
+  .about__screw:nth-of-type(2) { top: 10px; right: 10px; --turn: -52deg; }
+  .about__screw:nth-of-type(3) { bottom: 10px; left: 10px; --turn: 76deg; }
+  .about__screw:nth-of-type(4) { bottom: 10px; right: 10px; --turn: 12deg; }
+
+  .about__plate-head {
+    padding: 0 var(--space-4) var(--space-3);
+    font-family: var(--font-display);
+    font-stretch: 125%;
+    font-weight: 800;
+    font-size: var(--step--1);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--dusk-300);
+    text-align: center;
+    /* Engraved: dark lip above, light catch below */
+    text-shadow: 0 -1px 0 rgb(0 0 0 / 0.55), 0 1px 0 rgb(255 255 255 / 0.08);
+  }
+
+  .about__plate dl {
+    display: grid;
+  }
+  .about__fact {
+    display: grid;
+    gap: var(--space-1);
+    padding: var(--space-4) var(--space-4);
+    border-top: 1px solid rgb(0 0 0 / 0.35);
+    box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.05);
+  }
+  .about__fact dt {
+    color: var(--dusk-300);
+    text-shadow: 0 -1px 0 rgb(0 0 0 / 0.5);
+  }
+  .about__fact dd {
+    font-family: var(--font-display);
+    font-stretch: 112%;
+    font-weight: 640;
+    font-size: var(--step-0);
+    line-height: 1.35;
+    color: var(--dusk-50);
+    text-shadow: 0 -1px 0 rgb(0 0 0 / 0.55), 0 1px 0 rgb(255 255 255 / 0.05);
+  }
+  .about__fact a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    margin-block: -10px;
+    color: var(--sodium-500);
+    text-decoration-color: rgb(255 158 61 / 0.4);
+    font-variant-numeric: tabular-nums;
+    font-weight: 720;
+    transition: color var(--dur-fast) var(--ease-out), text-shadow var(--dur-decay) var(--ease-out);
+  }
+  .about__fact a:hover {
+    color: var(--sodium-300);
+    text-decoration-color: currentColor;
+    text-shadow: 0 0 18px rgb(255 158 61 / 0.55);
+    transition-duration: var(--dur-trip);
+  }
+
+  @media (min-width: 560px) {
+    .about__fact {
+      grid-template-columns: 8.5rem minmax(0, 1fr);
+      align-items: baseline;
+      gap: var(--space-4);
+    }
+  }
+
+  @media (max-width: 599px) {
+    .about__map {
+      width: calc(100% + var(--gutter));
+      margin-inline: calc(var(--gutter) * -0.5);
+    }
+  }
+
+  @media (min-width: 960px) {
+    .about__grid {
+      grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+      grid-template-areas:
+        'copy map'
+        'plate map';
+      column-gap: clamp(3rem, 6vw, 7rem);
+      row-gap: var(--space-8);
+    }
+    .about__copy {
+      grid-area: copy;
+      align-self: end;
+    }
+    .about__map {
+      grid-area: map;
+      align-self: center;
+      margin-block: calc(var(--space-6) * -1);
+    }
+    .about__plate {
+      grid-area: plate;
+    }
+  }
+</style>
+
+<script>
+  import { boot, motionOK } from '../scripts/motion.js';
+  import { viewBox, leixlip, lights, gridPoints, glow } from '../data/ireland.js';
+
+  boot();
+
+  const fig = document.querySelector<HTMLElement>('[data-about-map]');
+  const canvas = fig?.querySelector('canvas');
+  const ctx = canvas?.getContext('2d');
+  if (fig && canvas && ctx) initMap(fig, canvas, ctx);
+
+  function initMap(fig: HTMLElement, canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D) {
+    const [W, H] = viewBox;
+    const [LX, LY] = leixlip;
+    const TAU = Math.PI * 2;
+    const TAIL = 24; // afterglow behind a ring front, in map units
+    const LEAD = 4; // attack ahead of it
+    const marker = fig.querySelector<HTMLElement>('[data-about-marker]');
+    const outline = new Path2D(fig.querySelector('[data-outline]')!.getAttribute('d')!);
+
+    // Colours come from the tokens so the canvas stays in the world.
+    const root = getComputedStyle(document.documentElement);
+    const rgb = (name: string, fallback: string) => {
+      const hex = (root.getPropertyValue(name).trim() || fallback).replace('#', '');
+      return [0, 2, 4].map((i) => parseInt(hex.slice(i, i + 2), 16));
+    };
+    const COOL = rgb('--dusk-400', '#7d90b4');
+    const COAST = rgb('--dusk-300', '#9fb0cf');
+    const SODIUM = rgb('--sodium-500', '#ff9e3d');
+    const TUNGSTEN = rgb('--tungsten', '#ffd49a');
+    const LAND = rgb('--night-700', '#213252');
+    const rgba = (c: number[], a: number) => `rgba(${c[0]},${c[1]},${c[2]},${a})`;
+    const mix = (a: number[], b: number[], t: number) => a.map((v, i) => Math.round(v + (b[i] - v) * t));
+    const smooth = (e0: number, e1: number, x: number) => {
+      const t = Math.min(1, Math.max(0, (x - e0) / (e1 - e0)));
+      return t * t * (3 - 2 * t);
+    };
+
+    // Every dot: a brightness (faint land, warm towns, Dublin burning) and its
+    // distance from Leixlip, sorted so a ring front is a binary search away.
+    const pts = gridPoints();
+    const n = pts.length / 2;
+    const hash = (i: number) => {
+      const s = Math.sin(i * 127.1 + 311.7) * 43758.5453;
+      return s - Math.floor(s);
+    };
+    const bright = new Float32Array(n);
+    const dist = new Float32Array(n);
+    for (let i = 0; i < n; i++) {
+      const x = pts[i * 2];
+      const y = pts[i * 2 + 1];
+      let b = 0.06 + hash(i) * 0.1 + glow(x, y);
+      if (hash(i + 7919) < 0.05) b += 0.08 + hash(i + 104729) * 0.24; // scattered villages
+      bright[i] = Math.min(b, 1.3);
+      dist[i] = Math.hypot(x - LX, y - LY);
+    }
+    const order = Uint16Array.from({ length: n }, (_, i) => i).sort((a, b) => dist[a] - dist[b]);
+    const sorted = Float32Array.from(order, (i) => dist[i]);
+    const reach = sorted[n - 1] + TAIL * 3;
+    const lowerBound = (v: number) => {
+      let lo = 0;
+      let hi = n;
+      while (lo < hi) {
+        const mid = (lo + hi) >> 1;
+        if (sorted[mid] < v) lo = mid + 1;
+        else hi = mid;
+      }
+      return lo;
+    };
+
+    // A light sprite: tungsten core, sodium falloff.
+    const sprite = document.createElement('canvas');
+    sprite.width = sprite.height = 64;
+    {
+      const s = sprite.getContext('2d')!;
+      const g = s.createRadialGradient(32, 32, 0, 32, 32, 32);
+      g.addColorStop(0, 'rgba(255,246,228,1)');
+      g.addColorStop(0.16, rgba(TUNGSTEN, 0.95));
+      g.addColorStop(0.42, rgba(SODIUM, 0.38));
+      g.addColorStop(1, rgba(SODIUM, 0));
+      s.fillStyle = g;
+      s.fillRect(0, 0, 64, 64);
+    }
+
+    const base = document.createElement('canvas');
+    const bctx = base.getContext('2d')!;
+    let dpr = 1;
+    let scale = 1;
+    let sizeK = 1;
+
+    function drawBase() {
+      const c = bctx;
+      const k = dpr * scale;
+      const px = 1 / scale; // one CSS pixel in map units
+      c.setTransform(1, 0, 0, 1, 0, 0);
+      c.clearRect(0, 0, base.width, base.height);
+      c.setTransform(k, 0, 0, k, 0, 0);
+
+      c.fillStyle = rgba(LAND, 0.26);
+      c.fill(outline);
+
+      // Sky glow over the bigger towns, Dublin strongest
+      c.globalCompositeOperation = 'lighter';
+      for (const [x, y, w, s] of lights) {
+        if (w < 0.3) continue;
+        const r = s * 4.2;
+        const g = c.createRadialGradient(x, y, 0, x, y, r);
+        g.addColorStop(0, rgba(SODIUM, 0.16 * w));
+        g.addColorStop(1, rgba(SODIUM, 0));
+        c.fillStyle = g;
+        c.fillRect(x - r, y - r, r * 2, r * 2);
+      }
+      c.globalCompositeOperation = 'source-over';
+
+      c.lineWidth = px;
+      c.lineJoin = 'round';
+      c.strokeStyle = rgba(COAST, 0.4);
+      c.stroke(outline);
+
+      // Dots, batched into brightness buckets: one fill per bucket.
+      const BUCKETS = 28;
+      const paths = Array.from({ length: BUCKETS }, () => new Path2D());
+      for (let i = 0; i < n; i++) {
+        const q = Math.min(BUCKETS - 1, Math.floor((bright[i] / 1.3) * BUCKETS));
+        const b = (q + 0.5) / BUCKETS * 1.3;
+        const r = ((0.7 + 1.2 * Math.min(b, 1)) * sizeK) * px;
+        const x = pts[i * 2];
+        const y = pts[i * 2 + 1];
+        paths[q].moveTo(x + r, y);
+        paths[q].arc(x, y, r, 0, TAU);
+      }
+      for (let q = 0; q < BUCKETS; q++) {
+        const b = ((q + 0.5) / BUCKETS) * 1.3;
+        const warm = smooth(0.2, 0.7, b);
+        const hot = smooth(0.7, 1.15, b);
+        const col = mix(mix(COOL, SODIUM, warm), TUNGSTEN, hot);
+        c.fillStyle = rgba(col, 0.32 + 0.68 * smooth(0.06, 0.62, b));
+        c.fill(paths[q]);
+      }
+
+      // Bloom on the brightest lights
+      c.globalCompositeOperation = 'lighter';
+      for (let i = 0; i < n; i++) {
+        const b = bright[i];
+        if (b < 0.48) continue;
+        const s = (6 + 6 * Math.min(b, 1.2)) * sizeK * px;
+        c.globalAlpha = Math.min(0.5, (b - 0.48) * 0.7);
+        c.drawImage(sprite, pts[i * 2] - s / 2, pts[i * 2 + 1] - s / 2, s, s);
+      }
+      c.globalAlpha = 1;
+      c.globalCompositeOperation = 'source-over';
+    }
+
+    type Ring = { t0: number; dur: number; s: number; pinged: boolean };
+    let rings: Ring[] = [];
+    let raf = 0;
+
+    function render(now: number) {
+      ctx.setTransform(1, 0, 0, 1, 0, 0);
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.drawImage(base, 0, 0);
+      if (!rings.length) return;
+      const k = dpr * scale;
+      const px = 1 / scale;
+      ctx.setTransform(k, 0, 0, k, 0, 0);
+      ctx.globalCompositeOperation = 'lighter';
+      for (const ring of rings) {
+        const p = (now - ring.t0) / ring.dur;
+        if (p < 0 || p > 1) continue;
+        if (!ring.pinged) {
+          ring.pinged = true;
+          ping();
+        }
+        const r = (1 - Math.pow(1 - p, 1.7)) * reach;
+        const s = ring.s * (1 - 0.3 * p);
+
+        // The beam itself: a faint hairline, fading as it travels
+        ctx.globalAlpha = 0.55 * s * (1 - p);
+        ctx.strokeStyle = rgba(SODIUM, 1);
+        ctx.lineWidth = px * 1.2;
+        ctx.beginPath();
+        ctx.arc(LX, LY, r, 0, TAU);
+        ctx.stroke();
+
+        // Each dot it crosses trips on, then decays behind the front
+        const lo = lowerBound(r - TAIL * 3);
+        const hi = lowerBound(r + LEAD);
+        for (let q = lo; q < hi; q++) {
+          const x = r - sorted[q];
+          const a = (x < 0 ? 1 + x / LEAD : Math.exp(-x / TAIL)) * s;
+          if (a < 0.03) continue;
+          const i = order[q];
+          const size = (4 + 8 * a) * sizeK * px;
+          ctx.globalAlpha = Math.min(1, a * 0.95);
+          ctx.drawImage(sprite, pts[i * 2] - size / 2, pts[i * 2 + 1] - size / 2, size, size);
+        }
+      }
+      ctx.globalAlpha = 1;
+      ctx.globalCompositeOperation = 'source-over';
+    }
+
+    function tick(now: number) {
+      rings = rings.filter((r) => now - r.t0 < r.dur);
+      render(now);
+      raf = rings.length ? requestAnimationFrame(tick) : 0;
+    }
+
+    function ping() {
+      if (!marker) return;
+      marker.classList.remove('is-ping');
+      void marker.offsetWidth;
+      marker.classList.add('is-ping');
+    }
+
+    function launch(strength: number, delay = 0) {
+      rings.push({ t0: performance.now() + delay * 1000, dur: 3600, s: strength, pinged: false });
+      if (!raf) raf = requestAnimationFrame(tick);
+    }
+
+    function resize() {
+      const cw = canvas.clientWidth;
+      const ch = canvas.clientHeight;
+      if (!cw || !ch) return;
+      dpr = Math.min(window.devicePixelRatio || 1, 2);
+      scale = cw / W;
+      sizeK = Math.min(1.15, Math.max(0.8, scale));
+      canvas.width = base.width = Math.round(cw * dpr);
+      canvas.height = base.height = Math.round(ch * dpr);
+      drawBase();
+      render(performance.now());
+      fig.classList.add('is-live');
+    }
+
+    new ResizeObserver(resize).observe(canvas);
+    resize();
+
+    // Reduced motion: the map is drawn once, lit, and stays still.
+    if (!motionOK()) return;
+
+    // Working countrywide: three rings on arrival, then one every few
+    // seconds while the map is on screen. Nothing runs off-screen.
+    let onScreen = false;
+    let started = false;
+    let timer = 0;
+    const start = () => {
+      if (!started) {
+        started = true;
+        launch(1, 0.15);
+        launch(0.75, 0.75);
+        launch(0.5, 1.35);
+      }
+      clearInterval(timer);
+      timer = window.setInterval(() => launch(0.8), 6400);
+    };
+    const stop = () => {
+      clearInterval(timer);
+      cancelAnimationFrame(raf);
+      raf = 0;
+      rings = [];
+      render(performance.now());
+    };
+    new IntersectionObserver(
+      ([entry]) => {
+        onScreen = entry.isIntersecting;
+        if (onScreen && !document.hidden) start();
+        else stop();
+      },
+      { threshold: 0.35 },
+    ).observe(fig);
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden) stop();
+      else if (onScreen) start();
+    });
+  }
+</script>

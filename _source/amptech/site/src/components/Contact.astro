@@ -1,10 +1,1104 @@
 ---
-// STUB: replaced by the section builder. See _source/amptech/BUILD-SPEC.md.
-import { contact } from '../data/content.js';
+// Contact: the phone number is the front door, set as display type that
+// trips on like a floodlight. The quote form sits under a porch lamp on a lit
+// panel: the light is on, someone's home.
+import Icon from './Icon.astro';
+import { company, contact, contactForm, hero } from '../data/content.js';
+
+const endpoint = import.meta.env.PUBLIC_FORM_ENDPOINT || '';
+const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
+const privacyHref = `${base}privacy/`;
+const f = contactForm.fields;
+
+// Messages that mention the number get it as a tel link.
+const phoneParts = (text: string) => text.split(company.phoneDisplay);
+const icons: Record<string, string> = { Home: 'home', Business: 'business' };
 ---
 
-<section id="contact" class="section is-night" aria-label="Contact">
-  <div class="container">
-    <h2 class="h-section">{contact.title}</h2>
+<section id="contact" class="section is-night contact" aria-labelledby="contact-title">
+  <div class="container contact__grid">
+    <div class="contact__call">
+      <div class="contact__sticky">
+        <h2 id="contact-title" class="h-section">{contact.title}</h2>
+
+        <a class="contact__phone" href={company.phoneHref} data-contact-phone>
+          <span class="visually-hidden">{contactForm.callLabel} </span>
+          <span class="contact__digits">{company.phoneDisplay}</span>
+        </a>
+
+        <p class="contact__lede">{contact.lede}</p>
+
+        <div class="contact__meta">
+          <address class="contact__address">
+            <Icon name="pin" />
+            <span>
+              {company.address.street},<br />
+              {company.address.town}, {company.address.county}
+            </span>
+          </address>
+          <a class="contact__maps" href={company.mapsHref} rel="noopener">
+            <span>{contactForm.directions}</span>
+            <Icon name="arrow-up-right" size={18} />
+          </a>
+          <p class="data contact__licence">{contactForm.licence}</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="contact__porch" data-porch>
+      <!-- The porch lamp: an oval bulkhead with a cage, as on half the estates in Kildare -->
+      <svg class="contact__lamp" viewBox="0 0 120 76" aria-hidden="true" focusable="false">
+        <rect x="4" y="4" width="112" height="68" rx="34" fill="#2a3140" stroke="#4c5f86" stroke-width="1.2"></rect>
+        <rect class="contact__glass" x="13" y="13" width="94" height="50" rx="25"></rect>
+        <g fill="none" stroke="#2a3140" stroke-width="3.2" stroke-linecap="round">
+          <path d="M16 38h88"></path>
+          <path d="M60 14v48"></path>
+          <path d="M22 25.5h76" opacity=".9"></path>
+          <path d="M22 50.5h76" opacity=".9"></path>
+        </g>
+        <rect x="4" y="4" width="112" height="68" rx="34" fill="none" stroke="rgb(255 255 255 / .08)" stroke-width="1"></rect>
+      </svg>
+
+      <div class="contact__panel is-lit" data-contact-panel>
+        <form
+          class="qf"
+          data-quote-form
+          action={endpoint || undefined}
+          method="post"
+          aria-labelledby="qf-title"
+          data-msgs={JSON.stringify({ ...contactForm.errors, sending: contactForm.sending })}
+        >
+          <div class="qf__head">
+            <h3 id="qf-title" class="qf__title">{hero.secondary.label}</h3>
+            <p class="qf__req">{contactForm.required}</p>
+          </div>
+
+          <div class="qf__grid">
+            <div class="qf__field" data-field>
+              <label class="qf__label" for="qf-name">{f.name} <span class="qf__star" aria-hidden="true">*</span></label>
+              <input class="qf__input" id="qf-name" name="name" type="text" autocomplete="name" required maxlength="120" />
+              <p class="qf__error" id="qf-name-error" data-error hidden></p>
+            </div>
+
+            <div class="qf__field" data-field>
+              <label class="qf__label" for="qf-phone">{f.phone} <span class="qf__star" aria-hidden="true">*</span></label>
+              <input
+                class="qf__input"
+                id="qf-phone"
+                name="phone"
+                type="tel"
+                inputmode="tel"
+                autocomplete="tel"
+                required
+                pattern="[0-9 +\(\)\-]{7,24}"
+                maxlength="24"
+                aria-describedby="qf-phone-hint"
+              />
+              <p class="qf__hint" id="qf-phone-hint">{f.phoneHint}</p>
+              <p class="qf__error" id="qf-phone-error" data-error hidden></p>
+            </div>
+
+            <div class="qf__field" data-field>
+              <label class="qf__label" for="qf-email">{f.email} <span class="qf__opt">({f.optional})</span></label>
+              <input class="qf__input" id="qf-email" name="email" type="email" autocomplete="email" maxlength="160" />
+              <p class="qf__error" id="qf-email-error" data-error hidden></p>
+            </div>
+
+            <div class="qf__field" data-field>
+              <label class="qf__label" for="qf-area">{f.area}</label>
+              <input
+                class="qf__input"
+                id="qf-area"
+                name="area"
+                type="text"
+                autocomplete="address-level2"
+                maxlength="120"
+                aria-describedby="qf-area-hint"
+              />
+              <p class="qf__hint" id="qf-area-hint">{f.areaHint}</p>
+            </div>
+
+            <fieldset class="qf__field qf__wide qf__set">
+              <legend class="qf__label">{f.propertyType}</legend>
+              <div class="qf__seg">
+                {
+                  contact.propertyTypes.map((type) => (
+                    <label class="qf__seg-opt">
+                      <input type="radio" name="propertyType" value={type} />
+                      <span class="qf__seg-led" aria-hidden="true" />
+                      <Icon name={icons[type] || 'home'} size={22} />
+                      <span>{type}</span>
+                    </label>
+                  ))
+                }
+              </div>
+            </fieldset>
+
+            <fieldset class="qf__field qf__wide qf__set">
+              <legend class="qf__label">
+                {f.interests} <span class="qf__legend-hint">{f.interestsHint}</span>
+              </legend>
+              <div class="qf__chips">
+                {
+                  contact.interests.map((item) => (
+                    <label class="qf__chip">
+                      <input type="checkbox" name="interests" value={item} />
+                      <span class="qf__box" aria-hidden="true">
+                        <svg viewBox="0 0 16 16" width="16" height="16" focusable="false">
+                          <path d="m3.5 8.5 3 3 6-7" />
+                        </svg>
+                      </span>
+                      <span>{item}</span>
+                    </label>
+                  ))
+                }
+              </div>
+            </fieldset>
+
+            <div class="qf__field qf__wide" data-field>
+              <label class="qf__label" for="qf-message">{f.message}</label>
+              <textarea
+                class="qf__input qf__textarea"
+                id="qf-message"
+                name="message"
+                rows="4"
+                maxlength="2000"
+                aria-describedby="qf-message-hint"></textarea>
+              <p class="qf__hint" id="qf-message-hint">{f.messageHint}</p>
+            </div>
+
+            <div class="qf__hp" aria-hidden="true">
+              <label for="qf-website">{f.honeypot}</label>
+              <input id="qf-website" name="website" type="text" tabindex="-1" autocomplete="off" />
+            </div>
+          </div>
+
+          <p class="qf__consent">
+            {contact.consent}{' '}
+            {contactForm.privacyLead} <a href={privacyHref}>{contactForm.privacyLink}</a>.
+          </p>
+
+          {
+            !endpoint && (
+              <noscript>
+                <p class="qf__note qf__note--static">
+                  {phoneParts(contactForm.noscript).map((part, i) =>
+                    i === 0 ? part : (<><a href={company.phoneHref}>{company.phoneDisplay}</a>{part}</>),
+                  )}
+                </p>
+              </noscript>
+            )
+          }
+
+          <div class="qf__actions">
+            <button class="btn btn--primary qf__submit" type="submit" data-submit>
+              <span data-submit-label>{contact.submit}</span>
+              <Icon name="arrow" />
+            </button>
+          </div>
+
+          <div class="qf__status" role="status" data-status></div>
+          <div class="qf__alert" role="alert" data-alert></div>
+        </form>
+
+        <div class="qf__done" data-done hidden tabindex="-1">
+          <span class="qf__led qf__led--clear" data-done-led aria-hidden="true"><span></span></span>
+          <p class="qf__done-title">{contactForm.successTitle}</p>
+          <p class="qf__done-body">{contact.success}</p>
+          <p class="qf__done-urgent">
+            {phoneParts(contactForm.urgent).map((part, i) =>
+              i === 0 ? part : (<><a href={company.phoneHref}>{company.phoneDisplay}</a>{part}</>),
+            )}
+          </p>
+        </div>
+
+        <template data-msg="not-connected">
+          <p class="qf__note qf__note--info">
+            <span class="qf__led qf__led--strobe" aria-hidden="true"><span></span></span>
+            <span>
+              {phoneParts(contact.notConnected).map((part, i) =>
+                i === 0 ? part : (<><a href={company.phoneHref}>{company.phoneDisplay}</a>{part}</>),
+              )}
+            </span>
+          </p>
+        </template>
+        <template data-msg="error">
+          <p class="qf__note qf__note--error">
+            <span class="qf__led qf__led--alarm" aria-hidden="true"><span></span></span>
+            <span>
+              {phoneParts(contact.error).map((part, i) =>
+                i === 0 ? part : (<><a href={company.phoneHref}>{company.phoneDisplay}</a>{part}</>),
+              )}
+            </span>
+          </p>
+        </template>
+      </div>
+    </div>
   </div>
+
 </section>
+
+<style>
+  .contact {
+    overflow: clip;
+    background:
+      radial-gradient(50% 40% at 78% 8%, rgb(255 212 154 / 0.1), transparent 70%),
+      var(--night-900);
+  }
+
+  .contact__grid {
+    display: grid;
+    gap: var(--space-8);
+  }
+
+  /* ---------- Call column ---------- */
+
+  .contact__call {
+    container-type: inline-size;
+  }
+  .contact__call .h-section {
+    max-width: 12ch;
+  }
+
+  .contact__phone {
+    position: relative;
+    isolation: isolate;
+    display: inline-block;
+    margin-top: var(--space-6);
+    padding-block: 0.06em 0.16em;
+    color: var(--sodium-500);
+    text-decoration: none;
+    font-family: var(--font-display);
+    font-stretch: 125%;
+    font-weight: 800;
+    /* Fitted: never wider than the column, never above 6rem */
+    font-size: min(6rem, calc(100cqi / 7.6));
+    letter-spacing: -0.02em;
+    line-height: 1;
+    white-space: nowrap;
+    font-variant-numeric: tabular-nums;
+    text-shadow: 0 0 0.5em rgb(255 158 61 / 0.25);
+    transition:
+      color var(--dur-decay) var(--ease-out),
+      text-shadow var(--dur-decay) var(--ease-out);
+  }
+  /* The light it casts on the ground below: snaps on, fades slowly */
+  .contact__phone::after {
+    content: '';
+    position: absolute;
+    left: -6%;
+    right: -6%;
+    top: 55%;
+    height: 1.3em;
+    z-index: -1;
+    /* A soft pool on the ground, no edges */
+    background: radial-gradient(closest-side, rgb(255 158 61 / 0.4), rgb(255 158 61 / 0.12) 55%, rgb(255 158 61 / 0));
+    opacity: 0;
+    transform: scaleY(0.6);
+    transform-origin: top;
+    transition:
+      opacity var(--dur-decay) var(--ease-out),
+      transform var(--dur-decay) var(--ease-out);
+    pointer-events: none;
+  }
+  .contact__phone:hover,
+  .contact__phone:focus-visible {
+    color: var(--sodium-300);
+    text-shadow: 0 0 0.35em rgb(255 158 61 / 0.55), 0 0 1.2em rgb(255 158 61 / 0.25);
+    transition-duration: var(--dur-trip);
+  }
+  .contact__phone:hover::after,
+  .contact__phone:focus-visible::after {
+    opacity: 1;
+    transform: none;
+    transition-duration: var(--dur-trip), var(--dur-med);
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .contact__phone:hover .contact__digits {
+      animation: contact-trip 420ms linear;
+    }
+  }
+  @keyframes contact-trip {
+    0% { opacity: 0.55; }
+    12% { opacity: 1; }
+    20% { opacity: 0.7; }
+    32%, 100% { opacity: 1; }
+  }
+  .contact__phone:active {
+    transform: translateY(1px);
+  }
+
+  .contact__lede {
+    margin-top: var(--space-5);
+    max-width: 36ch;
+    font-size: var(--step-1);
+    line-height: 1.5;
+    color: var(--dusk-200);
+  }
+
+  .contact__meta {
+    display: grid;
+    justify-items: start;
+    gap: var(--space-3);
+    margin-top: var(--space-7);
+    padding-top: var(--space-5);
+    border-top: 1px solid var(--night-700);
+  }
+  .contact__address {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: var(--space-3);
+    font-style: normal;
+    color: var(--dusk-50);
+    line-height: 1.45;
+  }
+  .contact__address :global(svg) {
+    color: var(--sodium-500);
+    margin-top: 1px;
+  }
+  .contact__maps {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45em;
+    min-height: 44px;
+    margin-left: calc(24px + var(--space-3));
+    color: var(--sodium-400);
+    font-weight: 600;
+    text-decoration: underline;
+    text-decoration-color: rgb(255 158 61 / 0.4);
+    text-underline-offset: 0.25em;
+    transition: color var(--dur-fast) var(--ease-out), text-decoration-color var(--dur-fast) var(--ease-out);
+  }
+  .contact__maps :global(svg) {
+    transition: transform var(--dur-med) var(--ease-out);
+  }
+  .contact__maps:hover {
+    color: var(--sodium-300);
+    text-decoration-color: currentColor;
+  }
+  .contact__maps:hover :global(svg) {
+    transform: translate(2px, -2px);
+  }
+  .contact__licence {
+    margin-left: calc(24px + var(--space-3));
+    color: var(--dusk-300);
+  }
+
+  /* ---------- The porch ---------- */
+
+  .contact__porch {
+    --lamp-on: 1;
+    position: relative;
+    display: grid;
+    justify-items: center;
+  }
+  /* Light spilling from the lamp onto the wall around it */
+  .contact__porch::before {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: -60px;
+    width: min(760px, 150%);
+    height: 420px;
+    translate: -50% 0;
+    background: radial-gradient(50% 50% at 50% 30%, rgb(255 212 154 / 0.2), rgb(255 158 61 / 0.06) 50%, transparent 72%);
+    opacity: var(--lamp-on);
+    pointer-events: none;
+  }
+  .contact__lamp {
+    position: relative;
+    width: 92px;
+    height: auto;
+    margin-bottom: var(--space-4);
+    overflow: visible;
+  }
+  .contact__glass {
+    fill: var(--night-700);
+    fill: color-mix(in oklab, var(--night-700), var(--tungsten) calc(var(--lamp-on) * 100%));
+    filter: drop-shadow(0 0 calc(var(--lamp-on) * 14px) rgb(255 200 130 / 0.85));
+  }
+
+  .contact__panel {
+    position: relative;
+    isolation: isolate;
+    width: 100%;
+    padding: var(--space-6) var(--space-5) var(--space-6);
+    border-radius: var(--radius-lg);
+    box-shadow:
+      0 -1px 0 rgb(255 255 255 / 0.5) inset,
+      0 50px 90px -40px rgb(3 7 15 / 0.85),
+      0 -30px 80px -40px rgb(255 212 154 / 0.35);
+  }
+  /* The lamp's hotspot on the panel */
+  .contact__panel::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    border-radius: inherit;
+    background: radial-gradient(70% 38% at 50% 0%, rgb(255 255 255 / 1), rgb(255 255 255 / 0) 100%);
+    opacity: var(--lamp-on);
+    pointer-events: none;
+  }
+
+  /* ---------- The form ---------- */
+
+  .qf__head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--space-2) var(--space-5);
+    margin-bottom: var(--space-6);
+  }
+  .qf__title {
+    font-size: var(--step-2);
+    font-stretch: 112%;
+    letter-spacing: -0.02em;
+    color: var(--ink-900);
+  }
+  .qf__req {
+    font-size: var(--step--1);
+    color: var(--ink-500);
+  }
+
+  .qf__grid {
+    display: grid;
+    gap: var(--space-5) var(--space-5);
+  }
+  .qf__field {
+    display: grid;
+    gap: var(--space-2);
+    align-content: start;
+    min-width: 0;
+  }
+  .qf__set {
+    margin: 0;
+    padding: 0;
+    border: 0;
+  }
+  .qf__label {
+    padding: 0;
+    font-family: var(--font-display);
+    font-stretch: 106%;
+    font-weight: 640;
+    font-size: 1rem;
+    line-height: 1.3;
+    color: var(--ink-900);
+  }
+  .qf__set .qf__label {
+    margin-bottom: var(--space-2);
+  }
+  .qf__star {
+    color: var(--sodium-800);
+  }
+  .qf__opt,
+  .qf__legend-hint {
+    font-family: var(--font-body);
+    font-weight: 400;
+    font-stretch: 100%;
+    color: var(--ink-500);
+  }
+  .qf__legend-hint {
+    display: block;
+    margin-top: 2px;
+    font-size: var(--step--1);
+  }
+  .qf__hint {
+    font-size: var(--step--1);
+    line-height: 1.45;
+    color: var(--ink-500);
+  }
+
+  .qf__input {
+    width: 100%;
+    min-height: 52px;
+    padding: 0.75rem 0.95rem;
+    border: 1px solid var(--flood-300);
+    border-radius: var(--radius-sm);
+    background: var(--flood-0);
+    color: var(--ink-900);
+    font-size: max(16px, var(--step-0));
+    line-height: 1.4;
+    box-shadow: inset 0 1px 2px rgb(12 22 40 / 0.07);
+    transition:
+      border-color var(--dur-fast) var(--ease-out),
+      box-shadow var(--dur-decay) var(--ease-out);
+  }
+  .qf__input:hover {
+    border-color: var(--ink-500);
+  }
+  /* A focused field trips its light: sodium cast below, fast attack */
+  .qf__input:focus-visible,
+  .qf__input:focus {
+    outline: 2px solid var(--ink-900);
+    outline-offset: 1px;
+    border-color: var(--ink-900);
+    box-shadow: inset 0 1px 2px rgb(12 22 40 / 0.07), 0 14px 28px -14px rgb(230 126 20 / 0.7);
+    transition-duration: var(--dur-fast), var(--dur-trip);
+  }
+  .qf__input[aria-invalid='true'] {
+    border-color: var(--alarm-700);
+    box-shadow: inset 0 0 0 1px var(--alarm-700);
+  }
+  .qf__input[aria-invalid='true']:focus {
+    outline-color: var(--alarm-700);
+  }
+  .qf__textarea {
+    min-height: 8.5rem;
+    resize: vertical;
+  }
+
+  .qf__error {
+    display: flex;
+    align-items: baseline;
+    gap: 0.45em;
+    font-size: var(--step--1);
+    font-weight: 700;
+    line-height: 1.4;
+    color: var(--alarm-700);
+  }
+  .qf__error[hidden] {
+    display: none;
+  }
+  .qf__error::before {
+    content: '';
+    flex: none;
+    width: 8px;
+    height: 8px;
+    border-radius: 2px;
+    background: var(--alarm-700);
+    translate: 0 -1px;
+  }
+
+  /* Property type: two keys, the chosen one pressed and lit */
+  .qf__seg {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4px;
+    padding: 4px;
+    border: 1px solid var(--flood-300);
+    border-radius: calc(var(--radius-sm) + 4px);
+    background: var(--flood-100);
+  }
+  .qf__seg-opt {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.55em;
+    min-height: 52px;
+    padding-inline: var(--space-3);
+    border-radius: var(--radius-sm);
+    color: var(--ink-700);
+    font-family: var(--font-display);
+    font-stretch: 108%;
+    font-weight: 660;
+    cursor: pointer;
+    transition:
+      background-color var(--dur-fast) var(--ease-out),
+      color var(--dur-fast) var(--ease-out),
+      box-shadow var(--dur-med) var(--ease-out);
+  }
+  .qf__seg-opt input,
+  .qf__chip input {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    opacity: 0;
+    cursor: pointer;
+  }
+  .qf__seg-opt:hover {
+    background: var(--flood-0);
+    color: var(--ink-900);
+  }
+  .qf__seg-opt:active {
+    transform: translateY(1px);
+  }
+  .qf__seg-opt:has(input:checked) {
+    background: var(--night-900);
+    color: var(--flood-50);
+    box-shadow: 0 8px 18px -10px rgb(12 22 40 / 0.7);
+  }
+  .qf__seg-opt:has(input:focus-visible),
+  .qf__chip:has(input:focus-visible) {
+    outline: 2px solid var(--ink-900);
+    outline-offset: 2px;
+  }
+  .qf__seg-led {
+    width: 7px;
+    height: 7px;
+    border-radius: 2px;
+    background: var(--flood-300);
+    transition: background-color var(--dur-trip), box-shadow var(--dur-decay) var(--ease-out);
+  }
+  .qf__seg-opt:has(input:checked) .qf__seg-led {
+    background: var(--sodium-400);
+    box-shadow: 0 0 8px 2px rgb(255 158 61 / 0.6);
+  }
+
+  /* Interests: checkbox keys */
+  .qf__chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+  }
+  .qf__chip {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55em;
+    min-height: 46px;
+    padding: 0.45rem 0.9rem 0.45rem 0.7rem;
+    border: 1px solid var(--flood-300);
+    border-radius: var(--radius-sm);
+    background: var(--flood-0);
+    color: var(--ink-700);
+    font-weight: 600;
+    font-size: var(--step--1);
+    line-height: 1.2;
+    cursor: pointer;
+    transition:
+      background-color var(--dur-fast) var(--ease-out),
+      border-color var(--dur-fast) var(--ease-out),
+      color var(--dur-fast) var(--ease-out);
+  }
+  .qf__chip:hover {
+    border-color: var(--ink-700);
+    color: var(--ink-900);
+  }
+  .qf__chip:active {
+    transform: translateY(1px);
+  }
+  .qf__box {
+    display: grid;
+    place-items: center;
+    flex: none;
+    width: 18px;
+    height: 18px;
+    border: 1.5px solid var(--ink-500);
+    border-radius: 4px;
+    transition: background-color var(--dur-fast), border-color var(--dur-fast);
+  }
+  .qf__box svg {
+    fill: none;
+    stroke: var(--night-950);
+    stroke-width: 2.2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-dasharray: 14;
+    stroke-dashoffset: 14;
+    transition: stroke-dashoffset var(--dur-med) var(--ease-out);
+  }
+  .qf__chip:has(input:checked) {
+    background: var(--night-900);
+    border-color: var(--night-900);
+    color: var(--flood-50);
+  }
+  .qf__chip:has(input:checked) .qf__box {
+    background: var(--sodium-500);
+    border-color: var(--sodium-500);
+  }
+  .qf__chip:has(input:checked) .qf__box svg {
+    stroke-dashoffset: 0;
+  }
+
+  .qf__hp {
+    position: absolute;
+    left: -9999px;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+  }
+
+  .qf__consent {
+    margin-top: var(--space-6);
+    font-size: var(--step--1);
+    color: var(--ink-700);
+  }
+
+  .qf__actions {
+    margin-top: var(--space-5);
+  }
+  .qf__submit {
+    width: 100%;
+    min-height: 56px;
+  }
+  .qf__submit :global(svg) {
+    transition: transform var(--dur-med) var(--ease-out);
+  }
+  .qf__submit:hover :global(svg) {
+    transform: translateX(4px);
+  }
+  .qf__submit:focus-visible {
+    outline-color: var(--ink-900);
+  }
+  /* Sending: a detection beam sweeps across the button */
+  .qf__submit.is-sending[disabled] {
+    opacity: 1;
+    cursor: progress;
+  }
+  .qf__submit.is-sending::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(100deg, transparent 25%, rgb(255 255 255 / 0.65) 50%, transparent 75%);
+    transform: translateX(-100%);
+    animation: qf-sweep 1.1s var(--ease-in-out) infinite;
+  }
+  @keyframes qf-sweep {
+    to { transform: translateX(100%); }
+  }
+
+  .qf__status:not(:empty),
+  .qf__alert:not(:empty) {
+    margin-top: var(--space-4);
+  }
+  .qf__note {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-3);
+    padding: var(--space-4);
+    border: 1px solid var(--flood-300);
+    border-radius: var(--radius-md);
+    background: var(--flood-100);
+    color: var(--ink-900);
+    font-weight: 600;
+  }
+  .qf__note--error {
+    border-color: rgb(180 35 24 / 0.45);
+  }
+  .qf__note--static {
+    display: block;
+    margin-top: var(--space-4);
+  }
+  .qf__note a,
+  .qf__done a {
+    font-weight: 700;
+    white-space: nowrap;
+  }
+
+  /* An LED in a dark housing, so the signal colours read on white */
+  .qf__led {
+    --strobe-a: 0;
+    display: grid;
+    place-items: center;
+    flex: none;
+    width: 22px;
+    height: 22px;
+    margin-top: 1px;
+    border-radius: 6px;
+    background: var(--night-900);
+  }
+  .qf__led span {
+    width: 9px;
+    height: 9px;
+    border-radius: 3px;
+    background: var(--led);
+    box-shadow:
+      0 0 6px 1px var(--led),
+      0 0 calc(4px + var(--strobe-a) * 16px) calc(var(--strobe-a) * 5px) var(--led);
+  }
+  .qf__led--strobe { --led: var(--strobe-400); }
+  .qf__led--alarm { --led: var(--alarm-500); }
+  .qf__led--clear { --led: var(--clear-400); }
+
+  .qf__done {
+    display: grid;
+    justify-items: start;
+    gap: var(--space-3);
+    padding-block: var(--space-6);
+  }
+  .qf__done[hidden] {
+    display: none;
+  }
+  .qf__done .qf__led {
+    width: 30px;
+    height: 30px;
+    margin-bottom: var(--space-3);
+  }
+  .qf__done .qf__led span {
+    width: 12px;
+    height: 12px;
+  }
+  .qf__done-title {
+    font-family: var(--font-display);
+    font-stretch: 112%;
+    font-weight: 760;
+    font-size: var(--step-3);
+    line-height: 1.05;
+    letter-spacing: -0.025em;
+    color: var(--ink-900);
+  }
+  .qf__done-body {
+    font-size: var(--step-1);
+    line-height: 1.45;
+    color: var(--ink-700);
+    max-width: 30ch;
+  }
+  .qf__done-urgent {
+    color: var(--ink-700);
+  }
+
+  @media (min-width: 640px) {
+    .contact__panel {
+      padding: var(--space-7) var(--space-7) var(--space-7);
+    }
+    .qf__grid {
+      grid-template-columns: 1fr 1fr;
+    }
+    .qf__wide {
+      grid-column: 1 / -1;
+    }
+    .qf__submit {
+      width: auto;
+      min-width: 15rem;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .contact__grid {
+      grid-template-columns: minmax(0, 6fr) minmax(0, 6fr);
+      column-gap: clamp(3rem, 5vw, 6rem);
+      align-items: start;
+    }
+    .contact__sticky {
+      position: sticky;
+      top: calc(var(--header-h) + var(--space-6));
+    }
+    .contact__call {
+      align-self: stretch;
+    }
+    .contact__panel {
+      padding: var(--space-7) var(--space-6);
+    }
+  }
+  @media (min-width: 1240px) {
+    .contact__grid {
+      grid-template-columns: minmax(0, 7fr) minmax(0, 6fr);
+    }
+    .contact__panel {
+      padding: var(--space-7);
+    }
+  }
+</style>
+
+<script>
+  import { boot, gsap, motionOK, strobe } from '../scripts/motion.js';
+
+  boot();
+
+  const section = document.querySelector<HTMLElement>('#contact');
+  const form = section?.querySelector<HTMLFormElement>('[data-quote-form]');
+  if (section && form) {
+    initArrival(section);
+    initForm(section, form);
+  }
+
+  // Arrival: the number trips on like a floodlight, then the porch lamp
+  // comes on and lights the panel.
+  function initArrival(section: HTMLElement) {
+    if (!motionOK()) return;
+    const phone = section.querySelector<HTMLElement>('[data-contact-phone]');
+    const porch = section.querySelector<HTMLElement>('[data-porch]');
+    const panel = section.querySelector<HTMLElement>('[data-contact-panel]');
+    if (!phone || !porch || !panel) return;
+    const tokens = getComputedStyle(document.documentElement);
+    const dim = tokens.getPropertyValue('--night-600').trim() || '#33466b';
+    const lit = tokens.getPropertyValue('--sodium-500').trim() || '#ff9e3d';
+
+    gsap.set(phone, { color: dim, textShadow: '0 0 0em rgba(255,158,61,0)' });
+    gsap.set(porch, { '--lamp-on': 0 });
+    gsap.set(panel, { filter: 'brightness(0.32)' });
+
+    gsap
+      .timeline({
+        scrollTrigger: { trigger: section, start: 'top 62%', once: true },
+        onComplete: () => {
+          gsap.set(phone, { clearProps: 'color,textShadow' });
+          gsap.set(panel, { clearProps: 'filter' });
+        },
+      })
+      .to(phone, {
+        keyframes: [
+          { color: lit, duration: 0.05, ease: 'none' },
+          { color: dim, duration: 0.06, ease: 'none' },
+          { color: lit, textShadow: '0 0 0.5em rgba(255,158,61,0.25)', duration: 0.9, ease: 'expo.out' },
+        ],
+      })
+      .to(
+        porch,
+        {
+          keyframes: [
+            { '--lamp-on': 1, duration: 0.05, ease: 'none' },
+            { '--lamp-on': 0.25, duration: 0.07, ease: 'none' },
+            { '--lamp-on': 1, duration: 0.5, ease: 'trip' },
+          ],
+        },
+        0.35,
+      )
+      .to(
+        panel,
+        {
+          keyframes: [
+            { filter: 'brightness(1)', duration: 0.05, ease: 'none' },
+            { filter: 'brightness(0.6)', duration: 0.07, ease: 'none' },
+            { filter: 'brightness(1)', duration: 0.5, ease: 'trip' },
+          ],
+        },
+        0.35,
+      );
+  }
+
+  function initForm(section: HTMLElement, form: HTMLFormElement) {
+    const endpoint: string = import.meta.env.PUBLIC_FORM_ENDPOINT || '';
+    const msgs = JSON.parse(form.dataset.msgs || '{}');
+    const submit = form.querySelector<HTMLButtonElement>('[data-submit]')!;
+    const submitLabel = form.querySelector<HTMLElement>('[data-submit-label]')!;
+    const idleLabel = submitLabel.textContent;
+    const status = form.querySelector<HTMLElement>('[data-status]')!;
+    const alert = form.querySelector<HTMLElement>('[data-alert]')!;
+    const done = section.querySelector<HTMLElement>('[data-done]')!;
+    const template = (name: string) =>
+      (section.querySelector<HTMLTemplateElement>(`template[data-msg="${name}"]`)!.content.cloneNode(true) as DocumentFragment);
+
+    // Scripts handle validation from here, with messages tied to each field.
+    form.noValidate = true;
+
+    const fields = [...form.querySelectorAll<HTMLElement>('[data-field]')]
+      .map((wrap) => ({
+        input: wrap.querySelector<HTMLInputElement | HTMLTextAreaElement>('input, textarea')!,
+        error: wrap.querySelector<HTMLElement>('[data-error]'),
+      }))
+      .filter((f) => f.error);
+
+    const baseDescribedBy = new Map(fields.map((f) => [f.input, f.input.getAttribute('aria-describedby') || '']));
+
+    const check = (input: HTMLInputElement | HTMLTextAreaElement) => {
+      const value = input.value.trim();
+      if (input.name === 'name') return value ? '' : msgs.name;
+      if (input.name === 'phone') {
+        if (!value) return msgs.phone;
+        const digits = value.replace(/\D/g, '');
+        return /^[0-9 +()\-]+$/.test(value) && digits.length >= 7 && digits.length <= 15 ? '' : msgs.phoneFormat;
+      }
+      if (input.name === 'email') {
+        if (!value) return '';
+        return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(value) ? '' : msgs.email;
+      }
+      return '';
+    };
+
+    const show = (field: (typeof fields)[number], message: string) => {
+      const { input, error } = field;
+      if (!error) return;
+      const described = baseDescribedBy.get(input) || '';
+      if (message) {
+        error.textContent = message;
+        error.hidden = false;
+        input.setAttribute('aria-invalid', 'true');
+        input.setAttribute('aria-describedby', `${described} ${error.id}`.trim());
+      } else {
+        error.textContent = '';
+        error.hidden = true;
+        input.removeAttribute('aria-invalid');
+        if (described) input.setAttribute('aria-describedby', described);
+        else input.removeAttribute('aria-describedby');
+      }
+    };
+
+    // After a field has been flagged, re-check it as the visitor types, so
+    // the error clears the moment it's fixed. New errors wait for blur.
+    fields.forEach((field) => {
+      field.input.addEventListener('input', () => {
+        if (field.input.getAttribute('aria-invalid') === 'true') show(field, check(field.input));
+      });
+      field.input.addEventListener('blur', () => {
+        if (field.input.value.trim()) show(field, check(field.input));
+      });
+    });
+
+    const setSending = (on: boolean) => {
+      submit.disabled = on;
+      submit.classList.toggle('is-sending', on);
+      form.toggleAttribute('aria-busy', on);
+      submitLabel.textContent = on ? msgs.sending : idleLabel;
+    };
+
+    const say = (region: HTMLElement, name: string | null) => {
+      status.replaceChildren();
+      alert.replaceChildren();
+      if (!name) return;
+      region.append(template(name));
+      strobe(region.querySelector('.qf__led'));
+    };
+
+    const succeed = () => {
+      form.hidden = true;
+      done.hidden = false;
+      done.focus();
+      const led = done.querySelector<HTMLElement>('[data-done-led]');
+      strobe(led, { color: 'var(--clear-400)' });
+      if (motionOK()) {
+        gsap.from(done.children, { opacity: 0.15, y: 12, duration: 0.8, ease: 'expo.out', stagger: 0.07 });
+      }
+    };
+
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      say(status, null);
+
+      let first: HTMLElement | null = null;
+      for (const field of fields) {
+        const message = check(field.input);
+        show(field, message);
+        if (message && !first) first = field.input;
+      }
+      if (first) {
+        first.focus();
+        return;
+      }
+
+      const data = new FormData(form);
+      // Bots fill the hidden field; they get a quiet "success" and nothing is sent.
+      if (String(data.get('website') || '').trim()) {
+        succeed();
+        return;
+      }
+
+      if (!endpoint) {
+        say(status, 'not-connected');
+        return;
+      }
+
+      const payload = {
+        name: String(data.get('name') || '').trim(),
+        phone: String(data.get('phone') || '').trim(),
+        email: String(data.get('email') || '').trim(),
+        propertyType: String(data.get('propertyType') || ''),
+        interests: data.getAll('interests').map(String),
+        area: String(data.get('area') || '').trim(),
+        message: String(data.get('message') || '').trim(),
+        page: window.location.href,
+      };
+
+      setSending(true);
+      try {
+        const res = await fetch(endpoint, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+          body: JSON.stringify(payload),
+          signal: AbortSignal.timeout(20000),
+        });
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        setSending(false);
+        succeed();
+      } catch {
+        setSending(false);
+        say(alert, 'error');
+      }
+    });
+  }
+</script>

@@ -1,10 +1,312 @@
 ---
-// STUB: replaced by the section builder. See _source/amptech/BUILD-SPEC.md.
-import { faq } from '../data/content.js';
+// FAQ: a lit reading section. Native <details>, so every answer is in the
+// HTML and keyboard support is the browser's own. The call-to-action column
+// sticks beside the questions on wide screens.
+import Icon from './Icon.astro';
+import { company, faq, faqAside } from '../data/content.js';
+
+// Phone numbers inside answers become tel links.
+const withPhone = (text: string) => text.split(company.phoneDisplay);
 ---
 
-<section id="faq" class="section is-lit" data-lit-reveal aria-label="Faq">
-  <div class="container">
-    <h2 class="h-section">{faq.title}</h2>
+<section id="faq" class="section is-lit faq" data-lit-reveal aria-labelledby="faq-title">
+  <div class="container faq__grid">
+    <div class="faq__aside">
+      <div class="faq__sticky">
+        <h2 id="faq-title" class="h-section" data-faq-title>{faq.title}</h2>
+        <div class="faq__call">
+          <p class="faq__ask">{faqAside.ask}</p>
+          <a class="btn btn--primary faq__btn" href={company.phoneHref}>
+            <Icon name="phone" />
+            <span>{faqAside.call}</span>
+          </a>
+          <a class="faq__form" href="#contact">
+            <span>{faqAside.or}</span>
+            <Icon name="arrow" size={20} />
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="faq__list" data-faq-list>
+      {
+        faq.items.map((item, index) => (
+          <details class="faq__item" open={index === 0}>
+            <summary class="faq__q">
+              <span class="faq__q-text">{item.q}</span>
+              <span class="faq__key" aria-hidden="true">
+                <svg viewBox="0 0 24 24" width="20" height="20" focusable="false">
+                  <path d="M12 5v14" />
+                  <path d="M5 12h14" />
+                </svg>
+              </span>
+            </summary>
+            <div class="faq__a">
+              <p>
+                {withPhone(item.a).map((part, i) =>
+                  i === 0 ? (
+                    part
+                  ) : (
+                    <>
+                      <a href={company.phoneHref}>{company.phoneDisplay}</a>
+                      {part}
+                    </>
+                  ),
+                )}
+              </p>
+            </div>
+          </details>
+        ))
+      }
+    </div>
   </div>
 </section>
+
+<style>
+  .faq {
+    /* Lets ::details-content animate to and from `auto` where supported */
+    interpolate-size: allow-keywords;
+  }
+
+  .faq__grid {
+    display: grid;
+    gap: var(--space-7);
+  }
+
+  .faq__sticky .h-section {
+    max-width: 13ch;
+  }
+
+  .faq__call {
+    display: grid;
+    justify-items: start;
+    gap: var(--space-3);
+    margin-top: var(--space-6);
+  }
+  .faq__ask {
+    font-family: var(--font-display);
+    font-stretch: 108%;
+    font-weight: 620;
+    font-size: var(--step-1);
+    line-height: 1.25;
+    color: var(--ink-900);
+  }
+  .faq__btn {
+    font-variant-numeric: tabular-nums;
+  }
+  .faq__form {
+    display: inline-block;
+    padding-block: 0.6rem;
+    color: var(--ink-700);
+    font-weight: 600;
+    text-decoration: underline;
+    text-decoration-color: var(--flood-300);
+    text-underline-offset: 0.25em;
+    transition: color var(--dur-fast) var(--ease-out), text-decoration-color var(--dur-fast) var(--ease-out);
+  }
+  .faq__form :global(svg) {
+    display: inline-block;
+    margin-left: 0.4em;
+    vertical-align: -0.25em;
+    transition: transform var(--dur-med) var(--ease-out);
+  }
+  .faq__form:hover {
+    color: var(--ink-900);
+    text-decoration-color: var(--sodium-800);
+  }
+  .faq__form:hover :global(svg) {
+    transform: translateX(4px);
+  }
+
+  /* ---------- The questions ---------- */
+
+  .faq__list {
+    border-bottom: 1px solid var(--flood-200);
+  }
+
+  .faq__item {
+    --lit: 0;
+    position: relative;
+    isolation: isolate;
+  }
+  /* Hairline between rows; drawn in like a cable run on arrival */
+  .faq__item::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    height: 1px;
+    background: var(--flood-200);
+    transform: scaleX(var(--draw, 1));
+    transform-origin: left;
+    pointer-events: none;
+  }
+  /* The row's floodlight: snaps on fast, fades slow */
+  .faq__item::before {
+    content: '';
+    position: absolute;
+    inset: 0 calc(var(--space-4) * -1);
+    z-index: -1;
+    border-radius: var(--radius-md);
+    background:
+      radial-gradient(90% 120% at 22% -30%, rgb(255 255 255 / 1), rgb(255 255 255 / 0) 70%),
+      var(--flood-0);
+    box-shadow: var(--shadow-flood);
+    opacity: 0;
+    transition: opacity var(--dur-decay) var(--ease-out);
+    pointer-events: none;
+  }
+  .faq__item:hover::before,
+  .faq__item:has(> summary:focus-visible)::before,
+  .faq__item[open]::before {
+    opacity: 1;
+    transition-duration: var(--dur-trip);
+  }
+
+  .faq__q {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    gap: var(--space-5);
+    min-height: 76px;
+    padding-block: var(--space-4);
+    cursor: pointer;
+    list-style: none;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .faq__q::-webkit-details-marker {
+    display: none;
+  }
+  .faq__q:focus-visible {
+    outline-offset: 2px;
+    border-radius: var(--radius-sm);
+  }
+  .faq__q-text {
+    font-family: var(--font-display);
+    font-stretch: 108%;
+    font-weight: 640;
+    font-size: var(--step-1);
+    line-height: 1.25;
+    letter-spacing: -0.012em;
+    color: var(--ink-900);
+    text-wrap: pretty;
+  }
+
+  /* A keypad key housing the drawn plus */
+  .faq__key {
+    display: grid;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    border: 1px solid var(--flood-300);
+    border-radius: var(--radius-sm);
+    background: var(--flood-0);
+    color: var(--ink-900);
+    box-shadow: 0 1px 0 rgb(12 22 40 / 0.06);
+    transition:
+      background-color var(--dur-fast) var(--ease-out),
+      border-color var(--dur-fast) var(--ease-out),
+      color var(--dur-fast) var(--ease-out),
+      transform var(--dur-fast) var(--ease-out);
+  }
+  .faq__key svg {
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.8;
+    stroke-linecap: round;
+    transition: transform var(--dur-med) var(--ease-out);
+  }
+  .faq__item:hover .faq__key {
+    border-color: var(--ink-900);
+  }
+  .faq__q:active .faq__key {
+    transform: translateY(1px);
+  }
+  .faq__item[open] .faq__key {
+    background: var(--night-900);
+    border-color: var(--night-900);
+    color: var(--sodium-400);
+  }
+  .faq__item[open] .faq__key svg {
+    transform: rotate(135deg);
+  }
+
+  .faq__a {
+    padding: 0 calc(44px + var(--space-5)) var(--space-6) 0;
+  }
+  .faq__a p {
+    max-width: 62ch;
+    color: var(--ink-700);
+  }
+
+  /* Smooth open and close where the browser can animate details content;
+     everywhere else the native instant toggle stays. */
+  .faq__item::details-content {
+    block-size: 0;
+    overflow-y: clip;
+    transition:
+      block-size var(--dur-med) var(--ease-out),
+      content-visibility var(--dur-med) allow-discrete;
+  }
+  .faq__item[open]::details-content {
+    block-size: auto;
+  }
+  .faq__item[open] .faq__a {
+    animation: faq-in var(--dur-slow) var(--ease-out);
+  }
+  @keyframes faq-in {
+    from {
+      opacity: 0;
+      transform: translateY(-6px);
+    }
+  }
+
+  @media (max-width: 599px) {
+    .faq__item::before {
+      inset-inline: calc(var(--space-3) * -1);
+    }
+    .faq__a {
+      padding-right: 0;
+    }
+  }
+
+  @media (min-width: 960px) {
+    .faq__grid {
+      grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+      column-gap: clamp(3rem, 7vw, 8rem);
+      align-items: start;
+    }
+    .faq__aside {
+      align-self: stretch;
+    }
+    .faq__sticky {
+      position: sticky;
+      top: calc(var(--header-h) + var(--space-6));
+    }
+    .faq__call {
+      margin-top: var(--space-7);
+    }
+  }
+</style>
+
+<script>
+  import { boot, gsap, motionOK, sweepIn } from '../scripts/motion.js';
+
+  boot();
+  const section = document.querySelector<HTMLElement>('#faq');
+  if (section && motionOK()) {
+    sweepIn(section.querySelector('[data-faq-title]'), { start: 'top 72%' });
+
+    // Hairlines run in, row by row, like cable being laid.
+    const rows = section.querySelectorAll('.faq__item');
+    gsap.set(rows, { '--draw': 0 });
+    gsap.to(rows, {
+      '--draw': 1,
+      duration: 1.1,
+      ease: 'power2.inOut',
+      stagger: 0.08,
+      scrollTrigger: { trigger: section.querySelector('[data-faq-list]'), start: 'top 78%', once: true },
+    });
+  }
+</script>

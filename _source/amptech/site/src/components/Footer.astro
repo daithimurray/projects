@@ -1,8 +1,375 @@
 ---
-// STUB: replaced by the section builder. See _source/amptech/BUILD-SPEC.md.
-import { company } from '../data/content.js';
+// Footer: deepest night. The AMPTECH wordmark spans the width and each letter
+// is a house window at dusk: dark, then switched on one at a time as the
+// street wakes up. Decorative, so it's hidden from assistive tech; the
+// company name is in the text around it.
+import Icon from './Icon.astro';
+import { company, footer, footerLinks, nav } from '../data/content.js';
+
+interface Props {
+  /** False on pages other than the home page: section links then point home. */
+  onHome?: boolean;
+}
+const { onHome = true } = Astro.props;
+
+const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
+const link = (href: string) => (onHome ? href : `${base}${href}`);
+const links = [...nav, ...footerLinks.extra];
+const privacyHref = `${base}privacy/`;
+const year = new Date().getFullYear();
+
+// Every window has its own bulb.
+const bulbs = ['var(--tungsten)', 'var(--sodium-300)', 'var(--tungsten)', '#fff0d8', 'var(--sodium-400)', 'var(--tungsten)', 'var(--sodium-300)'];
+const letters = 'AMPTECH'.split('');
 ---
 
-<footer class="site-footer is-night">
-  <div class="container"><p>{company.legalName}</p></div>
+<footer class:list={['site-footer', 'is-night', { 'site-footer--bar': onHome }]}>
+  <div class="container">
+    <div class="footer__cols">
+      <div class="footer__intro">
+        <p class="footer__tagline">{footer.tagline}</p>
+        <a class="btn btn--primary footer__call" href={company.phoneHref}>
+          <Icon name="phone" />
+          <span>Call {company.phoneDisplay}</span>
+        </a>
+      </div>
+
+      <nav class="footer__col" aria-labelledby="footer-explore">
+        <h2 class="footer__h" id="footer-explore">{footerLinks.explore}</h2>
+        <ul role="list">
+          {
+            links.map((item) => (
+              <li>
+                <a class="footer__link" href={link(item.href)}>{item.label}</a>
+              </li>
+            ))
+          }
+        </ul>
+      </nav>
+
+      <div class="footer__col">
+        <h2 class="footer__h">{footerLinks.contact}</h2>
+        <ul role="list">
+          <li>
+            <a class="footer__link footer__tel" href={company.phoneHref}>{company.phoneDisplay}</a>
+          </li>
+          <li>
+            <address class="footer__address">
+              {company.address.street},<br />
+              {company.address.town}, {company.address.county}
+            </address>
+          </li>
+          <li>
+            <a class="footer__link" href={company.mapsHref} rel="noopener">
+              {footerLinks.directions}
+              <Icon name="arrow-up-right" size={16} />
+            </a>
+          </li>
+        </ul>
+      </div>
+
+      <div class="footer__col">
+        <h2 class="footer__h">{footerLinks.credentials}</h2>
+        <ul role="list" class="footer__creds">
+          {footerLinks.credentialsList.map((item) => <li>{item}</li>)}
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer__mark" aria-hidden="true" data-footer-mark>
+      <span class="footer__word">
+        {letters.map((letter, i) => <span class="footer__l" style={`--bulb:${bulbs[i]}`}>{letter}</span>)}
+      </span>
+    </div>
+
+    <div class="footer__base">
+      <p>© {year} {company.legalName}</p>
+      <a class="footer__link" href={privacyHref}>{footerLinks.privacy}</a>
+      <a class="footer__link footer__top" href="#top">
+        <Icon name="arrow-up" size={18} />
+        {footerLinks.top}
+      </a>
+    </div>
+  </div>
 </footer>
+
+<style>
+  .site-footer {
+    position: relative;
+    padding-block: var(--space-9) var(--space-6);
+    background: var(--night-950);
+    color: var(--dusk-200);
+    overflow: clip;
+  }
+  /* The last of the sodium glow on the horizon behind the street */
+  .site-footer::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 60%;
+    background: radial-gradient(70% 70% at 50% 100%, rgb(255 158 61 / 0.1), transparent 70%);
+    pointer-events: none;
+  }
+  .site-footer > .container {
+    position: relative;
+  }
+
+  .footer__cols {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-7) var(--space-5);
+  }
+  .footer__intro {
+    grid-column: 1 / -1;
+    display: grid;
+    justify-items: start;
+    gap: var(--space-5);
+  }
+  .footer__tagline {
+    max-width: 30ch;
+    font-family: var(--font-display);
+    font-stretch: 112%;
+    font-weight: 640;
+    font-size: var(--step-2);
+    line-height: 1.2;
+    letter-spacing: -0.015em;
+    color: var(--dusk-50);
+  }
+  .footer__call {
+    font-variant-numeric: tabular-nums;
+  }
+
+  .footer__h {
+    margin-bottom: var(--space-3);
+    font-size: var(--step--1);
+    font-stretch: 108%;
+    font-weight: 700;
+    letter-spacing: 0.01em;
+    color: var(--dusk-300);
+  }
+  .footer__col ul {
+    display: grid;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .footer__link {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4em;
+    min-height: 44px;
+    color: var(--dusk-200);
+    text-decoration: none;
+    transition: color var(--dur-fast) var(--ease-out);
+  }
+  .footer__link::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 9px;
+    height: 1px;
+    background: var(--sodium-500);
+    transform: scaleX(0);
+    transform-origin: right;
+    transition: transform var(--dur-med) var(--ease-out);
+  }
+  .footer__link:hover {
+    color: var(--dusk-50);
+  }
+  .footer__link:hover::after {
+    transform: scaleX(1);
+    transform-origin: left;
+  }
+  .footer__tel {
+    color: var(--sodium-500);
+    font-family: var(--font-display);
+    font-stretch: 112%;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+  }
+  .footer__tel:hover {
+    color: var(--sodium-300);
+  }
+  .footer__address {
+    padding-block: var(--space-2);
+    font-style: normal;
+    line-height: 1.5;
+    color: var(--dusk-200);
+  }
+  .footer__creds {
+    gap: var(--space-3);
+  }
+  @media (max-width: 899px) {
+    .footer__col:last-child {
+      grid-column: 1 / -1;
+    }
+  }
+  .footer__creds li {
+    max-width: 24ch;
+    line-height: 1.45;
+  }
+
+  /* ---------- The wordmark ---------- */
+
+  .footer__mark {
+    container-type: inline-size;
+    margin-top: var(--space-9);
+    padding-block: 0.25rem 0;
+    user-select: none;
+  }
+  .footer__word {
+    display: flex;
+    justify-content: space-between;
+    /* Fitted to the container: the word measures 6.66em at this setting */
+    font-size: calc(100cqi / 6.74);
+    font-family: var(--font-display);
+    font-stretch: 125%;
+    font-weight: 880;
+    line-height: 0.8;
+    letter-spacing: 0;
+    white-space: nowrap;
+  }
+  .footer__l {
+    --on: 1;
+    display: block;
+    color: var(--bulb);
+    color: color-mix(in oklab, var(--night-700), var(--bulb) calc(var(--on) * 100%));
+    text-shadow:
+      0 0 0.03em rgb(255 214 160 / calc(var(--on) * 0.6)),
+      0 0 0.22em rgb(255 158 61 / calc(var(--on) * 0.3));
+  }
+
+  .footer__base {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-1) var(--space-6);
+    margin-top: var(--space-6);
+    padding-top: var(--space-4);
+    border-top: 1px solid var(--night-800);
+    font-size: var(--step--1);
+    color: var(--dusk-300);
+  }
+  .footer__base p {
+    margin-right: auto;
+  }
+  .footer__base .footer__link {
+    color: var(--dusk-300);
+  }
+  .footer__base .footer__link:hover {
+    color: var(--dusk-50);
+  }
+  .footer__top :global(svg) {
+    transition: transform var(--dur-med) var(--ease-out);
+  }
+  .footer__top:hover :global(svg) {
+    transform: translateY(-3px);
+  }
+
+  @media (min-width: 900px) {
+    .footer__cols {
+      grid-template-columns: minmax(0, 1.5fr) repeat(3, minmax(0, 1fr));
+      gap: var(--space-6);
+    }
+    .footer__intro {
+      grid-column: auto;
+      align-content: start;
+    }
+  }
+  /* On the home page the mobile call bar parks over the last 76px of the
+     page; run the footer's night down underneath it. */
+  @media (max-width: 767px) {
+    .site-footer--bar {
+      margin-bottom: calc(-76px - env(safe-area-inset-bottom));
+      padding-bottom: calc(var(--space-6) + 76px + env(safe-area-inset-bottom));
+    }
+  }
+  @media (max-width: 479px) {
+    .footer__base p {
+      flex-basis: 100%;
+    }
+  }
+</style>
+
+<script>
+  import { boot, gsap, motionOK, isTouch } from '../scripts/motion.js';
+
+  boot();
+  const mark = document.querySelector<HTMLElement>('[data-footer-mark]');
+  if (mark && motionOK()) {
+    const letters = gsap.utils.toArray<HTMLElement>(mark.querySelectorAll('.footer__l'));
+    const busy = new WeakSet<HTMLElement>();
+
+    // A window switching on: the bulb catches, flickers once, holds.
+    const switchOn = (el: HTMLElement) =>
+      gsap.to(el, {
+        keyframes: [
+          { '--on': 1, duration: 0.04, ease: 'none' },
+          { '--on': 0.35, duration: 0.06, ease: 'none' },
+          { '--on': 1, duration: 0.05, ease: 'none' },
+          { '--on': 0.8, duration: 0.2, ease: 'none' },
+          { '--on': 1, duration: 0.6, ease: 'decay' },
+        ],
+        overwrite: true,
+      });
+    const switchOff = (el: HTMLElement) => gsap.to(el, { '--on': 0, duration: 0.12, ease: 'power2.out', overwrite: true });
+
+    gsap.set(letters, { '--on': 0 });
+    const street = gsap.timeline({
+      scrollTrigger: { trigger: mark, start: 'top 88%', once: true },
+      onComplete: () => live(),
+    });
+    gsap.utils.shuffle([...letters]).forEach((el, k) => {
+      street.add(() => {
+        switchOn(el);
+      }, 0.2 + k * 0.3 + Math.random() * 0.14);
+    });
+    street.add(() => {}, '+=1');
+
+    // Now and then someone goes to bed, or comes home. Only while visible.
+    let visible = false;
+    let next: gsap.core.Tween | null = null;
+    const schedule = () => {
+      next?.kill();
+      next = gsap.delayedCall(gsap.utils.random(5, 9), () => {
+        if (!visible) return;
+        const el = gsap.utils.random(letters);
+        if (!busy.has(el)) {
+          busy.add(el);
+          switchOff(el);
+          gsap.delayedCall(gsap.utils.random(1.4, 3), () => {
+            switchOn(el);
+            busy.delete(el);
+          });
+        }
+        schedule();
+      });
+    };
+    function live() {
+      new IntersectionObserver(([entry]) => {
+        visible = entry.isIntersecting;
+        if (visible) schedule();
+        else next?.kill();
+      }).observe(mark!);
+    }
+
+    // A hand on the light switch.
+    if (!isTouch()) {
+      letters.forEach((el) => {
+        el.addEventListener('pointerenter', () => {
+          if (busy.has(el) || street.isActive()) return;
+          busy.add(el);
+          switchOff(el);
+          gsap.delayedCall(0.7, () => {
+            switchOn(el);
+            busy.delete(el);
+          });
+        });
+      });
+    }
+  }
+</script>

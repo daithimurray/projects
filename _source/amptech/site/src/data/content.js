@@ -378,3 +378,159 @@ export const processDemo = {
   stampRing: 'Specimen',
   certNote: 'Specimen shown for illustration. Not a real certificate.',
 };
+
+
+// ---- About map, FAQ aside, contact form, footer and privacy notice ----
+// (appended by the about / FAQ / contact / footer builder)
+
+export const aboutMap = {
+  place: 'Leixlip',
+  scale: '100 km',
+};
+
+export const faqAside = {
+  ask: 'Still have a question?',
+  call: 'Call 01 615 5980',
+  or: 'Or send the details and we’ll ring you back',
+};
+
+export const contactForm = {
+  callLabel: 'Call Amptech on',
+  directions: 'Directions on Google Maps',
+  licence: 'PSA licence 03019',
+  required: 'Fields marked * are required.',
+  fields: {
+    name: 'Your name',
+    phone: 'Phone number',
+    phoneHint: 'So we can ring you back.',
+    email: 'Email',
+    optional: 'optional',
+    propertyType: 'Property type',
+    interests: 'What are you interested in?',
+    interestsHint: 'Tick any that apply.',
+    area: 'Town or area',
+    areaHint: 'For example, Leixlip or Lucan.',
+    message: 'Anything else we should know?',
+    messageHint: 'The make of your current alarm, what’s worrying you, a good time to call.',
+    honeypot: 'Leave this field empty',
+  },
+  errors: {
+    name: 'Please enter your name.',
+    phone: 'Please enter a phone number so we can ring you back.',
+    phoneFormat: 'That number doesn’t look right. Use digits, with spaces if you like.',
+    email: 'That email address doesn’t look right. Check it, or leave it blank.',
+  },
+  sending: 'Sending…',
+  privacyLead: 'See our',
+  privacyLink: 'privacy notice',
+  successTitle: 'Request sent',
+  urgent: 'If it’s urgent, call 01 615 5980.',
+  noscript: 'This form needs JavaScript to send. Please call 01 615 5980 and we’ll take the details by phone.',
+};
+
+export const footerLinks = {
+  explore: 'Explore',
+  extra: [{ href: '#faq', label: 'Questions' }],
+  contact: 'Contact',
+  directions: 'Get directions',
+  credentials: 'Credentials',
+  credentialsList: ['PSA licence 03019', 'Certified to EN 50131-1', 'Certificate of Compliance with every intruder install'],
+  privacy: 'Privacy notice',
+  top: 'Back to top',
+};
+
+// Privacy notice. Each paragraph is a list of parts: a string, a link
+// ({ link, href }), or a placeholder Amptech must confirm before launch ({ tbc }).
+const privacyTel = { link: '01 615 5980', href: 'tel:+35316155980' };
+export const privacy = {
+  title: 'Privacy notice',
+  metaTitle: 'Privacy notice | Amptech, Leixlip, Co. Kildare',
+  description: 'How Amptech Ltd handles the details you send through the quote form on this website.',
+  intro: 'How Amptech handles the details you send through this website.',
+  draftTitle: 'Draft for Amptech to confirm before launch',
+  draftBody:
+    'The highlighted items are placeholders. Confirm them, and check the rest against how you actually work, before this page goes live.',
+  updated: ['Last updated: ', { tbc: 'date to confirm' }],
+  back: 'Back to the home page',
+  sections: [
+    {
+      title: 'Who we are',
+      paragraphs: [
+        [
+          'Amptech Ltd, 3 The Rise, Louisa Valley, Leixlip, Co. Kildare, is responsible for the personal data described here. You can reach us on ',
+          privacyTel,
+          '. We are licensed by the Private Security Authority, licence number 03019.',
+        ],
+      ],
+    },
+    {
+      title: 'What the quote form collects',
+      paragraphs: [
+        [
+          'Your name and phone number. If you choose to give them, also your email address, the type of property, the services you’re interested in, your town or area, and anything you write in the message.',
+        ],
+      ],
+    },
+    {
+      title: 'Why we use it',
+      paragraphs: [
+        [
+          'Only to reply to your request: to ring you back, answer your questions and give you a quote. We don’t use it for marketing, and we don’t sell it or share it with anyone for their own use.',
+        ],
+        [
+          'Our legal basis is taking steps at your request before a possible contract (Article 6(1)(b) of the GDPR). ',
+          { tbc: 'Amptech to confirm the legal basis' },
+        ],
+      ],
+    },
+    {
+      title: 'Who sees it',
+      paragraphs: [
+        [
+          'The Amptech team dealing with your request. The form is delivered to us by ',
+          { tbc: 'form service provider, name and location to confirm' },
+          ', which handles it on our behalf and may not use it for anything else.',
+        ],
+      ],
+    },
+    {
+      title: 'How long we keep it',
+      paragraphs: [
+        ['We keep enquiry details for ', { tbc: 'retention period to confirm' }, ' and then delete them, unless you become a customer.'],
+      ],
+    },
+    {
+      title: 'This website',
+      paragraphs: [
+        [
+          'This website sets no cookies and uses no analytics or tracking. Fonts are served from this website, not from a third party. ',
+          { tbc: 'update this if analytics are added' },
+        ],
+      ],
+    },
+    {
+      title: 'Your rights',
+      paragraphs: [
+        [
+          'Under the GDPR you can ask for a copy of the personal data we hold about you, ask us to correct or delete it, object to how we use it, or ask us to restrict its use.',
+        ],
+        [
+          'If you’re unhappy with how we’ve handled your data, you can complain to the Data Protection Commission at ',
+          { link: 'dataprotection.ie', href: 'https://www.dataprotection.ie' },
+          '.',
+        ],
+      ],
+    },
+    {
+      title: 'How to contact us',
+      paragraphs: [
+        [
+          'To use any of these rights, or with a question about this notice, call us on ',
+          privacyTel,
+          ' or write to Amptech Ltd, 3 The Rise, Louisa Valley, Leixlip, Co. Kildare. ',
+          { tbc: 'email address to confirm' },
+        ],
+      ],
+    },
+  ],
+};

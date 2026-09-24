@@ -1,0 +1,252 @@
+---
+// Privacy notice: a calm, lit reading page. A small local bar instead of the
+// full header, whose nav anchors belong to the home page.
+import Base from '../layouts/Base.astro';
+import Footer from '../components/Footer.astro';
+import Icon from '../components/Icon.astro';
+import { company, privacy } from '../data/content.js';
+
+const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
+type Part = string | { link: string; href: string } | { tbc: string };
+---
+
+<Base title={privacy.metaTitle} description={privacy.description} path="privacy/">
+  <header class="pbar" id="top">
+    <div class="container pbar__in">
+      <a class="pbar__mark" href={base}>
+        <span aria-hidden="true">AMPTECH</span>
+        <span class="pbar__led" aria-hidden="true"></span>
+        <span class="visually-hidden">{company.name}, home page</span>
+      </a>
+      <a class="btn btn--primary pbar__call" href={company.phoneHref}>
+        <Icon name="phone" />
+        <span class="pbar__call-text">{company.phoneDisplay}</span>
+        <span class="visually-hidden pbar__call-sr">Call {company.phoneDisplay}</span>
+      </a>
+    </div>
+  </header>
+
+  <main id="main" tabindex="-1" class="privacy is-lit">
+    <article class="container privacy__doc">
+      <aside class="privacy__draft" role="note" aria-labelledby="draft-title">
+        <span class="privacy__draft-led" aria-hidden="true"></span>
+        <div>
+          <p class="privacy__draft-title" id="draft-title">{privacy.draftTitle}</p>
+          <p>{privacy.draftBody}</p>
+        </div>
+      </aside>
+
+      <h1 class="privacy__title">{privacy.title}</h1>
+      <p class="privacy__intro">{privacy.intro}</p>
+      <p class="privacy__updated">
+        {
+          (privacy.updated as Part[]).map((part) =>
+            typeof part === 'string' ? part : 'tbc' in part ? <mark class="tbc">[{part.tbc}]</mark> : null,
+          )
+        }
+      </p>
+
+      {
+        privacy.sections.map((section) => (
+          <section class="privacy__section">
+            <h2>{section.title}</h2>
+            {section.paragraphs.map((paragraph) => (
+              <p>
+                {(paragraph as Part[]).map((part) =>
+                  typeof part === 'string' ? (
+                    part
+                  ) : 'tbc' in part ? (
+                    <mark class="tbc">[{part.tbc}]</mark>
+                  ) : (
+                    <a href={part.href}>{part.link}</a>
+                  ),
+                )}
+              </p>
+            ))}
+          </section>
+        ))
+      }
+
+      <a class="privacy__back" href={base}>
+        <Icon name="arrow" size={20} />
+        <span>{privacy.back}</span>
+      </a>
+    </article>
+  </main>
+
+  <Footer onHome={false} />
+</Base>
+
+<style>
+  .pbar {
+    position: relative;
+    z-index: 2;
+    background: var(--night-900);
+    border-bottom: 1px solid var(--night-700);
+  }
+  .pbar__in {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-4);
+    min-height: var(--header-h);
+  }
+  .pbar__mark {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    padding-right: 14px;
+    color: var(--dusk-50);
+    text-decoration: none;
+    font-family: var(--font-display);
+    font-stretch: 125%;
+    font-weight: 820;
+    font-size: 1.28rem;
+    letter-spacing: 0.04em;
+    line-height: 1;
+  }
+  .pbar__led {
+    position: absolute;
+    top: 9px;
+    right: 2px;
+    width: 7px;
+    height: 7px;
+    border-radius: 2px;
+    background: var(--sodium-500);
+    box-shadow: 0 0 10px 2px var(--sodium-glow);
+  }
+  .pbar__call {
+    min-height: 44px;
+    padding: 0.55rem 1rem;
+    font-size: var(--step--1);
+    font-variant-numeric: tabular-nums;
+  }
+  @media (max-width: 419px) {
+    .pbar__call {
+      width: 44px;
+      padding: 0;
+    }
+    .pbar__call-text {
+      display: none;
+    }
+  }
+  @media (min-width: 420px) {
+    .pbar__call-sr {
+      display: none;
+    }
+  }
+
+  .privacy {
+    display: block;
+    padding-block: var(--space-8) var(--space-9);
+    /* Floodlight from above onto the page */
+    background:
+      radial-gradient(60% 320px at 50% 0%, var(--flood-0), transparent),
+      var(--flood-50);
+  }
+  .privacy__doc {
+    max-width: calc(68ch + var(--gutter) * 2);
+    color: var(--ink-700);
+  }
+
+  .privacy__draft {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: var(--space-4);
+    margin-bottom: var(--space-8);
+    padding: var(--space-4) var(--space-5);
+    border: 1px dashed var(--sodium-800);
+    border-radius: var(--radius-md);
+    background: #fff4e4;
+    color: var(--ink-900);
+  }
+  .privacy__draft-led {
+    width: 10px;
+    height: 10px;
+    margin-top: 0.5em;
+    border-radius: 3px;
+    background: var(--sodium-600);
+    box-shadow: 0 0 0 3px var(--night-900), 0 0 10px 3px rgb(255 158 61 / 0.5);
+  }
+  .privacy__draft-title {
+    font-family: var(--font-display);
+    font-stretch: 108%;
+    font-weight: 700;
+    color: var(--ink-900);
+  }
+  .privacy__draft p + p {
+    margin-top: var(--space-1);
+    font-size: var(--step--1);
+    color: var(--ink-700);
+  }
+
+  .privacy__title {
+    font-size: var(--step-4);
+    letter-spacing: -0.03em;
+    color: var(--ink-900);
+  }
+  .privacy__intro {
+    margin-top: var(--space-4);
+    font-size: var(--step-1);
+    line-height: 1.5;
+    color: var(--ink-700);
+  }
+  .privacy__updated {
+    margin-top: var(--space-3);
+    font-size: var(--step--1);
+    color: var(--ink-500);
+  }
+
+  .privacy__section {
+    margin-top: var(--space-8);
+    padding-top: var(--space-5);
+    border-top: 1px solid var(--flood-200);
+  }
+  .privacy__section h2 {
+    margin-bottom: var(--space-3);
+    font-size: var(--step-2);
+    font-stretch: 112%;
+    letter-spacing: -0.02em;
+    line-height: var(--leading-snug);
+    color: var(--ink-900);
+  }
+  .privacy__section p + p {
+    margin-top: var(--space-4);
+  }
+
+  .tbc {
+    padding: 0.05em 0.3em;
+    border-radius: var(--radius-xs);
+    background: #ffe2b8;
+    color: var(--ink-900);
+    font-weight: 600;
+    box-decoration-break: clone;
+    -webkit-box-decoration-break: clone;
+  }
+
+  .privacy__back {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5em;
+    min-height: 44px;
+    margin-top: var(--space-8);
+    color: var(--ink-900);
+    font-family: var(--font-display);
+    font-stretch: 108%;
+    font-weight: 660;
+    text-decoration: underline;
+    text-decoration-color: var(--flood-300);
+    text-underline-offset: 0.25em;
+  }
+  .privacy__back :global(svg) {
+    transform: rotate(180deg);
+    transition: transform var(--dur-med) var(--ease-out);
+  }
+  .privacy__back:hover {
+    text-decoration-color: var(--sodium-800);
+  }
+  .privacy__back:hover :global(svg) {
+    transform: rotate(180deg) translateX(4px);
+  }
+</style>
