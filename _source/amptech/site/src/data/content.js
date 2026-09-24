@@ -263,6 +263,8 @@ export const googleReviews = [
     quote:
       'Got CCTV, intruder alarm and smoke detectors installed. Top drawer service and products. Great value for money and sound advice on what we needed. Would highly recommend.',
     name: 'Google reviewer',
+    // No place was given; the Reviews street labels this building by its source.
+    street: 'Google review',
     job: 'CCTV, intruder alarm and smoke detectors',
     rating: 5,
   },

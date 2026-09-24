@@ -18,6 +18,7 @@ type Voice = {
   quote: string;
   name: string;
   place?: string;
+  street?: string;
   job: string;
   source: 'site' | 'google';
 };
@@ -391,7 +392,7 @@ const items = plan.map((p) => {
     ...p,
     v,
     b,
-    label: v.place ? v.place.split(',')[0] : v.name,
+    label: v.street || (v.place ? v.place.split(',')[0] : v.name),
     // Desktop: leader offset inside the grid item, in container units (1200 street units = 100cqw).
     pxd: `${f((b.fx - p.x0) / 12)}cqw`,
     // Phones: leader offset from the vignette's centre, in street units.
