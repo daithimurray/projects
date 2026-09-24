@@ -295,3 +295,22 @@ export const heroScene = {
   trackLabel: 'MOTION',
   rec: 'REC',
 };
+
+// Labels for the "How it works" drawing. Illustration only: the house, the
+// times and the notification are generic demo data, not a real install.
+export const anatomyArt = {
+  label:
+    'Illustration: a cross-section of a two-storey semi-detached house at night. Magnetic contacts sit on the front door and a window, a motion detector watches the hall, a CCTV camera on the front wall covers the driveway, a smoke detector is fitted to the landing ceiling, a bell box and a floodlight are mounted outside, and an alert arrives on a phone.',
+  sheetTitle: 'Section A–A',
+  sheetNote: 'Typical semi-detached house · Illustration',
+  open: 'Open',
+  camTime: '02:14:07',
+  rec: 'Rec',
+  phone: {
+    clock: '02:14',
+    title: 'Motion · Hall',
+    time: '02:14',
+    detail: 'Zone 2 · Image attached',
+    note: 'Illustration',
+  },
+};

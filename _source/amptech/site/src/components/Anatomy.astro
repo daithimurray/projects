@@ -1,10 +1,1287 @@
 ---
-// STUB: replaced by the section builder. See _source/amptech/BUILD-SPEC.md.
-import { anatomy } from '../data/content.js';
+// "How it works": an installer's survey drawing of a typical semi-detached
+// house, cut open so both floors show. Each step switches on its devices.
+// Static HTML is the finished, fully armed drawing; motion only adds to it.
+import Icon from './Icon.astro';
+import { anatomy, anatomyArt } from '../data/content.js';
+
+const steps = anatomy.steps;
+const up = (s: string) => s.toUpperCase();
+const f = (n: number) => Math.round(n * 10) / 10;
+// Hairlines stay hairlines at any drawing size (DrawSVG reads this attribute).
+const ns = { 'vector-effect': 'non-scaling-stroke' };
+
+// Footnote: the standard's number is data.
+const [footA, footB] = anatomy.footnote.split('EN 50131-1');
+
+// ---------- Geometry: viewBox 0 0 1200 860, y grows downward ----------
+// Levels: ground 700, ground floor 690, first floor 540, ceilings 556 / 400.
+
+// Stair: 13 risers from the hall floor (542, 690) up to the landing (380, 540).
+const RISE = 150 / 13;
+const GO = 162 / 12;
+let stair = 'M542 690';
+{
+  let x = 542;
+  let y = 690;
+  for (let i = 0; i < 13; i++) {
+    y -= RISE;
+    stair += `V${f(y)}`;
+    if (i < 12) {
+      x -= GO;
+      stair += `H${f(x)}`;
+    }
+  }
+}
+const pitch = RISE / GO;
+const railY = (x: number) => 634.5 - (542 - x) * pitch;
+const treadY = (x: number) => 690 - RISE * (Math.floor((542 - x) / GO) + 1);
+const stairBits =
+  `M380 564L527 690M543 ${f(railY(543))}L380 ${f(railY(380))}M540 690V630H546V690M374 540V494H380V540` +
+  [530, 508, 486, 464, 442, 420, 398].map((x) => `M${x} ${f(railY(x))}V${f(treadY(x))}`).join('');
+
+// Cut timber joists in the first floor, insulation loops in the loft.
+const joists = [180, 204, 228, 252, 276, 300, 324, 348, 372, 532, 556, 580, 604]
+  .map((x) => `M${x} 542h4v12h-4z`)
+  .join('');
+const insulation = Array.from({ length: 37 }, (_, i) => `M${174 + i * 12} 392a6 6 0 0 1 12 0`).join('');
+
+// Slates hinted along both roof slopes.
+function slates(ax: number, ay: number, bx: number, by: number, nx: number, ny: number, down: number) {
+  const L = Math.hypot(bx - ax, by - ay);
+  const ux = (bx - ax) / L;
+  const uy = (by - ay) / L;
+  let d = '';
+  for (let t = 10; t < L - 8; t += 11) {
+    d += `M${f(ax + ux * t)} ${f(ay + uy * t)}l${f(nx * 9 + down * ux * 3)} ${f(ny * 9 + down * uy * 3)}`;
+  }
+  return d;
+}
+const slateTicks = slates(118, 399, 400, 179, 0.615, 0.788, -1) + slates(400, 179, 682, 399, -0.615, 0.788, 1);
+
+// Block paving in section, the sub-base below it.
+const paving = Array.from({ length: 18 }, (_, i) => `M${660 + i * 18} 700v7`).join('') + 'M652 707H978';
+
+// Back garden: a boarded fence beyond, a tree in front of it.
+const fence = Array.from({ length: 18 }, (_, i) => `M${6 + i * 8} 642V700`).join('') + 'M0 642H148M0 670H148';
+const canopy = (() => {
+  const cx = 88;
+  const cy = 560;
+  const n = 11;
+  const pts = Array.from({ length: n }, (_, i) => {
+    const a = -Math.PI / 2 + (i / n) * Math.PI * 2;
+    const r = 44 + (i % 3 === 0 ? 5 : i % 2 ? -2 : 2);
+    return [cx + r * Math.cos(a), cy + r * Math.sin(a)];
+  });
+  let d = `M${f(pts[0][0])} ${f(pts[0][1])}`;
+  for (let i = 1; i <= n; i++) {
+    const [x, y] = pts[i % n];
+    const [px, py] = pts[i - 1];
+    const r = f(Math.hypot(x - px, y - py) * 0.62);
+    d += `A${r} ${r} 0 0 1 ${f(x)} ${f(y)}`;
+  }
+  return `${d}ZM88 700C88 668 86 640 89 604M88 646L73 628M88 632L103 612`;
+})();
+
+// PIR detection fan: six lobes, from nearly flat to nearly straight down.
+const PIR = { x: 616, y: 574, r: 250 };
+const wedge = (a1: number, a2: number) => {
+  const p = (a: number) =>
+    `${f(PIR.x + PIR.r * Math.cos((a * Math.PI) / 180))} ${f(PIR.y + PIR.r * Math.sin((a * Math.PI) / 180))}`;
+  return `M${PIR.x} ${PIR.y}L${p(a1)}A${PIR.r} ${PIR.r} 0 0 1 ${p(a2)}Z`;
+};
+const lobes = [
+  [165, 174],
+  [152, 161],
+  [139, 148],
+  [126, 135],
+  [113, 122],
+  [100, 109],
+].map(([a, b]) => wedge(a, b));
+const fanFill = wedge(100, 174);
+
+// CCTV inset: the camera's own view of the driveway, in perspective.
+const insetLines = (() => {
+  const T = [934, 1036];
+  const B = [810, 1160];
+  let d = '';
+  for (let k = 1; k < 6; k++) {
+    d += `M${f(T[0] + ((T[1] - T[0]) * k) / 6)} 186L${f(B[0] + ((B[1] - B[0]) * k) / 6)} 284`;
+  }
+  for (const y of [193, 202, 214, 229, 248, 271]) {
+    const t = (y - 186) / 98;
+    d += `M${f(T[0] + (B[0] - T[0]) * t)} ${y}H${f(T[1] + (B[1] - T[1]) * t)}`;
+  }
+  return d;
+})();
 ---
 
-<section id="how-it-works" class="section is-night" aria-label="Anatomy">
-  <div class="container">
-    <h2 class="h-section">{anatomy.title}</h2>
+<section id="how-it-works" class="section is-night anatomy" aria-labelledby="anatomy-title" data-anatomy>
+  <div class="container an-head">
+    <h2 id="anatomy-title" class="h-section">{anatomy.title}</h2>
+    <p class="lede">{anatomy.lede}</p>
+  </div>
+
+  <div class="an-stage" data-an-stage>
+    <div class="container an-grid">
+      <ol class="an-steps" role="list">
+        {
+          steps.map((s, i) => (
+            <li class="an-step" id={`how-${s.id}`} data-an-step={i}>
+              <span class="an-step__led" aria-hidden="true" />
+              {i < steps.length - 1 && <span class="an-step__rail" aria-hidden="true" />}
+              <h3 class="an-step__title">{s.title}</h3>
+              <p class="an-step__zone data">{s.zone}</p>
+              <div class="an-step__body">
+                <div>
+                  <p>{s.body}</p>
+                </div>
+              </div>
+            </li>
+          ))
+        }
+      </ol>
+
+      <figure class="an-figure">
+        <div class="an-art" data-an-art>
+          <svg class="an-svg" viewBox="0 0 1200 860" role="img" aria-label={anatomyArt.label} focusable="false">
+            <defs>
+              <pattern id="an-p-hatch" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+                <rect class="pf-700" width="6" height="6" />
+                <path class="pl-600" d="M0 0V6" />
+              </pattern>
+              <pattern id="an-p-conc" width="12" height="12" patternUnits="userSpaceOnUse">
+                <rect class="pf-700" width="12" height="12" />
+                <path class="pl-dot" d="M2.5 3h.01M8 8.5h.01M6.5 2h.01M10.5 4.5l-1.6 1.4M3 9.5l1.8.6" />
+              </pattern>
+              <pattern id="an-p-earth" width="16" height="16" patternUnits="userSpaceOnUse">
+                <rect class="pf-850" width="16" height="16" />
+                <path class="pl-700" d="M3 4l2 2M11 11l2-2M10 3h.01M4 12h.01" />
+              </pattern>
+              <pattern id="an-p-sub" width="5" height="5" patternUnits="userSpaceOnUse" patternTransform="rotate(-45)">
+                <rect class="pf-800" width="5" height="5" />
+                <path class="pl-700" d="M0 0V5" />
+              </pattern>
+              <pattern id="an-p-scan" width="4" height="3" patternUnits="userSpaceOnUse">
+                <rect width="4" height="1" fill="#fff" fill-opacity="0.05" />
+              </pattern>
+
+              <radialGradient id="an-g-sodium">
+                <stop offset="0" class="s-sodium" stop-opacity="0.5" />
+                <stop offset="1" class="s-sodium" stop-opacity="0" />
+              </radialGradient>
+              <radialGradient id="an-g-amber">
+                <stop offset="0" class="s-sodium" stop-opacity="0.9" />
+                <stop offset="1" class="s-sodium" stop-opacity="0" />
+              </radialGradient>
+              <radialGradient id="an-g-blue">
+                <stop offset="0" class="s-blue" stop-opacity="0.95" />
+                <stop offset="0.3" class="s-blue" stop-opacity="0.35" />
+                <stop offset="1" class="s-blue" stop-opacity="0" />
+              </radialGradient>
+              <radialGradient id="an-g-red">
+                <stop offset="0" class="s-red" stop-opacity="0.9" />
+                <stop offset="1" class="s-red" stop-opacity="0" />
+              </radialGradient>
+              <radialGradient id="an-g-white">
+                <stop offset="0" class="s-flood" stop-opacity="0.85" />
+                <stop offset="1" class="s-flood" stop-opacity="0" />
+              </radialGradient>
+              <radialGradient id="an-g-vig" r="0.75">
+                <stop offset="0.5" class="s-black" stop-opacity="0" />
+                <stop offset="1" class="s-black" stop-opacity="0.65" />
+              </radialGradient>
+              <linearGradient id="an-g-street" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0" class="s-sodium" stop-opacity="0.17" />
+                <stop offset="1" class="s-sodium" stop-opacity="0.03" />
+              </linearGradient>
+              <linearGradient id="an-g-beam" gradientUnits="userSpaceOnUse" x1="677" y1="546" x2="1054" y2="546">
+                <stop offset="0" class="s-flood" stop-opacity="0.55" />
+                <stop offset="0.55" class="s-flood" stop-opacity="0.12" />
+                <stop offset="1" class="s-flood" stop-opacity="0" />
+              </linearGradient>
+              <linearGradient id="an-g-cone" gradientUnits="userSpaceOnUse" x1="706" y1="487" x2="1186" y2="487">
+                <stop offset="0" class="s-flood" stop-opacity="0.16" />
+                <stop offset="1" class="s-flood" stop-opacity="0.02" />
+              </linearGradient>
+              <linearGradient id="an-g-door" x1="0" y1="1" x2="0" y2="0">
+                <stop offset="0" class="s-sodium" stop-opacity="0.55" />
+                <stop offset="1" class="s-sodium" stop-opacity="0.2" />
+              </linearGradient>
+              <linearGradient id="an-g-spill" gradientUnits="userSpaceOnUse" x1="560" y1="640" x2="440" y2="690">
+                <stop offset="0" class="s-sodium" stop-opacity="0.34" />
+                <stop offset="1" class="s-sodium" stop-opacity="0" />
+              </linearGradient>
+              <linearGradient id="an-g-isky" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0" stop-color="#0a1013" />
+                <stop offset="1" stop-color="#1b2428" />
+              </linearGradient>
+              <linearGradient id="an-g-fade" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0.25" class="s-white" />
+                <stop offset="1" class="s-black" />
+              </linearGradient>
+              <mask id="an-m-ground" maskUnits="userSpaceOnUse" x="0" y="690" width="1200" height="120">
+                <rect x="0" y="690" width="1200" height="120" fill="url(#an-g-fade)" />
+              </mask>
+              <clipPath id="an-c-out"><rect x="650" y="0" width="560" height="700" /></clipPath>
+              <clipPath id="an-c-hall"><rect x="380" y="556" width="248" height="134" /></clipPath>
+              <clipPath id="an-c-f1"><rect x="172" y="400" width="456" height="140" /></clipPath>
+              <clipPath id="an-c-pool"><rect x="700" y="696" width="276" height="14" /></clipPath>
+              <clipPath id="an-c-inset"><rect x="810" y="60" width="350" height="224" rx="8" /></clipPath>
+            </defs>
+
+            <!-- Sheet: registration marks and title block -->
+            <path class="l3 d1" d="M8 24V8H24M1176 8H1192V24M8 836V852H24M1192 836V852H1176" {...ns} />
+            <g class="an-sheet" data-an-sheet>
+              <text class="an-sheet__t" x="24" y="26">{up(anatomyArt.sheetTitle)}</text>
+              <text class="an-sheet__n" x="24" y="26" dy="2.7em">{up(anatomyArt.sheetNote)}</text>
+            </g>
+
+            <!-- Street lighting falls on the footpath before anything else is drawn -->
+            <g data-an-glow>
+              <path d="M1002 361L1021 361L1114 704L910 704Z" fill="url(#an-g-street)" />
+              <ellipse cx="1012" cy="699" rx="112" ry="6" fill="url(#an-g-sodium)" />
+              <circle cx="1012" cy="362" r="74" fill="url(#an-g-sodium)" />
+            </g>
+
+            <!-- Ground -->
+            <path class="an-earth" d="M0 700H1200V810H0Z" mask="url(#an-m-ground)" data-fill />
+            <path class="an-sub" d="M650 707H978V722H650Z" data-fill />
+            <path class="an-kerb" d="M990 695H1098V703H990Z" data-fill />
+            <path class="an-tarmac" d="M1098 704H1200V718H1098Z" data-fill />
+
+            <!-- Beyond the cut: fence, chimney, pictures, landing window -->
+            <path class="l3 d5" d={fence} {...ns} />
+            <path
+              class="an-chimney d1"
+              d="M370 202.4V140H414V189.9L400 179ZM366 134H418V140H366ZM377 134V122H387V134M397 134V124H407V134"
+              {...ns}
+              data-fill
+            />
+            <path class="l3 d4" d="M317 392L275 294.5M317 392L400 197M483 392L400 197M483 392L525 294.5" {...ns} />
+            <path class="l3 d4" d="M306 596H346V622H306ZM222 444H262V470H222Z" {...ns} />
+            <rect class="an-winglow" x="430" y="432" width="48" height="68" data-fill />
+            <path class="l3 d3" d="M430 432H478V500H430ZM454 432V500M430 466H478" {...ns} />
+
+            <!-- Cut planes: walls, roof, floors, partitions -->
+            <path
+              class="an-poche d1"
+              d="M150 400H172V430H150ZM150 490H172V588H150ZM150 640H172V745H184V760H138V745H150Z"
+              {...ns}
+              data-fill
+            />
+            <path
+              class="an-poche d1"
+              d="M628 400H650V430H628ZM628 490H650V588H628ZM628 640H650V745H662V760H616V745H628Z"
+              {...ns}
+              data-fill
+            />
+            <path class="an-cavity" d="M161 400V430M161 490V588M161 640V745M639 400V430M639 490V588M639 640V745" data-fill />
+            <path class="an-roof d1" d="M118 399L400 179L682 399V417L400 197L118 417Z" {...ns} data-fill />
+            <path class="an-slab d2" d="M150 392H650V400H150Z" {...ns} data-fill />
+            <path class="an-slab d2" d="M172 540H380V556H172ZM520 540H628V556H520Z" {...ns} data-fill />
+            <path class="an-joist" d={joists} data-fill />
+            <path class="an-conc d2" d="M172 690H628V706H172Z" {...ns} data-fill />
+            <path class="an-part d3" d="M374 556H380V690H374ZM318 400H324V540H318ZM520 400H526V540H520Z" {...ns} data-fill />
+
+            <!-- Line work -->
+            <path class="l2 d1" d={slateTicks} {...ns} />
+            <path
+              class="l1 d1"
+              d="M112 399H118V423H112ZM682 399H688V423H682ZM118 423H150M650 423H682M112 419A7 7 0 0 1 98 419M688 419A7 7 0 0 0 702 419M393 181A7 7 0 0 1 407 181"
+              {...ns}
+            />
+            <path class="l2 d2" d={insulation} {...ns} />
+            <path
+              class="l2 d3"
+              d="M159 430V490M163 430V490M159 588V640M163 588V640M144 492H150M144 642H150M650 492H656M650 642H656"
+              {...ns}
+            />
+            <path class="an-litglass d3" d="M637 430V490M641 430V490M637 588V640M641 588V640" {...ns} />
+            <path class="l1 d3" d={stair} {...ns} />
+            <path class="l2 d3" d={stairBits} {...ns} />
+
+            <!-- Front door, seen beyond in the hall. The contact sits on the frame. -->
+            <rect x="560" y="578" width="50" height="112" fill="url(#an-g-door)" />
+            <path class="l2 d3" d="M556 690V574H614V690" {...ns} />
+            <g data-an-leaf data-an-fade>
+              <path class="an-leaf" d="M560 578H610V690H560Z" {...ns} />
+              <path class="an-leafglass" d="M566 586H582V620H566ZM588 586H604V620H588Z" />
+              <path class="l2" d="M566 632H582V682H566ZM588 632H604V682H588ZM578 624H592V628H578Z" {...ns} />
+              <circle class="an-knob" cx="604" cy="628" r="1.8" />
+              <rect class="an-dev" x="598" y="579.5" width="9" height="4" rx="1" data-dev="0" />
+            </g>
+
+            <!-- Furniture hints -->
+            <path
+              class="l2 d4"
+              d="M176 690V642H262V690M174 638H264V642H174ZM205 646V684M234 646V684M176 684H262M176 574H262V612H176ZM205 574V612M234 574V612"
+              {...ns}
+            />
+            <path
+              class="l2 d4"
+              d="M290 682V656Q290 650 296 650H302Q306 650 306 656V664H338V636Q338 630 344 630H350Q356 630 356 636V682ZM296 682V690M350 682V690M268 690H280M274 690V606M266 606H282L279 594H269Z"
+              {...ns}
+            />
+            <path
+              class="l2 d4"
+              d="M178 540V486H186V540M186 506H286Q292 506 292 512V526H186M192 526V540M288 526V540M190 506Q190 496 200 496H206Q212 496 212 506M218 506Q250 499 286 506M614 540V494H622V540M614 510H538Q532 510 532 516V526H614M536 526V540M610 526V540M610 510Q610 500 600 500H596Q590 500 590 510"
+              {...ns}
+            />
+
+            <!-- Site: garden, driveway, footpath, road, streetlight -->
+            <path class="l1 d5" d="M0 700H150M650 700H990V695H1098V704H1200" {...ns} />
+            <path class="l2 d5" d={paving} {...ns} />
+            <path class="l2 d5" d="M978 700V668H990V700M975 668H993V663H975Z" {...ns} />
+            <path class="l2 d5" d={canopy} {...ns} />
+            <path class="l2 d5" d="M1062 695V384M1057 695H1067M1062 384C1062 362 1042 352 1022 353M1000 352H1024L1021 359H1003Z" {...ns} />
+            <ellipse class="an-lamp" cx="1012" cy="360" rx="9" ry="1.8" data-an-glow />
+
+            <!-- Device light: floodlight beam, camera view cone, PIR fan, smoke rings, door spill -->
+            <circle class="an-bell-glow" cx="656" cy="425" r="46" fill="url(#an-g-blue)" data-an-blue data-dev="4" />
+            <g clip-path="url(#an-c-out)">
+              <g transform="rotate(40 658 546)">
+                <path class="an-beam" d="M677 537L1054 362L1054 730L677 555Z" data-an-fx="4" />
+              </g>
+              <ellipse class="an-pool" cx="842" cy="700" rx="150" ry="7" fill="url(#an-g-white)" data-an-fx="4" />
+              <path class="an-pavelit" d={paving} clip-path="url(#an-c-pool)" {...ns} data-an-fx="4" />
+              <g transform="rotate(44 668 487)">
+                <g data-an-cam>
+                  <g class="an-cone" data-an-fx="2">
+                    <path d="M706 487L1186 358.4L1186 615.6Z" fill="url(#an-g-cone)" />
+                    <path class="an-cone__edge" d="M706 487L1186 358.4M706 487L1186 615.6" {...ns} />
+                  </g>
+                </g>
+              </g>
+            </g>
+            <g clip-path="url(#an-c-hall)">
+              <path class="an-fanfill" d={fanFill} data-an-fanfill />
+              {lobes.map((d) => <path class="an-lobe" d={d} {...ns} data-an-fx="1" />)}
+              <path class="an-sweep" d="M616 574H876" {...ns} data-an-sweep />
+            </g>
+            <g clip-path="url(#an-c-f1)">
+              <circle class="an-smokeglow" cx="352" cy="407" r="78" fill="url(#an-g-red)" data-an-smokeglow />
+              {[0, 1, 2].map(() => <circle class="an-ring" cx="352" cy="407" r="9" {...ns} data-an-ring />)}
+            </g>
+            <g class="an-spill" data-an-fx="0">
+              <path d="M560 580L560 690L440 690Z" fill="url(#an-g-spill)" />
+              <ellipse cx="562" cy="690" rx="66" ry="5" fill="url(#an-g-sodium)" />
+            </g>
+
+            <!-- Devices. data-state: off, on (its step is active) or calm (armed) -->
+            <g class="an-devices" data-an-devices>
+              <!-- Z1: contacts on the front door frame and the kitchen window -->
+              <rect class="an-dev" x="597" y="572.5" width="11" height="4.5" rx="1" data-dev="0" data-state="calm" />
+              <rect class="an-dev" x="163" y="582" width="9" height="4.5" rx="1" data-dev="0" data-state="calm" />
+              <circle class="an-bloom" cx="602.5" cy="574.8" r="10" fill="url(#an-g-amber)" data-dev="0" data-state="calm" />
+              <circle class="an-bloom" cx="167.5" cy="584.2" r="9" fill="url(#an-g-amber)" data-dev="0" data-state="calm" />
+              <circle class="an-led" cx="602.5" cy="574.8" r="1.3" data-dev="0" data-state="calm" />
+              <circle class="an-led" cx="167.5" cy="584.2" r="1.2" data-dev="0" data-state="calm" />
+
+              <!-- Z2: PIR high in the hall corner -->
+              <path class="an-dev" d="M627 558H619Q615 558 615 562V570Q615 575 620 577L627 580Z" data-dev="1" data-state="calm" />
+              <path class="an-dev-ln" d="M616.5 571Q618.5 576 624 577.8" {...ns} />
+              <circle class="an-bloom" cx="619.5" cy="563.5" r="10" fill="url(#an-g-amber)" data-dev="1" data-state="calm" />
+              <circle class="an-led" cx="619.5" cy="563.5" r="1.3" data-dev="1" data-state="calm" />
+
+              <!-- Cam 1: bracket on the front wall, head pans -->
+              <path class="an-dev" d="M650 481H659V493H650ZM659 487H668" data-dev="2" data-state="calm" />
+              <g transform="rotate(44 668 487)">
+                <g data-an-cam>
+                  <path class="an-dev" d="M668 481H700Q704 481 704 485V489Q704 493 700 493H668Z" data-dev="2" data-state="calm" />
+                  <path class="an-dev" d="M664 477.5H707L703 481" data-dev="2" data-state="calm" />
+                  <circle class="an-lens" cx="704" cy="487" r="3.2" />
+                </g>
+              </g>
+
+              <!-- Z5: smoke detector on the landing ceiling -->
+              <path class="an-dev" d="M341 400H363V402.5Q363 407 358.5 407H345.5Q341 407 341 402.5Z" data-dev="3" data-state="calm" />
+              <circle class="an-bloom" cx="352" cy="404" r="10" fill="url(#an-g-red)" data-dev="3" data-state="calm" />
+              <circle class="an-led an-led--red" cx="352" cy="404" r="1.2" data-dev="3" data-state="calm" />
+
+              <!-- External: bell box high under the eaves, floodlight over the driveway -->
+              <path class="an-dev" d="M650 428H658Q662 428 662 432V460Q662 464 658 464H650Z" data-dev="4" data-state="calm" />
+              <path class="an-dev-ln" d="M657.5 435V457" {...ns} />
+              <path class="an-bell-lens" d="M651.5 428Q656 420.5 660.5 428Z" data-dev="4" data-state="calm" />
+              <path class="an-dev" d="M650 543H658V549H650Z" data-dev="4" data-state="calm" />
+              <g transform="rotate(40 658 546)">
+                <path class="an-dev" d="M658 539H671L677 535V557L671 553H658Z" data-dev="4" data-state="calm" />
+                <path class="an-flood-face" d="M677 536V556" {...ns} data-dev="4" data-state="calm" />
+              </g>
+            </g>
+
+            <!-- Annotations: leader lines and zone tags (data) -->
+            <g class="an-tag" data-tag="0" data-dev="0" data-state="calm">
+              <path class="an-tag__lead" d="M608 575H616V793H610" {...ns} />
+              <circle class="an-tag__dot" cx="608" cy="575" r="2.3" />
+              <text class="an-tag__txt" x="605" y="793" text-anchor="end">{up(steps[0].zone)}</text>
+              <text class="an-tag__txt an-tag__status" x="605" y="793" dy="1.5em" text-anchor="end" data-an-status>
+                {up(anatomyArt.open)}
+              </text>
+            </g>
+            <g class="an-tag" data-tag="1" data-dev="1" data-state="calm">
+              <path class="an-tag__lead" d="M614 567H551" {...ns} />
+              <circle class="an-tag__dot" cx="614" cy="567" r="2.3" />
+              <text class="an-tag__txt" x="545" y="567" text-anchor="end">
+                {up(steps[1].zone).split(' · ').map((part, i) => <tspan x="545" dy={i ? '1.3em' : 0}>{part}</tspan>)}
+              </text>
+            </g>
+            <g class="an-tag" data-tag="2" data-dev="2" data-state="calm">
+              <path class="an-tag__lead" d="M655 481V473H860V284" {...ns} />
+              <circle class="an-tag__dot" cx="655" cy="481" r="2.3" />
+            </g>
+            <g class="an-tag" data-tag="3" data-dev="3" data-state="calm">
+              <path class="an-tag__lead" d="M352 399V360H358" {...ns} />
+              <circle class="an-tag__dot" cx="352" cy="399" r="2.3" />
+              <text class="an-tag__txt" x="363" y="360">{up(steps[3].zone)}</text>
+            </g>
+            <g class="an-tag" data-tag="4" data-dev="4" data-state="calm">
+              <path class="an-tag__lead" d="M662 446H716" {...ns} />
+              <circle class="an-tag__dot" cx="662" cy="446" r="2.3" />
+              <text class="an-tag__txt" x="721" y="446">{up(steps[4].zone)}</text>
+            </g>
+
+            <!-- Locator: pings a device's position when its step is hovered -->
+            <circle class="an-ping" cx="0" cy="0" r="12" {...ns} data-an-ping />
+
+            <!-- Cam 1 picture-in-picture: monochrome IR frame of the driveway -->
+            <g class="an-inset" data-dev="2" data-state="calm" data-an-inset>
+              <g clip-path="url(#an-c-inset)">
+                <g id="an-scene">
+                  <rect x="810" y="60" width="350" height="224" fill="url(#an-g-isky)" />
+                  <path
+                    class="an-i-far"
+                    d="M810 156V134L832 118L854 134H868V126L894 106L920 126V134H944L966 116L988 134V156ZM996 156V132L1022 112L1048 132H1058L1080 114L1100 130V156Z"
+                  />
+                  <path class="an-i-road" d="M810 156H1160V172H810Z" />
+                  <path class="an-i-path" d="M810 172H1160V186H810Z" />
+                  <path class="an-i-drive" d="M934 186H1036L1160 284H810Z" />
+                  <path class="an-i-ln" d={insetLines} />
+                  <path class="an-i-pier" d="M918 166H930V188H918ZM1040 166H1052V188H1040Z" />
+                  <path class="an-i-ln an-i-pole" d="M1124 186V98Q1124 92 1116 92H1106" />
+                  <circle cx="1104" cy="95" r="34" fill="url(#an-g-white)" />
+                  <g data-an-walker>
+                    <circle class="an-i-person" cx="986" cy="206" r="6" />
+                    <path
+                      class="an-i-person"
+                      d="M979 214Q986 210 993 214L996 236L992 237L991 258H987L986 242L985 258H981L980 237L976 236Z"
+                    />
+                    <path class="an-i-box" d="M968 205V195H978M994 195H1004V205M1004 254V264H994M978 264H968V254" />
+                  </g>
+                </g>
+                <rect x="810" y="60" width="350" height="224" fill="url(#an-p-scan)" />
+                <rect x="810" y="60" width="350" height="224" fill="url(#an-g-vig)" />
+                <rect class="an-i-flash" x="810" y="60" width="350" height="224" data-an-flash />
+              </g>
+              <rect class="an-i-frame" x="810" y="60" width="350" height="224" rx="8" {...ns} />
+              <text class="an-osd" x="824" y="74">{up(steps[2].zone)}</text>
+              <text class="an-osd" x="1146" y="74" text-anchor="end" data-an-clock>{anatomyArt.camTime}</text>
+              <circle class="an-rec" cx="828" cy="266" r="3.5" data-an-rec />
+              <text class="an-osd an-osd--mid" x="838" y="266">{up(anatomyArt.rec)}</text>
+            </g>
+          </svg>
+
+          <div class="an-phone" data-dev="5" data-state="calm" data-an-phone aria-hidden="true">
+            <div class="an-phone__screen">
+              <p class="an-phone__clock">{anatomyArt.phone.clock}</p>
+              <div class="an-card" data-an-card>
+                <p class="an-card__app">
+                  <span class="an-card__led"></span>
+                  <span class="data">{steps[5].zone}</span>
+                  <span class="data an-card__time">{anatomyArt.phone.time}</span>
+                </p>
+                <p class="an-card__title">{anatomyArt.phone.title}</p>
+                <p class="an-card__detail">{anatomyArt.phone.detail}</p>
+                <svg class="an-card__thumb" viewBox="810 60 350 224" focusable="false"><use href="#an-scene" /></svg>
+              </div>
+              <p class="an-phone__note data">{anatomyArt.phone.note}</p>
+            </div>
+          </div>
+        </div>
+      </figure>
+    </div>
+  </div>
+
+  <div class="container an-foot">
+    <p class="an-footnote" data-an-foot>
+      <Icon name="certificate" size={32} />
+      <span>{footA}<span class="data an-footnote__std">EN 50131-1</span>{footB}</span>
+    </p>
   </div>
 </section>
+
+<style>
+  .anatomy {
+    --u: 1.4;
+    --an-pad: 0.95rem;
+    --an-door: #1c4a47;
+    overflow-x: clip;
+  }
+
+  /* ---------- Heading ---------- */
+  .an-head {
+    display: grid;
+    gap: var(--space-5);
+    margin-bottom: clamp(var(--space-7), 1rem + 5vw, var(--space-9));
+  }
+  .an-head .lede {
+    max-width: 42ch;
+  }
+  @media (min-width: 1000px) {
+    .an-head {
+      grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+      align-items: end;
+      column-gap: var(--space-8);
+    }
+  }
+
+  /* ---------- Layout: static, no-JS and reduced motion ---------- */
+  .an-grid {
+    display: grid;
+    gap: var(--space-7);
+  }
+  .an-figure {
+    margin: 0;
+  }
+  .an-art {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 1200 / 860;
+  }
+  .an-svg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+  }
+  @media (min-width: 1000px) {
+    .an-grid {
+      grid-template-columns: minmax(18rem, 25rem) minmax(0, 1fr);
+      column-gap: clamp(2.5rem, 4vw, 4.5rem);
+      align-items: start;
+    }
+    .an-figure {
+      position: sticky;
+      top: calc(var(--header-h) + var(--space-6));
+    }
+  }
+  @media (max-width: 999.98px) {
+    .an-figure {
+      order: -1;
+    }
+  }
+
+  /* ---------- Steps ---------- */
+  .an-steps {
+    display: grid;
+  }
+  .an-step {
+    --led-top: calc(var(--an-pad) + var(--step-1) * 0.58 - 5px);
+    position: relative;
+    padding: var(--an-pad) 0 var(--an-pad) 2.25rem;
+  }
+  .an-step + .an-step {
+    border-top: 1px solid var(--night-800);
+  }
+  /* A panel LED per zone. Static page: every zone armed. */
+  .an-step__led {
+    position: absolute;
+    left: 0;
+    top: var(--led-top);
+    width: 10px;
+    height: 10px;
+    border-radius: 3px;
+    background: var(--sodium-500);
+    box-shadow: 0 0 10px 1px var(--sodium-glow);
+  }
+  .an-step__rail {
+    display: none;
+  }
+  .an-step__title {
+    font-size: var(--step-1);
+    font-stretch: 112%;
+    font-weight: 720;
+    letter-spacing: -0.012em;
+    line-height: var(--leading-snug);
+    color: var(--dusk-50);
+  }
+  .an-step__zone {
+    margin-top: 0.35rem;
+    color: var(--dusk-300);
+  }
+  .an-step__body p {
+    padding-top: 0.65rem;
+    max-width: 40ch;
+    color: var(--dusk-200);
+  }
+
+  /* ---------- Live (JS + motion): steps light as their zone switches on ---------- */
+  .anatomy.is-live .an-step__led {
+    background: transparent;
+    box-shadow: inset 0 0 0 1px var(--night-500);
+    transition:
+      background-color 1.3s var(--ease-out),
+      box-shadow 1.3s var(--ease-out),
+      opacity 1.3s var(--ease-out);
+  }
+  .anatomy.is-live .an-step.is-done .an-step__led {
+    background: var(--sodium-600);
+    box-shadow: inset 0 0 0 1px var(--sodium-600);
+    opacity: 0.6;
+  }
+  .anatomy.is-live .an-step.is-active .an-step__led {
+    background: var(--sodium-500);
+    box-shadow: 0 0 14px 3px var(--sodium-glow);
+    opacity: 1;
+    transition-duration: 120ms;
+  }
+  .anatomy.is-live .an-step__title {
+    color: var(--dusk-400);
+    transition: color 0.7s var(--ease-out);
+  }
+  .anatomy.is-live .an-step.is-done .an-step__title {
+    color: var(--dusk-300);
+  }
+  .anatomy.is-live .an-step.is-active .an-step__title {
+    color: var(--dusk-50);
+    animation: an-trip 0.55s linear;
+  }
+  .anatomy.is-live .an-step__zone {
+    color: var(--dusk-400);
+    transition: color 0.7s var(--ease-out);
+  }
+  .anatomy.is-live .an-step.is-active .an-step__zone {
+    color: var(--sodium-500);
+    transition-duration: 120ms;
+  }
+  .anatomy.is-live .an-step__body p {
+    color: var(--dusk-300);
+    transition: color 0.6s var(--ease-out);
+  }
+  .anatomy.is-live .an-step.is-active .an-step__body p {
+    color: var(--dusk-200);
+  }
+  @keyframes an-trip {
+    0% { color: var(--dusk-400); }
+    9% { color: var(--dusk-50); }
+    16% { color: var(--dusk-300); }
+    30%, 100% { color: var(--dusk-50); }
+  }
+
+  /* Pinned desktop: the list is a zone panel. Only the live zone opens. */
+  .anatomy.is-pinned .an-stage {
+    height: 100vh;
+    height: 100svh;
+    display: grid;
+    align-items: center;
+  }
+  .anatomy.is-pinned .an-figure {
+    position: relative;
+    top: auto;
+  }
+  .anatomy.is-pinned .an-art {
+    width: min(100%, calc((100svh - 8.5rem) * 1200 / 860));
+    margin-left: auto;
+  }
+  .anatomy.is-pinned .an-step {
+    border-top: 0;
+  }
+  /* The drawing sets the stage height, so opening a longer step never shifts the stage. */
+  .anatomy.is-pinned .an-steps {
+    height: 0;
+    overflow: visible;
+  }
+  @media (max-height: 780px) {
+    .anatomy.is-pinned {
+      --an-pad: 0.6rem;
+    }
+  }
+  .anatomy.is-pinned .an-step__rail {
+    display: block;
+    position: absolute;
+    left: 4.5px;
+    width: 1px;
+    top: calc(var(--led-top) + 16px);
+    bottom: calc(6px - var(--led-top));
+    background: var(--night-700);
+  }
+  .anatomy.is-pinned .an-step__rail::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: var(--sodium-500);
+    box-shadow: 0 0 6px var(--sodium-glow);
+    transform: scaleY(var(--fill, 0));
+    transform-origin: top;
+  }
+  .anatomy.is-pinned .an-step__body {
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows 0.5s var(--ease-out);
+  }
+  .anatomy.is-pinned .an-step__body > div {
+    min-height: 0;
+    overflow: hidden;
+  }
+  .anatomy.is-pinned .an-step.is-active .an-step__body {
+    grid-template-rows: 1fr;
+    transition-duration: 0.65s;
+  }
+  .anatomy.is-pinned .an-step__body p {
+    opacity: 0;
+    transition: opacity 0.25s linear;
+  }
+  .anatomy.is-pinned .an-step.is-active .an-step__body p {
+    opacity: 1;
+    transition: opacity 0.7s var(--ease-out) 0.15s;
+  }
+
+  /* Step buttons exist only while pinned (created by anatomy.js). */
+  .an-step :global(.an-step__btn) {
+    appearance: none;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: none;
+    color: inherit;
+    font: inherit;
+    letter-spacing: inherit;
+    text-align: left;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .an-step :global(.an-step__btn)::after {
+    content: '';
+    position: absolute;
+    inset: 0 -0.75rem;
+    border-radius: var(--radius-sm);
+    transition: background-color var(--dur-fast) var(--ease-out);
+  }
+  .an-step :global(.an-step__btn:hover)::after {
+    background: rgb(159 176 207 / 0.05);
+  }
+  .an-step :global(.an-step__btn:focus-visible) {
+    outline: none;
+  }
+  .an-step :global(.an-step__btn:focus-visible)::after {
+    outline: 2px solid var(--sodium-400);
+    outline-offset: 0;
+  }
+  .anatomy.is-pinned .an-step:not(.is-active):hover .an-step__title {
+    color: var(--dusk-200);
+  }
+  .anatomy.is-pinned .an-step:not(.is-active):hover .an-step__led {
+    box-shadow: inset 0 0 0 1px var(--sodium-500);
+    transition-duration: 120ms;
+  }
+  .an-step :global(.an-step__btn:active) {
+    transform: translateY(1px);
+  }
+
+  /* Mobile with motion: the drawing stays at the top while the zones pass under it. */
+  .anatomy.is-sticky .an-figure {
+    position: sticky;
+    top: 0;
+    z-index: 2;
+    margin-inline: calc(var(--gutter) * -1);
+    padding: var(--space-3) var(--gutter) var(--space-4);
+    background: var(--night-900);
+  }
+  .anatomy.is-sticky .an-figure::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 100%;
+    height: 2.5rem;
+    background: linear-gradient(var(--night-900), rgb(12 22 40 / 0));
+    pointer-events: none;
+  }
+  .anatomy.is-sticky .an-art {
+    max-width: calc(40svh * 1200 / 860);
+    margin-inline: auto;
+    overflow: clip;
+    border-radius: var(--radius-sm);
+  }
+  /* Scroll room sits above each step's text, so the live step is always below the drawing. */
+  .anatomy.is-sticky .an-step {
+    --an-pad: 22svh;
+    padding-bottom: var(--space-3);
+    border-top: 0;
+  }
+  .anatomy.is-sticky .an-step:first-child {
+    --an-pad: var(--space-6);
+  }
+  /* In the close-up crops only the live zone is labelled; the list names the rest. */
+  .anatomy.is-sticky .an-tag[data-state='calm'] .an-tag__txt,
+  .anatomy.is-sticky .an-sheet {
+    visibility: hidden;
+  }
+
+  /* ---------- Footnote ---------- */
+  .an-foot {
+    margin-top: clamp(var(--space-7), 2rem + 3vw, var(--space-9));
+  }
+  .an-footnote {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-4);
+    max-width: 62ch;
+    padding-top: var(--space-5);
+    border-top: 1px solid var(--night-700);
+    color: var(--dusk-200);
+  }
+  .an-footnote :global(.icon) {
+    flex: none;
+    color: var(--sodium-500);
+  }
+  .an-footnote__std {
+    font-size: 0.86em;
+    color: var(--dusk-50);
+    text-transform: none;
+  }
+
+  /* ---------- The drawing ---------- */
+  .an-svg text {
+    font-family: var(--font-data);
+    font-stretch: 88%;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    font-variant-numeric: tabular-nums;
+  }
+  .l1,
+  .l2,
+  .l3 {
+    fill: none;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  .l1 {
+    stroke: var(--dusk-300);
+    stroke-width: 1.3;
+  }
+  .l2 {
+    stroke: var(--dusk-400);
+    stroke-width: 1;
+  }
+  .l3 {
+    stroke: var(--night-500);
+    stroke-width: 1;
+  }
+  .pf-700 { fill: var(--night-700); }
+  .pf-800 { fill: var(--night-800); }
+  .pf-850 { fill: var(--night-850); }
+  .pl-600 { stroke: var(--night-600); stroke-width: 1.1; }
+  .pl-700 { stroke: var(--night-700); stroke-width: 1.2; stroke-linecap: round; }
+  .pl-dot { stroke: var(--night-500); stroke-width: 1.5; stroke-linecap: round; }
+  .s-sodium { stop-color: var(--sodium-500); }
+  .s-blue { stop-color: var(--strobe-500); }
+  .s-red { stop-color: var(--alarm-500); }
+  .s-flood { stop-color: var(--flood-50); }
+  .s-white { stop-color: #fff; }
+  .s-black { stop-color: #000; }
+
+  .an-poche {
+    fill: url(#an-p-hatch);
+    stroke: var(--dusk-300);
+    stroke-width: 1.3;
+    stroke-linejoin: round;
+  }
+  .an-cavity {
+    fill: none;
+    stroke: var(--night-900);
+    stroke-width: 1.6;
+  }
+  .an-roof {
+    fill: var(--slate);
+    stroke: var(--dusk-300);
+    stroke-width: 1.3;
+    stroke-linejoin: round;
+  }
+  .an-slab {
+    fill: var(--night-800);
+    stroke: var(--dusk-300);
+    stroke-width: 1.1;
+  }
+  .an-conc {
+    fill: url(#an-p-conc);
+    stroke: var(--dusk-300);
+    stroke-width: 1.2;
+  }
+  .an-joist { fill: var(--night-600); }
+  .an-part {
+    fill: var(--night-700);
+    stroke: var(--dusk-400);
+    stroke-width: 1;
+  }
+  .an-chimney {
+    fill: var(--night-850);
+    stroke: var(--night-500);
+    stroke-width: 1;
+  }
+  .an-earth { fill: url(#an-p-earth); }
+  .an-sub { fill: url(#an-p-sub); }
+  .an-kerb { fill: var(--night-800); }
+  .an-tarmac { fill: var(--tarmac); }
+  .an-winglow { fill: var(--sodium-500); fill-opacity: 0.06; }
+  .an-litglass {
+    fill: none;
+    stroke: var(--sodium-600);
+    stroke-opacity: 0.7;
+    stroke-width: 1;
+  }
+  .an-leaf {
+    fill: var(--an-door);
+    stroke: var(--dusk-400);
+    stroke-width: 1;
+  }
+  .an-leafglass {
+    fill: var(--sodium-500);
+    fill-opacity: 0.2;
+  }
+  .an-knob { fill: var(--dusk-300); }
+  .an-lamp { fill: var(--sodium-300); }
+
+  /* Devices: brighter than the house, so they read as fitted items */
+  .an-dev {
+    fill: var(--night-800);
+    stroke: var(--dusk-200);
+    stroke-width: 1.2;
+    stroke-linejoin: round;
+    transition: stroke 1s var(--ease-out);
+  }
+  .an-dev[data-state='off'] { stroke: var(--dusk-400); }
+  .an-dev[data-state='on'] {
+    stroke: var(--dusk-50);
+    transition-duration: 120ms;
+  }
+  .an-dev-ln {
+    fill: none;
+    stroke: var(--dusk-300);
+    stroke-width: 1;
+  }
+  .an-lens {
+    fill: var(--night-950);
+    stroke: var(--dusk-200);
+    stroke-width: 1;
+  }
+
+  /* LEDs trip on fast and decay slowly: the transition takes the target state's duration */
+  .an-led {
+    fill: var(--night-600);
+    transition: fill 1.3s var(--ease-out);
+  }
+  .an-led[data-state='calm'] { fill: var(--sodium-500); }
+  .an-led[data-state='on'] {
+    fill: var(--sodium-300);
+    transition-duration: 100ms;
+    animation: an-blink 0.8s steps(1, end) 2;
+  }
+  .an-led--red[data-state='calm'] { fill: var(--alarm-500); }
+  .an-led--red[data-state='on'] { fill: var(--alarm-500); }
+  .an-bloom {
+    opacity: 0.4;
+    transition: opacity 1.4s var(--ease-out);
+  }
+  .an-bloom[data-state='off'] { opacity: 0; }
+  .an-bloom[data-state='on'] {
+    opacity: 1;
+    transition-duration: 110ms;
+  }
+  @keyframes an-blink {
+    0%, 50% { fill-opacity: 1; }
+    25%, 75% { fill-opacity: 0.2; }
+  }
+  .an-bell-lens {
+    fill: var(--strobe-500);
+    stroke: var(--dusk-200);
+    stroke-width: 0.8;
+    transition: fill 1s var(--ease-out);
+  }
+  .an-bell-lens[data-state='off'] { fill: var(--night-600); }
+  .an-bell-lens[data-state='on'] { fill: var(--strobe-400); transition-duration: 100ms; }
+  .an-flood-face {
+    fill: none;
+    stroke: var(--flood-50);
+    stroke-width: 1.8;
+    transition: stroke 1s var(--ease-out);
+  }
+  .an-flood-face[data-state='off'] { stroke: var(--dusk-400); }
+
+  /* Device light, in its calm (armed) state. JS reads these as the resting values. */
+  .an-bell-glow { opacity: 0.25; }
+  .an-beam { fill: url(#an-g-beam); opacity: 0.4; }
+  .an-pool { opacity: 0.4; }
+  .an-pavelit {
+    fill: none;
+    stroke: var(--flood-50);
+    stroke-width: 1;
+    opacity: 0.35;
+  }
+  .an-cone { opacity: 0.45; }
+  .an-cone__edge {
+    fill: none;
+    stroke: var(--dusk-200);
+    stroke-width: 1;
+    stroke-dasharray: 3 5;
+  }
+  .an-lobe {
+    fill: var(--sodium-500);
+    fill-opacity: 0.14;
+    stroke: var(--sodium-500);
+    stroke-opacity: 0.55;
+    stroke-width: 1;
+    opacity: 0.35;
+  }
+  .an-fanfill { fill: var(--sodium-500); opacity: 0; }
+  .an-sweep {
+    fill: none;
+    stroke: var(--sodium-300);
+    stroke-width: 1.5;
+    opacity: 0;
+  }
+  .an-ring {
+    fill: none;
+    stroke: var(--alarm-500);
+    stroke-width: 1.5;
+    opacity: 0;
+  }
+  .an-smokeglow { opacity: 0; }
+  .an-ping {
+    fill: none;
+    stroke: var(--sodium-400);
+    stroke-width: 1.5;
+    opacity: 0;
+    pointer-events: none;
+  }
+  .an-spill { opacity: 0; }
+
+  /* Annotations */
+  .an-tag__lead {
+    fill: none;
+    stroke: var(--dusk-400);
+    stroke-width: 1;
+    transition: stroke 1s var(--ease-out);
+  }
+  .an-tag__dot {
+    fill: var(--dusk-300);
+    transition: fill 1s var(--ease-out);
+  }
+  .an-tag__txt {
+    fill: var(--dusk-200);
+    font-size: clamp(14px, calc(var(--u) * 11.5px), 26px);
+    dominant-baseline: central;
+    paint-order: stroke;
+    stroke: var(--night-900);
+    stroke-width: 5px;
+    stroke-linejoin: round;
+    transition: fill 1s var(--ease-out);
+  }
+  .an-tag[data-state='on'] .an-tag__lead { stroke: var(--sodium-500); transition-duration: 150ms; }
+  .an-tag[data-state='on'] .an-tag__dot { fill: var(--sodium-500); transition-duration: 150ms; }
+  .an-tag[data-state='on'] .an-tag__txt { fill: var(--sodium-400); transition-duration: 150ms; }
+  .an-tag__status {
+    opacity: 0;
+    font-weight: 700;
+  }
+  .an-sheet__t,
+  .an-sheet__n {
+    dominant-baseline: hanging;
+  }
+  .an-sheet__t {
+    fill: var(--dusk-300);
+    font-size: clamp(15px, calc(var(--u) * 12px), 28px);
+    letter-spacing: 0.12em;
+  }
+  .an-sheet__n {
+    fill: var(--dusk-400);
+    font-size: clamp(12px, calc(var(--u) * 9.5px), 22px);
+  }
+  /* When the drawing is small the annotations would be unreadable: the list carries them. */
+  .an-svg.is-wide .an-tag__txt,
+  .an-svg.is-wide .an-sheet,
+  .an-svg.is-wide .an-osd {
+    display: none;
+  }
+
+  /* CCTV inset: IR monochrome */
+  .an-i-far { fill: #182125; }
+  .an-i-road { fill: #20292d; }
+  .an-i-path { fill: #2b3539; }
+  .an-i-drive { fill: #273135; }
+  .an-i-ln {
+    fill: none;
+    stroke: #43505a;
+    stroke-width: 1;
+  }
+  .an-i-pole { stroke: #6b777c; stroke-width: 2; }
+  .an-i-pier { fill: #3b474c; }
+  .an-i-person { fill: #cdd5d8; }
+  .an-i-box {
+    fill: none;
+    stroke: #f2f5f6;
+    stroke-width: 1.5;
+  }
+  .an-i-flash { fill: #e9eef0; opacity: 0; }
+  .an-i-frame {
+    fill: none;
+    stroke: var(--dusk-400);
+    stroke-width: 1;
+  }
+  .an-osd {
+    fill: #e7ecee;
+    font-size: clamp(12px, calc(var(--u) * 9.5px), 21px);
+    dominant-baseline: hanging;
+  }
+  .an-osd--mid { dominant-baseline: central; }
+  .an-rec { fill: #e7ecee; }
+
+  /* ---------- Phone: the HKC app alert ---------- */
+  .an-phone {
+    position: absolute;
+    right: calc(-1 * min(3%, var(--gutter) - 0.5rem));
+    bottom: -7%;
+    z-index: 2;
+    width: clamp(8.75rem, 18%, 11.25rem);
+    aspect-ratio: 9 / 18.5;
+    padding: 6px;
+    border: 1px solid var(--night-600);
+    border-radius: 22px;
+    background: var(--night-950);
+    box-shadow: var(--shadow-2);
+    transform: rotate(-3deg);
+  }
+  .an-phone__screen {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    height: 100%;
+    padding: 1.1rem 0.45rem 0.6rem;
+    border-radius: 16px;
+    background: linear-gradient(180deg, var(--night-800), var(--night-900) 70%);
+    overflow: hidden;
+  }
+  .an-phone__clock {
+    font-family: var(--font-display);
+    font-stretch: 112%;
+    font-weight: 560;
+    font-size: 1.9rem;
+    letter-spacing: -0.02em;
+    line-height: 1;
+    text-align: center;
+    font-variant-numeric: tabular-nums;
+    color: var(--dusk-50);
+  }
+  .an-card {
+    --strobe-a: 0;
+    display: grid;
+    gap: 0.2rem;
+    padding: 0.5rem;
+    border-radius: 10px;
+    background: color-mix(in srgb, var(--strobe-500) calc(var(--strobe-a) * 45%), var(--night-700));
+    box-shadow: var(--shadow-1);
+  }
+  .an-card p {
+    margin: 0;
+  }
+  .an-card .data {
+    font-size: 0.6rem;
+    letter-spacing: 0;
+    white-space: nowrap;
+  }
+  .an-card__app {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    color: var(--dusk-200);
+  }
+  .an-card__led {
+    flex: none;
+    width: 7px;
+    height: 7px;
+    border-radius: 2px;
+    background: var(--strobe-400);
+    box-shadow: 0 0 8px 1px rgb(61 124 255 / 0.7);
+  }
+  .an-card__time {
+    margin-left: auto;
+  }
+  .an-card__title {
+    font-family: var(--font-display);
+    font-stretch: 108%;
+    font-weight: 700;
+    font-size: 0.86rem;
+    line-height: 1.2;
+    color: var(--dusk-50);
+  }
+  .an-card__detail {
+    font-size: 0.72rem;
+    line-height: 1.35;
+    color: var(--dusk-200);
+  }
+  .an-card__thumb {
+    width: 100%;
+    height: auto;
+    margin-top: 0.2rem;
+    border-radius: 5px;
+  }
+  .an-phone__note {
+    margin-top: auto;
+    text-align: center;
+    color: var(--dusk-300);
+    font-size: 0.66rem;
+  }
+
+  @media (max-width: 999.98px) {
+    /* Small screens: just the alert card, under the drawing */
+    .anatomy:not(.is-sticky) .an-art {
+      aspect-ratio: auto;
+    }
+    .anatomy:not(.is-sticky) .an-svg {
+      position: relative;
+      height: auto;
+    }
+    .an-phone {
+      position: relative;
+      right: auto;
+      bottom: auto;
+      width: min(100%, 20rem);
+      aspect-ratio: auto;
+      margin: var(--space-4) 0 0 auto;
+      padding: 0;
+      border: 0;
+      background: none;
+      box-shadow: none;
+      transform: none;
+    }
+    .an-phone__screen {
+      height: auto;
+      padding: 0;
+      background: none;
+      overflow: visible;
+    }
+    .an-phone__clock,
+    .an-card__thumb {
+      display: none;
+    }
+    .an-phone__note {
+      text-align: right;
+    }
+    .anatomy.is-sticky .an-phone {
+      position: absolute;
+      top: var(--space-2);
+      left: var(--space-2);
+      width: min(64%, 17rem);
+      margin: 0;
+    }
+    .anatomy.is-sticky .an-phone__note {
+      display: none;
+    }
+  }
+</style>
+
+<script>
+  import { initAnatomy } from '../scripts/anatomy.js';
+  initAnatomy(document.querySelector('[data-anatomy]'));
+</script>
