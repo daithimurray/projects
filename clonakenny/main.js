@@ -351,12 +351,11 @@
     line.style.marginBottom = '-0.1em';
   });
   gsap.set('.hero__title .line-inner', { yPercent: 110 });
-  gsap.set(['.hero__place', '.hero__lede', '.hero__actions', '.hero__diary', '.hero__note'], { opacity: 0, y: 18 });
+  gsap.set(['.hero__lede', '.hero__actions', '.hero__diary', '.hero__note'], { opacity: 0, y: 18 });
   var fontsReady = document.fonts && document.fonts.ready ? Promise.race([document.fonts.ready, new Promise(function (r) { setTimeout(r, 900); })]) : Promise.resolve();
   fontsReady.then(function () {
     var tl = gsap.timeline({ delay: 0.15 });
     tl.to(intro, { b: 0.88, duration: 3.4, ease: 'power3.out' }, 0);
-    tl.to('.hero__place', { opacity: 1, y: 0, duration: 1, ease: ease }, 0.2);
     tl.to('.hero__title .line-inner', { yPercent: 0, duration: 1.4, stagger: 0.12, ease: ease }, 0.3);
     tl.to(['.hero__lede', '.hero__actions', '.hero__diary'], { opacity: 1, y: 0, duration: 1.2, stagger: 0.1, ease: ease }, 0.9);
     tl.to('.hero__note', { opacity: 1, y: 0, duration: 1.2, ease: ease }, 1.6);
@@ -377,9 +376,9 @@
     heroTl.to('.hero__poster', { scale: 1.6, opacity: 0, duration: 0.5 }, 0.3);
   }
 
-  /* Headings: lines rise out of a mask */
+  /* Three authored type moments: lines rise out of a mask. Everything else is simply there. */
   if (window.SplitText) {
-    $$('h2.display, .offer__title, .band__title').forEach(function (h) {
+    $$('.story__title, #weddings-title, .band__title').forEach(function (h) {
       var split = new window.SplitText(h, { type: 'lines', mask: 'lines', linesClass: 'split-line' });
       gsap.from(split.lines, {
         yPercent: 105, duration: 1.3, stagger: 0.1, ease: ease,
@@ -406,10 +405,6 @@
     }
   }
 
-  /* Soft rise for supporting copy */
-  $$('.story__body, .story__ground-intro, .story__ground-note, .facts .fact, .gallery__head p, .offers__head p, .offers__venues, .year__intro, .kind__head p, .reviews, .kind__more, .order__intro p, .composer, .press, .find > *:not(h2)').forEach(function (el) {
-    gsap.from(el, { opacity: 0, y: 36, duration: 1.2, ease: ease, scrollTrigger: { trigger: el, start: 'top 90%', once: true } });
-  });
 
   /* Photos bloom open from the centre, then drift */
   function bloomPhoto(frame, trigger) {
