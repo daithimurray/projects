@@ -98,3 +98,30 @@ Undecided / unverified (must not be stated as fact without Ali's sign-off):
 
 WCAG 2.2 AA. Rural mobile connections: the page must be readable and usable before any script
 or WebGL loads. Full `prefers-reduced-motion` support: all scroll choreography degrades to static.
+
+## v12 (supersedes directory data where they conflict)
+
+Source: the user's v12 draft (`getawebsite.ie/clonakenny/v12/`, built with Ali; "photography:
+Clonakenny Flower Farm's own"). Treated as confirmed product truth.
+
+- Positioning: **wedding flowers first.** "Wedding flowers. Picked fresh & just a little wild."
+  A small number of weddings each season, March to October; picked, arranged and delivered by
+  the mother-and-daughter team who grew them. Priced by enquiry. 2026 diary closed; limited
+  2027 & 2028 dates.
+- Services: bridal bouquets and buttonholes, arches and ceremony flowers, table arrangements,
+  on-the-day styling (Ali on site on the morning).
+- Growing: without chemicals, on two acres in the middle of the village; meadows and raised beds.
+  Arranged without floral foam (chicken wire and moss). Zero air miles from field to wedding.
+- People: Liz sows, propagates and grows; Ali picks, arranges and runs the show. Started in the
+  first lockdown, March 2020. Liz's own mother farmed flowers; Ali's daughter presses the wedding
+  keepsakes (do not publish the child's name).
+- Place: third trade on the ground (forge, then village post office, now the flower farm).
+  Arranged in "the purple studio", a converted horse stable. The studio wall is the purple in
+  the photos.
+- Venues they often work: Kinnitty, Ashley Park, Cloughjordan House.
+- Contact: **email ali@clonakennyflowerfarm.com** and Instagram DMs (quickest). v12 shows no
+  phone number: do not publish 087 276 6413 or WhatsApp.
+- Proof: 23 Google reviews (5 stars, reviewer names public on Google) plus one weddingsonline.ie
+  review; featured in the Irish Farmers Journal; named in The Gloss's "Best Flower Farms To Visit
+  In Ireland". Member of Flower Farmers of Ireland.
+- v12 visual system (replaced by this redesign): muted mauve #845A8C, DM Serif Display, system sans.
