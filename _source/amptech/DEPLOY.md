@@ -64,4 +64,19 @@ Report the rollback deployment id to the user.
 
 ## Moving to amptech.ie later
 
-Rebuild with `SITE_URL=https://www.amptech.ie BASE_PATH=/ PUBLIC_NOINDEX=0 PUBLIC_FORM_ENDPOINT=<endpoint> npm run build` and deploy `dist/` to the client's host. Set up 301 redirects from the old WordPress URLs (`/about-us/`, `/security/`, `/system-upgrades/`, `/home-alarm-systems/`, `/hkc-mobile-app/`, `/contact-us/`, `/privacy-policy/`) to the matching sections (`/#about`, `/#services`, `/#upgrades`, `/#services`, `/#app`, `/#contact`, `/privacy/`).
+Rebuild with `SITE_URL=https://www.amptech.ie BASE_PATH=/ PUBLIC_NOINDEX=0 PUBLIC_FORM_ENDPOINT=<endpoint> npm run build`, then deploy `dist/` to the client's host.
+
+Add 301 redirects from the old WordPress URLs (see `dossier.md` section 7) so existing links and search results keep working:
+
+- `/security/` → `/#services`
+- `/maintenance/` → `/#services`
+- `/system-upgrades/` → `/#upgrades`
+- `/monitoring-services/` → `/#services`
+- `/about-us/` → `/#about`
+- `/whatourcustomerssay/` → `/#reviews`
+- `/contact-us/` → `/#contact`
+- `/privacy-policy/` → `/privacy/`
+- `/home-alarm-systems/` → `/#services`
+- `/hkc-mobile-app/` → `/#app`
+
+The fragment in each target is carried over by browsers after the redirect.
