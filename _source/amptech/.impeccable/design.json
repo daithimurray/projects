@@ -1,0 +1,903 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-09-24T22:24:43.576Z",
+  "title": "Design System: Amptech",
+  "extensions": {
+    "colorMeta": {
+      "night-950": {
+        "role": "neutral",
+        "displayName": "Deepest Night",
+        "canonical": "#0a1222",
+        "tonalRamp": [
+          "#040b1a",
+          "#1b2435",
+          "#364053",
+          "#535e72",
+          "#758196",
+          "#99a5bb",
+          "#bfcbe2",
+          "#e6efff"
+        ]
+      },
+      "night-900": {
+        "role": "neutral",
+        "displayName": "Overcast Dusk",
+        "canonical": "#111c33",
+        "tonalRamp": [
+          "#030a1f",
+          "#18233b",
+          "#334059",
+          "#505e79",
+          "#72809d",
+          "#95a5c3",
+          "#bbcbea",
+          "#e6efff"
+        ]
+      },
+      "night-850": {
+        "role": "neutral",
+        "displayName": "Plate Night",
+        "canonical": "#15213b",
+        "tonalRamp": [
+          "#020921",
+          "#17233d",
+          "#323f5c",
+          "#4f5d7c",
+          "#7180a0",
+          "#94a5c6",
+          "#bacbee",
+          "#e7efff"
+        ]
+      },
+      "night-800": {
+        "role": "neutral",
+        "displayName": "Night Rule",
+        "canonical": "#1a2945",
+        "tonalRamp": [
+          "#010922",
+          "#15233f",
+          "#2f405d",
+          "#4c5e7d",
+          "#6e81a2",
+          "#92a5c8",
+          "#b7cbf0",
+          "#e6efff"
+        ]
+      },
+      "night-700": {
+        "role": "neutral",
+        "displayName": "Night Rule (heavy)",
+        "canonical": "#253656",
+        "tonalRamp": [
+          "#010824",
+          "#132341",
+          "#2e3f60",
+          "#4b5e80",
+          "#6c81a5",
+          "#90a5cc",
+          "#b5cbf3",
+          "#e6efff"
+        ]
+      },
+      "night-600": {
+        "role": "neutral",
+        "displayName": "Street Edge",
+        "canonical": "#374b72",
+        "tonalRamp": [
+          "#000728",
+          "#112246",
+          "#2c3f65",
+          "#485d86",
+          "#6a80ab",
+          "#8da5d1",
+          "#b3cbf9",
+          "#e6efff"
+        ]
+      },
+      "night-500": {
+        "role": "neutral",
+        "displayName": "Unlit Rim",
+        "canonical": "#4f6490",
+        "tonalRamp": [
+          "#01062a",
+          "#112148",
+          "#2b3e67",
+          "#485d88",
+          "#6a80ae",
+          "#8da5d4",
+          "#b2cbfc",
+          "#e7efff"
+        ]
+      },
+      "dusk-50": {
+        "role": "neutral",
+        "displayName": "Dusk White",
+        "canonical": "#eef1f8",
+        "tonalRamp": [
+          "#090b0f",
+          "#222429",
+          "#3d4045",
+          "#5b5e63",
+          "#7d8086",
+          "#a2a4ab",
+          "#c8cad1",
+          "#ebeef5"
+        ]
+      },
+      "dusk-200": {
+        "role": "neutral",
+        "displayName": "Dusk Grey",
+        "canonical": "#c3cde1",
+        "tonalRamp": [
+          "#050b18",
+          "#1d2433",
+          "#384050",
+          "#555e6f",
+          "#778093",
+          "#9ba5b8",
+          "#c1cbdf",
+          "#e7efff"
+        ]
+      },
+      "dusk-300": {
+        "role": "neutral",
+        "displayName": "Dusk Caption",
+        "canonical": "#9fb0cf",
+        "tonalRamp": [
+          "#020a1f",
+          "#17243c",
+          "#32405a",
+          "#4f5e7a",
+          "#71819e",
+          "#94a5c4",
+          "#bacbeb",
+          "#e6efff"
+        ]
+      },
+      "dusk-400": {
+        "role": "neutral",
+        "displayName": "Dusk Hairline",
+        "canonical": "#97a8c8",
+        "tonalRamp": [
+          "#020923",
+          "#162340",
+          "#303f5e",
+          "#4d5d7e",
+          "#6f80a3",
+          "#93a5c9",
+          "#b8cbf1",
+          "#e6efff"
+        ]
+      },
+      "sodium-300": {
+        "role": "primary",
+        "displayName": "Sodium Halo",
+        "canonical": "#ffc27a",
+        "tonalRamp": [
+          "#140800",
+          "#351e00",
+          "#5a3700",
+          "#825100",
+          "#ab7327",
+          "#d2974f",
+          "#fabd75",
+          "#ffebd5"
+        ]
+      },
+      "sodium-400": {
+        "role": "primary",
+        "displayName": "Sodium Lamp Head",
+        "canonical": "#ffae52",
+        "tonalRamp": [
+          "#150800",
+          "#361d00",
+          "#5c3500",
+          "#854f00",
+          "#b46d00",
+          "#df912f",
+          "#ffbb72",
+          "#ffebd7"
+        ]
+      },
+      "sodium-500": {
+        "role": "primary",
+        "displayName": "Sodium Streetlight",
+        "canonical": "#ff9e3d",
+        "tonalRamp": [
+          "#160700",
+          "#381c00",
+          "#5f3300",
+          "#894c00",
+          "#ba6900",
+          "#e98a21",
+          "#ffba7e",
+          "#ffeada"
+        ]
+      },
+      "sodium-600": {
+        "role": "primary",
+        "displayName": "Sodium Filament",
+        "canonical": "#e67e14",
+        "tonalRamp": [
+          "#170700",
+          "#3a1a00",
+          "#623100",
+          "#8d4900",
+          "#bf6500",
+          "#ef8623",
+          "#ffb986",
+          "#ffeadb"
+        ]
+      },
+      "sodium-800": {
+        "role": "primary",
+        "displayName": "Burnt Sodium",
+        "canonical": "#9a4b00",
+        "tonalRamp": [
+          "#170600",
+          "#3c1900",
+          "#652f00",
+          "#914600",
+          "#ba682c",
+          "#e28d53",
+          "#ffb98c",
+          "#ffeadd"
+        ]
+      },
+      "sodium-glow": {
+        "role": "primary",
+        "displayName": "Sodium Glow",
+        "canonical": "rgb(255 158 61 / 0.35)",
+        "tonalRamp": [
+          "#160700",
+          "#381c00",
+          "#5f3300",
+          "#894c00",
+          "#ba6900",
+          "#e98a21",
+          "#ffba7e",
+          "#ffeada"
+        ]
+      },
+      "flood-0": {
+        "role": "neutral",
+        "displayName": "Floodlight Core",
+        "canonical": "#ffffff",
+        "tonalRamp": [
+          "#0b0b0b",
+          "#242424",
+          "#404040",
+          "#5d5d5d",
+          "#808080",
+          "#a4a4a4",
+          "#cacaca",
+          "#eeeeee"
+        ]
+      },
+      "flood-50": {
+        "role": "neutral",
+        "displayName": "Floodlight White",
+        "canonical": "#f1f4f8",
+        "tonalRamp": [
+          "#090b0e",
+          "#222427",
+          "#3e4043",
+          "#5b5e61",
+          "#7e8084",
+          "#a2a5a8",
+          "#c8cbcf",
+          "#eceff3"
+        ]
+      },
+      "flood-100": {
+        "role": "neutral",
+        "displayName": "Falloff",
+        "canonical": "#e5eaf1",
+        "tonalRamp": [
+          "#080b10",
+          "#212429",
+          "#3c4046",
+          "#5a5e64",
+          "#7c8187",
+          "#a0a5ab",
+          "#c6cbd2",
+          "#eaeff6"
+        ]
+      },
+      "flood-200": {
+        "role": "neutral",
+        "displayName": "Flood Hairline",
+        "canonical": "#d3dae4",
+        "tonalRamp": [
+          "#070b12",
+          "#1f242c",
+          "#3b4048",
+          "#585e67",
+          "#7a818a",
+          "#9ea5af",
+          "#c4cbd5",
+          "#e8eff9"
+        ]
+      },
+      "flood-300": {
+        "role": "neutral",
+        "displayName": "Flood Border",
+        "canonical": "#b6c0ce",
+        "tonalRamp": [
+          "#060b15",
+          "#1d252f",
+          "#38404c",
+          "#565e6b",
+          "#78818e",
+          "#9ca5b3",
+          "#c1cbda",
+          "#e5effe"
+        ]
+      },
+      "flood-rule": {
+        "role": "neutral",
+        "displayName": "Control Edge",
+        "canonical": "#76849a",
+        "tonalRamp": [
+          "#030b1b",
+          "#192436",
+          "#344054",
+          "#515e73",
+          "#738197",
+          "#97a6bd",
+          "#bccce3",
+          "#e5efff"
+        ]
+      },
+      "ink-900": {
+        "role": "neutral",
+        "displayName": "Floodlit Ink",
+        "canonical": "#0c1628",
+        "tonalRamp": [
+          "#030a1b",
+          "#192437",
+          "#344055",
+          "#515e74",
+          "#738198",
+          "#97a5be",
+          "#bdcbe5",
+          "#e6efff"
+        ]
+      },
+      "ink-700": {
+        "role": "neutral",
+        "displayName": "Ink Grey",
+        "canonical": "#2c3a55",
+        "tonalRamp": [
+          "#020920",
+          "#17233d",
+          "#31405b",
+          "#4e5e7b",
+          "#70819f",
+          "#94a5c5",
+          "#b9cbed",
+          "#e6efff"
+        ]
+      },
+      "ink-500": {
+        "role": "neutral",
+        "displayName": "Ink Caption",
+        "canonical": "#56627a",
+        "tonalRamp": [
+          "#040a1c",
+          "#1a2438",
+          "#354056",
+          "#525e75",
+          "#74809a",
+          "#98a5bf",
+          "#bdcbe6",
+          "#e6efff"
+        ]
+      },
+      "strobe-400": {
+        "role": "signal",
+        "displayName": "Bell-Box Blue (light)",
+        "canonical": "#6aa0ff",
+        "tonalRamp": [
+          "#000827",
+          "#001e59",
+          "#05388d",
+          "#2759b1",
+          "#4a7dd9",
+          "#6fa3ff",
+          "#aeccff",
+          "#e6efff"
+        ]
+      },
+      "strobe-500": {
+        "role": "signal",
+        "displayName": "Bell-Box Blue",
+        "canonical": "#3d7cff",
+        "tonalRamp": [
+          "#00062b",
+          "#001a60",
+          "#00309d",
+          "#134fcf",
+          "#3876f9",
+          "#73a2ff",
+          "#afcbff",
+          "#e6efff"
+        ]
+      },
+      "alarm-500": {
+        "role": "signal",
+        "displayName": "Smoke-Alarm Red (night)",
+        "canonical": "#ff5a4e",
+        "tonalRamp": [
+          "#1f0000",
+          "#4b0002",
+          "#7d0005",
+          "#b2000c",
+          "#df3b33",
+          "#ff7265",
+          "#ffb5ab",
+          "#ffe9e5"
+        ]
+      },
+      "alarm-700": {
+        "role": "signal",
+        "displayName": "Smoke-Alarm Red (flood)",
+        "canonical": "#b42318",
+        "tonalRamp": [
+          "#1f0000",
+          "#4b0000",
+          "#7d0100",
+          "#ad1a10",
+          "#d74839",
+          "#ff7360",
+          "#ffb5a9",
+          "#ffe9e5"
+        ]
+      },
+      "clear-400": {
+        "role": "signal",
+        "displayName": "All-Clear Green (night)",
+        "canonical": "#5ee0a0",
+        "tonalRamp": [
+          "#000f06",
+          "#002c19",
+          "#004d2f",
+          "#007046",
+          "#009861",
+          "#37c082",
+          "#66e8a7",
+          "#c3ffdc"
+        ]
+      },
+      "clear-700": {
+        "role": "signal",
+        "displayName": "All-Clear Green (flood)",
+        "canonical": "#186a42",
+        "tonalRamp": [
+          "#001005",
+          "#002d17",
+          "#004d2c",
+          "#1e6e46",
+          "#469268",
+          "#6cb88b",
+          "#92dfb0",
+          "#c4ffda"
+        ]
+      },
+      "tungsten": {
+        "role": "material",
+        "displayName": "Tungsten Window",
+        "canonical": "#ffd49a",
+        "tonalRamp": [
+          "#130900",
+          "#331f00",
+          "#583800",
+          "#7b551a",
+          "#9f7840",
+          "#c69d64",
+          "#edc389",
+          "#ffebd1"
+        ]
+      },
+      "pebble": {
+        "role": "material",
+        "displayName": "Pebbledash",
+        "canonical": "#a9a397",
+        "tonalRamp": [
+          "#0f0b04",
+          "#28231a",
+          "#443f35",
+          "#625d52",
+          "#858074",
+          "#aaa498",
+          "#d0cabd",
+          "#f4eee1"
+        ]
+      },
+      "slate": {
+        "role": "material",
+        "displayName": "Roof Slate",
+        "canonical": "#2a3140",
+        "tonalRamp": [
+          "#060b17",
+          "#1d2432",
+          "#38404f",
+          "#565e6e",
+          "#788092",
+          "#9ca5b7",
+          "#c1cbde",
+          "#e7efff"
+        ]
+      },
+      "tarmac": {
+        "role": "material",
+        "displayName": "Tarmac",
+        "canonical": "#151a22",
+        "tonalRamp": [
+          "#070b13",
+          "#1f242d",
+          "#3a4049",
+          "#585e68",
+          "#7a818b",
+          "#9ea5b0",
+          "#c4cbd6",
+          "#e8effb"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "Display",
+        "purpose": "The hero h1 only; fitted to the viewport, never above 6rem (the hero caps it at 5.5rem)."
+      },
+      "headline": {
+        "displayName": "Headline",
+        "purpose": "One section h2, max 18ch, balanced; nothing sits above it."
+      },
+      "title": {
+        "displayName": "Title",
+        "purpose": "Group titles in the service index, sub-heads, the footer closing line; mobile menu links at step 3."
+      },
+      "item": {
+        "displayName": "Item",
+        "purpose": "Service names, process and zone step titles; reviewer names at body size."
+      },
+      "control": {
+        "displayName": "Control",
+        "purpose": "Buttons and call-to-action links."
+      },
+      "lede": {
+        "displayName": "Lede",
+        "purpose": "One per section under the headline, max 44ch."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "All reading text; 60–66ch in reading columns, 40ch beside illustrations."
+      },
+      "label": {
+        "displayName": "Label",
+        "purpose": "Nav links, tags, hints, place names; status and source lines in all small caps."
+      },
+      "data": {
+        "displayName": "Data",
+        "purpose": "Readouts only: times, dates, zone and camera codes, licence and certificate numbers, coordinates, camera OSD."
+      }
+    },
+    "shadows": [
+      {
+        "name": "shadow-1",
+        "value": "0 1px 2px rgb(3 7 15 / 0.35), 0 4px 12px -2px rgb(3 7 15 / 0.35)",
+        "purpose": "Rest on night: small objects on the night ground (fact plate, small device props)."
+      },
+      {
+        "name": "shadow-2",
+        "value": "0 2px 4px rgb(3 7 15 / 0.3), 0 18px 40px -12px rgb(3 7 15 / 0.55)",
+        "purpose": "Lifted on night: larger objects (the before/after stage, the phone in the drawing)."
+      },
+      {
+        "name": "shadow-lit",
+        "value": "0 14px 34px -10px rgb(255 158 61 / 0.55)",
+        "purpose": "Sodium cast below a primary control on hover."
+      },
+      {
+        "name": "shadow-flood",
+        "value": "0 1px 1px rgb(12 22 40 / 0.06), 0 12px 32px -14px rgb(12 22 40 / 0.28)",
+        "purpose": "Panels and lit rows on floodlight white (vignette, open FAQ row, solid-ink hover)."
+      },
+      {
+        "name": "focus-cast",
+        "value": "0 14px 28px -14px color-mix(in oklab, var(--sodium-600) 70%, transparent)",
+        "purpose": "A focused field casts sodium below itself; snaps on at the trip duration."
+      }
+    ],
+    "motion": [
+      {
+        "name": "ease-out",
+        "value": "cubic-bezier(0.16, 1, 0.3, 1)",
+        "purpose": "Default for arrivals and state transitions (expo out)."
+      },
+      {
+        "name": "ease-in-out",
+        "value": "cubic-bezier(0.65, 0, 0.35, 1)",
+        "purpose": "Glyph movements that go and return (pan, swing, turn)."
+      },
+      {
+        "name": "ease-snap",
+        "value": "cubic-bezier(0.2, 0.9, 0.1, 1)",
+        "purpose": "Beams drawing out of a floodlight glyph."
+      },
+      {
+        "name": "trip (GSAP CustomEase)",
+        "value": "M0,0 C0.05,0.9 0.1,1.04 0.24,1.02 0.4,1 0.6,1 1,1",
+        "purpose": "Floodlight curve: jumps most of the way at once, overshoots a hair, settles."
+      },
+      {
+        "name": "decay (GSAP CustomEase)",
+        "value": "M0,0 C0.3,0 0.4,0.6 1,1",
+        "purpose": "The slow fade after a trip or a strobe."
+      },
+      {
+        "name": "dur-trip",
+        "value": "120ms",
+        "purpose": "Attack: the \"on\" transition of any light (hover pools, LEDs, focus cast)."
+      },
+      {
+        "name": "dur-fast",
+        "value": "200ms",
+        "purpose": "Colour and border changes on controls."
+      },
+      {
+        "name": "dur-med",
+        "value": "420ms",
+        "purpose": "Transforms, button casts, underline draws."
+      },
+      {
+        "name": "dur-slow",
+        "value": "900ms",
+        "purpose": "Longer arrivals."
+      },
+      {
+        "name": "dur-decay",
+        "value": "1400ms",
+        "purpose": "Release: the \"off\" transition of any light."
+      },
+      {
+        "name": "grammar: trip",
+        "value": "opacity 0.18 → 0.9 (60ms) → 0.55 (50ms) → 1 (700ms expo.out), y 14 → 0",
+        "purpose": "Content groups, rows, LEDs switching on as they arrive (lightsOn())."
+      },
+      {
+        "name": "grammar: sweep",
+        "value": "SplitText masked lines, yPercent 105 → 0, 1.05s expo.out, 0.09s stagger",
+        "purpose": "Some section headings, lit line by line like a passing beam (sweepIn())."
+      },
+      {
+        "name": "grammar: strobe",
+        "value": "--strobe-a 0 → 1, 50ms × 4 yoyo, then 0.4s decay",
+        "purpose": "Bell-box double blink for alerts, notifications and form status only (strobe())."
+      },
+      {
+        "name": "grammar: pan",
+        "value": "rotation toward the target, ease-in-out",
+        "purpose": "A camera head turning to follow (hero scene, CCTV glyph)."
+      },
+      {
+        "name": "grammar: cable",
+        "value": "DrawSVG / scaleX 0 → 1, 1s power2.inOut",
+        "purpose": "Rules, hairlines, leaders and the process cable drawn along their path."
+      },
+      {
+        "name": "lit reveal",
+        "value": "night veil, radial mask --reveal 0 → section diagonal, scrub 0.4, top 92% → top 25%",
+        "purpose": "Lit sections switch on like a floodlight as they scroll in."
+      },
+      {
+        "name": "later()",
+        "value": "requestIdleCallback queue, then one ScrollTrigger sort + refresh",
+        "purpose": "Build non-critical section motion after first paint; pinned sections stay eager."
+      },
+      {
+        "name": "pause",
+        "value": "html.motion-paused + onPauseChange()",
+        "purpose": "WCAG 2.2.2: pauses CSS loops and stops scripted loops; persists per visitor; hidden under reduced motion."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "tight",
+        "value": "380px"
+      },
+      {
+        "name": "call",
+        "value": "520px"
+      },
+      {
+        "name": "row",
+        "value": "640px"
+      },
+      {
+        "name": "desktop",
+        "value": "1024px"
+      },
+      {
+        "name": "run",
+        "value": "1100px"
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "The sodium call to action: the phone call and the main action in every section. Casts sodium light below itself on hover.",
+      "html": "<div class=\"ds-night-a\"><a class=\"ds-btn-primary\" href=\"#\"><svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M6.6 3.5h2.2l1.4 4-2 1.4a12 12 0 0 0 6.9 6.9l1.4-2 4 1.4v2.2a2 2 0 0 1-2.1 2A16.5 16.5 0 0 1 4.6 5.6a2 2 0 0 1 2-2.1Z\"/></svg>Call 01 615 5980</a></div>",
+      "css": ".ds-night-a { padding: 2rem; background: var(--night-900); } .ds-btn-primary { position: relative; isolation: isolate; display: inline-flex; align-items: center; justify-content: center; gap: 0.6em; min-height: 52px; padding: 0.8rem 1.35rem; border-radius: var(--radius-sm); font-family: var(--font-display); font-size: var(--step-0); font-weight: 680; font-stretch: 108%; letter-spacing: -0.005em; line-height: 1.1; text-decoration: none; white-space: nowrap; overflow: hidden; cursor: pointer; transition: border-color var(--dur-fast) var(--ease-out), box-shadow var(--dur-med) var(--ease-out), background-color var(--dur-fast) var(--ease-out), transform var(--dur-med) var(--ease-out); } .ds-btn-primary svg { width: 1.15em; height: 1.15em; flex: none; } .ds-btn-primary::before { content: ''; position: absolute; inset: 0; z-index: -1; background: radial-gradient(120px circle at 50% 40%, rgb(255 255 255 / 0.22), transparent 70%); opacity: 0; transition: opacity var(--dur-med) var(--ease-out); } .ds-btn-primary:hover::before { opacity: 1; transition-duration: var(--dur-trip); } .ds-btn-primary:focus-visible { outline: 2px solid var(--sodium-400); outline-offset: 3px; } .ds-btn-primary[aria-disabled='true'] { opacity: 0.5; cursor: not-allowed; box-shadow: none; } .ds-btn-primary { border: 1px solid var(--sodium-400); background: var(--sodium-500); color: var(--night-950); } .ds-btn-primary:hover { background: var(--sodium-400); box-shadow: var(--shadow-lit); } .ds-btn-primary:active { transform: translateY(1px); box-shadow: 0 6px 16px -8px rgb(255 158 61 / 0.6); }"
+    },
+    {
+      "name": "Ghost Button",
+      "kind": "button",
+      "refersTo": "button-ghost",
+      "description": "The secondary action on night: a Street Edge outline that takes a sodium border and a faint sodium wash on hover.",
+      "html": "<div class=\"ds-night-b\"><a class=\"ds-btn-ghost\" href=\"#\">Request a quote</a></div>",
+      "css": ".ds-night-b { padding: 2rem; background: var(--night-900); } .ds-btn-ghost { position: relative; isolation: isolate; display: inline-flex; align-items: center; justify-content: center; gap: 0.6em; min-height: 52px; padding: 0.8rem 1.35rem; border-radius: var(--radius-sm); font-family: var(--font-display); font-size: var(--step-0); font-weight: 680; font-stretch: 108%; letter-spacing: -0.005em; line-height: 1.1; text-decoration: none; white-space: nowrap; overflow: hidden; cursor: pointer; transition: border-color var(--dur-fast) var(--ease-out), box-shadow var(--dur-med) var(--ease-out), background-color var(--dur-fast) var(--ease-out), transform var(--dur-med) var(--ease-out); } .ds-btn-ghost svg { width: 1.15em; height: 1.15em; flex: none; } .ds-btn-ghost::before { content: ''; position: absolute; inset: 0; z-index: -1; background: radial-gradient(120px circle at 50% 40%, rgb(255 255 255 / 0.22), transparent 70%); opacity: 0; transition: opacity var(--dur-med) var(--ease-out); } .ds-btn-ghost:hover::before { opacity: 1; transition-duration: var(--dur-trip); } .ds-btn-ghost:focus-visible { outline: 2px solid var(--sodium-400); outline-offset: 3px; } .ds-btn-ghost[aria-disabled='true'] { opacity: 0.5; cursor: not-allowed; box-shadow: none; } .ds-btn-ghost { border: 1px solid var(--night-600); background: transparent; color: var(--dusk-50); } .ds-btn-ghost:hover { border-color: var(--sodium-500); background: rgb(255 158 61 / 0.06); } .ds-btn-ghost:active { transform: translateY(1px); }"
+    },
+    {
+      "name": "Quote Field",
+      "kind": "input",
+      "refersTo": "input-field",
+      "description": "A text field on a lit panel: Control Edge boundary at 3:1, ink focus ring, and a sodium cast that snaps on below when focused. Errors use alarm-700.",
+      "html": "<div class=\"ds-field-wrap\"><label class=\"ds-field-label\" for=\"ds-f1\">Your name <span class=\"ds-field-star\" aria-hidden=\"true\">*</span></label><input class=\"ds-field\" id=\"ds-f1\" type=\"text\" placeholder=\"\" /><label class=\"ds-field-label\" for=\"ds-f2\">Phone number <span class=\"ds-field-star\" aria-hidden=\"true\">*</span></label><input class=\"ds-field\" id=\"ds-f2\" type=\"tel\" aria-invalid=\"true\" value=\"01 6x5\" /><p class=\"ds-field-error\">That number doesn’t look right. Use digits, with spaces if you like.</p></div>",
+      "css": ".ds-field-wrap { display: grid; gap: 0.5rem; max-width: 26rem; padding: 2rem; border-radius: var(--radius-lg); background: radial-gradient(70% 38% at 50% 0%, var(--flood-0), transparent), var(--flood-50); color: var(--ink-900); } .ds-field-label { font-family: var(--font-display); font-stretch: 106%; font-weight: 640; font-size: 1rem; line-height: 1.3; color: var(--ink-900); } .ds-field-label:not(:first-child) { margin-top: 0.75rem; } .ds-field-star { color: var(--sodium-800); } .ds-field { width: 100%; min-height: 52px; padding: 0.75rem 0.95rem; border: 1px solid var(--flood-rule); border-radius: var(--radius-sm); background: var(--flood-0); color: var(--ink-900); font-family: var(--font-body); font-size: max(16px, var(--step-0)); line-height: 1.4; caret-color: var(--sodium-500); box-shadow: inset 0 1px 2px color-mix(in oklab, var(--ink-900) 7%, transparent); transition: border-color var(--dur-fast) var(--ease-out), box-shadow var(--dur-decay) var(--ease-out); } .ds-field:hover { border-color: var(--ink-700); } .ds-field:focus, .ds-field:focus-visible { outline: 2px solid var(--ink-900); outline-offset: 1px; border-color: var(--ink-900); box-shadow: inset 0 1px 2px color-mix(in oklab, var(--ink-900) 7%, transparent), 0 14px 28px -14px color-mix(in oklab, var(--sodium-600) 70%, transparent); transition-duration: var(--dur-fast), var(--dur-trip); } .ds-field[aria-invalid='true'] { border-color: var(--alarm-700); box-shadow: inset 0 0 0 1px var(--alarm-700); } .ds-field[aria-invalid='true']:focus { outline-color: var(--alarm-700); } .ds-field-error { display: flex; align-items: baseline; gap: 0.45em; margin: 0; font-family: var(--font-body); font-size: var(--step--1); font-weight: 700; color: var(--alarm-700); } .ds-field-error::before { content: ''; flex: none; width: 8px; height: 8px; border-radius: 2px; background: var(--alarm-700); }"
+    },
+    {
+      "name": "Header Bar",
+      "kind": "nav",
+      "refersTo": "nav-link",
+      "description": "The fixed 72px bar: wordmark with its sodium panel LED, Atkinson nav links with a sodium underline drawn from the left, the pause toggle (WCAG 2.2.2) and the call button.",
+      "html": "<header class=\"ds-hdr\"><a class=\"ds-hdr-mark\" href=\"#\">AMPTECH<span class=\"ds-hdr-led\" aria-hidden=\"true\"></span></a><nav class=\"ds-hdr-nav\" aria-label=\"Main\"><a href=\"#\">How it works</a><a href=\"#\" aria-current=\"true\">Services</a><a href=\"#\">Upgrades</a><a href=\"#\">Reviews</a></nav><button class=\"ds-hdr-pause\" type=\"button\" aria-pressed=\"false\"><span class=\"ds-vh\">Pause animations</span><svg viewBox=\"0 0 24 24\" aria-hidden=\"true\"><rect x=\"7\" y=\"5.5\" width=\"3.2\" height=\"13\" rx=\"1\"/><rect x=\"13.8\" y=\"5.5\" width=\"3.2\" height=\"13\" rx=\"1\"/></svg></button><a class=\"ds-hdr-call\" href=\"#\"><svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M6.6 3.5h2.2l1.4 4-2 1.4a12 12 0 0 0 6.9 6.9l1.4-2 4 1.4v2.2a2 2 0 0 1-2.1 2A16.5 16.5 0 0 1 4.6 5.6a2 2 0 0 1 2-2.1Z\"/></svg>01 615 5980</a></header>",
+      "css": ".ds-hdr { display: flex; align-items: center; gap: 1.5rem; height: 72px; padding: 0 1.5rem; background: color-mix(in srgb, var(--night-900) 96%, transparent); box-shadow: 0 1px 0 var(--night-700); color: var(--dusk-50); } .ds-hdr-mark { position: relative; display: inline-flex; align-items: center; min-height: 44px; padding-right: 14px; font-family: var(--font-display); font-stretch: 125%; font-weight: 820; font-size: 1.28rem; letter-spacing: 0.04em; line-height: 1; color: var(--dusk-50); text-decoration: none; } .ds-hdr-led { position: absolute; top: 9px; right: 2px; width: 7px; height: 7px; border-radius: 2px; background: var(--sodium-500); } .ds-hdr-led::after { content: ''; position: absolute; inset: -6px; border-radius: 50%; background: radial-gradient(closest-side, var(--sodium-glow), transparent); } .ds-hdr-nav { display: flex; gap: 1.5rem; margin-left: auto; } .ds-hdr-nav a { position: relative; display: inline-flex; align-items: center; min-height: 44px; color: var(--dusk-200); font-family: var(--font-body); font-size: var(--step--1); font-weight: 600; letter-spacing: 0.01em; text-decoration: none; transition: color var(--dur-fast) var(--ease-out); } .ds-hdr-nav a::after { content: ''; position: absolute; left: 0; right: 0; bottom: 10px; height: 1.5px; background: var(--sodium-500); transform: scaleX(0); transform-origin: right; transition: transform var(--dur-med) var(--ease-out); } .ds-hdr-nav a:hover, .ds-hdr-nav a[aria-current='true'] { color: var(--dusk-50); } .ds-hdr-nav a:hover::after, .ds-hdr-nav a[aria-current='true']::after { transform: scaleX(1); transform-origin: left; } .ds-hdr-nav a:focus-visible, .ds-hdr-pause:focus-visible, .ds-hdr-call:focus-visible { outline: 2px solid var(--sodium-400); outline-offset: 3px; border-radius: var(--radius-xs); } .ds-hdr-pause { display: grid; place-items: center; width: 44px; height: 44px; padding: 0; border: 1px solid transparent; border-radius: var(--radius-sm); background: none; color: var(--dusk-300); cursor: pointer; transition: color var(--dur-fast) var(--ease-out), border-color var(--dur-fast) var(--ease-out); } .ds-hdr-pause svg { width: 16px; height: 16px; fill: currentColor; } .ds-hdr-pause:hover { color: var(--dusk-50); border-color: var(--night-600); } .ds-hdr-call { display: inline-flex; align-items: center; gap: 0.6em; min-height: 44px; padding: 0.55rem 1rem; border: 1px solid var(--sodium-400); border-radius: var(--radius-sm); background: var(--sodium-500); color: var(--night-950); font-family: var(--font-display); font-stretch: 108%; font-weight: 680; font-size: var(--step--1); font-variant-numeric: tabular-nums; text-decoration: none; transition: background-color var(--dur-fast) var(--ease-out), box-shadow var(--dur-med) var(--ease-out); } .ds-hdr-call svg { width: 1.15em; height: 1.15em; } .ds-hdr-call:hover { background: var(--sodium-400); box-shadow: var(--shadow-lit); } .ds-vh { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }"
+    },
+    {
+      "name": "Zone Line",
+      "kind": "chip",
+      "refersTo": "zone-code",
+      "description": "A step's zone, set below its title: the code is data (Martian Mono, sodium), the place is a label (Atkinson). Never placed above a heading.",
+      "html": "<div class=\"ds-zone-step\"><span class=\"ds-zone-led\" aria-hidden=\"true\"></span><h3 class=\"ds-zone-title\">Door and window contacts</h3><p class=\"ds-zone\"><span class=\"ds-zone-code\">ZONE 1</span> <span class=\"ds-zone-place\">Front door</span></p><p class=\"ds-zone-text\">Magnetic contacts on doors and windows. Open one while the system is set and the alarm knows exactly which one.</p></div>",
+      "css": ".ds-zone-step { position: relative; max-width: 28rem; padding: 1.5rem 1.5rem 1.5rem 3rem; background: var(--night-900); } .ds-zone-led { position: absolute; left: 1.5rem; top: 1.95rem; width: 10px; height: 10px; border-radius: 3px; background: var(--sodium-500); box-shadow: 0 0 10px 1px var(--sodium-glow); } .ds-zone-title { margin: 0; font-family: var(--font-display); font-size: var(--step-1); font-stretch: 112%; font-weight: 720; letter-spacing: -0.012em; line-height: var(--leading-snug); color: var(--dusk-50); } .ds-zone { display: flex; flex-wrap: wrap; align-items: baseline; column-gap: 0.6em; margin: 0; padding-top: 0.4rem; font-size: var(--step--1); line-height: 1.4; } .ds-zone-code { font-family: var(--font-data); font-size: var(--step--2); font-stretch: 88%; font-weight: 460; letter-spacing: 0.02em; font-variant-numeric: tabular-nums; text-transform: uppercase; color: var(--sodium-500); } .ds-zone-place { font-family: var(--font-body); font-weight: 600; letter-spacing: 0.01em; color: var(--dusk-300); } .ds-zone-text { margin: 0; padding-top: 0.55rem; max-width: 40ch; font-family: var(--font-body); color: var(--dusk-200); }"
+    },
+    {
+      "name": "Lit Panel",
+      "kind": "card",
+      "refersTo": "lit-panel",
+      "description": "Floodlight white for dense reading, lit by a lamp at its top centre and falling off to the edges. On night it sits as a 20px panel with its shadow falling below.",
+      "html": "<div class=\"ds-lit-ground\"><section class=\"ds-lit\"><h2 class=\"ds-lit-h\">What we install and look after</h2><p class=\"ds-lit-p\">For homes, shops, offices, workshops and warehouses. New systems, or the one already on your wall. <a href=\"#\">See an upgrade</a></p></section></div>",
+      "css": ".ds-lit-ground { padding: 2.5rem 1.5rem 3.5rem; background: var(--night-900); } .ds-lit { max-width: 34rem; padding: 3rem; border-radius: var(--radius-lg); background-color: var(--flood-50); background-image: radial-gradient(1200px 820px at 50% -80px, var(--flood-0) 0%, var(--flood-50) 55%, var(--flood-100) 100%); color: var(--ink-900); color-scheme: light; box-shadow: 0 -1px 0 color-mix(in oklab, var(--flood-0) 50%, transparent) inset, 0 50px 90px -40px rgb(3 7 15 / 0.85); } .ds-lit-h { margin: 0; font-family: var(--font-display); font-size: var(--step-3); font-weight: 760; font-stretch: 118%; letter-spacing: -0.022em; line-height: 0.98; text-wrap: balance; } .ds-lit-p { margin: 1.5rem 0 0; max-width: 60ch; font-family: var(--font-body); font-size: var(--step-0); line-height: 1.6; color: var(--ink-700); } .ds-lit-p a { color: var(--sodium-800); text-decoration-color: rgb(154 75 0 / 0.4); text-underline-offset: 0.22em; transition: text-decoration-color var(--dur-fast) var(--ease-out); } .ds-lit-p a:hover { text-decoration-color: currentColor; } .ds-lit-p a:focus-visible { outline: 2px solid var(--night-900); outline-offset: 3px; border-radius: var(--radius-xs); }"
+    },
+    {
+      "name": "Service Index Row",
+      "kind": "custom",
+      "refersTo": "tag-for",
+      "description": "One zone of the lit, ruled service index: hardware glyph, name, body, \"for\" tags and a Burnt Sodium link. A cold floodlight pool lights the row under the pointer or keyboard focus.",
+      "html": "<div class=\"ds-svc-ground\"><h3 class=\"ds-svc-group\">Looking after them</h3><ul class=\"ds-svc-list\" role=\"list\"><li class=\"ds-svc\"><span class=\"ds-svc-icon\" aria-hidden=\"true\"><svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><rect x=\"7\" y=\"3\" width=\"10\" height=\"18\" rx=\"2.2\"/><path d=\"M10.5 18h3\"/><path class=\"ds-svc-lit\" d=\"M9.6 7.6h4.8\"/><path class=\"ds-svc-lit\" d=\"M9.6 10.6h3\"/><circle class=\"ds-svc-dot\" cx=\"16.6\" cy=\"4.1\" r=\"1.9\" stroke=\"none\"/></svg></span><h4 class=\"ds-svc-name\">HKC mobile app</h4><p class=\"ds-svc-for\"><span class=\"ds-svc-tag\">HKC systems</span></p><p class=\"ds-svc-body\">Control and check an HKC alarm from your phone.</p><a class=\"ds-svc-link\" href=\"#\"><span>See the app</span><svg viewBox=\"0 0 24 24\" width=\"18\" height=\"18\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M4.5 12h15\"/><path d=\"m13.5 6 6 6-6 6\"/></svg></a></li></ul></div>",
+      "css": ".ds-svc-ground { max-width: 44rem; padding: 2rem; background: var(--flood-50); color: var(--ink-900); } .ds-svc-group { margin: 0; padding-bottom: 1rem; border-bottom: 2px solid var(--ink-900); font-family: var(--font-display); font-size: clamp(1.55rem, 1.2rem + 1.4vw, 2.35rem); font-stretch: 112%; font-weight: 740; letter-spacing: -0.02em; line-height: 1.05; } .ds-svc-list { margin: 0; padding: 0; list-style: none; } .ds-svc { position: relative; isolation: isolate; display: grid; grid-template-columns: 3rem minmax(0, 1fr) auto; grid-template-areas: 'icon name for' '. body body' '. link link'; column-gap: 1.25rem; align-items: center; padding: 1.5rem 1rem; border-bottom: 1px solid var(--flood-300); } .ds-svc::before { content: ''; position: absolute; inset: 0; z-index: -1; background: radial-gradient(30rem 15rem at 30% 40%, var(--flood-0), color-mix(in srgb, var(--flood-0) 70%, transparent) 38%, transparent 72%), radial-gradient(12rem 8rem at 30% 40%, color-mix(in srgb, var(--sodium-300) 16%, transparent), transparent 70%), var(--flood-100); box-shadow: 0 1px 0 var(--flood-300), 0 16px 30px -22px color-mix(in srgb, var(--ink-900) 35%, transparent); opacity: 0; transition: opacity var(--dur-decay) var(--ease-out); } .ds-svc:hover::before, .ds-svc:focus-within::before { opacity: 1; transition-duration: var(--dur-trip); } .ds-svc-icon { grid-area: icon; display: grid; place-items: center; width: 3rem; height: 3rem; color: var(--ink-900); } .ds-svc-icon svg { width: 2.6rem; height: 2.6rem; overflow: visible; } .ds-svc-lit { transition: stroke var(--dur-decay) var(--ease-out); } .ds-svc:hover .ds-svc-lit, .ds-svc:focus-within .ds-svc-lit { stroke: var(--sodium-600); transition-duration: var(--dur-trip); } .ds-svc-dot { fill: var(--strobe-500); opacity: 0; transition: opacity var(--dur-decay) var(--ease-out); } .ds-svc:hover .ds-svc-dot, .ds-svc:focus-within .ds-svc-dot { opacity: 1; transition-duration: var(--dur-trip); } .ds-svc-name { grid-area: name; margin: 0; font-family: var(--font-display); font-size: clamp(1.2rem, 1rem + 0.7vw, 1.6rem); font-stretch: 112%; font-weight: 700; letter-spacing: -0.015em; line-height: 1.1; transition: translate var(--dur-decay) var(--ease-out); } .ds-svc:hover .ds-svc-name, .ds-svc:focus-within .ds-svc-name { translate: 0.3rem 0; transition-duration: var(--dur-med); } .ds-svc-for { grid-area: for; display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 0.4rem; margin: 0; } .ds-svc-tag { display: inline-flex; align-items: center; min-height: 1.75rem; padding: 0.1rem 0.6rem; border: 1px solid var(--flood-rule); border-radius: var(--radius-xs); background: color-mix(in srgb, var(--flood-0) 60%, transparent); color: var(--ink-700); font-family: var(--font-body); font-size: var(--step--2); font-weight: 650; letter-spacing: 0.01em; line-height: 1.2; white-space: nowrap; } .ds-svc-body { grid-area: body; margin: 0.75rem 0 0; max-width: 60ch; font-family: var(--font-body); line-height: 1.6; color: var(--ink-700); } .ds-svc-link { grid-area: link; justify-self: start; display: inline-flex; align-items: center; gap: 0.5rem; min-height: 44px; margin-top: 0.5rem; color: var(--sodium-800); font-family: var(--font-display); font-stretch: 108%; font-weight: 680; font-size: var(--step-0); text-decoration: underline; text-decoration-color: color-mix(in srgb, var(--sodium-800) 35%, transparent); text-underline-offset: 0.3em; transition: color var(--dur-fast), text-decoration-color var(--dur-fast) var(--ease-out); } .ds-svc-link svg { transition: translate var(--dur-med) var(--ease-out); } .ds-svc-link:hover { color: var(--ink-900); text-decoration-color: currentColor; } .ds-svc-link:hover svg { translate: 4px 0; } .ds-svc-link:active { translate: 0 1px; } .ds-svc-link:focus-visible { outline: 2px solid var(--night-900); outline-offset: 3px; border-radius: var(--radius-xs); }"
+    },
+    {
+      "name": "Street Voice",
+      "kind": "custom",
+      "description": "A review on the Reviews street: a verbatim quote with hanging marks, the reviewer ruled off below, and a 1px leader dropping to the building where the job was done. Focus or hover lights the leader.",
+      "html": "<div class=\"ds-voice-ground\"><figure class=\"ds-voice\" tabindex=\"0\"><blockquote class=\"ds-voice-q\"><p>I recently used Amptech to install an intruder alarm. The house has recently been updated and had no alarm previously. Amptech handled the whole thing. Neatly installed, would recommend.</p></blockquote><figcaption class=\"ds-voice-by\"><span class=\"ds-voice-name\">Brian W.</span><span class=\"ds-voice-place\">Clonsilla, Dublin</span><span class=\"ds-voice-src\">New intruder alarm · From amptech.ie</span></figcaption></figure><span class=\"ds-voice-post\" aria-hidden=\"true\"></span><span class=\"ds-voice-roof\" aria-hidden=\"true\"></span></div>",
+      "css": ".ds-voice-ground { max-width: 30rem; padding: 2rem 2rem 0; background: var(--night-900); } .ds-voice { --line: var(--night-700); margin: 0; border-radius: var(--radius-sm); } .ds-voice:hover, .ds-voice:focus-visible { --line: var(--sodium-500); } .ds-voice:focus-visible { outline: 2px solid var(--sodium-400); outline-offset: 10px; } .ds-voice-q { margin: 0; } .ds-voice-q p { position: relative; margin: 0; max-width: 26em; font-family: var(--font-body); font-size: clamp(1.0625rem, 1rem + 0.3vw, 1.1875rem); font-weight: 420; line-height: 1.5; color: var(--dusk-50); } .ds-voice-q p::before { content: '\\201C'; position: absolute; right: 100%; padding-right: 0.06em; color: var(--dusk-300); } .ds-voice-q p::after { content: '\\201D'; color: var(--dusk-300); } .ds-voice-by { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.2rem 0.65em; margin-top: 1.15rem; padding-bottom: 0.95rem; border-bottom: 1px solid var(--line); transition: border-color var(--dur-decay) var(--ease-out); } .ds-voice:hover .ds-voice-by, .ds-voice:focus-visible .ds-voice-by { transition-duration: var(--dur-trip); } .ds-voice-name { font-family: var(--font-display); font-size: var(--step-0); font-stretch: 112%; font-weight: 700; letter-spacing: -0.005em; color: var(--dusk-50); } .ds-voice-place { font-family: var(--font-body); font-size: var(--step--1); color: var(--dusk-200); } .ds-voice-src { flex-basis: 100%; font-family: var(--font-body); font-size: var(--step--1); color: var(--dusk-300); font-variant-caps: all-small-caps; letter-spacing: 0.045em; } .ds-voice-post { display: block; width: 1px; height: 2.25rem; margin-left: 30%; background: var(--night-700); } .ds-voice-ground:has(.ds-voice:hover, .ds-voice:focus-visible) .ds-voice-post { background: var(--sodium-500); } .ds-voice-roof { display: block; height: 3rem; margin: 0 -2rem; background: linear-gradient(to bottom, color-mix(in oklab, var(--pebble) 20%, var(--night-900)), var(--tarmac)); }"
+    },
+    {
+      "name": "Specimen Certificate",
+      "kind": "custom",
+      "description": "The end of the process cable run and the only paper in the world: a Certificate of Compliance marked Specimen, with ruled rows (numbers in mono, words in Atkinson) and an ink stamp.",
+      "html": "<div class=\"ds-cert-wall\"><figure class=\"ds-cert\"><div class=\"ds-cert-paper\"><p class=\"ds-cert-issuer\">Amptech</p><p class=\"ds-cert-title\">Certificate of Compliance</p><dl class=\"ds-cert-rows\"><div><dt>Certificate no.</dt><dd class=\"ds-cert-data\">000000</dd></div><div><dt>System</dt><dd>Intruder alarm</dd></div><div><dt>Standard</dt><dd class=\"ds-cert-data\">EN 50131-1</dd></div><div><dt>PSA licence</dt><dd class=\"ds-cert-data\">03019</dd></div></dl><span class=\"ds-cert-stamp\" aria-hidden=\"true\">Specimen</span></div><figcaption class=\"ds-cert-note\">Specimen shown for illustration. Not a real certificate.</figcaption></figure></div>",
+      "css": ".ds-cert-wall { padding: 2.5rem; background-color: var(--flood-50); background-image: radial-gradient(1200px 820px at 50% -80px, var(--flood-0) 0%, var(--flood-50) 55%, var(--flood-100) 100%); } .ds-cert { margin: 0; max-width: 340px; } .ds-cert-paper { position: relative; aspect-ratio: 1 / 1.3; padding: 2rem 1.75rem; border-radius: 3px; background: color-mix(in oklab, var(--tungsten) 12%, var(--flood-0)); outline: 1px solid color-mix(in oklab, var(--sodium-800) 45%, transparent); outline-offset: -10px; box-shadow: var(--shadow-flood); color: var(--ink-900); } .ds-cert-issuer { margin: 0; font-family: var(--font-display); font-stretch: 118%; font-weight: 780; font-size: 1rem; letter-spacing: 0.04em; text-transform: uppercase; } .ds-cert-title { margin: 0.35rem 0 1.25rem; font-family: var(--font-display); font-stretch: 108%; font-weight: 700; font-size: var(--step-1); line-height: 1.15; color: var(--sodium-800); } .ds-cert-rows { margin: 0; } .ds-cert-rows div { display: grid; gap: 0.1rem; padding: 0.55rem 0; border-top: 1px solid var(--flood-300); } .ds-cert-rows dt { font-family: var(--font-body); font-size: var(--step--2); font-weight: 650; color: var(--ink-500); } .ds-cert-rows dd { margin: 0; font-family: var(--font-body); font-size: var(--step--1); color: var(--ink-900); } .ds-cert-rows dd.ds-cert-data { font-family: var(--font-data); font-stretch: 88%; font-weight: 460; letter-spacing: 0.02em; font-variant-numeric: tabular-nums; } .ds-cert-stamp { position: absolute; right: 1.25rem; bottom: 1.5rem; display: grid; place-items: center; width: 84px; height: 84px; border: 3px double var(--sodium-800); border-radius: 50%; color: var(--sodium-800); font-family: var(--font-display); font-stretch: 112%; font-weight: 760; font-size: 0.7rem; letter-spacing: 0.08em; text-transform: uppercase; rotate: -12deg; opacity: 0.85; } .ds-cert-note { margin-top: 0.75rem; font-family: var(--font-body); font-size: var(--step--1); color: var(--ink-500); }"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Estate After Dark",
+    "overview": "The page is a Kildare housing estate at night, and light does the selling. Every colour is either a light source or a material you would see from the pavement after dark: sodium streetlights, cold LED floodlights, tungsten windows, the bell-box beacon, pebbledash, roof slate, wet tarmac. The site doesn't claim a house is protected. It shows it: sensors trip, floodlights snap on, a camera pans to follow, an alert lands on a phone. The direction contract rejects navy, shields, stock camera photos and a grid of service cards, and the build follows all four.\n\nTwo grounds alternate down the page. Night sections are transparent over one continuous sky painted on the body: dusk blue, a sodium streetlight cast every 1100px or so on alternating sides like lamps along a road, a low overcast lit orange from below, and fine grain, so consecutive sections never meet at a seam. Lit sections are cold floodlight white for dense reading, falling off from a lamp at their top centre. When motion is allowed they switch on as they arrive. Night is the default and sparse. Lit sections are dense and scannable.\n\nType is wide and structural: Archivo stretched 104–125% for headings and controls, like lettering on a van or a panel label. Atkinson Hyperlegible Next carries the reading, because many visitors are older homeowners on phones. Martian Mono appears only where a device would print a readout. Motion comes from one grammar borrowed from the hardware: trip, sweep, strobe, pan, cable. It is always optional. Content is visible by default, reduced motion gets the \"everything on\" end state, and a pause control in the header stops every loop.",
+    "keyCharacteristics": [
+      "One continuous night sky (lamps, overcast, grain) behind every night section; sections never meet at a seam.",
+      "Cold floodlight-white lit sections with a top-centre falloff, used for dense reading.",
+      "Sodium amber is the only warm accent; bell-box blue, alarm red and all-clear green are signals for state only.",
+      "Wide Archivo display, Atkinson Hyperlegible body, Martian Mono for readouts only.",
+      "Rounded-rectangle hardware geometry; shadows fall downward; only real light sources bloom.",
+      "Motion grammar of trip, sweep, strobe, pan and cable, gated on reduced motion and stopped by a page-wide pause control."
+    ],
+    "rules": [
+      {
+        "name": "The Light-Source Rule",
+        "body": "Every colour on the page is either a light or a material seen at night. If you can't name the lamp, LED, screen or surface a colour comes from, it doesn't belong.",
+        "section": "colors"
+      },
+      {
+        "name": "The One Warm Light Rule",
+        "body": "Sodium is the only warm accent. On night use sodium-500 or sodium-400. On floodlight white, sodium appears as text only in sodium-800.",
+        "section": "colors"
+      },
+      {
+        "name": "The Signal Rule",
+        "body": "Blue, red and green are LEDs that report state: blue for alerts, red for smoke and errors, green for all clear. Each has a night value and a flood value. They are never decoration and never a second brand colour.",
+        "section": "colors"
+      },
+      {
+        "name": "The Continuous Sky Rule",
+        "body": "Night sections are transparent over the body's sky, which is dusk blue with a sodium cast from above and overcast grain. Never paint a flat fill over it. A section that needs its own sky builds it from the same tokens, or from `color-mix()` with them.",
+        "section": "colors"
+      },
+      {
+        "name": "The Readout Rule",
+        "body": "Martian Mono sets only what a device would print: times, dates, zone and camera codes (Z1, CAM 1), licence and certificate numbers, coordinates, and a camera's own on-screen display. In \"Zone 1 · Front door\" the code is mono and the place is Atkinson. Labels such as \"Address\", \"All zones OK\" or a reviewer's job are never mono.",
+        "section": "typography"
+      },
+      {
+        "name": "The Wide Voice Rule",
+        "body": "Headings and controls are Archivo at width 104–125 and weight 680–820. Tracking stays between -0.03em and 0 (the wordmark alone is tracked open, at +0.04em). Never condensed, and never tighter than -0.04em.",
+        "section": "typography"
+      },
+      {
+        "name": "The Heading Carries Itself Rule",
+        "body": "Nothing sits above a section heading: no eyebrow, no kicker, no section number. A zone line sits below its step title, as data. Numbers appear only where order carries meaning, as in the process steps.",
+        "section": "typography"
+      },
+      {
+        "name": "The DOM Order Rule",
+        "body": "Reading order is tab order at every width. Layouts rearrange with grid areas and `display: contents`, never by moving content out of order.",
+        "section": "layout"
+      },
+      {
+        "name": "The 44px Rule",
+        "body": "Every target is at least 44px: buttons 52px, fields 52px, choice keys 48px, FAQ rows 76px, mobile menu links 56px, the pause and menu toggles 44px square.",
+        "section": "layout"
+      },
+      {
+        "name": "The Light From Above Rule",
+        "body": "Every dark shadow has a positive y offset and a negative spread. Nothing floats in a zero-offset halo, and nothing gets a hard offset shadow.",
+        "section": "elevation"
+      },
+      {
+        "name": "The Only Lights Bloom Rule",
+        "body": "Zero-offset glow belongs to real light sources: LEDs, lamps, screens and the floodlight. Text (including the phone number), buttons, panels, bars and hover states never glow.",
+        "section": "elevation"
+      },
+      {
+        "name": "The Arriving Sheet Rule",
+        "body": "A lift shadow may exist while something arrives (the certificate settling onto the wall) and fades once it lands.",
+        "section": "elevation"
+      },
+      {
+        "name": "The Hardware Corner Rule",
+        "body": "Controls take 8px and panels take 12–20px. No pills, and no square corners on UI.",
+        "section": "shapes"
+      }
+    ],
+    "dos": [
+      "**Do** leave night sections transparent over the body sky (lamps, overcast, grain), and build any local sky from the night and sodium tokens.",
+      "**Do** use a floodlight-white lit section, with its top-centre falloff, wherever the reading is dense: indexes, processes, questions, forms.",
+      "**Do** keep Sodium Streetlight as the only warm accent, and switch to Burnt Sodium (sodium-800) for sodium-coloured text on flood.",
+      "**Do** keep blue for alerts, red for smoke and errors and green for all clear, each in its night value (400/500) or its flood value (700).",
+      "**Do** set times, dates, zone and camera codes, licence and certificate numbers, coordinates and camera OSD in Martian Mono, and everything else in Atkinson or Archivo.",
+      "**Do** give each section one authored moment from the grammar (trip, sweep, strobe, pan, cable), and build it in idle time unless it pins.",
+      "**Do** keep content visible by default, and give reduced motion each illustration's \"everything on\" end state.",
+      "**Do** connect every continuous loop to the pause control, and stop it off-screen and in hidden tabs.",
+      "**Do** use the stated AA pairs: dusk-50, dusk-200 and dusk-300 on night, ink-900, ink-700 and ink-500 on flood, dusk-400 for hairline labels only.",
+      "**Do** give every control a 44px target and visible hover, focus-visible, active and disabled states.",
+      "**Do** draw new icons on the 24px grid with a 1.6 stroke and round caps and joins, from hardware the company fits."
+    ],
+    "donts": [
+      "**Don't** use navy-black grounds, flat fills, shields, stock camera photos or a grid of service cards.",
+      "**Don't** put an eyebrow, kicker or section number above a heading.",
+      "**Don't** glow anything that isn't a light source: no zero-offset halo on text, the phone number, buttons, panels, bars or hover states.",
+      "**Don't** use pills, square-cornered UI, hard offset shadows, glass or decorative blur, gradient text, or coloured border-left accents.",
+      "**Don't** fake hardware: no CSS screw heads, engraved or embossed plates, or brass.",
+      "**Don't** set labels in mono as a \"techy\" costume.",
+      "**Don't** hard-code UI colours or retired values such as `#070d19`, `#f6f5f0` or `#ecebe3`. Use the tokens, or `color-mix()` with them.",
+      "**Don't** use emoji or unicode glyphs as icons.",
+      "**Don't** pin, scrub, parallax, smooth-scroll or autoplay a loop under reduced motion."
+    ]
+  }
+}

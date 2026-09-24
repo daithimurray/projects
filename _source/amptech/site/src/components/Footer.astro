@@ -115,10 +115,9 @@ const letters = 'AMPTECH'.split('');
   .site-footer {
     position: relative;
     padding-block: var(--space-9) var(--space-6);
-    /* Deepest night, with the same overcast grain as the sections above */
-    background-color: var(--night-950);
-    background-image: var(--grain);
-    background-size: 220px 220px;
+    /* Under the same sky as the sections above (the page's body), settling
+       into deepest night by the small print: no hard edge where the footer starts */
+    background: linear-gradient(to bottom, transparent 0, color-mix(in srgb, var(--night-950) 55%, transparent) 240px, var(--night-950) 78%);
     color: var(--dusk-200);
     overflow: clip;
   }

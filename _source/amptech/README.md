@@ -6,7 +6,7 @@ A ground-up redesign of amptech.ie for Amptech, the trading name of Robert Farna
 - `PRODUCT.md`: product truth, the source every line of copy is checked against.
 - `dossier.md`: client research dossier (23 Sept 2026) plus the testimonials the client supplied. `PRODUCT.md` is derived from it.
 - `BUILD-SPEC.md`: design world, rules and motion grammar that the sections were built to.
-- `DESIGN.md`: the design system as built (written after the finish review).
+- `DESIGN.md` and `.impeccable/design.json`: the design system as built, written after the finish review from the shipped code.
 - `DEPLOY.md`: deploy runbook for a session with Vercel access, plus redirects for moving to amptech.ie.
 - `../../amptech/`: the compiled site, built for the `/amptech` path.
 
@@ -44,6 +44,19 @@ Node 22 or newer.
 6. **Company details in the footer**: company no. 501850 and Eircode W23 N226 come from SoloCheck, not a primary source. Irish company websites must show the registered name, number and office.
 7. **Brand assets**: the AMPTECH wordmark is authored for the pitch. Get the real logo files, plus the branded van photo, which is the strongest real asset for the About section.
 8. **Google reviews**: two written reviews are quoted, and each is shown as 5/5. Add the Google Business Profile link, and show a total or average only once the client confirms it.
+
+## Review record
+
+- **Six-lens review** (accessibility, performance, visual, motion, content, code), with each finding checked by a second, adversarial agent: 61 confirmed and fixed. A verification sweep then confirmed 19 more, all fixed.
+- **axe-core:** 0 WCAG 2.2 A/AA violations at 1440 and 390 wide, under reduced motion, and on the privacy page.
+- **Layout:** no horizontal overflow and no console errors at 320×640, 375×812, 768×1024, 1024×768, 1280×800, 1920×1080 or 844×390. The header fits at 320px with 44px targets.
+- **Performance:**
+  - LCP is the headline, or the lede on phones, at first paint (about 1.6s on throttled mobile).
+  - three.js (about 150 KB gzipped) loads only once the hero is near view, and never under reduced motion or save-data.
+  - The HTML is about 48 KB gzipped.
+- **Impeccable finish review.** The second verdict was "fix", with every material item resolved except the night sky, which was marked partial: the reviewer wants the overcast to read as amber under cloud, and it still reads as blue under warm cloud, because text contrast caps how warm it can go. The tile seam and the footer edge the reviewer found were fixed after that verdict, and the cloud was warmed further; that last batch hasn't been re-reviewed.
+- **Raster provenance:** every shipped image records that it's a render of the site's own three.js scene (`node ../../.claude/skills/impeccable/scripts/embed-prompt.mjs --scan site/public`).
+- **Not verified:** frame rate on real phones. The sandbox only has software WebGL, which is much slower than any real GPU. Check the hero and How it works on a mid-range Android before launch.
 
 ## Deliberately not on the site
 
