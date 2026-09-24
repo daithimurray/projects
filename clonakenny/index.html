@@ -50,12 +50,13 @@ THESIS: Ali's favourite colour, lilac, is the whole field; the farm's real flowe
 romance; a live WebGL dahlia (golden-angle phyllotaxis) proves "grown from seed" by growing in front of you.
 Refuses the cream-and-sage florist template (and v12's muted mauve template) and the dark-luxury opposite.
 OWN-WORLD: drenched lilac #C8A2C8, plum ink #2A1433, dusk #1B0E21 for immersive passages, studio purple
-#9C3D8E (the wall of the purple studio) as the one accent; Bodoni Moda display with romantic italics,
+#A23F78 (the wall of the purple studio) as the one accent; Bodoni Moda display with romantic italics,
 Hanken Grotesk text; photos framed as petals (two soft corners), bloom-from-centre reveals; pill buttons.
 STORY: wedding flowers grown and arranged by Liz and Ali; the season decides; couples love them; tell Ali
 about your day.
-FIRST VIEWPORT: lilac field, three-line Bodoni headline left, the dahlia blooming right at 70vh, "Enquire
-for your date" pill under the headline and the diary status beside it; scroll dives into the flower.
+FIRST VIEWPORT: lilac field, three-line Bodoni headline left, the dahlia blooming right at about two-thirds
+of the viewport height, "Enquire for your date" pill under the headline and the diary status under the
+pill; scroll dives into the flower.
 FORM: user-pinned brief (photo-led + immersive + lilac) over roll 6a3b6932.
 FINISH: unreviewed and undocumented is unfinished; this build ends with the finish review, the verdict, DESIGN.md, and every shipping raster carrying its provenance
 -->
@@ -210,7 +211,7 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
   <section class="year" id="year" aria-labelledby="year-title" data-bg="lilac">
     <div class="year__pin">
       <div class="year__visual">
-        <canvas class="year__canvas" aria-hidden="true"></canvas>
+        <div class="year__stage"><canvas class="year__canvas" aria-hidden="true"></canvas></div>
         <p class="year__label" aria-hidden="true">The flower is drawn live and illustrative. The words are what we grow.</p>
       </div>
       <div class="year__copy">
@@ -375,9 +376,10 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
             <input id="c-notes" name="notes" type="text" placeholder="Colours, numbers, a budget">
           </div>
         </div>
-        <div class="tag" aria-hidden="true">
-          <span class="tag__hole"></span>
-          <p class="tag__text" data-tag-text></p>
+        <div class="draft" aria-hidden="true">
+          <p class="draft__meta"><span>To</span> ali@clonakennyflowerfarm.com</p>
+          <p class="draft__meta"><span>Subject</span> <span data-draft-subject>Wedding enquiry</span></p>
+          <p class="draft__body" data-tag-text></p>
         </div>
         <div class="composer__send">
           <a class="btn" data-send="email" href="mailto:ali@clonakennyflowerfarm.com?subject=Wedding%20enquiry"><span>Email Ali</span></a>
@@ -392,7 +394,7 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
   <section class="visit" aria-labelledby="visit-title" data-bg="pale">
     <div class="wrap visit__grid">
       <div class="press">
-        <h2 class="press__title">As featured in</h2>
+        <h2 class="display press__title">As featured <em>in</em></h2>
         <ul class="press__list">
           <li><a href="https://www.farmersjournal.ie/life/gardening/a-blooming-legacy-handpicked-with-love-860902" rel="noopener" target="_blank"><span class="press__name">Irish Farmers Journal</span><span class="press__piece">A blooming legacy, handpicked with love</span></a></li>
           <li><a href="https://thegloss.ie/best-flower-farms-ireland/" rel="noopener" target="_blank"><span class="press__name">The Gloss</span><span class="press__piece">The best flower farms to visit in Ireland</span></a></li>

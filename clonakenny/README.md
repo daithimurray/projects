@@ -27,7 +27,7 @@ Asset paths are relative, so the page must be served at `/clonakenny/` **with** 
 - The flower year: the flower morphs seed → spring → early summer → dahlia → dried as you scroll,
   with the months rail filling in.
 - Enquiry: "Tell Ali about your day" builds an email (what they'd love, the feeling, date, venue,
-  names) shown live on a gift tag, then opens it in the visitor's mail app. Picking a date shows
+  names) shown live as the email draft, then opens it in the visitor's mail app. Picking a date shows
   what usually grows that month. Nothing is sent or stored by the site.
 - Reduced motion: no smooth scroll, no pinning, static flowers; all content stays visible.
 - No JavaScript: every section and review is readable; the email button opens a plain enquiry.
@@ -45,6 +45,11 @@ Asset paths are relative, so the page must be served at `/clonakenny/` **with** 
 - `img/bridal-bouquet.webp`: bride by a window with her bouquet. Supplied as a phone screenshot,
   cropped to the photo.
 - `img/dahlia-poster.webp`: the WebGL dahlia, rendered by `flower.js`.
+- `img/og.jpg`: share image (1200×630), a capture of the hero.
+
+The supplied files are small (they arrived through chat at 447–928px wide). The wide styling photo
+in particular is shown larger than its 790px source; replace it with Ali's original, at least 1600px
+wide, when available. Same file names, WebP, and the layout picks them up.
 
 v12's footer states "photography: Clonakenny Flower Farm's own". The three Ali-and-Liz shots look
 like the Irish Farmers Journal feature (March 2025); confirm the farm has the right to use them.

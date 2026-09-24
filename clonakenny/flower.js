@@ -153,9 +153,9 @@
     dahlia: {
       discCount: 0, rayCount: 270, ring: 0, discR: 0.34, dome: 0.6,
       lenIn: 0.22, lenOut: 1.24, lenCurve: 0.85, widIn: 0.13, widOut: 0.52,
-      tiltIn: 0.1, tiltOut: 1.72, tiltCurve: 1.05, cup: 0.5, curl: -0.14, tip: 2.4,
+      tiltIn: 0.1, tiltOut: 1.72, tiltCurve: 1.05, cup: 0.5, curl: -0.2, tip: 3.0,
       floretLen: 0.06, floretWid: 0.05, floretTilt: 1.2,
-      colBase: [0.28, 0.04, 0.3], colMid: [0.69, 0.42, 0.78], colTip: [0.93, 0.8, 0.95],
+      colBase: [0.16, 0.01, 0.2], colMid: [0.56, 0.26, 0.7], colTip: [0.94, 0.84, 0.97],
       colFloret: [0.5, 0.3, 0.5], colFloretTip: [0.7, 0.5, 0.7], rimCol: [1, 0.92, 1]
     },
     strawflower: {

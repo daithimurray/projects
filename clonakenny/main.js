@@ -222,7 +222,8 @@
      ------------------------------------------------------------------ */
   var form = $('[data-composer]');
   var tagText = $('[data-tag-text]');
-  var tag = $('.tag');
+  var draft = $('.draft');
+  var subjectEl = $('[data-draft-subject]');
   var seasonEl = $('[data-season]');
   function formatDate(value) {
     if (!value) return '';
@@ -265,13 +266,12 @@
     } else {
       seasonEl.hidden = true;
     }
+    subjectEl.textContent = subject;
     if (swing && motion) {
+      // The line being written dims for a beat, like ink settling.
+      draft.classList.add('is-writing');
       clearTimeout(swingT);
-      swingT = setTimeout(function () {
-        tag.classList.remove('is-swing');
-        void tag.offsetWidth;
-        tag.classList.add('is-swing');
-      }, 250);
+      swingT = setTimeout(function () { draft.classList.remove('is-writing'); }, 160);
     }
   }
   function setWant(value) {
@@ -326,6 +326,44 @@
       startX = null;
     });
   }
+
+  /* ------------------------------------------------------------------
+     Nav: colour follows whatever is under it (with or without motion)
+     ------------------------------------------------------------------ */
+  var nav = $('[data-nav]');
+  var bgSections = $$('[data-bg]');
+  var lastOffer = $('.offer:last-child');
+  var heroPin = null; // the hero's pin, once motion sets it up
+  function navTheme() {
+    var theme = 'light';
+    if (heroPin && heroPin.isActive) {
+      theme = heroPin.progress > 0.74 ? 'dark' : 'light';
+    } else {
+      for (var i = 0; i < bgSections.length; i++) {
+        var r = bgSections[i].getBoundingClientRect();
+        if (r.top <= 36 && r.bottom > 36) {
+          if (bgSections[i].classList.contains('hero')) theme = heroPin && heroPin.progress > 0.74 ? 'dark' : 'light';
+          else theme = bgSections[i].dataset.bg === 'dusk' ? 'dark' : 'light';
+          break;
+        }
+      }
+      var offersUnder = $$('.offer').filter(function (o) { var r = o.getBoundingClientRect(); return r.top <= 36 && r.bottom > 36; });
+      if (offersUnder.length) theme = offersUnder[offersUnder.length - 1] === lastOffer ? 'dark' : 'light';
+    }
+    if (nav.dataset.theme !== theme) nav.dataset.theme = theme;
+  }
+  function navSolid(y) {
+    nav.classList.toggle('is-solid', heroPin ? y > heroPin.end - 4 : y > window.innerHeight * 0.6);
+  }
+  if (!motion) {
+    var navQueued = false;
+    window.addEventListener('scroll', function () {
+      if (navQueued) return;
+      navQueued = true;
+      requestAnimationFrame(function () { navQueued = false; navTheme(); navSolid(window.scrollY); });
+    }, { passive: true });
+  }
+  navTheme();
 
   /* ------------------------------------------------------------------
      Everything below is scroll choreography: motion only.
@@ -536,34 +574,14 @@
   });
   ST.create({ trigger: '.hero', start: 'top top', end: 'bottom 55%', onToggle: function (self) { if (self.isActive) setBg('lilac'); } });
 
-  /* Nav: colour follows whatever is under it; hides on the way down, returns on the way up */
-  var nav = $('[data-nav]');
-  var bgSections = $$('[data-bg]');
-  var heroPin = heroTl.scrollTrigger;
-  function navTheme() {
-    var theme = 'light';
-    if (heroPin && heroPin.isActive) {
-      theme = heroPin.progress > 0.74 ? 'dark' : 'light';
-    } else {
-      for (var i = 0; i < bgSections.length; i++) {
-        var r = bgSections[i].getBoundingClientRect();
-        if (r.top <= 36 && r.bottom > 36) {
-          if (bgSections[i].classList.contains('hero')) theme = heroPin && heroPin.progress > 0.74 ? 'dark' : 'light';
-          else theme = bgSections[i].dataset.bg === 'dusk' ? 'dark' : 'light';
-          break;
-        }
-      }
-      var offersUnder = $$('.offer').filter(function (o) { var r = o.getBoundingClientRect(); return r.top <= 36 && r.bottom > 36; });
-      if (offersUnder.length) theme = offersUnder[offersUnder.length - 1] === $('.offer:last-child') ? 'dark' : 'light';
-    }
-    if (nav.dataset.theme !== theme) nav.dataset.theme = theme;
-  }
+  /* Nav: hides on the way down, returns on the way up */
+  heroPin = heroTl.scrollTrigger;
   ST.create({
     start: 0, end: 'max',
     onUpdate: function (self) {
       var y = self.scroll();
-      nav.classList.toggle('is-solid', heroPin ? y > heroPin.end - 4 : y > window.innerHeight);
-      if (!document.body.classList.contains('menu-open')) nav.classList.toggle('is-hidden', self.direction === 1 && y > (heroPin ? heroPin.end + window.innerHeight * 0.6 : window.innerHeight * 2));
+      navSolid(y);
+      if (!document.body.classList.contains('menu-open')) nav.classList.toggle('is-hidden', self.direction === 1 && y > heroPin.end + window.innerHeight * 0.6);
       navTheme();
     }
   });
