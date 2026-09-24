@@ -1,6 +1,7 @@
 ---
-// Process: a floodlit wall. A cable is run and clipped from step to step and
-// ends at a specimen Certificate of Compliance, which is stamped as it arrives.
+// Process: a floodlit wall. Amptech's own policy opens it; a cable is run and
+// clipped from step to step, each junction block's LED lighting as the cable
+// reaches it, and it ends at a specimen Certificate of Compliance, stamped as it arrives.
 import Icon from './Icon.astro';
 import { process, processDemo, company, hero } from '../data/content.js';
 
@@ -11,6 +12,10 @@ const withPhoneLink = (text) =>
 
 // Guilloche border, drawn once at build time as a 9-slice tile for border-image:
 // 16px corners and edges, fine interlaced waves that repeat seamlessly.
+// It is an image, so CSS custom properties can't reach it: the two inks are
+// the literal values of --sodium-800 (#9a4b00) and --ink-500 (#56627a).
+const INK_SODIUM = '#9a4b00';
+const INK_GREY = '#56627a';
 const n1 = (v) => v.toFixed(1);
 const wave = (axis, off, phase, amp, freq) => {
   let d = '';
@@ -22,11 +27,11 @@ const wave = (axis, off, phase, amp, freq) => {
   return d;
 };
 const waves = [
-  [0, 4.4, 1, '#9a4b00', 0.55],
-  [(Math.PI * 2) / 3, 4.4, 1, '#56627a', 0.5],
-  [(Math.PI * 4) / 3, 4.4, 1, '#9a4b00', 0.55],
-  [0, 2.2, 2, '#56627a', 0.35],
-  [Math.PI, 2.2, 2, '#56627a', 0.35],
+  [0, 4.4, 1, INK_SODIUM, 0.55],
+  [(Math.PI * 2) / 3, 4.4, 1, INK_GREY, 0.5],
+  [(Math.PI * 4) / 3, 4.4, 1, INK_SODIUM, 0.55],
+  [0, 2.2, 2, INK_GREY, 0.35],
+  [Math.PI, 2.2, 2, INK_GREY, 0.35],
 ];
 let tile = '';
 for (const [axis, off] of [['h', 0], ['h', 32], ['v', 0], ['v', 32]]) {
@@ -46,13 +51,14 @@ const rosettes = [
 ]
   .map(([x, y]) => `<circle cx="${x}" cy="${y}" r="3.6"/><circle cx="${x}" cy="${y}" r="1.4"/>`)
   .join('');
-const borderSvg = `<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48"><g fill="none" stroke-width=".55">${tile}</g><path d="${rules}" fill="none" stroke="#56627a" stroke-opacity=".6" stroke-width=".7"/><g fill="none" stroke="#9a4b00" stroke-opacity=".6" stroke-width=".7">${rosettes}</g></svg>`;
+const borderSvg = `<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48"><g fill="none" stroke-width=".55">${tile}</g><path d="${rules}" fill="none" stroke="${INK_GREY}" stroke-opacity=".6" stroke-width=".7"/><g fill="none" stroke="${INK_SODIUM}" stroke-opacity=".6" stroke-width=".7">${rosettes}</g></svg>`;
 const borderUrl = `url("data:image/svg+xml,${encodeURIComponent(borderSvg)}")`;
 
-// Paper grain: fine fibre noise, multiplied onto the sheet.
+// Paper grain: fine warm fibre noise, multiplied onto the sheet.
 const grainSvg = `<svg xmlns="http://www.w3.org/2000/svg" width="220" height="220"><filter id="g"><feTurbulence type="fractalNoise" baseFrequency=".8" numOctaves="3" seed="9" stitchTiles="stitch"/><feColorMatrix values="0 0 0 0 .32  0 0 0 0 .28  0 0 0 0 .2  .42 0 0 0 -.17"/></filter><rect width="220" height="220" filter="url(#g)"/></svg>`;
 const grainUrl = `url("data:image/svg+xml,${encodeURIComponent(grainSvg)}")`;
 
+// Only numbers and codes are data (Martian Mono); names and words stay in the body face.
 const hasDigits = (v) => /\d/.test(v);
 const ringText = Array(3).fill(processDemo.stampRing.toUpperCase()).join(' · ') + ' · ';
 ---
@@ -63,23 +69,28 @@ const ringText = Array(3).fill(processDemo.stampRing.toUpperCase()).join(' · ')
   data-lit-reveal
   aria-labelledby="process-title"
   data-process
-  style={`--guilloche: ${borderUrl}; --grain: ${grainUrl};`}
+  style={`--guilloche: ${borderUrl}; --paper-grain: ${grainUrl};`}
 >
   <div class="container">
     <header class="process__head">
-      <h2 id="process-title" class="h-section">{process.title}</h2>
-      <p class="lede">{process.lede}</p>
+      <div class="process__intro">
+        <h2 id="process-title" class="h-section">{process.title}</h2>
+        <p class="lede">{process.lede}</p>
+      </div>
+      <!-- The client's own words, set as a signed statement -->
+      <figure class="policy" data-policy>
+        <blockquote class="policy__quote">
+          <p>{process.policy}</p>
+        </blockquote>
+        <figcaption class="policy__cite">
+          <span class="policy__rule" data-policy-rule aria-hidden="true"></span>
+          <span>{process.policyCite}</span>
+        </figcaption>
+      </figure>
     </header>
 
     <div class="process__stage" data-stage>
       <svg class="cable" data-cable aria-hidden="true" focusable="false">
-        <defs>
-          <radialGradient id="proc-tip-glow">
-            <stop offset="0" stop-color="#ffc27a" stop-opacity=".95"></stop>
-            <stop offset=".35" stop-color="#ff9e3d" stop-opacity=".45"></stop>
-            <stop offset="1" stop-color="#ff9e3d" stop-opacity="0"></stop>
-          </radialGradient>
-        </defs>
         <g class="cable__shadow" transform="translate(1.5 3.2)">
           <path data-seg="a"></path>
           <path data-seg="b"></path>
@@ -93,20 +104,15 @@ const ringText = Array(3).fill(processDemo.stampRing.toUpperCase()).join(' · ')
           <path data-seg="b"></path>
         </g>
         <g data-clips></g>
-        <g class="cable__tip" data-tip visibility="hidden">
-          <circle r="16" fill="url(#proc-tip-glow)"></circle>
-          <circle r="3.2" fill="#ffd49a"></circle>
-        </g>
       </svg>
 
       <ol class="run" role="list" data-run>
         {
           process.steps.map((step, i) => (
             <li class="step">
-              <span class="node" data-node>
-                <span class="node__screw" aria-hidden="true" />
-                <span class="node__num data">{pad(i + 1)}</span>
-                <span class="node__screw" aria-hidden="true" />
+              <span class="node" data-node aria-hidden="true">
+                <span class="node__led" />
+                <span class="node__num">{pad(i + 1)}</span>
               </span>
               <div class="step__text">
                 <h3 class="step__title">{step.title}</h3>
@@ -124,7 +130,7 @@ const ringText = Array(3).fill(processDemo.stampRing.toUpperCase()).join(' · ')
               <div class="cert__border" aria-hidden="true"></div>
               <p class="cert__watermark" aria-hidden="true">{process.certificate.specimen}</p>
               <div class="cert__body">
-                <p class="cert__issuer">{company.legalName}</p>
+                <p class="cert__issuer">{company.name}</p>
                 <p class="cert__title">{process.certificate.title}</p>
                 <dl class="cert__rows">
                   {
@@ -145,6 +151,7 @@ const ringText = Array(3).fill(processDemo.stampRing.toUpperCase()).join(' · ')
                   </svg>
                   <p>{processDemo.signature}</p>
                 </div>
+                <p class="cert__legal">{company.tradingAs}</p>
               </div>
               <div class="cert__stamp" data-stamp aria-hidden="true">
                 <svg viewBox="0 0 120 120" focusable="false">
@@ -193,44 +200,100 @@ const ringText = Array(3).fill(processDemo.stampRing.toUpperCase()).join(' · ')
 </section>
 
 <style>
-  /* The wall: floodlight from above, falling off toward the corners */
+  /* The wall is the page's floodlit ground (base.css: a lamp at the top centre,
+     falling off to the edges). This section only adds what's fixed to it. */
   .process {
-    --cable: #2b3140;
+    --cable: color-mix(in oklab, var(--ink-900) 86%, var(--flood-300));
     --node-w: 60px;
     --node-h: 34px;
     --col-node: 52px;
     --step-gap: clamp(2.5rem, 6vw, 3.5rem);
+    /* Certificate paper: warm, because it's paper under a cold lamp */
+    --paper: color-mix(in oklab, var(--flood-0) 93%, var(--tungsten));
     overflow: clip;
-    background:
-      radial-gradient(110% 60% at 50% 0%, var(--flood-0) 0%, rgb(255 255 255 / 0) 70%),
-      linear-gradient(to bottom, var(--flood-50), var(--flood-100));
   }
 
+  /* ---------- Head: the title, and the company's policy in its own words ---------- */
   .process__head {
     display: grid;
-    gap: var(--space-5);
+    gap: var(--space-7);
   }
-  .process__head .lede {
+  .process__intro .lede {
+    margin-top: var(--space-5);
+    max-width: 26ch;
+  }
+  @media (min-width: 1000px) {
+    .process__head {
+      grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+      align-items: start;
+      column-gap: clamp(3rem, 7vw, 7.5rem);
+    }
+  }
+
+  .policy {
+    margin: 0;
+    max-width: 36rem;
+  }
+  @media (min-width: 1000px) {
+    .policy {
+      justify-self: end;
+      /* First line level with the heading's cap height */
+      padding-top: 0.5rem;
+    }
+  }
+  .policy__quote {
+    margin: 0;
+  }
+  .policy__quote p {
+    position: relative;
+    font-family: var(--font-display);
+    font-size: clamp(1.3rem, 1.08rem + 0.85vw, 1.85rem);
+    font-stretch: 104%;
+    font-weight: 500;
+    letter-spacing: -0.012em;
+    line-height: 1.32;
+    color: var(--ink-900);
+    text-wrap: pretty;
+  }
+  /* Hanging quotation marks, so the words start flush with the column */
+  .policy__quote p::before {
+    content: '\201C';
+    position: absolute;
+    right: 100%;
+    margin-right: 0.08em;
+    color: var(--sodium-800);
+    font-weight: 780;
+  }
+  .policy__quote p::after {
+    content: '\201D';
+    color: var(--sodium-800);
+    font-weight: 780;
+  }
+  /* The sign-off: a short signature rule, then whose words these are */
+  .policy__cite {
+    display: flex;
+    align-items: center;
+    gap: var(--space-4);
+    margin-top: var(--space-5);
+    font-size: var(--step--1);
+    font-weight: 700;
+    letter-spacing: 0.01em;
     color: var(--ink-700);
   }
-  @media (min-width: 1100px) {
-    .process__head {
-      grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
-      align-items: end;
-      column-gap: var(--space-7);
-    }
-    .process__head .lede {
-      justify-self: end;
-      max-width: 24ch;
-      padding-bottom: 0.4em;
-    }
+  .policy__rule {
+    flex: none;
+    width: 2.75rem;
+    height: 1.5px;
+    border-radius: 1px;
+    background: var(--ink-900);
+    transform-origin: 0 50%;
   }
 
   .process__stage {
     position: relative;
     display: grid;
     row-gap: clamp(5.5rem, 9vw, 8rem);
-    margin-top: clamp(3.5rem, 7vw, 6.5rem);
+    margin-top: clamp(4rem, 8vw, 7rem);
   }
 
   /* ---------- Cable (SVG, drawn by the script) ---------- */
@@ -248,7 +311,7 @@ const ringText = Array(3).fill(processDemo.stampRing.toUpperCase()).join(' · ')
     stroke-linejoin: round;
   }
   .cable__shadow {
-    stroke: rgb(12 22 40 / 0.13);
+    stroke: color-mix(in srgb, var(--ink-900) 13%, transparent);
     stroke-width: 6.5;
   }
   .cable__core {
@@ -256,16 +319,28 @@ const ringText = Array(3).fill(processDemo.stampRing.toUpperCase()).join(' · ')
     stroke-width: 4.6;
   }
   .cable__hi {
-    stroke: #7a8397;
+    stroke: color-mix(in oklab, var(--ink-500) 70%, var(--flood-300));
     stroke-width: 1.1;
     stroke-opacity: 0.8;
   }
+  /* Cable clips: white plastic saddles nailed to the wall */
   .cable :global(.clip) {
     transform-box: fill-box;
     transform-origin: center;
     transition:
       transform var(--dur-med) var(--ease-out),
       opacity var(--dur-fast) var(--ease-out);
+  }
+  .cable :global(.clip__shadow) {
+    fill: color-mix(in srgb, var(--ink-900) 12%, transparent);
+  }
+  .cable :global(.clip__body) {
+    fill: var(--flood-0);
+    stroke: var(--flood-300);
+    stroke-width: 0.9;
+  }
+  .cable :global(.clip__pin) {
+    fill: var(--ink-500);
   }
   [data-cable='live'] .cable :global(.clip:not(.is-on)) {
     transform: scale(0.2);
@@ -324,88 +399,82 @@ const ringText = Array(3).fill(processDemo.stampRing.toUpperCase()).join(' · ')
     white-space: nowrap;
   }
 
-  /* Terminal block: a nylon block with two brass screw terminals */
+  /* Junction block: a moulded box on the cable run, its LED lit once the cable reaches it */
   .node {
     position: relative;
     grid-column: 1;
     justify-self: center;
     display: inline-flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: center;
+    gap: 9px;
     width: var(--node-w);
     height: var(--node-h);
-    padding: 0 6px;
-    border: 1px solid var(--sodium-400);
+    border: 1px solid var(--night-900);
     border-radius: var(--radius-sm);
-    background: var(--sodium-500);
-    color: var(--night-950);
+    background: linear-gradient(to bottom, var(--night-700), var(--night-800) 70%);
+    color: var(--dusk-50);
     box-shadow:
-      inset 0 1px 0 rgb(255 255 255 / 0.55),
-      var(--shadow-lit);
-    transition:
-      background-color var(--dur-decay) var(--ease-out),
-      border-color var(--dur-decay) var(--ease-out),
-      color var(--dur-decay) var(--ease-out),
-      box-shadow var(--dur-decay) var(--ease-out);
+      inset 0 1px 0 rgb(255 255 255 / 0.12),
+      var(--shadow-flood);
   }
   .node__num {
-    font-size: 12px;
-    font-weight: 620;
-    letter-spacing: 0.04em;
+    font-family: var(--font-display);
+    font-size: 13px;
+    font-stretch: 112%;
+    font-weight: 720;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: 0.02em;
     line-height: 1;
+    transition: color var(--dur-decay) var(--ease-out);
   }
-  .node__screw {
-    position: relative;
-    width: 11px;
-    height: 11px;
-    border-radius: 50%;
-    background: radial-gradient(circle at 35% 30%, #fbf6ea, #c9bfa6 55%, #8f856f);
-    box-shadow: 0 1px 1px rgb(12 22 40 / 0.35);
-  }
-  .node__screw::after {
-    content: '';
-    position: absolute;
-    left: 1.5px;
-    right: 1.5px;
-    top: 50%;
-    height: 1.4px;
-    margin-top: -0.7px;
-    background: #6d6452;
-    transform: rotate(-38deg);
-  }
-  .node__screw:last-child::after {
-    transform: rotate(24deg);
-  }
-  /* Before the cable arrives: an unlit block */
-  [data-cable='live'] .node:not(.is-live) {
-    border-color: var(--flood-300);
-    background: var(--flood-0);
-    color: var(--ink-500);
+  /* The LED is a light source, so it may bloom */
+  .node__led {
+    flex: none;
+    width: 8px;
+    height: 8px;
+    border-radius: 2.5px;
+    background: var(--sodium-500);
     box-shadow:
-      inset 0 1px 0 #fff,
-      0 1px 1px rgb(12 22 40 / 0.08),
-      0 8px 14px -8px rgb(12 22 40 / 0.35);
+      0 0 8px 1px var(--sodium-glow),
+      0 0 2px var(--sodium-300);
+    transition:
+      background-color var(--dur-decay) var(--ease-out),
+      box-shadow var(--dur-decay) var(--ease-out);
   }
-  /* Trip: fast attack, slow decay */
-  .node.is-live {
+  /* Before the cable arrives: LED off, number dim */
+  [data-cable='live'] .node:not(.is-live) .node__led {
+    background: var(--night-600);
+    box-shadow: inset 0 1px 1px rgb(3 7 15 / 0.55);
+  }
+  [data-cable='live'] .node:not(.is-live) .node__num {
+    color: var(--dusk-300);
+  }
+  /* Trip: fast attack, a flicker, slow settle */
+  .node.is-live .node__led,
+  .node.is-live .node__num {
     transition-duration: 90ms;
   }
   @media (prefers-reduced-motion: no-preference) {
-    [data-cable='live'] .node.is-live {
-      animation: node-trip 640ms linear;
+    [data-cable='live'] .node.is-live .node__led {
+      animation: node-trip 700ms linear;
     }
   }
   @keyframes node-trip {
-    0% { filter: brightness(1.35); }
-    10% { filter: brightness(0.92); }
-    22% { filter: brightness(1.18); }
+    0% { filter: brightness(1.7); }
+    8% { filter: brightness(0.6); }
+    18% { filter: brightness(1.35); }
     100% { filter: brightness(1); }
+  }
+  /* Paused (WCAG 2.2.2): no flicker left frozen mid-blink */
+  :global(.motion-paused) .node__led {
+    animation: none !important;
   }
 
   /* ---------- Desktop: a run across the width, text either side of the cable ---------- */
   @media (min-width: 1100px) {
     .process {
-      --node-w: 64px;
+      --node-w: 66px;
       --node-h: 36px;
       --cable-row: 92px;
     }
@@ -452,7 +521,7 @@ const ringText = Array(3).fill(processDemo.stampRing.toUpperCase()).join(' · ')
       left: 50%;
       width: 1px;
       height: 28px;
-      background: rgb(86 98 122 / 0.45);
+      background: color-mix(in srgb, var(--ink-500) 45%, transparent);
     }
     .step:nth-child(odd) .node::before { bottom: calc(100% + 4px); }
     .step:nth-child(even) .node::before { top: calc(100% + 4px); }
@@ -539,7 +608,7 @@ const ringText = Array(3).fill(processDemo.stampRing.toUpperCase()).join(' · ')
     position: absolute;
     inset: 6% 5% 2%;
     border-radius: 6px;
-    box-shadow: 0 54px 70px -24px rgb(12 22 40 / 0.5);
+    box-shadow: 0 54px 70px -24px color-mix(in srgb, var(--ink-900) 50%, transparent);
     opacity: var(--lift);
     pointer-events: none;
   }
@@ -550,17 +619,17 @@ const ringText = Array(3).fill(processDemo.stampRing.toUpperCase()).join(' · ')
     display: flex;
     flex-direction: column;
     border-radius: 3px;
-    background-color: var(--flood-0);
+    background-color: var(--paper);
     background-image:
-      linear-gradient(162deg, rgb(255 255 255 / 0) 55%, rgb(86 72 40 / 0.05) 100%),
-      var(--grain);
+      linear-gradient(162deg, transparent 55%, color-mix(in srgb, var(--tungsten) 16%, transparent) 100%),
+      var(--paper-grain);
     background-size: auto, 220px 220px;
     transform: rotate(-0.8deg);
     box-shadow:
-      0 0 0 1px rgb(12 22 40 / 0.04),
-      0 1px 1px rgb(12 22 40 / 0.1),
-      0 4px 8px -3px rgb(12 22 40 / 0.14),
-      0 22px 34px -18px rgb(12 22 40 / 0.34);
+      0 0 0 1px color-mix(in srgb, var(--ink-900) 5%, transparent),
+      0 1px 1px color-mix(in srgb, var(--ink-900) 10%, transparent),
+      0 4px 8px -3px color-mix(in srgb, var(--ink-900) 14%, transparent),
+      0 22px 34px -18px color-mix(in srgb, var(--ink-900) 34%, transparent);
   }
   .cert__border {
     position: absolute;
@@ -569,22 +638,23 @@ const ringText = Array(3).fill(processDemo.stampRing.toUpperCase()).join(' · ')
     border-image: var(--guilloche) 16 / 16px round;
     pointer-events: none;
   }
+  /* Overprinted across the free band between the entries and the signature */
   .cert__watermark {
     position: absolute;
     left: 50%;
-    top: 60%;
+    top: 69.5%;
     translate: -50% -50%;
-    rotate: -30deg;
+    rotate: -6deg;
     font-family: var(--font-display);
     font-stretch: 116%;
     font-weight: 820;
-    font-size: 12cqi;
+    font-size: 10cqi;
     letter-spacing: 0.07em;
     text-transform: uppercase;
     line-height: 1;
     white-space: nowrap;
-    color: rgb(154 75 0 / 0.1);
-    -webkit-text-stroke: 1.2px rgb(154 75 0 / 0.42);
+    color: color-mix(in srgb, var(--sodium-800) 10%, transparent);
+    -webkit-text-stroke: 1.2px color-mix(in srgb, var(--sodium-800) 42%, transparent);
     pointer-events: none;
     user-select: none;
   }
@@ -594,20 +664,20 @@ const ringText = Array(3).fill(processDemo.stampRing.toUpperCase()).join(' · ')
     display: flex;
     flex: 1;
     flex-direction: column;
-    padding: 12.5cqi 11cqi 11cqi;
+    padding: 12cqi 11cqi 10cqi;
     color: var(--ink-900);
   }
   .cert__issuer {
     font-family: var(--font-display);
     font-stretch: 125%;
     font-weight: 800;
-    font-size: clamp(0.72rem, 3.1cqi, 0.9rem);
-    letter-spacing: 0.1em;
+    font-size: clamp(0.78rem, 3.4cqi, 0.95rem);
+    letter-spacing: 0.14em;
     text-transform: uppercase;
     color: var(--ink-700);
   }
   .cert__title {
-    margin-top: 2.6cqi;
+    margin-top: 2.2cqi;
     max-width: 11ch;
     font-family: var(--font-display);
     font-stretch: 112%;
@@ -618,23 +688,23 @@ const ringText = Array(3).fill(processDemo.stampRing.toUpperCase()).join(' · ')
     text-wrap: balance;
   }
   .cert__rows {
-    margin-top: 6cqi;
-    padding-top: 3.2cqi;
-    border-top: 3px double rgb(12 22 40 / 0.3);
-    font-size: clamp(0.8rem, 3.8cqi, 1rem);
+    margin-top: 5cqi;
+    padding-top: 2.6cqi;
+    border-top: 3px double color-mix(in srgb, var(--ink-900) 30%, transparent);
+    font-size: clamp(0.8rem, 3.7cqi, 0.98rem);
   }
   .cert__row {
     display: grid;
     grid-template-columns: auto minmax(1rem, 1fr) auto;
     align-items: baseline;
     gap: 2cqi;
-    padding-block: 1.55cqi;
+    padding-block: 1.25cqi;
   }
   .cert__row::after {
     content: '';
     grid-column: 2;
     grid-row: 1;
-    border-bottom: 1.5px dotted rgb(44 58 85 / 0.45);
+    border-bottom: 1.5px dotted color-mix(in srgb, var(--ink-700) 45%, transparent);
     transform: translateY(-0.28em);
   }
   .cert__row dt {
@@ -653,35 +723,44 @@ const ringText = Array(3).fill(processDemo.stampRing.toUpperCase()).join(' · ')
   }
   .cert__sign {
     margin-top: auto;
-    padding-top: 6cqi;
-    width: 62%;
+    padding-top: 4cqi;
+    width: 60%;
   }
   .cert__signature {
     width: 100%;
     height: auto;
     margin-bottom: -1.5cqi;
     fill: none;
-    stroke: #1d2b4f;
+    /* Blue-black ink */
+    stroke: color-mix(in oklab, var(--ink-900) 72%, var(--strobe-500));
     stroke-width: 1.7;
     stroke-linecap: round;
     stroke-linejoin: round;
   }
   .cert__sign p {
-    padding-top: 1.6cqi;
-    border-top: 1px solid rgb(12 22 40 / 0.55);
+    padding-top: 1.4cqi;
+    border-top: 1px solid color-mix(in srgb, var(--ink-900) 55%, transparent);
     font-size: clamp(0.72rem, 2.9cqi, 0.85rem);
     color: var(--ink-700);
+  }
+  /* The registered name, in the small print at the foot of the sheet */
+  .cert__legal {
+    margin-top: 3.4cqi;
+    max-width: 34ch;
+    font-size: clamp(0.66rem, 2.6cqi, 0.76rem);
+    line-height: 1.35;
+    color: var(--ink-500);
   }
 
   /* Rubber stamp, in sodium ink */
   .cert__stamp {
     position: absolute;
     z-index: 2;
-    top: 8%;
-    right: 8.5%;
-    width: 27%;
+    top: 6.5%;
+    right: 7%;
+    width: 25%;
     aspect-ratio: 1;
-    color: #9a4b00;
+    color: var(--sodium-800);
     transform: rotate(-9deg);
     mix-blend-mode: multiply;
     pointer-events: none;
@@ -726,12 +805,14 @@ const ringText = Array(3).fill(processDemo.stampRing.toUpperCase()).join(' · ')
 </style>
 
 <script>
-  import { boot, gsap, ScrollTrigger, motionOK } from '../scripts/motion.js';
+  import { boot, gsap, ScrollTrigger, motionOK, later } from '../scripts/motion.js';
 
   boot();
 
   const section = document.querySelector('[data-process]');
-  if (section) initProcess(section);
+  // Not critical to first paint: until the cable is built, the plain CSS run
+  // (every block lit) stands in, which is also what shows with JS off.
+  if (section) later(() => initProcess(section));
 
   function initProcess(root) {
     const stage = root.querySelector('[data-stage]');
@@ -745,7 +826,6 @@ const ringText = Array(3).fill(processDemo.stampRing.toUpperCase()).join(' · ')
     const segA = [...svg.querySelectorAll('[data-seg="a"]')];
     const segB = [...svg.querySelectorAll('[data-seg="b"]')];
     const clipsG = svg.querySelector('[data-clips]');
-    const tip = svg.querySelector('[data-tip]');
 
     // Layout position relative to the stage, ignoring transforms (the sheet moves).
     const posIn = (el) => {
@@ -763,7 +843,7 @@ const ringText = Array(3).fill(processDemo.stampRing.toUpperCase()).join(' · ')
     };
     const r1 = (v) => Math.round(v * 10) / 10;
 
-    let geo = { nodeFrac: [], clips: [], lenA: 1, lenB: 1 };
+    const geo = { nodeFrac: [], clips: [], lenA: 1, lenB: 1 };
     let progA = 0;
     let progB = 0;
 
@@ -778,13 +858,18 @@ const ringText = Array(3).fill(processDemo.stampRing.toUpperCase()).join(' · ')
       }
     };
 
+    // Several refreshes run while the page settles; only redraw when the layout moved.
+    let builtFor = '';
     function build(wide) {
       const W = stage.offsetWidth;
       const H = stage.offsetHeight;
-      svg.setAttribute('viewBox', `0 0 ${W} ${H}`);
       const pts = nodes.map(center);
       const pp = posIn(paper);
       const sc = center(stamp);
+      const key = [wide, W, H, pp.y, sc.x, ...pts.map((p) => `${p.x},${p.y}`)].join('|');
+      if (key === builtFor) return paint();
+      builtFor = key;
+      svg.setAttribute('viewBox', `0 0 ${W} ${H}`);
       const end = pp.y - 3;
       const R = wide ? 30 : 22;
       const clips = [];
@@ -810,7 +895,7 @@ const ringText = Array(3).fill(processDemo.stampRing.toUpperCase()).join(' · ')
           clipsAlong(clips, 'a', xs[i], next, true, xs[i] - x0, lenA, xs);
         }
         clipsAlong(clips, 'b', y + R, end, false, arc, lenB);
-        clips.forEach((c) => (c.x = c.horizontal ? c.t : sc.x, c.y = c.horizontal ? y : c.t));
+        clips.forEach((c) => ((c.x = c.horizontal ? c.t : sc.x), (c.y = c.horizontal ? y : c.t)));
       } else {
         const x = pts[0].x;
         const y0 = pts[0].y;
@@ -832,7 +917,7 @@ const ringText = Array(3).fill(processDemo.stampRing.toUpperCase()).join(' · ')
           clipsAlong(clips, 'a', ys[i], next, false, ys[i] - y0, lenA, ys);
         }
         clipsAlong(clips, 'b', x + R, sc.x - R, true, arc, lenB);
-        clips.forEach((c) => (c.x = c.horizontal ? c.t : x, c.y = c.horizontal ? hy : c.t));
+        clips.forEach((c) => ((c.x = c.horizontal ? c.t : x), (c.y = c.horizontal ? hy : c.t)));
       }
 
       segA.forEach((p) => p.setAttribute('d', a));
@@ -844,16 +929,16 @@ const ringText = Array(3).fill(processDemo.stampRing.toUpperCase()).join(' · ')
         .map(
           (c) =>
             `<g transform="translate(${r1(c.x)} ${r1(c.y)}) rotate(${c.horizontal ? 0 : 90})"><g class="clip">` +
-            `<rect x="-4.5" y="-7.5" width="9" height="16" rx="2.6" fill="rgb(12 22 40 / .12)" transform="translate(0 1.6)"/>` +
-            `<rect x="-4.5" y="-9" width="9" height="15.5" rx="2.6" fill="#fff" stroke="#c4c1b4" stroke-width=".9"/>` +
-            `<circle cy="-5.3" r="1.7" fill="#56627a"/></g></g>`,
+            `<rect class="clip__shadow" x="-4.5" y="-7.5" width="9" height="16" rx="2.6" transform="translate(0 1.6)"/>` +
+            `<rect class="clip__body" x="-4.5" y="-9" width="9" height="15.5" rx="2.6"/>` +
+            `<circle class="clip__pin" cy="-5.3" r="1.7"/></g></g>`,
         )
         .join('');
       geo.clips = clips.map((c, i) => ({ ...c, el: clipsG.children[i].firstElementChild }));
       paint();
     }
 
-    // Light the blocks and clips the cable has reached; move the live tip.
+    // Light the blocks and clip the cable where it has reached.
     function paint() {
       const moving = stage.dataset.cable === 'live';
       nodes.forEach((n, i) => n.classList.toggle('is-live', progA > 0.001 && progA >= geo.nodeFrac[i] - 0.004));
@@ -863,23 +948,18 @@ const ringText = Array(3).fill(processDemo.stampRing.toUpperCase()).join(' · ')
       });
       segA.forEach((p) => (p.style.visibility = progA > 0 ? '' : 'hidden'));
       segB.forEach((p) => (p.style.visibility = progB > 0 ? '' : 'hidden'));
-      let path = null;
-      let p = 0;
-      if (moving && progB > 0 && progB < 1) [path, p] = [segB[1], progB];
-      else if (moving && progA > 0 && progA < 1 && progB === 0) [path, p] = [segA[1], progA];
-      if (path) {
-        const pt = path.getPointAtLength(p * path.getTotalLength());
-        tip.setAttribute('transform', `translate(${r1(pt.x)} ${r1(pt.y)})`);
-        tip.setAttribute('visibility', 'visible');
-      } else tip.setAttribute('visibility', 'hidden');
     }
 
+    // Complementary motion / reduce conditions so this always runs, and only
+    // re-runs when one of these queries really changes. (The special "all" key
+    // made GSAP rebuild on any media change, even a phone rotating, and each
+    // rebuild sent the reader back to the top.)
     const mm = gsap.matchMedia();
     mm.add(
       {
-        all: 'all',
         wide: '(min-width: 1100px)',
         motion: '(prefers-reduced-motion: no-preference)',
+        reduce: '(prefers-reduced-motion: reduce)',
       },
       (ctx) => {
         const { wide, motion } = ctx.conditions;
@@ -894,7 +974,10 @@ const ringText = Array(3).fill(processDemo.stampRing.toUpperCase()).join(' · ')
           rebuild();
           const ro = new ResizeObserver(rebuild);
           ro.observe(stage);
-          return () => ro.disconnect();
+          return () => {
+            ro.disconnect();
+            builtFor = '';
+          };
         }
 
         stage.dataset.cable = 'live';
@@ -903,7 +986,17 @@ const ringText = Array(3).fill(processDemo.stampRing.toUpperCase()).join(' · ')
         rebuild();
         ScrollTrigger.addEventListener('refreshInit', rebuild);
 
-        // Cable A: along the blocks. The tip keeps pace with the reader.
+        // The policy is signed: the rule under it is drawn once, as it arrives.
+        const rule = root.querySelector('[data-policy-rule]');
+        if (rule.getBoundingClientRect().top > window.innerHeight * 0.85) {
+          gsap.fromTo(
+            rule,
+            { scaleX: 0 },
+            { scaleX: 1, duration: 0.9, ease: 'expo.out', scrollTrigger: { trigger: rule, start: 'top 85%', once: true } },
+          );
+        }
+
+        // Cable A: along the blocks. The run keeps pace with the reader.
         gsap.fromTo(
           segA,
           { drawSVG: '0%' },
@@ -967,6 +1060,7 @@ const ringText = Array(3).fill(processDemo.stampRing.toUpperCase()).join(' · ')
         return () => {
           ScrollTrigger.removeEventListener('refreshInit', rebuild);
           delete stage.dataset.cable;
+          builtFor = '';
         };
       },
     );

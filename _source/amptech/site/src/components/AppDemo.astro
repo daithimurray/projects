@@ -1,13 +1,19 @@
 ---
-// App: night, sodium horizon glow. An authored phone receives the alarm's
-// notifications; a real button sends a test alert to it.
+// App: night, sodium horizon glow. An authored phone runs a generic alarm app
+// (labelled as an illustration). Two real controls drive it: Set / Unset on the
+// phone itself, and "Send a test alert" beside it.
 import Icon from './Icon.astro';
-import { app, appDemo } from '../data/content.js';
+import { app, appDemo, appSetUnset } from '../data/content.js';
+
+// Zone and camera codes are data (Martian Mono); the rest of a detail line is a label (Atkinson).
+const isCode = (s) => /^(zone|cam|z)\s?\d+$/i.test(s.trim());
+const parts = (detail) => detail.split(' · ').map((text) => ({ text, code: isCode(text) }));
 
 // Newest first, like a real notification feed. Icons come from the hardware set.
 const feed = app.feed
   .map((item) => ({
     ...item,
+    parts: parts(item.detail),
     icon: item.image ? 'camera' : /armed/i.test(item.title) ? 'lock' : 'door',
   }))
   .reverse();
@@ -61,8 +67,13 @@ const windows = [];
 const lamps = [600, 1236];
 
 // Overcast cloud base, underlit sodium: low-frequency noise stretched sideways.
+// (An image: CSS custom properties can't reach inside it, so the sodium is literal.)
 const cloudSvg = `<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="420"><filter id="c" x="0" y="0" width="100%" height="100%"><feTurbulence type="fractalNoise" baseFrequency=".0024 .0105" numOctaves="4" seed="5" stitchTiles="stitch"/><feColorMatrix values="0 0 0 0 1  0 0 0 0 .66  0 0 0 0 .32  0 0 0 2.1 -.95"/></filter><rect width="1200" height="420" filter="url(#c)"/></svg>`;
 const cloudUrl = `url("data:image/svg+xml,${encodeURIComponent(cloudSvg)}")`;
+
+// Padlock, open and shut, on the icon grid (24px, 1.6 stroke, round caps).
+const lockShut = '<rect x="5" y="10.5" width="14" height="10" rx="2"/><path d="M8 10.5V8a4 4 0 0 1 8 0v2.5"/>';
+const lockOpen = '<rect x="5" y="10.5" width="14" height="10" rx="2"/><path d="M8 10.5V8a4 4 0 0 1 7.7-1.6"/>';
 ---
 
 <section id="app" class="section is-night app" aria-labelledby="app-title" data-app style={`--clouds: ${cloudUrl};`}>
@@ -71,9 +82,9 @@ const cloudUrl = `url("data:image/svg+xml,${encodeURIComponent(cloudSvg)}")`;
     <svg class="app__roofs" viewBox="0 0 1440 180" preserveAspectRatio="xMidYMax slice" focusable="false">
       <defs>
         <radialGradient id="app-lamp-glow">
-          <stop offset="0" stop-color="#ffc27a" stop-opacity=".75"></stop>
-          <stop offset=".22" stop-color="#ff9e3d" stop-opacity=".32"></stop>
-          <stop offset="1" stop-color="#ff9e3d" stop-opacity="0"></stop>
+          <stop offset="0" style="stop-color: var(--sodium-300); stop-opacity: 0.75"></stop>
+          <stop offset=".22" style="stop-color: var(--sodium-500); stop-opacity: 0.32"></stop>
+          <stop offset="1" style="stop-color: var(--sodium-500); stop-opacity: 0"></stop>
         </radialGradient>
       </defs>
       <path class="app__roofs-far" d={far}></path>
@@ -92,7 +103,7 @@ const cloudUrl = `url("data:image/svg+xml,${encodeURIComponent(cloudSvg)}")`;
             <circle cx={x - 26} cy="50" r="58" fill="url(#app-lamp-glow)"></circle>
             <path d={`M${x} 180V56q0-9-11-9h-9`} fill="none" stroke-width="3.2" stroke-linecap="round"></path>
             <path d={`M${x - 36} 44h18l-3 6h-12Z`}></path>
-            <ellipse cx={x - 27} cy="50.5" rx="6" ry="1.8" fill="#ffd49a"></ellipse>
+            <ellipse class="app__lamp-bulb" cx={x - 27} cy="50.5" rx="6" ry="1.8"></ellipse>
           </g>
         ))
       }
@@ -116,7 +127,7 @@ const cloudUrl = `url("data:image/svg+xml,${encodeURIComponent(cloudSvg)}")`;
       }
     </ul>
 
-    <figure class="app__stage" data-phone-stage aria-label={appDemo.phoneLabel} aria-describedby="app-note">
+    <figure class="app__stage" data-phone-stage aria-label={appSetUnset.phoneLabel} aria-describedby="app-note">
       <svg class="app__buzz" data-buzz viewBox="0 0 400 200" preserveAspectRatio="none" aria-hidden="true" focusable="false">
         <path d="M22 70q-12 30 0 60M8 58q-18 42 0 84M378 70q12 30 0 60M392 58q18 42 0 84"></path>
       </svg>
@@ -140,10 +151,33 @@ const cloudUrl = `url("data:image/svg+xml,${encodeURIComponent(cloudSvg)}")`;
             </div>
 
             <div class="phone__app">
-              <p class="ph-state">
-                <span class="ph-state__led" aria-hidden="true"></span>
-                <span><strong>{appDemo.status}</strong> · {appDemo.mode}</span>
-              </p>
+              <!-- The alarm's state, and the control that changes it -->
+              <div class="ph-status" data-mode-panel data-mode="set">
+                <p class="ph-state">
+                  <span class="ph-state__led" data-mode-led aria-hidden="true"></span>
+                  <span data-mode-text="set"><strong>{appSetUnset.set}</strong> · {appDemo.mode}</span>
+                  <span data-mode-text="unset" hidden><strong>{appSetUnset.unset}</strong></span>
+                </p>
+                <fieldset class="ph-seg" data-mode-control hidden>
+                  <legend class="visually-hidden">{appSetUnset.legend}</legend>
+                  <span class="ph-seg__thumb" aria-hidden="true"></span>
+                  <label class="ph-seg__opt">
+                    <input type="radio" name="app-mode" value="set" checked />
+                    <span class="ph-seg__face">
+                      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false" set:html={lockShut} />
+                      {appSetUnset.set}
+                    </span>
+                  </label>
+                  <label class="ph-seg__opt">
+                    <input type="radio" name="app-mode" value="unset" />
+                    <span class="ph-seg__face">
+                      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false" set:html={lockOpen} />
+                      {appSetUnset.unset}
+                    </span>
+                  </label>
+                </fieldset>
+              </div>
+
               <p class="ph-label">{appDemo.feedLabel}</p>
               <ol class="feed" id="app-feed" role="list" data-feed>
                 {
@@ -157,7 +191,14 @@ const cloudUrl = `url("data:image/svg+xml,${encodeURIComponent(cloudSvg)}")`;
                         <p class="note__time data">
                           <time datetime={item.time}>{item.time}</time>
                         </p>
-                        <p class="note__detail data">{item.detail}</p>
+                        <p class="note__detail">
+                          {item.parts.map((part, j) => (
+                            <Fragment>
+                              {j > 0 && ' · '}
+                              {part.code ? <span class="data">{part.text}</span> : part.text}
+                            </Fragment>
+                          ))}
+                        </p>
                         {item.image && (
                           <div class="note__img" role="img" aria-label={`${appDemo.stillLabel} ${appDemo.camLabel}, ${appDemo.camTime}.`} data-still>
                             <svg viewBox="0 0 320 180" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
@@ -193,6 +234,7 @@ const cloudUrl = `url("data:image/svg+xml,${encodeURIComponent(cloudSvg)}")`;
                                   <feColorMatrix values="1 0 0 0 0  1 0 0 0 0  1 0 0 0 0  0 0 0 0 .16" />
                                 </filter>
                               </defs>
+                              <!-- An infrared still is monochrome by nature: its greys belong to the image, not the page palette -->
                               <rect width="320" height="180" fill="url(#ir-hot)" />
                               <path d="M0 0H320V64H0Z" fill="#161b1c" />
                               <path d="M0 44L30 32L56 36L58 22L94 12L130 24L132 36L178 38L182 22L222 10L258 24L260 38L320 40V64H0Z" fill="#252b2b" />
@@ -215,7 +257,7 @@ const cloudUrl = `url("data:image/svg+xml,${encodeURIComponent(cloudSvg)}")`;
                               <rect x="222" y="124" width="14" height="6" rx="2" fill="#c9d0cd" />
                               <rect x="276" y="124" width="14" height="6" rx="2" fill="#c9d0cd" />
                               <rect x="244" y="135" width="24" height="7" rx="1" fill="#f4f7f5" />
-                              <rect x="141" y="82" width="38" height="70" fill="none" stroke="#6aa0ff" stroke-width="1.4" />
+                              <rect x="141" y="82" width="38" height="70" fill="none" style="stroke: var(--strobe-400)" stroke-width="1.4" />
                               <rect width="320" height="180" filter="url(#ir-grain)" />
                               <rect width="320" height="180" fill="url(#ir-scan)" />
                               <rect width="320" height="180" fill="url(#ir-vig)" />
@@ -260,32 +302,75 @@ const cloudUrl = `url("data:image/svg+xml,${encodeURIComponent(cloudSvg)}")`;
         </button>
       </div>
       <p class="app__note" id="app-note">{app.illustrationNote}</p>
-      <p class="visually-hidden" aria-live="polite" data-live data-announce={appDemo.announce}></p>
+      <p
+        class="visually-hidden"
+        aria-live="polite"
+        data-live
+        data-announce={appDemo.announce}
+        data-announce-set={appSetUnset.announceSet}
+        data-announce-unset={appSetUnset.announceUnset}
+      >
+      </p>
     </div>
   </div>
 
-  <template data-note-tpl>
+  <template data-note-tpl="alert">
     <li class="note is-new">
       <div class="note__card note__card--alert">
         <span class="note__icon"><Icon name="bell" size={18} /></span>
         <p class="note__title">{appDemo.test.title}</p>
         <p class="note__time data" data-time>{appDemo.test.time}</p>
-        <p class="note__detail data">{appDemo.test.detail}</p>
+        <p class="note__detail">{appDemo.test.detail}</p>
+      </div>
+    </li>
+  </template>
+  <template data-note-tpl="set">
+    <li class="note">
+      <div class="note__card">
+        <span class="note__icon">
+          <svg class="icon" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true" focusable="false" set:html={lockShut} />
+        </span>
+        <p class="note__title">{appSetUnset.feedSet.title}</p>
+        <p class="note__time data" data-time>{appDemo.test.time}</p>
+        <p class="note__detail">{appSetUnset.feedSet.detail}</p>
+      </div>
+    </li>
+  </template>
+  <template data-note-tpl="unset">
+    <li class="note">
+      <div class="note__card">
+        <span class="note__icon">
+          <svg class="icon" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true" focusable="false" set:html={lockOpen} />
+        </span>
+        <p class="note__title">{appSetUnset.feedUnset.title}</p>
+        <p class="note__time data" data-time>{appDemo.test.time}</p>
+        <p class="note__detail">{appSetUnset.feedUnset.detail}</p>
       </div>
     </li>
   </template>
 </section>
 
 <style>
-  .app {
+  /* Controls that only work with JS stay out of the way until it runs */
+  [hidden] {
+    display: none !important;
+  }
+
+  /* The sky over the estate: dusk blue under an overcast lit orange from the
+     streetlights below, over the page's overcast grain. Its own sky, from tokens. */
+  .app.is-night {
     --roof-h: clamp(84px, 11vw, 168px);
     overflow: clip;
     isolation: isolate;
     padding-bottom: calc(var(--section-y) + var(--roof-h) * 0.72);
-    background:
-      radial-gradient(70% 16% at 22% 74%, rgb(255 174 82 / 0.07), transparent 70%),
-      radial-gradient(60% 13% at 80% 66%, rgb(255 174 82 / 0.06), transparent 70%),
-      linear-gradient(to bottom, var(--night-900) 0%, var(--night-850) 55%, #1b2237 100%);
+    background-color: var(--night-900);
+    background-image:
+      var(--grain),
+      radial-gradient(70% 16% at 22% 74%, color-mix(in srgb, var(--sodium-400) 7%, transparent), transparent 70%),
+      radial-gradient(60% 13% at 80% 66%, color-mix(in srgb, var(--sodium-400) 6%, transparent), transparent 70%),
+      linear-gradient(to bottom, var(--night-900) 0%, var(--night-850) 55%, color-mix(in oklab, var(--night-800) 88%, var(--sodium-600)) 100%);
+    background-size: 220px 220px, auto, auto, auto;
+    background-repeat: repeat, no-repeat, no-repeat, no-repeat;
   }
 
   /* ---------- Sky: the overcast underlit by sodium streetlights ---------- */
@@ -301,10 +386,10 @@ const cloudUrl = `url("data:image/svg+xml,${encodeURIComponent(cloudSvg)}")`;
     height: 80%;
     transform-origin: 50% 100%;
     background:
-      radial-gradient(120% 42% at 50% 100%, rgb(255 158 61 / 0.62), rgb(230 126 20 / 0.24) 45%, transparent 80%),
-      radial-gradient(90% 70% at 50% 100%, rgb(230 126 20 / 0.2), transparent 75%),
-      radial-gradient(45% 22% at 16% 88%, rgb(255 174 82 / 0.2), transparent 70%),
-      radial-gradient(40% 20% at 86% 84%, rgb(255 174 82 / 0.18), transparent 70%);
+      radial-gradient(120% 42% at 50% 100%, color-mix(in srgb, var(--sodium-500) 62%, transparent), color-mix(in srgb, var(--sodium-600) 24%, transparent) 45%, transparent 80%),
+      radial-gradient(90% 70% at 50% 100%, color-mix(in srgb, var(--sodium-600) 20%, transparent), transparent 75%),
+      radial-gradient(45% 22% at 16% 88%, color-mix(in srgb, var(--sodium-400) 20%, transparent), transparent 70%),
+      radial-gradient(40% 20% at 86% 84%, color-mix(in srgb, var(--sodium-400) 18%, transparent), transparent 70%);
   }
   /* The cloud base, lit from below: strongest just above the rooftops */
   .app__glow::before {
@@ -324,8 +409,9 @@ const cloudUrl = `url("data:image/svg+xml,${encodeURIComponent(cloudSvg)}")`;
     height: var(--roof-h);
     overflow: visible;
   }
+  /* The far terrace sits in the haze, a shade lighter than the near one */
   .app__roofs-far {
-    fill: #1a2439;
+    fill: color-mix(in oklab, var(--night-800) 80%, var(--night-900));
   }
   .app__roofs-near,
   .app__lamp path {
@@ -334,6 +420,9 @@ const cloudUrl = `url("data:image/svg+xml,${encodeURIComponent(cloudSvg)}")`;
   .app__lamp path[fill='none'],
   .app__aerial {
     stroke: var(--night-900);
+  }
+  .app__lamp-bulb {
+    fill: var(--tungsten);
   }
   .app__window {
     fill: var(--tungsten);
@@ -427,6 +516,19 @@ const cloudUrl = `url("data:image/svg+xml,${encodeURIComponent(cloudSvg)}")`;
   .app__led.is-on {
     transition-duration: var(--dur-trip);
   }
+  /* The feature's LED trips again when the phone shows it working */
+  @media (prefers-reduced-motion: no-preference) {
+    .app__led.is-trip {
+      animation: led-trip 900ms linear;
+    }
+  }
+  @keyframes led-trip {
+    0% { opacity: 0.2; }
+    6% { opacity: 1; filter: brightness(1.6); }
+    12% { opacity: 0.45; }
+    20% { opacity: 1; filter: brightness(1.3); }
+    100% { opacity: 1; filter: brightness(1); }
+  }
 
   .app__ctl {
     min-height: 52px;
@@ -456,11 +558,16 @@ const cloudUrl = `url("data:image/svg+xml,${encodeURIComponent(cloudSvg)}")`;
     aspect-ratio: 9 / 19;
     padding: 10px;
     border-radius: 46px;
-    background: linear-gradient(162deg, #2c3549 0%, #141b29 42%, #0b1019 100%);
+    background: linear-gradient(
+      162deg,
+      var(--night-700) 0%,
+      color-mix(in oklab, var(--night-950) 55%, var(--night-800)) 42%,
+      color-mix(in oklab, var(--night-950) 80%, black) 100%
+    );
     box-shadow:
       inset 0 1px 0 rgb(255 255 255 / 0.18),
       inset 0 0 0 1px rgb(255 255 255 / 0.06),
-      inset 0 -1.5px 0 rgb(255 174 82 / 0.3),
+      inset 0 -1.5px 0 color-mix(in srgb, var(--sodium-400) 30%, transparent),
       0 2px 4px rgb(3 7 15 / 0.5),
       0 44px 70px -26px rgb(3 7 15 / 0.85);
   }
@@ -470,21 +577,21 @@ const cloudUrl = `url("data:image/svg+xml,${encodeURIComponent(cloudSvg)}")`;
     content: '';
     position: absolute;
     width: 3px;
-    background: linear-gradient(to right, #222b3c, #3a455b);
+    background: linear-gradient(to right, var(--night-800), var(--night-700));
   }
   .phone::before {
     left: -3px;
     top: 21%;
     height: 8%;
     border-radius: 2px 0 0 2px;
-    box-shadow: 0 calc(var(--vol-gap, 62px)) 0 #2a3345;
+    box-shadow: 0 calc(var(--vol-gap, 62px)) 0 var(--night-800);
   }
   .phone::after {
     right: -3px;
     top: 27%;
     height: 12%;
     border-radius: 0 2px 2px 0;
-    background: linear-gradient(to left, #222b3c, #3a455b);
+    background: linear-gradient(to left, var(--night-800), var(--night-700));
   }
 
   .phone__screen {
@@ -497,8 +604,8 @@ const cloudUrl = `url("data:image/svg+xml,${encodeURIComponent(cloudSvg)}")`;
     border-radius: 37px;
     isolation: isolate;
     background:
-      radial-gradient(130% 50% at 50% 0%, #172441 0%, transparent 70%),
-      #0a111f;
+      radial-gradient(130% 50% at 50% 0%, color-mix(in oklab, var(--night-800) 85%, var(--strobe-500)) 0%, transparent 70%),
+      var(--night-950);
     color: var(--dusk-50);
   }
   /* Bell-box strobe on the screen edge */
@@ -519,7 +626,7 @@ const cloudUrl = `url("data:image/svg+xml,${encodeURIComponent(cloudSvg)}")`;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    height: 42px;
+    height: 40px;
     padding: 8px 24px 0 28px;
     flex: none;
   }
@@ -536,8 +643,8 @@ const cloudUrl = `url("data:image/svg+xml,${encodeURIComponent(cloudSvg)}")`;
     height: 12px;
     margin-left: -6px;
     border-radius: 50%;
-    background: radial-gradient(circle at 36% 34%, #2b3a59 0 18%, #04070d 42%);
-    box-shadow: 0 0 0 1.5px #03060b;
+    background: radial-gradient(circle at 36% 34%, var(--night-700) 0 18%, color-mix(in oklab, var(--night-950) 60%, black) 42%);
+    box-shadow: 0 0 0 1.5px color-mix(in oklab, var(--night-950) 50%, black);
   }
   .phone__sys {
     width: 40px;
@@ -550,13 +657,24 @@ const cloudUrl = `url("data:image/svg+xml,${encodeURIComponent(cloudSvg)}")`;
     flex-direction: column;
     min-height: 0;
     flex: 1;
-    padding: 12px 12px 0;
+    padding: 10px 12px 0;
+  }
+
+  /* The alarm's state: an LED, the words, and the set / unset control */
+  .ph-status {
+    --strobe-a: 0;
+    display: grid;
+    gap: 10px;
+    padding: 4px 4px 14px;
+    border-bottom: 1px solid color-mix(in srgb, var(--dusk-300) 16%, transparent);
+    /* The bell box's confirming double blink, washing the top of the screen */
+    background: radial-gradient(130% 100% at 50% 100%, rgb(61 124 255 / calc(var(--strobe-a) * 0.16)), transparent 72%);
   }
   .ph-state {
     display: flex;
     align-items: center;
     gap: 10px;
-    padding: 4px 6px 16px;
+    padding: 0 2px;
     font-family: var(--font-display);
     font-stretch: 108%;
     font-size: 17px;
@@ -564,22 +682,128 @@ const cloudUrl = `url("data:image/svg+xml,${encodeURIComponent(cloudSvg)}")`;
     letter-spacing: -0.01em;
     line-height: 1.15;
     color: var(--dusk-200);
-    border-bottom: 1px solid rgb(159 176 207 / 0.16);
   }
   .ph-state strong {
     font-weight: 760;
     color: var(--dusk-50);
   }
+  /* The panel's state LED: a light source, so it blooms while lit */
   .ph-state__led {
     flex: none;
     width: 10px;
     height: 10px;
     border-radius: 3px;
     background: var(--clear-400);
-    box-shadow: 0 0 10px 2px rgb(94 224 160 / 0.5), 0 0 2px #c8ffe4;
+    box-shadow:
+      0 0 10px 2px color-mix(in srgb, var(--clear-400) 50%, transparent),
+      0 0 2px color-mix(in srgb, var(--clear-400) 40%, white);
+    transition:
+      background-color var(--dur-decay) var(--ease-out),
+      box-shadow var(--dur-decay) var(--ease-out);
   }
+  [data-mode='unset'] .ph-state__led {
+    background: var(--night-600);
+    box-shadow: inset 0 1px 1px rgb(3 7 15 / 0.5);
+  }
+  [data-mode='set'] .ph-state__led {
+    transition-duration: var(--dur-trip);
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    [data-mode='set'] .ph-state__led.is-trip {
+      animation: led-trip 800ms linear;
+    }
+  }
+
+  /* Segmented control: a track with a lit sodium thumb that slides between states */
+  .ph-seg {
+    position: relative;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    min-inline-size: 0;
+    margin: 0;
+    padding: 3px;
+    border: 1px solid color-mix(in srgb, var(--dusk-300) 22%, transparent);
+    border-radius: var(--radius-md);
+    background: color-mix(in oklab, var(--night-950) 70%, black);
+    box-shadow:
+      inset 0 1px 2px rgb(3 7 15 / 0.6),
+      inset 0 0 0 1.5px rgb(106 160 255 / var(--strobe-a));
+  }
+  .ph-seg__thumb {
+    position: absolute;
+    top: 3px;
+    bottom: 3px;
+    left: 3px;
+    width: calc(50% - 3px);
+    border-radius: 9px;
+    background: var(--sodium-500);
+    box-shadow:
+      inset 0 1px 0 color-mix(in srgb, var(--sodium-300) 80%, white),
+      0 6px 14px -6px color-mix(in srgb, var(--sodium-500) 70%, transparent);
+    transition: transform var(--dur-med) var(--ease-snap);
+  }
+  [data-mode='unset'] .ph-seg__thumb {
+    transform: translateX(100%);
+  }
+  .ph-seg__opt {
+    position: relative;
+    display: grid;
+    min-height: 44px;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .ph-seg__opt input {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    opacity: 0;
+    cursor: pointer;
+  }
+  .ph-seg__face {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    border-radius: 9px;
+    font-family: var(--font-display);
+    font-stretch: 108%;
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: -0.005em;
+    color: var(--dusk-200);
+    transition:
+      color var(--dur-fast) var(--ease-out),
+      background-color var(--dur-fast) var(--ease-out);
+  }
+  .ph-seg__face svg {
+    width: 17px;
+    height: 17px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.8;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  .ph-seg__opt:hover input:not(:checked) + .ph-seg__face {
+    color: var(--dusk-50);
+    background: rgb(238 241 248 / 0.07);
+  }
+  .ph-seg__opt:active input:not(:checked) + .ph-seg__face {
+    background: rgb(238 241 248 / 0.12);
+  }
+  .ph-seg__opt input:checked + .ph-seg__face {
+    color: var(--night-950);
+  }
+  .ph-seg__opt input:focus-visible + .ph-seg__face {
+    outline: 2px solid var(--sodium-300);
+    outline-offset: 2px;
+  }
+
   .ph-label {
-    padding: 14px 6px 8px;
+    padding: 12px 6px 8px;
     font-size: 12px;
     font-weight: 700;
     letter-spacing: 0.01em;
@@ -605,10 +829,14 @@ const cloudUrl = `url("data:image/svg+xml,${encodeURIComponent(cloudSvg)}")`;
       'icon detail detail'
       'img img img';
     column-gap: 10px;
-    row-gap: 3px;
+    row-gap: 2px;
     padding: 11px 12px 11px 11px;
     border-radius: 14px;
-    background: linear-gradient(to bottom, rgb(33 50 82 / 0.72), rgb(22 36 61 / 0.9));
+    background: linear-gradient(
+      to bottom,
+      color-mix(in srgb, var(--night-700) 72%, transparent),
+      color-mix(in srgb, var(--night-800) 90%, transparent)
+    );
     box-shadow:
       inset 0 1px 0 rgb(255 255 255 / 0.07),
       inset 0 0 0 1.5px rgb(106 160 255 / var(--strobe-a)),
@@ -625,6 +853,11 @@ const cloudUrl = `url("data:image/svg+xml,${encodeURIComponent(cloudSvg)}")`;
   .note__icon :global(svg) {
     width: 18px;
     height: 18px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.6;
+    stroke-linecap: round;
+    stroke-linejoin: round;
   }
   .note__title {
     grid-area: title;
@@ -643,19 +876,25 @@ const cloudUrl = `url("data:image/svg+xml,${encodeURIComponent(cloudSvg)}")`;
     color: var(--dusk-300);
     white-space: nowrap;
   }
+  /* Unread: the notification dot is a lit pixel on the screen */
   .note.is-new .note__time::before {
     content: '';
     width: 7px;
     height: 7px;
     border-radius: 2px;
     background: var(--strobe-500);
-    box-shadow: 0 0 6px rgb(61 124 255 / 0.7);
+    box-shadow: 0 0 6px color-mix(in srgb, var(--strobe-500) 70%, transparent);
   }
+  /* The detail line is words in the body face; only zone and camera codes are data */
   .note__detail {
     grid-area: detail;
-    font-size: 10.5px;
-    line-height: 1.45;
+    font-size: 12.5px;
+    line-height: 1.4;
     color: var(--dusk-300);
+  }
+  .note__detail .data {
+    font-size: 10.5px;
+    color: var(--dusk-200);
   }
 
   /* The CCTV still: IR monochrome with an OSD overlay */
@@ -666,7 +905,7 @@ const cloudUrl = `url("data:image/svg+xml,${encodeURIComponent(cloudSvg)}")`;
     aspect-ratio: 16 / 9;
     overflow: hidden;
     border-radius: 9px;
-    background: #121617;
+    background: var(--tarmac);
   }
   .note__img svg {
     width: 100%;
@@ -677,7 +916,7 @@ const cloudUrl = `url("data:image/svg+xml,${encodeURIComponent(cloudSvg)}")`;
     font-size: 9.5px;
     font-weight: 520;
     line-height: 1;
-    color: #eef1f0;
+    color: var(--dusk-50);
     text-shadow: 0 1px 1px rgb(0 0 0 / 0.8);
   }
   .note__osd--cam {
@@ -704,9 +943,9 @@ const cloudUrl = `url("data:image/svg+xml,${encodeURIComponent(cloudSvg)}")`;
     justify-content: space-around;
     align-items: center;
     flex: none;
-    height: 64px;
-    padding: 0 22px 18px;
-    border-top: 1px solid rgb(159 176 207 / 0.12);
+    height: 60px;
+    padding: 0 22px 16px;
+    border-top: 1px solid color-mix(in srgb, var(--dusk-300) 12%, transparent);
     color: var(--dusk-400);
   }
   .phone__tabs span {
@@ -718,7 +957,7 @@ const cloudUrl = `url("data:image/svg+xml,${encodeURIComponent(cloudSvg)}")`;
   }
   .phone__tabs .is-current {
     color: var(--dusk-50);
-    background: rgb(159 176 207 / 0.1);
+    background: color-mix(in srgb, var(--dusk-300) 10%, transparent);
   }
   .phone__home {
     position: absolute;
@@ -728,14 +967,14 @@ const cloudUrl = `url("data:image/svg+xml,${encodeURIComponent(cloudSvg)}")`;
     height: 4px;
     margin-left: -17%;
     border-radius: 3px;
-    background: rgb(238 241 248 / 0.55);
+    background: color-mix(in srgb, var(--dusk-50) 55%, transparent);
     z-index: 3;
   }
   .phone__dim {
     position: absolute;
     inset: 0;
     z-index: 4;
-    background: #02050b;
+    background: color-mix(in oklab, var(--night-950) 40%, black);
     opacity: 0;
     pointer-events: none;
   }
@@ -767,6 +1006,12 @@ const cloudUrl = `url("data:image/svg+xml,${encodeURIComponent(cloudSvg)}")`;
     vector-effect: non-scaling-stroke;
   }
 
+  /* Paused (WCAG 2.2.2): no one-shot flicker left frozen mid-blink */
+  :global(.motion-paused) .app__led,
+  :global(.motion-paused) .ph-state__led {
+    animation: none !important;
+  }
+
   @media (max-width: 380px) {
     .app__points li {
       font-size: var(--step--1);
@@ -775,7 +1020,7 @@ const cloudUrl = `url("data:image/svg+xml,${encodeURIComponent(cloudSvg)}")`;
 </style>
 
 <script>
-  import { boot, gsap, ScrollTrigger, motionOK, isTouch, strobe, sweepIn } from '../scripts/motion.js';
+  import { boot, gsap, ScrollTrigger, motionOK, isTouch, strobe, sweepIn, later } from '../scripts/motion.js';
 
   boot();
 
@@ -790,18 +1035,35 @@ const cloudUrl = `url("data:image/svg+xml,${encodeURIComponent(cloudSvg)}")`;
     const dim = root.querySelector('[data-dim]');
     const glare = root.querySelector('[data-glare]');
     const feed = root.querySelector('[data-feed]');
-    const tpl = root.querySelector('[data-note-tpl]');
+    const tpl = (name) => root.querySelector(`[data-note-tpl="${name}"]`);
     const btn = root.querySelector('[data-test-alert]');
     const live = root.querySelector('[data-live]');
     const buzzMarks = root.querySelector('[data-buzz]');
+    const panel = root.querySelector('[data-mode-panel]');
+    const control = root.querySelector('[data-mode-control]');
+    const modeLed = root.querySelector('[data-mode-led]');
+    const modeText = [...root.querySelectorAll('[data-mode-text]')];
     const leds = [...root.querySelectorAll('[data-led]')];
+    const earlier = btn.dataset.earlier;
     const MAX = 4;
     const moving = motionOK();
 
-    // The demo needs JS, so its control only appears once JS is running.
+    // The demo needs JS, so its controls only appear once JS is running.
     btn.hidden = false;
+    control.hidden = false;
 
     const ledOn = (i) => leds[i]?.classList.add('is-on');
+    // Flick an LED again (fast attack, slow settle) when the phone shows its feature working.
+    const retrip = (el) => {
+      if (!el || !moving || document.documentElement.classList.contains('motion-paused')) return;
+      el.classList.remove('is-trip');
+      void el.offsetWidth;
+      el.classList.add('is-trip');
+    };
+    const announce = (text) => {
+      live.textContent = '';
+      window.setTimeout(() => (live.textContent = text), 80);
+    };
 
     // A note collapses to nothing, then drops in from above and pushes the feed down.
     const collapse = (note) => {
@@ -847,16 +1109,9 @@ const cloudUrl = `url("data:image/svg+xml,${encodeURIComponent(cloudSvg)}")`;
       return gsap
         .timeline()
         .fromTo(img.querySelector('svg'), { clipPath: 'inset(0% 0% 100% 0%)' }, { clipPath: 'inset(0% 0% 0% 0%)', duration: 0.9, ease: 'power2.inOut' })
-        .fromTo(
-          scan,
-          { y: 0, opacity: 1 },
-          { y: () => img.offsetHeight - 2, duration: 0.9, ease: 'power2.inOut' },
-          0,
-        )
+        .fromTo(scan, { y: 0, opacity: 1 }, { y: () => img.offsetHeight - 2, duration: 0.9, ease: 'power2.inOut' }, 0)
         .to(scan, { opacity: 0, duration: 0.3, ease: 'decay' });
     };
-
-    sweepIn(root.querySelector('#app-title'));
 
     let intro = null;
     const finishIntro = () => {
@@ -865,7 +1120,59 @@ const cloudUrl = `url("data:image/svg+xml,${encodeURIComponent(cloudSvg)}")`;
       root.dataset.demo = 'done';
     };
 
-    if (moving) {
+    // A new notification lands at the top of the feed; the feed keeps the four most recent.
+    const addNote = (name, fx) => {
+      finishIntro();
+      feed.querySelectorAll('[data-time]').forEach((t) => (t.textContent = earlier));
+      const note = tpl(name).content.firstElementChild.cloneNode(true);
+      feed.prepend(note);
+      const current = [...feed.children].filter((n) => !n.classList.contains('is-leaving'));
+      current.slice(MAX).forEach((old) => {
+        old.classList.add('is-leaving');
+        if (moving) {
+          gsap.set(old, { overflow: 'hidden' });
+          gsap.to(old, { height: 0, opacity: 0, duration: 0.4, ease: 'power2.in', onComplete: () => old.remove() });
+        } else old.remove();
+      });
+      if (moving) {
+        collapse(note);
+        const tl = gsap.timeline().add(dropIn(note));
+        if (fx) tl.add(fx(note), 0.12);
+      }
+      return note;
+    };
+
+    // "Send a test alert": the phone lights, strobes and buzzes.
+    btn.addEventListener('click', () => {
+      addNote('alert', alertFx);
+      retrip(leds[1]);
+      announce(live.dataset.announce);
+    });
+
+    // Set / Unset: the state flips, the bell box confirms with its double blink,
+    // and the change goes into the log.
+    control.addEventListener('change', (event) => {
+      const mode = event.target.value === 'unset' ? 'unset' : 'set';
+      if (panel.dataset.mode === mode) return;
+      panel.dataset.mode = mode;
+      modeText.forEach((el) => (el.hidden = el.dataset.modeText !== mode));
+      addNote(mode);
+      strobe(panel);
+      if (mode === 'set') retrip(modeLed);
+      retrip(leds[0]);
+      announce(mode === 'set' ? live.dataset.announceSet : live.dataset.announceUnset);
+    });
+
+    if (!moving) return;
+
+    // Everything below is presentation, built in idle time after first paint.
+    later(() => {
+      const heading = root.querySelector('#app-title');
+      const below = (el, at = 1) => el.getBoundingClientRect().top > window.innerHeight * at;
+
+      // Headings already on screen (a deep link, a fast scroll) stay put.
+      if (below(heading)) sweepIn(heading);
+
       // The sky brightens from the horizon as the section rises into view.
       gsap.fromTo(
         root.querySelector('[data-app-glow]'),
@@ -873,27 +1180,33 @@ const cloudUrl = `url("data:image/svg+xml,${encodeURIComponent(cloudSvg)}")`;
         { scaleY: 1, opacity: 1, ease: 'none', scrollTrigger: { trigger: root, start: 'top bottom', end: 'bottom bottom', scrub: 0.6 } },
       );
 
-      root.dataset.demo = 'pending';
-      const notes = [...feed.children]; // newest first: alert, armed, door
-      const [alert, armed, door] = notes;
-      const still = alert?.querySelector('[data-still]');
-      notes.forEach(collapse);
-      gsap.set(dim, { opacity: 0.62 });
+      // 02:14: the phone wakes as the notifications land. Only if the reader
+      // hasn't reached it yet or already used it.
+      if (root.dataset.demo !== 'done' && below(stage, 0.72)) {
+        root.dataset.demo = 'pending';
+        const notes = [...feed.children]; // newest first: alert, armed, door
+        const [alert, armed, door] = notes;
+        const still = alert?.querySelector('[data-still]');
+        notes.forEach(collapse);
+        gsap.set(dim, { opacity: 0.62 });
 
-      intro = gsap.timeline({ paused: true, onComplete: finishIntro });
-      intro
-        .add(dropIn(door), 0.3)
-        .add(dropIn(armed), 0.95)
-        .call(ledOn, [0], 1.2)
-        // 02:14: the screen wakes (a trip: instant attack) as the motion alert lands.
-        .to(dim, { opacity: 0, duration: 0.1, ease: 'trip' }, 2.35)
-        .add(dropIn(alert), 2.35)
-        .add(alertFx(alert), 2.5)
-        .call(ledOn, [1], 2.5);
-      if (still) intro.add(revealStill(still), 2.85).call(ledOn, [2], 3.4);
+        intro = gsap.timeline({ paused: true, onComplete: finishIntro });
+        intro
+          .add(dropIn(door), 0.3)
+          .add(dropIn(armed), 0.95)
+          .call(ledOn, [0], 1.2)
+          // The screen wakes (a trip: instant attack) as the motion alert lands.
+          .to(dim, { opacity: 0, duration: 0.1, ease: 'trip' }, 2.35)
+          .add(dropIn(alert), 2.35)
+          .add(alertFx(alert), 2.5)
+          .call(ledOn, [1], 2.5);
+        if (still) intro.add(revealStill(still), 2.85).call(ledOn, [2], 3.4);
 
-      const play = () => intro.progress() < 1 && intro.play();
-      ScrollTrigger.create({ trigger: stage, start: 'top 72%', end: 'bottom top', onEnter: play, onEnterBack: play });
+        const play = () => intro.progress() < 1 && intro.play();
+        ScrollTrigger.create({ trigger: stage, start: 'top 72%', end: 'bottom top', onEnter: play, onEnterBack: play });
+      } else {
+        finishIntro();
+      }
 
       // Desktop pointer: the phone turns gently toward the cursor, the glass sheen slides.
       if (!isTouch()) {
@@ -920,33 +1233,6 @@ const cloudUrl = `url("data:image/svg+xml,${encodeURIComponent(cloudSvg)}")`;
           gx(0);
         });
       }
-    }
-
-    // "Send a test alert": a fresh notification lands at the top of the feed.
-    const earlier = btn.dataset.earlier;
-    btn.addEventListener('click', () => {
-      finishIntro();
-      feed.querySelectorAll('[data-time]').forEach((t) => (t.textContent = earlier));
-      const note = tpl.content.firstElementChild.cloneNode(true);
-      feed.prepend(note);
-
-      // Keep the feed to the four most recent notifications.
-      const current = [...feed.children].filter((n) => !n.classList.contains('is-leaving'));
-      current.slice(MAX).forEach((old) => {
-        old.classList.add('is-leaving');
-        if (moving) {
-          gsap.set(old, { overflow: 'hidden' });
-          gsap.to(old, { height: 0, opacity: 0, duration: 0.4, ease: 'power2.in', onComplete: () => old.remove() });
-        } else old.remove();
-      });
-
-      if (moving) {
-        collapse(note);
-        gsap.timeline().add(dropIn(note)).add(alertFx(note), 0.12);
-      }
-
-      live.textContent = '';
-      window.setTimeout(() => (live.textContent = live.dataset.announce), 80);
     });
   }
 </script>

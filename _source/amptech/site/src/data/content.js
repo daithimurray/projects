@@ -684,3 +684,17 @@ export const privacy = {
     },
   ],
 };
+
+// Set / unset control on the App phone illustration (appended by the app / process builder).
+// Generic demo data inside a labelled illustration. The verbs follow the HKC app: set and unset.
+export const appSetUnset = {
+  legend: 'Set or unset the alarm on the phone illustration',
+  set: 'Set',
+  unset: 'Unset',
+  phoneLabel:
+    'Illustration: a phone showing an alarm app, set in night mode, with a control to set and unset it and a feed of recent notifications.',
+  feedSet: { title: 'System set', detail: 'Night mode · From the app' },
+  feedUnset: { title: 'System unset', detail: 'From the app' },
+  announceSet: 'Alarm set in night mode on the phone illustration.',
+  announceUnset: 'Alarm unset on the phone illustration.',
+};
