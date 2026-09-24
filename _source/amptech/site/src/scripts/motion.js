@@ -172,8 +172,17 @@ export function lightsOn(targets, { trigger, start = 'top 82%', stagger = 0.09, 
  * sweep: a heading lit line by line, as if a beam passes across it.
  * Uses SplitText with masked lines; the text stays readable to assistive tech.
  */
+// A re-split can change a heading's line count (and so its height); re-measure
+// every trigger once the re-splits settle.
+let resplitTimer = 0;
+const refreshAfterResplit = () => {
+  clearTimeout(resplitTimer);
+  resplitTimer = setTimeout(() => ScrollTrigger.refresh(), 200);
+};
+
 export function sweepIn(heading, { trigger, start = 'top 80%', delay = 0 } = {}) {
   if (!motionOK() || !heading) return null;
+  let splits = 0;
   // autoSplit re-splits when the width changes or fonts arrive late; returning
   // the tween from onSplit lets SplitText carry its progress over to the new lines.
   return SplitText.create(heading, {
@@ -183,8 +192,9 @@ export function sweepIn(heading, { trigger, start = 'top 80%', delay = 0 } = {})
     aria: 'auto',
     reduceWhiteSpace: false,
     autoSplit: true,
-    onSplit: (self) =>
-      gsap.fromTo(
+    onSplit: (self) => {
+      if (splits++ > 0) refreshAfterResplit();
+      return gsap.fromTo(
         self.lines,
         { yPercent: 105 },
         {
@@ -195,7 +205,8 @@ export function sweepIn(heading, { trigger, start = 'top 80%', delay = 0 } = {})
           delay,
           scrollTrigger: { trigger: trigger || heading, start, once: true },
         },
-      ),
+      );
+    },
   });
 }
 
@@ -225,6 +236,9 @@ export function later(build) {
   if (laterScheduled) return;
   laterScheduled = true;
   const run = (deadline) => {
+    // A callback that arrives by timeout has no idle time left; still take one
+    // task, so a busy main thread (a WebGL hero on a slow phone) can't starve the queue.
+    if (deadline.didTimeout && laterQueue.length) laterQueue.shift()();
     while (laterQueue.length && deadline.timeRemaining() > 4) laterQueue.shift()();
     if (laterQueue.length) {
       idle(run, { timeout: 400 });

@@ -14,7 +14,7 @@ const feed = app.feed
   .map((item) => ({
     ...item,
     parts: parts(item.detail),
-    icon: item.image ? 'camera' : /armed/i.test(item.title) ? 'lock' : 'door',
+    icon: item.image ? 'camera' : /armed|\bset\b/i.test(item.title) ? 'lock' : 'door',
   }))
   .reverse();
 

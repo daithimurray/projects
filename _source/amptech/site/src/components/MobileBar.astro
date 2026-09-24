@@ -21,9 +21,7 @@ import { company, hero, ui } from '../data/content.js';
     grid-template-columns: 1fr 1fr;
     gap: var(--space-3);
     padding: var(--space-3) var(--gutter) calc(var(--space-3) + env(safe-area-inset-bottom));
-    background: rgb(7 13 25 / 0.92);
-    -webkit-backdrop-filter: blur(12px);
-    backdrop-filter: blur(12px);
+    background: color-mix(in srgb, var(--night-950) 97%, transparent);
     border-top: 1px solid var(--night-700);
     transform: translateY(110%);
     transition: transform var(--dur-med) var(--ease-out);
@@ -35,6 +33,16 @@ import { company, hero, ui } from '../data/content.js';
   .mobile-bar__call {
     font-variant-numeric: tabular-nums;
     gap: 0.45em;
+  }
+  @media (max-width: 350px) {
+    .mobile-bar {
+      gap: var(--space-2);
+      padding-inline: var(--space-3);
+    }
+    .mobile-bar .btn {
+      padding-inline: 0.5rem;
+      font-size: var(--step--1);
+    }
   }
   .mobile-bar.is-shown {
     transform: none;

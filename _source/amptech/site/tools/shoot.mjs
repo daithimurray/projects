@@ -115,7 +115,8 @@ for (const width of widths) {
     }
     const file = path.join(outDir, `${prefix}.png`);
     // Fixed chrome would be stitched into tall element captures.
-    await page.addStyleTag({ content: '.site-header,.mobile-bar{visibility:hidden!important}' });
+    // A viewport-resizing element capture can re-run the floodlight reveal mid-way; show the lit state.
+    await page.addStyleTag({ content: '.site-header,.mobile-bar{visibility:hidden!important}.lit-veil{display:none!important}' });
     const box = await el.boundingBox();
     if (box && box.height > heightFor(width) * 3) {
       // Very tall (pinned) sections: capture the viewport instead.

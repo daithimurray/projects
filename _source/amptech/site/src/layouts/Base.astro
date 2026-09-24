@@ -16,7 +16,7 @@ const { title, description, path = '' } = Astro.props;
 
 const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
 const canonical = new URL(`${base}${path}`, Astro.site).href;
-const ogImage = new URL(`${base}og.png`, Astro.site).href;
+const ogImage = new URL(`${base}og.jpg`, Astro.site).href;
 const noindex = import.meta.env.PUBLIC_NOINDEX !== '0';
 // The design contract is for the build and review process, not for visitors:
 // it's emitted in dev and in review builds (PUBLIC_DESIGN_CONTRACT=1) only.
@@ -79,7 +79,7 @@ const jsonLd = {
     <meta name="description" content={description} />
     {noindex && <meta name="robots" content="noindex, nofollow" />}
     <link rel="canonical" href={canonical} />
-    <meta name="theme-color" content="#0c1628" />
+    <meta name="theme-color" content="#111c33" />
     <meta name="color-scheme" content="dark light" />
     <meta name="format-detection" content="telephone=no" />
 

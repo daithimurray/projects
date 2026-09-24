@@ -151,6 +151,13 @@ const withData = (s: string) => s.replace(/(licence\s+)(\d+)/gi, '$1<span class=
   .hero.is-live .hero__canvas {
     opacity: 1;
   }
+  /* Off screen the loop is stopped, but an idle WebGL layer still costs the
+     compositor on weak GPUs (visibility: hidden keeps the layer). Take it out
+     of rendering until the hero scrolls back into view; the scene ignores the
+     zero-size resize and redraws on return. */
+  .hero.is-away .hero__canvas {
+    display: none;
+  }
 
   /* Scrims guarantee headline and lede contrast over any part of the scene.
      The bottom runs into the page's dusk ground, overcast grain included, so

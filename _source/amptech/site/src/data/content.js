@@ -296,8 +296,8 @@ export const app = {
   illustrationNote: 'Illustration of the HKC app. Not a live system.',
   // Synthetic demo feed for the phone illustration.
   feed: [
-    { time: '18:02', title: 'Front door opened', detail: 'Zone 1 · System disarmed' },
-    { time: '23:10', title: 'System armed', detail: 'Night mode · Downstairs guarded' },
+    { time: '18:02', title: 'Front door opened', detail: 'Zone 1 · System unset' },
+    { time: '23:10', title: 'System set', detail: 'Night mode · Downstairs guarded' },
     { time: '02:14', title: 'Motion on the driveway', detail: 'Cam 1 · Image attached', image: true },
   ],
 };
@@ -485,9 +485,9 @@ export const servicesUi = {
 // Text drawn inside the before/after keypad illustration. Generic demo data, labelled "Illustration".
 export const upgradeScene = {
   stageLabel:
-    'Illustration. Before: a yellowed beige alarm keypad with worn number keys, its small grey-green display blinking FAULT and a red light on. After: the same wall with a slim dark touchscreen keypad showing the system armed in night mode with every zone OK, and a phone beside it showing an app notification.',
+    'Illustration. Before: a yellowed beige alarm keypad with worn number keys, its small grey-green display blinking FAULT and a red light on. After: the same wall with a slim dark touchscreen keypad showing the system set in night mode with every zone OK, and a phone beside it showing an app notification.',
   lcd: 'FAULT',
-  status: 'Armed · Night',
+  status: 'Set · Night',
   time: '23:10',
   zones: [
     ['Z1 Front door', 'OK'],
@@ -497,7 +497,7 @@ export const upgradeScene = {
   modes: ['Away', 'Night', 'Off'],
   notifyApp: 'Alarm',
   notifyWhen: 'now',
-  notifyTitle: 'System armed',
+  notifyTitle: 'System set',
   notifyBody: ['Night mode', 'Downstairs guarded'],
   // {before} and {after} are replaced with percentages for screen readers.
   valueText: 'Old keypad {before}%, upgraded keypad {after}%',
@@ -506,7 +506,7 @@ export const upgradeScene = {
 
 // Phone illustration in the App section. Synthetic demo data, labelled as an illustration.
 export const appDemo = {
-  status: 'Armed',
+  status: 'Set',
   mode: 'Night mode',
   clock: '02:14',
   feedLabel: 'Notifications',
@@ -514,7 +514,7 @@ export const appDemo = {
   camTime: '02:14:07',
   test: { title: 'Test alert', detail: 'Sent from this page', time: 'Just now', earlier: 'Earlier' },
   announce: 'Test alert received on the phone illustration.',
-  phoneLabel: 'Illustration: a phone showing an alarm app, armed in night mode, with a feed of recent notifications.',
+  phoneLabel: 'Illustration: a phone showing an alarm app, set in night mode, with a feed of recent notifications.',
   stillLabel: 'Illustration: an infrared camera still of a driveway at night, with a person walking towards the house.',
 };
 
@@ -677,7 +677,7 @@ export const privacy = {
         [
           'To use any of these rights, or with a question about this notice, call us on ',
           privacyTel,
-          ' or write to Amptech Ltd, 3 The Rise, Louisa Valley, Leixlip, Co. Kildare. ',
+          ' or write to Robert Farnan Electrical & Alarms Limited (trading as Amptech), 3 The Rise, Louisa Valley, Leixlip, Co. Kildare, W23 N226. ',
           { tbc: 'email address to confirm' },
         ],
       ],
