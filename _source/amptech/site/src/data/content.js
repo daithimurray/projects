@@ -355,3 +355,26 @@ export const upgradeScene = {
   // {before} and {after} are replaced with percentages for screen readers.
   valueText: 'Old keypad {before}%, upgraded keypad {after}%',
 };
+
+
+// Phone illustration in the App section. Synthetic demo data, labelled as an illustration.
+export const appDemo = {
+  status: 'Armed',
+  mode: 'Night mode',
+  clock: '02:14',
+  feedLabel: 'Notifications',
+  camLabel: 'CAM 1',
+  camTime: '02:14:07',
+  test: { title: 'Test alert', detail: 'Sent from this page', time: 'Just now', earlier: 'Earlier' },
+  announce: 'Test alert received on the phone illustration.',
+  phoneLabel: 'Illustration: a phone showing an alarm app, armed in night mode, with a feed of recent notifications.',
+  stillLabel: 'Illustration: an infrared camera still of a driveway at night, with a person walking towards the house.',
+};
+
+// The end of the Process cable run: a specimen certificate, then the next step.
+export const processDemo = {
+  finale: 'It starts with a phone call.',
+  signature: 'Signed for the installer',
+  stampRing: 'Specimen',
+  certNote: 'Specimen shown for illustration. Not a real certificate.',
+};

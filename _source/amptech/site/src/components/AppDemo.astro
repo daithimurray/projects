@@ -1,10 +1,952 @@
 ---
-// STUB: replaced by the section builder. See _source/amptech/BUILD-SPEC.md.
-import { app } from '../data/content.js';
+// App: night, sodium horizon glow. An authored phone receives the alarm's
+// notifications; a real button sends a test alert to it.
+import Icon from './Icon.astro';
+import { app, appDemo } from '../data/content.js';
+
+// Newest first, like a real notification feed. Icons come from the hardware set.
+const feed = app.feed
+  .map((item) => ({
+    ...item,
+    icon: item.image ? 'camera' : /armed/i.test(item.title) ? 'lock' : 'door',
+  }))
+  .reverse();
+
+// Estate roofline along the bottom of the section, generated once at build time
+// from a seeded sequence so it stays the same on every build.
+const rng = (seed) => {
+  let s = seed;
+  return () => ((s = (s * 16807) % 2147483647) - 1) / 2147483646;
+};
+const f = (n) => Math.round(n * 10) / 10;
+
+let far = '';
+{
+  const r = rng(11);
+  for (let x = -40; x < 1480; ) {
+    const w = 110 + r() * 80;
+    const eave = 118 + r() * 8;
+    const ridge = eave - 20 - r() * 10;
+    const hip = 14 + r() * 16;
+    far += `M${f(x)} 180V${f(eave)}L${f(x + hip)} ${f(ridge)}H${f(x + w - hip)}L${f(x + w)} ${f(eave)}V180Z`;
+    if (r() > 0.45) {
+      const cx = x + hip + r() * (w - 2 * hip - 12);
+      far += `M${f(cx)} ${f(ridge + 1)}V${f(ridge - 11)}h9V${f(ridge + 1)}Z`;
+    }
+    x += w + 4 + r() * 22;
+  }
+}
+
+let near = '';
+const windows = [];
+{
+  const r = rng(29);
+  for (let x = -70; x < 1500; ) {
+    const w = 250 + r() * 70;
+    const eave = 132 + r() * 6;
+    const ridge = eave - 38 - r() * 8;
+    const hip = 34 + r() * 12;
+    near += `M${f(x)} 180V${f(eave)}L${f(x + hip)} ${f(ridge)}H${f(x + w - hip)}L${f(x + w)} ${f(eave)}V180Z`;
+    // Shared chimney stack on the party wall, with two pots.
+    const cx = x + w / 2 - 11;
+    near += `M${f(cx)} ${f(ridge + 1)}V${f(ridge - 20)}h22V${f(ridge + 1)}Z`;
+    near += `M${f(cx + 3)} ${f(ridge - 19)}v-6h5v6ZM${f(cx + 14)} ${f(ridge - 19)}v-6h5v6Z`;
+    // A few upstairs windows left on.
+    for (const at of [0.16, 0.3, 0.64, 0.78]) {
+      if (r() > 0.6) windows.push({ x: f(x + w * at), y: f(eave + 12) });
+    }
+    x += w + 46 + r() * 50;
+  }
+}
+const lamps = [600, 1236];
+
+// Overcast cloud base, underlit sodium: low-frequency noise stretched sideways.
+const cloudSvg = `<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="420"><filter id="c" x="0" y="0" width="100%" height="100%"><feTurbulence type="fractalNoise" baseFrequency=".0024 .0105" numOctaves="4" seed="5" stitchTiles="stitch"/><feColorMatrix values="0 0 0 0 1  0 0 0 0 .66  0 0 0 0 .32  0 0 0 2.1 -.95"/></filter><rect width="1200" height="420" filter="url(#c)"/></svg>`;
+const cloudUrl = `url("data:image/svg+xml,${encodeURIComponent(cloudSvg)}")`;
 ---
 
-<section id="app" class="section is-night" aria-label="AppDemo">
-  <div class="container">
-    <h2 class="h-section">{app.title}</h2>
+<section id="app" class="section is-night app" aria-labelledby="app-title" data-app style={`--clouds: ${cloudUrl};`}>
+  <div class="app__sky" aria-hidden="true">
+    <div class="app__glow" data-app-glow></div>
+    <svg class="app__roofs" viewBox="0 0 1440 180" preserveAspectRatio="xMidYMax slice" focusable="false">
+      <defs>
+        <radialGradient id="app-lamp-glow">
+          <stop offset="0" stop-color="#ffc27a" stop-opacity=".75"></stop>
+          <stop offset=".22" stop-color="#ff9e3d" stop-opacity=".32"></stop>
+          <stop offset="1" stop-color="#ff9e3d" stop-opacity="0"></stop>
+        </radialGradient>
+      </defs>
+      <path class="app__roofs-far" d={far}></path>
+      <path class="app__roofs-near" d={near}></path>
+      <path
+        class="app__aerial"
+        d="M366 60v-26M352 40h28M356 34h20M360 28h12"
+        fill="none"
+        stroke-width="2"
+        stroke-linecap="round"
+      ></path>
+      {windows.map((win) => <rect class="app__window" x={win.x} y={win.y} width="14" height="11" rx="1"></rect>)}
+      {
+        lamps.map((x) => (
+          <g class="app__lamp">
+            <circle cx={x - 26} cy="50" r="58" fill="url(#app-lamp-glow)"></circle>
+            <path d={`M${x} 180V56q0-9-11-9h-9`} fill="none" stroke-width="3.2" stroke-linecap="round"></path>
+            <path d={`M${x - 36} 44h18l-3 6h-12Z`}></path>
+            <ellipse cx={x - 27} cy="50.5" rx="6" ry="1.8" fill="#ffd49a"></ellipse>
+          </g>
+        ))
+      }
+    </svg>
   </div>
+
+  <div class="container app__grid">
+    <div class="app__intro">
+      <h2 id="app-title" class="h-section">{app.title}</h2>
+      <p class="lede">{app.lede}</p>
+    </div>
+
+    <ul class="app__points" role="list">
+      {
+        app.points.map((point, i) => (
+          <li>
+            <span class="app__led" data-led={i} aria-hidden="true" />
+            <span>{point}</span>
+          </li>
+        ))
+      }
+    </ul>
+
+    <figure class="app__stage" data-phone-stage aria-label={appDemo.phoneLabel} aria-describedby="app-note">
+      <svg class="app__buzz" data-buzz viewBox="0 0 400 200" preserveAspectRatio="none" aria-hidden="true" focusable="false">
+        <path d="M22 70q-12 30 0 60M8 58q-18 42 0 84M378 70q12 30 0 60M392 58q18 42 0 84"></path>
+      </svg>
+      <div class="phone-tilt" data-phone-tilt>
+        <div class="phone" data-phone>
+          <div class="phone__screen" data-screen>
+            <div class="phone__status" aria-hidden="true">
+              <span class="data">{appDemo.clock}</span>
+              <span class="phone__camera"></span>
+              <svg class="phone__sys" viewBox="0 0 44 12" focusable="false">
+                <g fill="currentColor">
+                  <rect x="0" y="8" width="2.6" height="4" rx=".6"></rect>
+                  <rect x="4" y="6" width="2.6" height="6" rx=".6"></rect>
+                  <rect x="8" y="3.5" width="2.6" height="8.5" rx=".6"></rect>
+                  <rect x="12" y="1" width="2.6" height="11" rx=".6"></rect>
+                  <rect x="22.2" y="3.2" width="12" height="5.6" rx="1.2"></rect>
+                </g>
+                <rect x="20.5" y="1.5" width="19" height="9" rx="2.4" fill="none" stroke="currentColor" stroke-opacity=".5"></rect>
+                <path d="M41.4 4.6v2.8" stroke="currentColor" stroke-opacity=".5" stroke-linecap="round"></path>
+              </svg>
+            </div>
+
+            <div class="phone__app">
+              <p class="ph-state">
+                <span class="ph-state__led" aria-hidden="true"></span>
+                <span><strong>{appDemo.status}</strong> · {appDemo.mode}</span>
+              </p>
+              <p class="ph-label">{appDemo.feedLabel}</p>
+              <ol class="feed" id="app-feed" role="list" data-feed>
+                {
+                  feed.map((item) => (
+                    <li class:list={['note', { 'is-new': item.image }]}>
+                      <div class:list={['note__card', { 'note__card--alert': item.image }]}>
+                        <span class="note__icon">
+                          <Icon name={item.icon} size={18} />
+                        </span>
+                        <p class="note__title">{item.title}</p>
+                        <p class="note__time data">
+                          <time datetime={item.time}>{item.time}</time>
+                        </p>
+                        <p class="note__detail data">{item.detail}</p>
+                        {item.image && (
+                          <div class="note__img" role="img" aria-label={`${appDemo.stillLabel} ${appDemo.camLabel}, ${appDemo.camTime}.`} data-still>
+                            <svg viewBox="0 0 320 180" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
+                              <defs>
+                                <radialGradient id="ir-hot" cx="50%" cy="92%" r="85%">
+                                  <stop offset="0" stop-color="#9ea6a3" />
+                                  <stop offset=".35" stop-color="#6a726f" />
+                                  <stop offset=".72" stop-color="#2a302f" />
+                                  <stop offset="1" stop-color="#121617" />
+                                </radialGradient>
+                                <linearGradient id="ir-drive" x1="0" y1="1" x2="0" y2="0">
+                                  <stop offset="0" stop-color="#6c7471" />
+                                  <stop offset="1" stop-color="#383f3d" />
+                                </linearGradient>
+                                <linearGradient id="ir-lawn" x1="0" y1="1" x2="0" y2="0">
+                                  <stop offset="0" stop-color="#b9c1be" />
+                                  <stop offset="1" stop-color="#5e6663" />
+                                </linearGradient>
+                                <radialGradient id="ir-lamp" cx="262" cy="20" r="36" gradientUnits="userSpaceOnUse">
+                                  <stop offset="0" stop-color="#f6f8f7" />
+                                  <stop offset=".22" stop-color="#cfd5d2" stop-opacity=".75" />
+                                  <stop offset="1" stop-color="#cfd5d2" stop-opacity="0" />
+                                </radialGradient>
+                                <radialGradient id="ir-vig" cx="50%" cy="55%" r="72%">
+                                  <stop offset=".55" stop-color="#000" stop-opacity="0" />
+                                  <stop offset="1" stop-color="#000" stop-opacity=".72" />
+                                </radialGradient>
+                                <pattern id="ir-scan" width="4" height="3" patternUnits="userSpaceOnUse">
+                                  <rect width="4" height="1" fill="#fff" fill-opacity=".05" />
+                                </pattern>
+                                <filter id="ir-grain" x="0" y="0" width="100%" height="100%">
+                                  <feTurbulence type="fractalNoise" baseFrequency=".9" numOctaves="2" seed="4" stitchTiles="stitch" />
+                                  <feColorMatrix values="1 0 0 0 0  1 0 0 0 0  1 0 0 0 0  0 0 0 0 .16" />
+                                </filter>
+                              </defs>
+                              <rect width="320" height="180" fill="url(#ir-hot)" />
+                              <path d="M0 0H320V64H0Z" fill="#161b1c" />
+                              <path d="M0 44L30 32L56 36L58 22L94 12L130 24L132 36L178 38L182 22L222 10L258 24L260 38L320 40V64H0Z" fill="#252b2b" />
+                              <circle cx="262" cy="20" r="36" fill="url(#ir-lamp)" />
+                              <path d="M0 58H320V66H0Z" fill="#3a4140" />
+                              <path d="M0 64H116V78H0ZM206 64H320V76H206Z" fill="#59615e" />
+                              <path d="M110 54h10v26h-10ZM200 54h10v24h-10Z" fill="#7a827f" />
+                              <path d="M0 78H118L54 180H0Z" fill="url(#ir-lawn)" />
+                              <path d="M118 78H204L312 180H54Z" fill="url(#ir-drive)" />
+                              <path d="M204 78H320V180H312Z" fill="#8a928f" />
+                              <path d="M58 180L119 80M306 180L203 80" stroke="#9aa29f" stroke-width="1.2" stroke-opacity=".5" />
+                              <ellipse cx="160" cy="148" rx="14" ry="2.6" fill="#0c1010" fill-opacity=".55" />
+                              <path d="M152.5 147L153.5 124h5l.6 23ZM161 144l1-20h5l1.2 20Z" fill="#6c7471" />
+                              <path d="M149 127l1-21q1-5 10-6q9 1 10 6l1 21Z" fill="#aeb6b3" />
+                              <path d="M149.5 107l-4.5 17 3 1 3.6-12.6ZM170.5 107l4.5 17-3 1-3.6-12.6Z" fill="#a1a9a6" />
+                              <circle cx="160" cy="93" r="6.3" fill="#d9dfdc" />
+                              <path d="M153.8 92q.6-8.2 6.2-8.2t6.2 8.2q-2.2-3.6-6.2-3.6t-6.2 3.6Z" fill="#4f5755" />
+                              <path d="M216 150v-23q0-8 6-10l8-13q3-5 10-5h32q7 0 10 5l8 13q6 2 6 10v23Z" fill="#2a3030" />
+                              <path d="M232 116l6-11q2-3 5-3h26q3 0 5 3l6 11Z" fill="#737b78" />
+                              <rect x="222" y="124" width="14" height="6" rx="2" fill="#c9d0cd" />
+                              <rect x="276" y="124" width="14" height="6" rx="2" fill="#c9d0cd" />
+                              <rect x="244" y="135" width="24" height="7" rx="1" fill="#f4f7f5" />
+                              <rect x="141" y="82" width="38" height="70" fill="none" stroke="#6aa0ff" stroke-width="1.4" />
+                              <rect width="320" height="180" filter="url(#ir-grain)" />
+                              <rect width="320" height="180" fill="url(#ir-scan)" />
+                              <rect width="320" height="180" fill="url(#ir-vig)" />
+                            </svg>
+                            <span class="note__osd note__osd--cam data" aria-hidden="true">{appDemo.camLabel}</span>
+                            <span class="note__osd note__osd--time data" aria-hidden="true">{appDemo.camTime}</span>
+                            <span class="note__scan" data-scan aria-hidden="true" />
+                          </div>
+                        )}
+                      </div>
+                    </li>
+                  ))
+                }
+              </ol>
+            </div>
+
+            <div class="phone__tabs" aria-hidden="true">
+              <span class="is-current"><Icon name="bell" size={20} /></span>
+              <span><Icon name="camera" size={20} /></span>
+              <span><Icon name="lock" size={20} /></span>
+            </div>
+            <span class="phone__home" aria-hidden="true"></span>
+            <span class="phone__dim" data-dim aria-hidden="true"></span>
+            <span class="phone__glare" data-glare aria-hidden="true"></span>
+          </div>
+        </div>
+      </div>
+    </figure>
+
+    <div class="app__demo">
+      <div class="app__ctl">
+        <button
+          class="btn btn--ghost app__btn"
+          type="button"
+          aria-controls="app-feed"
+          data-test-alert
+          data-earlier={appDemo.test.earlier}
+          hidden
+        >
+          <Icon name="bell" />
+          {app.demoButton}
+        </button>
+      </div>
+      <p class="app__note" id="app-note">{app.illustrationNote}</p>
+      <p class="visually-hidden" aria-live="polite" data-live data-announce={appDemo.announce}></p>
+    </div>
+  </div>
+
+  <template data-note-tpl>
+    <li class="note is-new">
+      <div class="note__card note__card--alert">
+        <span class="note__icon"><Icon name="bell" size={18} /></span>
+        <p class="note__title">{appDemo.test.title}</p>
+        <p class="note__time data" data-time>{appDemo.test.time}</p>
+        <p class="note__detail data">{appDemo.test.detail}</p>
+      </div>
+    </li>
+  </template>
 </section>
+
+<style>
+  .app {
+    --roof-h: clamp(84px, 11vw, 168px);
+    overflow: clip;
+    isolation: isolate;
+    padding-bottom: calc(var(--section-y) + var(--roof-h) * 0.72);
+    background:
+      radial-gradient(70% 16% at 22% 74%, rgb(255 174 82 / 0.07), transparent 70%),
+      radial-gradient(60% 13% at 80% 66%, rgb(255 174 82 / 0.06), transparent 70%),
+      linear-gradient(to bottom, var(--night-900) 0%, var(--night-850) 55%, #1b2237 100%);
+  }
+
+  /* ---------- Sky: the overcast underlit by sodium streetlights ---------- */
+  .app__sky {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+  }
+  .app__glow {
+    position: absolute;
+    inset: auto 0 0;
+    height: 80%;
+    transform-origin: 50% 100%;
+    background:
+      radial-gradient(120% 42% at 50% 100%, rgb(255 158 61 / 0.62), rgb(230 126 20 / 0.24) 45%, transparent 80%),
+      radial-gradient(90% 70% at 50% 100%, rgb(230 126 20 / 0.2), transparent 75%),
+      radial-gradient(45% 22% at 16% 88%, rgb(255 174 82 / 0.2), transparent 70%),
+      radial-gradient(40% 20% at 86% 84%, rgb(255 174 82 / 0.18), transparent 70%);
+  }
+  /* The cloud base, lit from below: strongest just above the rooftops */
+  .app__glow::before {
+    content: '';
+    position: absolute;
+    inset: 12% 0 0;
+    background: var(--clouds) center bottom / max(100%, 1200px) 100% no-repeat;
+    opacity: 0.34;
+    -webkit-mask-image: linear-gradient(to top, #000 18%, rgb(0 0 0 / 0.5) 45%, transparent 85%);
+    mask-image: linear-gradient(to top, #000 18%, rgb(0 0 0 / 0.5) 45%, transparent 85%);
+  }
+  .app__roofs {
+    position: absolute;
+    left: 0;
+    bottom: -1px;
+    width: 100%;
+    height: var(--roof-h);
+    overflow: visible;
+  }
+  .app__roofs-far {
+    fill: #1a2439;
+  }
+  .app__roofs-near,
+  .app__lamp path {
+    fill: var(--night-900);
+  }
+  .app__lamp path[fill='none'],
+  .app__aerial {
+    stroke: var(--night-900);
+  }
+  .app__window {
+    fill: var(--tungsten);
+    opacity: 0.82;
+  }
+
+  /* ---------- Layout ---------- */
+  .app__grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas: 'intro' 'points' 'stage' 'demo';
+  }
+  .app__intro {
+    grid-area: intro;
+  }
+  .app__intro .lede {
+    margin-top: var(--space-5);
+  }
+  .app__points {
+    grid-area: points;
+    margin-top: var(--space-6);
+    max-width: 30rem;
+  }
+  .app__stage {
+    grid-area: stage;
+    justify-self: center;
+    position: relative;
+    width: min(100%, 300px);
+    margin: var(--space-8) 0 0;
+  }
+  .app__demo {
+    grid-area: demo;
+    margin-top: var(--space-6);
+    justify-self: center;
+    text-align: center;
+  }
+
+  @media (min-width: 960px) {
+    .app__grid {
+      grid-template-columns: minmax(0, 1.08fr) minmax(0, 0.92fr);
+      grid-template-rows: 1fr auto auto auto 1fr;
+      grid-template-areas:
+        '. stage'
+        'intro stage'
+        'points stage'
+        'demo stage'
+        '. stage';
+      column-gap: clamp(3rem, 6vw, 7rem);
+    }
+    .app__stage {
+      width: min(100%, 318px);
+      margin: 0;
+    }
+    .app__demo {
+      justify-self: start;
+      text-align: left;
+      margin-top: var(--space-6);
+    }
+  }
+
+  /* ---------- Copy ---------- */
+  .app__points li {
+    display: grid;
+    grid-template-columns: 12px minmax(0, 1fr);
+    align-items: center;
+    gap: var(--space-4);
+    min-height: 3.25rem;
+    padding-block: var(--space-3);
+    border-top: 1px solid var(--night-700);
+    font-weight: 600;
+    color: var(--dusk-50);
+  }
+  .app__points li:last-child {
+    border-bottom: 1px solid var(--night-700);
+  }
+  /* A panel status LED. A light source, so it may bloom. */
+  .app__led {
+    width: 12px;
+    height: 7px;
+    border-radius: 2px;
+    background: var(--sodium-500);
+    box-shadow: 0 0 10px 1px var(--sodium-glow), 0 0 2px var(--sodium-300);
+    transition:
+      background-color var(--dur-decay) var(--ease-out),
+      box-shadow var(--dur-decay) var(--ease-out);
+  }
+  [data-demo='pending'] .app__led:not(.is-on) {
+    background: var(--night-600);
+    box-shadow: none;
+  }
+  .app__led.is-on {
+    transition-duration: var(--dur-trip);
+  }
+
+  .app__ctl {
+    min-height: 52px;
+  }
+  .app__btn {
+    --btn-border: var(--night-500);
+  }
+  .app__btn svg {
+    color: var(--strobe-400);
+  }
+  .app__btn:active {
+    transform: translateY(1px);
+  }
+  .app__note {
+    margin-top: var(--space-3);
+    font-size: var(--step--1);
+    color: var(--dusk-300);
+    max-width: 34ch;
+  }
+
+  /* ---------- Phone ---------- */
+  .phone-tilt {
+    transform-style: preserve-3d;
+  }
+  .phone {
+    position: relative;
+    aspect-ratio: 9 / 19;
+    padding: 10px;
+    border-radius: 46px;
+    background: linear-gradient(162deg, #2c3549 0%, #141b29 42%, #0b1019 100%);
+    box-shadow:
+      inset 0 1px 0 rgb(255 255 255 / 0.18),
+      inset 0 0 0 1px rgb(255 255 255 / 0.06),
+      inset 0 -1.5px 0 rgb(255 174 82 / 0.3),
+      0 2px 4px rgb(3 7 15 / 0.5),
+      0 44px 70px -26px rgb(3 7 15 / 0.85);
+  }
+  /* Side keys: two volume on the left, power on the right */
+  .phone::before,
+  .phone::after {
+    content: '';
+    position: absolute;
+    width: 3px;
+    background: linear-gradient(to right, #222b3c, #3a455b);
+  }
+  .phone::before {
+    left: -3px;
+    top: 21%;
+    height: 8%;
+    border-radius: 2px 0 0 2px;
+    box-shadow: 0 calc(var(--vol-gap, 62px)) 0 #2a3345;
+  }
+  .phone::after {
+    right: -3px;
+    top: 27%;
+    height: 12%;
+    border-radius: 0 2px 2px 0;
+    background: linear-gradient(to left, #222b3c, #3a455b);
+  }
+
+  .phone__screen {
+    --strobe-a: 0;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    overflow: hidden;
+    border-radius: 37px;
+    isolation: isolate;
+    background:
+      radial-gradient(130% 50% at 50% 0%, #172441 0%, transparent 70%),
+      #0a111f;
+    color: var(--dusk-50);
+  }
+  /* Bell-box strobe on the screen edge */
+  .phone__screen::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 5;
+    border-radius: inherit;
+    pointer-events: none;
+    box-shadow:
+      inset 0 0 0 2px rgb(106 160 255 / calc(var(--strobe-a) * 0.95)),
+      inset 0 0 38px 6px rgb(61 124 255 / calc(var(--strobe-a) * 0.5));
+  }
+
+  .phone__status {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 42px;
+    padding: 8px 24px 0 28px;
+    flex: none;
+  }
+  .phone__status .data {
+    font-size: 12px;
+    font-weight: 560;
+    letter-spacing: 0.01em;
+  }
+  .phone__camera {
+    position: absolute;
+    left: 50%;
+    top: 13px;
+    width: 12px;
+    height: 12px;
+    margin-left: -6px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 36% 34%, #2b3a59 0 18%, #04070d 42%);
+    box-shadow: 0 0 0 1.5px #03060b;
+  }
+  .phone__sys {
+    width: 40px;
+    height: 11px;
+    color: var(--dusk-50);
+  }
+
+  .phone__app {
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+    flex: 1;
+    padding: 12px 12px 0;
+  }
+  .ph-state {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 4px 6px 16px;
+    font-family: var(--font-display);
+    font-stretch: 108%;
+    font-size: 17px;
+    font-weight: 560;
+    letter-spacing: -0.01em;
+    line-height: 1.15;
+    color: var(--dusk-200);
+    border-bottom: 1px solid rgb(159 176 207 / 0.16);
+  }
+  .ph-state strong {
+    font-weight: 760;
+    color: var(--dusk-50);
+  }
+  .ph-state__led {
+    flex: none;
+    width: 10px;
+    height: 10px;
+    border-radius: 3px;
+    background: var(--clear-400);
+    box-shadow: 0 0 10px 2px rgb(94 224 160 / 0.5), 0 0 2px #c8ffe4;
+  }
+  .ph-label {
+    padding: 14px 6px 8px;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.01em;
+    color: var(--dusk-300);
+  }
+
+  .feed {
+    flex: 1;
+    min-height: 0;
+    overflow: hidden;
+    -webkit-mask-image: linear-gradient(to bottom, #000 82%, transparent 99%);
+    mask-image: linear-gradient(to bottom, #000 82%, transparent 99%);
+  }
+  .note {
+    padding-bottom: 8px;
+  }
+  .note__card {
+    --strobe-a: 0;
+    display: grid;
+    grid-template-columns: 20px minmax(0, 1fr) auto;
+    grid-template-areas:
+      'icon title time'
+      'icon detail detail'
+      'img img img';
+    column-gap: 10px;
+    row-gap: 3px;
+    padding: 11px 12px 11px 11px;
+    border-radius: 14px;
+    background: linear-gradient(to bottom, rgb(33 50 82 / 0.72), rgb(22 36 61 / 0.9));
+    box-shadow:
+      inset 0 1px 0 rgb(255 255 255 / 0.07),
+      inset 0 0 0 1.5px rgb(106 160 255 / var(--strobe-a)),
+      0 6px 14px -8px rgb(3 7 15 / 0.7);
+  }
+  .note__icon {
+    grid-area: icon;
+    padding-top: 1px;
+    color: var(--dusk-300);
+  }
+  .note__card--alert .note__icon {
+    color: var(--strobe-400);
+  }
+  .note__icon :global(svg) {
+    width: 18px;
+    height: 18px;
+  }
+  .note__title {
+    grid-area: title;
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 1.3;
+    color: var(--dusk-50);
+  }
+  .note__time {
+    grid-area: time;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding-top: 2px;
+    font-size: 10.5px;
+    color: var(--dusk-300);
+    white-space: nowrap;
+  }
+  .note.is-new .note__time::before {
+    content: '';
+    width: 7px;
+    height: 7px;
+    border-radius: 2px;
+    background: var(--strobe-500);
+    box-shadow: 0 0 6px rgb(61 124 255 / 0.7);
+  }
+  .note__detail {
+    grid-area: detail;
+    font-size: 10.5px;
+    line-height: 1.45;
+    color: var(--dusk-300);
+  }
+
+  /* The CCTV still: IR monochrome with an OSD overlay */
+  .note__img {
+    grid-area: img;
+    position: relative;
+    margin-top: 9px;
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+    border-radius: 9px;
+    background: #121617;
+  }
+  .note__img svg {
+    width: 100%;
+    height: 100%;
+  }
+  .note__osd {
+    position: absolute;
+    font-size: 9.5px;
+    font-weight: 520;
+    line-height: 1;
+    color: #eef1f0;
+    text-shadow: 0 1px 1px rgb(0 0 0 / 0.8);
+  }
+  .note__osd--cam {
+    top: 7px;
+    left: 8px;
+  }
+  .note__osd--time {
+    right: 8px;
+    bottom: 7px;
+  }
+  .note__scan {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    height: 2px;
+    background: rgb(238 241 240 / 0.9);
+    box-shadow: 0 0 8px 1px rgb(238 241 240 / 0.6);
+    opacity: 0;
+  }
+
+  .phone__tabs {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    flex: none;
+    height: 64px;
+    padding: 0 22px 18px;
+    border-top: 1px solid rgb(159 176 207 / 0.12);
+    color: var(--dusk-400);
+  }
+  .phone__tabs span {
+    display: grid;
+    place-items: center;
+    width: 44px;
+    height: 34px;
+    border-radius: 10px;
+  }
+  .phone__tabs .is-current {
+    color: var(--dusk-50);
+    background: rgb(159 176 207 / 0.1);
+  }
+  .phone__home {
+    position: absolute;
+    left: 50%;
+    bottom: 8px;
+    width: 34%;
+    height: 4px;
+    margin-left: -17%;
+    border-radius: 3px;
+    background: rgb(238 241 248 / 0.55);
+    z-index: 3;
+  }
+  .phone__dim {
+    position: absolute;
+    inset: 0;
+    z-index: 4;
+    background: #02050b;
+    opacity: 0;
+    pointer-events: none;
+  }
+  /* Glass: a soft sheen that slides as the phone tilts */
+  .phone__glare {
+    position: absolute;
+    inset: -10% -60%;
+    z-index: 6;
+    pointer-events: none;
+    background: linear-gradient(112deg, transparent 38%, rgb(255 255 255 / 0.055) 47%, rgb(255 255 255 / 0.02) 53%, transparent 60%);
+  }
+
+  /* Vibration marks, shown only while the phone buzzes */
+  .app__buzz {
+    position: absolute;
+    top: 36%;
+    left: -14%;
+    width: 128%;
+    height: 22%;
+    opacity: 0;
+    fill: none;
+    stroke: var(--dusk-300);
+    stroke-width: 2;
+    stroke-linecap: round;
+    vector-effect: non-scaling-stroke;
+    pointer-events: none;
+  }
+  .app__buzz path {
+    vector-effect: non-scaling-stroke;
+  }
+
+  @media (max-width: 380px) {
+    .app__points li {
+      font-size: var(--step--1);
+    }
+  }
+</style>
+
+<script>
+  import { boot, gsap, ScrollTrigger, motionOK, isTouch, strobe, sweepIn } from '../scripts/motion.js';
+
+  boot();
+
+  const section = document.querySelector('[data-app]');
+  if (section) initApp(section);
+
+  function initApp(root) {
+    const stage = root.querySelector('[data-phone-stage]');
+    const tilt = root.querySelector('[data-phone-tilt]');
+    const phone = root.querySelector('[data-phone]');
+    const screen = root.querySelector('[data-screen]');
+    const dim = root.querySelector('[data-dim]');
+    const glare = root.querySelector('[data-glare]');
+    const feed = root.querySelector('[data-feed]');
+    const tpl = root.querySelector('[data-note-tpl]');
+    const btn = root.querySelector('[data-test-alert]');
+    const live = root.querySelector('[data-live]');
+    const buzzMarks = root.querySelector('[data-buzz]');
+    const leds = [...root.querySelectorAll('[data-led]')];
+    const MAX = 4;
+    const moving = motionOK();
+
+    // The demo needs JS, so its control only appears once JS is running.
+    btn.hidden = false;
+
+    const ledOn = (i) => leds[i]?.classList.add('is-on');
+
+    // A note collapses to nothing, then drops in from above and pushes the feed down.
+    const collapse = (note) => {
+      gsap.set(note, { height: 0, overflow: 'hidden' });
+      gsap.set(note.firstElementChild, { opacity: 0, yPercent: -45, scale: 0.97 });
+    };
+    const naturalHeight = (note) => {
+      const prev = note.style.height;
+      note.style.height = 'auto';
+      const h = note.offsetHeight;
+      note.style.height = prev;
+      return h;
+    };
+    const dropIn = (note) =>
+      gsap
+        .timeline()
+        .to(note, { height: () => naturalHeight(note), duration: 0.62, ease: 'expo.out' })
+        .to(note.firstElementChild, { opacity: 1, yPercent: 0, scale: 1, duration: 0.7, ease: 'expo.out' }, 0)
+        .set(note, { clearProps: 'height,overflow' });
+
+    // Bell-box strobe on the card and the screen edge, and the phone buzzes.
+    const alertFx = (note) => {
+      const tl = gsap.timeline();
+      const a = strobe(note.firstElementChild);
+      const b = strobe(screen);
+      if (a) tl.add(a, 0);
+      if (b) tl.add(b, 0);
+      tl.to(
+        phone,
+        {
+          keyframes: { x: [0, -2.5, 2.5, -2, 2, -1, 0], rotation: [0, -0.7, 0.7, -0.5, 0.4, -0.2, 0] },
+          duration: 0.42,
+          ease: 'none',
+        },
+        0.02,
+      ).fromTo(buzzMarks, { opacity: 0 }, { keyframes: { opacity: [0, 0.9, 0.15, 0.9, 0] }, duration: 0.46, ease: 'none' }, 0.02);
+      return tl;
+    };
+
+    // The camera still arrives line by line, a scan passing down it.
+    const revealStill = (img) => {
+      const scan = img.querySelector('[data-scan]');
+      return gsap
+        .timeline()
+        .fromTo(img.querySelector('svg'), { clipPath: 'inset(0% 0% 100% 0%)' }, { clipPath: 'inset(0% 0% 0% 0%)', duration: 0.9, ease: 'power2.inOut' })
+        .fromTo(
+          scan,
+          { y: 0, opacity: 1 },
+          { y: () => img.offsetHeight - 2, duration: 0.9, ease: 'power2.inOut' },
+          0,
+        )
+        .to(scan, { opacity: 0, duration: 0.3, ease: 'decay' });
+    };
+
+    sweepIn(root.querySelector('#app-title'));
+
+    let intro = null;
+    const finishIntro = () => {
+      if (intro && intro.progress() < 1) intro.progress(1);
+      leds.forEach((_, i) => ledOn(i));
+      root.dataset.demo = 'done';
+    };
+
+    if (moving) {
+      // The sky brightens from the horizon as the section rises into view.
+      gsap.fromTo(
+        root.querySelector('[data-app-glow]'),
+        { scaleY: 0.5, opacity: 0.55 },
+        { scaleY: 1, opacity: 1, ease: 'none', scrollTrigger: { trigger: root, start: 'top bottom', end: 'bottom bottom', scrub: 0.6 } },
+      );
+
+      root.dataset.demo = 'pending';
+      const notes = [...feed.children]; // newest first: alert, armed, door
+      const [alert, armed, door] = notes;
+      const still = alert?.querySelector('[data-still]');
+      notes.forEach(collapse);
+      gsap.set(dim, { opacity: 0.62 });
+
+      intro = gsap.timeline({ paused: true, onComplete: finishIntro });
+      intro
+        .add(dropIn(door), 0.3)
+        .add(dropIn(armed), 0.95)
+        .call(ledOn, [0], 1.2)
+        // 02:14: the screen wakes (a trip: instant attack) as the motion alert lands.
+        .to(dim, { opacity: 0, duration: 0.1, ease: 'trip' }, 2.35)
+        .add(dropIn(alert), 2.35)
+        .add(alertFx(alert), 2.5)
+        .call(ledOn, [1], 2.5);
+      if (still) intro.add(revealStill(still), 2.85).call(ledOn, [2], 3.4);
+
+      const play = () => intro.progress() < 1 && intro.play();
+      ScrollTrigger.create({ trigger: stage, start: 'top 72%', end: 'bottom top', onEnter: play, onEnterBack: play });
+
+      // Desktop pointer: the phone turns gently toward the cursor, the glass sheen slides.
+      if (!isTouch()) {
+        gsap.set(tilt, { transformPerspective: 1100 });
+        const rx = gsap.quickTo(tilt, 'rotationX', { duration: 0.9, ease: 'power3.out' });
+        const ry = gsap.quickTo(tilt, 'rotationY', { duration: 0.9, ease: 'power3.out' });
+        const gx = gsap.quickTo(glare, 'xPercent', { duration: 0.9, ease: 'power3.out' });
+        root.addEventListener(
+          'pointermove',
+          (e) => {
+            if (e.pointerType !== 'mouse') return;
+            const r = stage.getBoundingClientRect();
+            const nx = gsap.utils.clamp(-1, 1, (e.clientX - (r.left + r.width / 2)) / (window.innerWidth / 2));
+            const ny = gsap.utils.clamp(-1, 1, (e.clientY - (r.top + r.height / 2)) / (window.innerHeight / 2));
+            ry(nx * 8);
+            rx(-ny * 6);
+            gx(nx * 14);
+          },
+          { passive: true },
+        );
+        root.addEventListener('pointerleave', () => {
+          rx(0);
+          ry(0);
+          gx(0);
+        });
+      }
+    }
+
+    // "Send a test alert": a fresh notification lands at the top of the feed.
+    const earlier = btn.dataset.earlier;
+    btn.addEventListener('click', () => {
+      finishIntro();
+      feed.querySelectorAll('[data-time]').forEach((t) => (t.textContent = earlier));
+      const note = tpl.content.firstElementChild.cloneNode(true);
+      feed.prepend(note);
+
+      // Keep the feed to the four most recent notifications.
+      const current = [...feed.children].filter((n) => !n.classList.contains('is-leaving'));
+      current.slice(MAX).forEach((old) => {
+        old.classList.add('is-leaving');
+        if (moving) {
+          gsap.set(old, { overflow: 'hidden' });
+          gsap.to(old, { height: 0, opacity: 0, duration: 0.4, ease: 'power2.in', onComplete: () => old.remove() });
+        } else old.remove();
+      });
+
+      if (moving) {
+        collapse(note);
+        gsap.timeline().add(dropIn(note)).add(alertFx(note), 0.12);
+      }
+
+      live.textContent = '';
+      window.setTimeout(() => (live.textContent = live.dataset.announce), 80);
+    });
+  }
+</script>
