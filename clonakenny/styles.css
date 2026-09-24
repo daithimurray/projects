@@ -231,7 +231,7 @@ em { font-style: italic; }
 }
 .hero__poster {
   object-fit: contain; object-position: 78% 55%;
-  width: min(62vw, 92svh); height: auto; left: auto; right: 2vw; top: 50%; bottom: auto; inset: auto 2vw auto auto;
+  width: min(62vw, 92svh); height: auto; left: auto; right: 2vw; top: 50%; bottom: auto;
   transform: translateY(-46%);
 }
 html.webgl .hero__poster { display: none; }
@@ -586,6 +586,15 @@ html:not(.motion) .stop { grid-area: auto; }
 .foot__links a { display: inline-block; padding: 10px 0; font-weight: 600; text-decoration: none; }
 .foot__links a:hover { text-decoration: underline; text-underline-offset: 6px; }
 .foot__small { margin-top: 24px; font-size: 0.85rem; color: var(--on-dusk-2); }
+
+/* ---------- Without JavaScript ---------- */
+html:not(.js) .year__visual { display: none; }
+html:not(.js) .year__pin { grid-template-columns: 1fr; max-width: 52rem; }
+html:not(.js) .tag, html:not(.js) .bloom-finder { display: none; }
+@media (max-width: 860px) {
+  html:not(.js) .nav__toggle { display: none; }
+  html:not(.js) .nav__cta { display: inline-flex; }
+}
 
 /* ---------- Motion setup (only when JS + motion allowed) ---------- */
 html.motion [data-bg] { background-color: transparent; }
