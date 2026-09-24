@@ -11,8 +11,12 @@ const f = (n: number) => Math.round(n * 10) / 10;
 // Hairlines stay hairlines at any drawing size (DrawSVG reads this attribute).
 const ns = { 'vector-effect': 'non-scaling-stroke' };
 
-// Footnote: the standard's number is data.
-const [footA, footB] = anatomy.footnote.split('EN 50131-1');
+// "Zone 1 · Front door": the code is data (mono), the place is a label (Atkinson).
+// "External" and "HKC app" have no code, so they are labels only.
+const zoneOf = (z: string) => {
+  const [head, ...tail] = z.split(' · ');
+  return /^(zone|cam)\s*\d+$/i.test(head) ? { code: head, place: tail.join(' · ') } : { code: '', place: z };
+};
 
 // ---------- Geometry: viewBox 0 0 1200 860, y grows downward ----------
 // Levels: ground 700, ground floor 690, first floor 540, ceilings 556 / 400.
@@ -126,19 +130,26 @@ const insetLines = (() => {
     <div class="container an-grid">
       <ol class="an-steps" role="list">
         {
-          steps.map((s, i) => (
-            <li class="an-step" id={`how-${s.id}`} data-an-step={i}>
-              <span class="an-step__led" aria-hidden="true" />
-              {i < steps.length - 1 && <span class="an-step__rail" aria-hidden="true" />}
-              <h3 class="an-step__title">{s.title}</h3>
-              <p class="an-step__zone data">{s.zone}</p>
-              <div class="an-step__body">
-                <div>
-                  <p>{s.body}</p>
+          steps.map((s, i) => {
+            const z = zoneOf(s.zone);
+            return (
+              <li class="an-step" id={`how-${s.id}`} data-an-step={i}>
+                <span class="an-step__led" aria-hidden="true" />
+                {i < steps.length - 1 && <span class="an-step__rail" aria-hidden="true" />}
+                <h3 class="an-step__title">{s.title}</h3>
+                <div class="an-step__body">
+                  <div>
+                    <p class="an-step__zone">
+                      {z.code && <span class="an-step__code data">{z.code}</span>}
+                      {z.code && ' '}
+                      <span class="an-step__place">{z.place}</span>
+                    </p>
+                    <p class="an-step__text">{s.body}</p>
+                  </div>
                 </div>
-              </div>
-            </li>
-          ))
+              </li>
+            );
+          })
         }
       </ol>
 
@@ -213,8 +224,8 @@ const insetLines = (() => {
                 <stop offset="1" class="s-sodium" stop-opacity="0" />
               </linearGradient>
               <linearGradient id="an-g-isky" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0" stop-color="#0a1013" />
-                <stop offset="1" stop-color="#1b2428" />
+                <stop offset="0" class="s-ir-sky0" />
+                <stop offset="1" class="s-ir-sky1" />
               </linearGradient>
               <linearGradient id="an-g-fade" x1="0" y1="0" x2="0" y2="1">
                 <stop offset="0.25" class="s-white" />
@@ -233,8 +244,8 @@ const insetLines = (() => {
             <!-- Sheet: registration marks and title block -->
             <path class="l3 d1" d="M8 24V8H24M1176 8H1192V24M8 836V852H24M1192 836V852H1176" {...ns} />
             <g class="an-sheet" data-an-sheet>
-              <text class="an-sheet__t" x="24" y="26">{up(anatomyArt.sheetTitle)}</text>
-              <text class="an-sheet__n" x="24" y="26" dy="2.7em">{up(anatomyArt.sheetNote)}</text>
+              <text class="an-sheet__t an-mono" x="24" y="26">{up(anatomyArt.sheetTitle)}</text>
+              <text class="an-sheet__n" x="24" y="26" dy="2.5em">{up(anatomyArt.sheetNote)}</text>
             </g>
 
             <!-- Street lighting falls on the footpath before anything else is drawn -->
@@ -414,7 +425,7 @@ const insetLines = (() => {
             <g class="an-tag" data-tag="0" data-dev="0" data-state="calm">
               <path class="an-tag__lead" d="M608 575H616V793H610" {...ns} />
               <circle class="an-tag__dot" cx="608" cy="575" r="2.3" />
-              <text class="an-tag__txt" x="605" y="793" text-anchor="end">{up(steps[0].zone)}</text>
+              <text class="an-tag__txt an-mono" x="605" y="793" text-anchor="end">{up(steps[0].zone)}</text>
               <text class="an-tag__txt an-tag__status" x="605" y="793" dy="1.5em" text-anchor="end" data-an-status>
                 {up(anatomyArt.open)}
               </text>
@@ -422,7 +433,7 @@ const insetLines = (() => {
             <g class="an-tag" data-tag="1" data-dev="1" data-state="calm">
               <path class="an-tag__lead" d="M614 567H551" {...ns} />
               <circle class="an-tag__dot" cx="614" cy="567" r="2.3" />
-              <text class="an-tag__txt" x="545" y="567" text-anchor="end">
+              <text class="an-tag__txt an-mono" x="545" y="567" text-anchor="end">
                 {up(steps[1].zone).split(' · ').map((part, i) => <tspan x="545" dy={i ? '1.3em' : 0}>{part}</tspan>)}
               </text>
             </g>
@@ -433,7 +444,7 @@ const insetLines = (() => {
             <g class="an-tag" data-tag="3" data-dev="3" data-state="calm">
               <path class="an-tag__lead" d="M352 399V360H358" {...ns} />
               <circle class="an-tag__dot" cx="352" cy="399" r="2.3" />
-              <text class="an-tag__txt" x="363" y="360">{up(steps[3].zone)}</text>
+              <text class="an-tag__txt an-mono" x="363" y="360">{up(steps[3].zone)}</text>
             </g>
             <g class="an-tag" data-tag="4" data-dev="4" data-state="calm">
               <path class="an-tag__lead" d="M662 446H716" {...ns} />
@@ -474,10 +485,13 @@ const insetLines = (() => {
                 <rect class="an-i-flash" x="810" y="60" width="350" height="224" data-an-flash />
               </g>
               <rect class="an-i-frame" x="810" y="60" width="350" height="224" rx="8" {...ns} />
-              <text class="an-osd" x="824" y="74">{up(steps[2].zone)}</text>
-              <text class="an-osd" x="1146" y="74" text-anchor="end" data-an-clock>{anatomyArt.camTime}</text>
+              <!-- OSD: zone on the top row; REC and the running clock share the bottom row -->
+              <text class="an-osd an-mono" x="824" y="74">{up(steps[2].zone)}</text>
               <circle class="an-rec" cx="828" cy="266" r="3.5" data-an-rec />
-              <text class="an-osd an-osd--mid" x="838" y="266">{up(anatomyArt.rec)}</text>
+              <text class="an-osd an-osd--mid an-osd--label" x="838" y="266">{up(anatomyArt.rec)}</text>
+              <text class="an-osd an-osd--mid an-mono" x="1146" y="266" text-anchor="end" data-an-clock>
+                {anatomyArt.camTime}
+              </text>
             </g>
           </svg>
 
@@ -487,14 +501,14 @@ const insetLines = (() => {
               <div class="an-card" data-an-card>
                 <p class="an-card__app">
                   <span class="an-card__led"></span>
-                  <span class="data">{steps[5].zone}</span>
+                  <span class="an-card__name">{steps[5].zone}</span>
                   <span class="data an-card__time">{anatomyArt.phone.time}</span>
                 </p>
                 <p class="an-card__title">{anatomyArt.phone.title}</p>
                 <p class="an-card__detail">{anatomyArt.phone.detail}</p>
                 <svg class="an-card__thumb" viewBox="810 60 350 224" focusable="false"><use href="#an-scene" /></svg>
               </div>
-              <p class="an-phone__note data">{anatomyArt.phone.note}</p>
+              <p class="an-phone__note">{anatomyArt.phone.note}</p>
             </div>
           </div>
         </div>
@@ -505,7 +519,7 @@ const insetLines = (() => {
   <div class="container an-foot">
     <p class="an-footnote" data-an-foot>
       <Icon name="certificate" size={32} />
-      <span>{footA}<span class="data an-footnote__std">EN 50131-1</span>{footB}</span>
+      <span>{anatomy.footnote}</span>
     </p>
   </div>
 </section>
@@ -514,7 +528,23 @@ const insetLines = (() => {
   .anatomy {
     --u: 1.4;
     --an-pad: 0.95rem;
+    --an-title: var(--step-1);
+    /* A painted front door (Irish estates: teal, red, racing green) */
     --an-door: #1c4a47;
+    /* The CCTV picture is a monochrome IR screen, not the night palette */
+    --ir-sky-0: #0a1013;
+    --ir-sky-1: #1b2428;
+    --ir-far: #182125;
+    --ir-road: #20292d;
+    --ir-drive: #273135;
+    --ir-path: #2b3539;
+    --ir-pier: #3b474c;
+    --ir-line: #43505a;
+    --ir-pole: #6b777c;
+    --ir-figure: #cdd5d8;
+    --ir-osd: #e7ecee;
+    --ir-flash: #e9eef0;
+    --ir-box: #f2f5f6;
     overflow-x: clip;
   }
 
@@ -565,6 +595,12 @@ const insetLines = (() => {
       position: sticky;
       top: calc(var(--header-h) + var(--space-6));
     }
+    /* The drawing (and the phone hanging 7% below it) always fits under the
+       header, so the sticky figure is never cut off on a short screen. */
+    .an-art {
+      width: min(100%, max(16rem, calc((100svh - var(--header-h) - var(--space-6) - var(--space-7)) / 1.07 * 1200 / 860)));
+      margin-left: auto;
+    }
   }
   @media (max-width: 999.98px) {
     .an-figure {
@@ -575,9 +611,10 @@ const insetLines = (() => {
   /* ---------- Steps ---------- */
   .an-steps {
     display: grid;
+    align-content: start;
   }
   .an-step {
-    --led-top: calc(var(--an-pad) + var(--step-1) * 0.58 - 5px);
+    --led-top: calc(var(--an-pad) + var(--an-title) * 0.58 - 5px);
     position: relative;
     padding: var(--an-pad) 0 var(--an-pad) 2.25rem;
   }
@@ -599,19 +636,33 @@ const insetLines = (() => {
     display: none;
   }
   .an-step__title {
-    font-size: var(--step-1);
+    font-size: var(--an-title);
     font-stretch: 112%;
     font-weight: 720;
     letter-spacing: -0.012em;
     line-height: var(--leading-snug);
     color: var(--dusk-50);
   }
+  /* Zone line: the code is data (mono), the place is a label (Atkinson) */
   .an-step__zone {
-    margin-top: 0.35rem;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    column-gap: 0.6em;
+    padding-top: 0.4rem;
+    font-size: var(--step--1);
+    line-height: 1.4;
+  }
+  .an-step__code {
+    color: var(--sodium-500);
+  }
+  .an-step__place {
+    font-weight: 600;
+    letter-spacing: 0.01em;
     color: var(--dusk-300);
   }
-  .an-step__body p {
-    padding-top: 0.65rem;
+  .an-step__text {
+    padding-top: 0.55rem;
     max-width: 40ch;
     color: var(--dusk-200);
   }
@@ -647,19 +698,23 @@ const insetLines = (() => {
     color: var(--dusk-50);
     animation: an-trip 0.55s linear;
   }
-  .anatomy.is-live .an-step__zone {
+  .anatomy.is-live .an-step__code,
+  .anatomy.is-live .an-step__place {
     color: var(--dusk-400);
     transition: color 0.7s var(--ease-out);
   }
-  .anatomy.is-live .an-step.is-active .an-step__zone {
+  .anatomy.is-live .an-step.is-active .an-step__code {
     color: var(--sodium-500);
     transition-duration: 120ms;
   }
-  .anatomy.is-live .an-step__body p {
+  .anatomy.is-live .an-step.is-active .an-step__place {
+    color: var(--dusk-200);
+  }
+  .anatomy.is-live .an-step__text {
     color: var(--dusk-300);
     transition: color 0.6s var(--ease-out);
   }
-  .anatomy.is-live .an-step.is-active .an-step__body p {
+  .anatomy.is-live .an-step.is-active .an-step__text {
     color: var(--dusk-200);
   }
   @keyframes an-trip {
@@ -669,33 +724,51 @@ const insetLines = (() => {
     30%, 100% { color: var(--dusk-50); }
   }
 
-  /* Pinned desktop: the list is a zone panel. Only the live zone opens. */
+  /* Pinned desktop: the list is a zone panel. Only the live zone opens, with
+     its zone code and text. The stage keeps the header's height clear, so
+     nothing sits under the header when it slides back in on the way up. */
   .anatomy.is-pinned .an-stage {
+    --an-room: calc(100svh - var(--header-h) - var(--space-3) - var(--space-5));
     height: 100vh;
     height: 100svh;
     display: grid;
+    align-content: center;
+    padding-block: calc(var(--header-h) + var(--space-3)) var(--space-5);
+  }
+  .anatomy.is-pinned .an-grid {
     align-items: center;
   }
   .anatomy.is-pinned .an-figure {
     position: relative;
     top: auto;
+    container-type: inline-size;
   }
+  /* The phone hangs 7% of the drawing's height below it. The drawing keeps
+     that much room under itself, so drawing and phone centre as one piece
+     and both fit the room. */
   .anatomy.is-pinned .an-art {
-    width: min(100%, calc((100svh - 8.5rem) * 1200 / 860));
-    margin-left: auto;
+    width: min(100cqw, calc(var(--an-room) / 1.07 * 1200 / 860));
+    margin-bottom: min(100cqw * 0.07 * 860 / 1200, var(--an-room) / 1.07 * 0.07);
   }
   .anatomy.is-pinned .an-step {
     border-top: 0;
   }
-  /* The drawing sets the stage height, so opening a longer step never shifts the stage. */
+  /* The list reserves its tallest state (every zone closed plus the longest
+     one open, measured by anatomy.js), so opening a zone never shifts the
+     stage and list and drawing centre together. */
   .anatomy.is-pinned .an-steps {
-    height: 0;
-    overflow: visible;
+    height: var(--an-list-h, auto);
   }
   @media (max-height: 780px) {
     .anatomy.is-pinned {
       --an-pad: 0.6rem;
     }
+  }
+  /* Set by anatomy.js when the list still outgrows the room (short window,
+     a large default text size): tighter rows and smaller titles. */
+  .anatomy.is-pinned.is-tight {
+    --an-pad: 0.4rem;
+    --an-title: var(--step-0);
   }
   .anatomy.is-pinned .an-step__rail {
     display: block;
@@ -711,7 +784,6 @@ const insetLines = (() => {
     position: absolute;
     inset: 0;
     background: var(--sodium-500);
-    box-shadow: 0 0 6px var(--sodium-glow);
     transform: scaleY(var(--fill, 0));
     transform-origin: top;
   }
@@ -728,11 +800,11 @@ const insetLines = (() => {
     grid-template-rows: 1fr;
     transition-duration: 0.65s;
   }
-  .anatomy.is-pinned .an-step__body p {
+  .anatomy.is-pinned .an-step__body > div > * {
     opacity: 0;
     transition: opacity 0.25s linear;
   }
-  .anatomy.is-pinned .an-step.is-active .an-step__body p {
+  .anatomy.is-pinned .an-step.is-active .an-step__body > div > * {
     opacity: 1;
     transition: opacity 0.7s var(--ease-out) 0.15s;
   }
@@ -759,7 +831,7 @@ const insetLines = (() => {
     transition: background-color var(--dur-fast) var(--ease-out);
   }
   .an-step :global(.an-step__btn:hover)::after {
-    background: rgb(159 176 207 / 0.05);
+    background: color-mix(in srgb, var(--dusk-300) 6%, transparent);
   }
   .an-step :global(.an-step__btn:focus-visible) {
     outline: none;
@@ -779,15 +851,26 @@ const insetLines = (() => {
     transform: translateY(1px);
   }
 
-  /* Mobile with motion: the drawing stays at the top while the zones pass under it. */
+  /* Small screens with motion and enough height (anatomy.js gates it): the
+     drawing stays at the top while the zones pass under it, and steps down
+     below the header whenever the header slides back in. Its ground is the
+     section's own night and grain, so it reads as the same sky. */
   .anatomy.is-sticky .an-figure {
     position: sticky;
     top: 0;
     z-index: 2;
     margin-inline: calc(var(--gutter) * -1);
     padding: var(--space-3) var(--gutter) var(--space-4);
-    background: var(--night-900);
+    background-color: var(--night-900);
+    background-image: var(--grain);
+    background-size: 220px 220px;
+    transition: top var(--dur-med) var(--ease-out);
   }
+  :global(html:has(.site-header:not(.is-hidden))) .anatomy.is-sticky .an-figure {
+    top: var(--header-h);
+  }
+  /* Steps fade out under the drawing. The fade is the same ground (night and
+     grain) masked off, so there is no darker band where it meets the section. */
   .anatomy.is-sticky .an-figure::after {
     content: '';
     position: absolute;
@@ -795,7 +878,11 @@ const insetLines = (() => {
     right: 0;
     top: 100%;
     height: 2.5rem;
-    background: linear-gradient(var(--night-900), rgb(12 22 40 / 0));
+    background-color: var(--night-900);
+    background-image: var(--grain);
+    background-size: 220px 220px;
+    -webkit-mask-image: linear-gradient(#000, transparent);
+    mask-image: linear-gradient(#000, transparent);
     pointer-events: none;
   }
   .anatomy.is-sticky .an-art {
@@ -836,14 +923,15 @@ const insetLines = (() => {
     flex: none;
     color: var(--sodium-500);
   }
-  .an-footnote__std {
-    font-size: 0.86em;
-    color: var(--dusk-50);
-    text-transform: none;
-  }
 
   /* ---------- The drawing ---------- */
+  /* Lettering is Atkinson; codes (zones, the section mark, the camera clock) are data. */
   .an-svg text {
+    font-family: var(--font-body);
+    font-weight: 700;
+    letter-spacing: 0.06em;
+  }
+  .an-svg .an-mono {
     font-family: var(--font-data);
     font-stretch: 88%;
     font-weight: 500;
@@ -881,6 +969,8 @@ const insetLines = (() => {
   .s-flood { stop-color: var(--flood-50); }
   .s-white { stop-color: #fff; }
   .s-black { stop-color: #000; }
+  .s-ir-sky0 { stop-color: var(--ir-sky-0); }
+  .s-ir-sky1 { stop-color: var(--ir-sky-1); }
 
   .an-poche {
     fill: url(#an-p-hatch);
@@ -1083,7 +1173,8 @@ const insetLines = (() => {
   .an-tag[data-state='on'] .an-tag__txt { fill: var(--sodium-400); transition-duration: 150ms; }
   .an-tag__status {
     opacity: 0;
-    font-weight: 700;
+    font-weight: 800;
+    letter-spacing: 0.1em;
   }
   .an-sheet__t,
   .an-sheet__n {
@@ -1095,8 +1186,10 @@ const insetLines = (() => {
     letter-spacing: 0.12em;
   }
   .an-sheet__n {
-    fill: var(--dusk-400);
-    font-size: clamp(12px, calc(var(--u) * 9.5px), 22px);
+    fill: var(--dusk-300);
+    font-size: clamp(12px, calc(var(--u) * 10px), 22px);
+    font-weight: 600;
+    letter-spacing: 0.08em;
   }
   /* When the drawing is small the annotations would be unreadable: the list carries them. */
   .an-svg.is-wide .an-tag__txt,
@@ -1106,36 +1199,37 @@ const insetLines = (() => {
   }
 
   /* CCTV inset: IR monochrome */
-  .an-i-far { fill: #182125; }
-  .an-i-road { fill: #20292d; }
-  .an-i-path { fill: #2b3539; }
-  .an-i-drive { fill: #273135; }
+  .an-i-far { fill: var(--ir-far); }
+  .an-i-road { fill: var(--ir-road); }
+  .an-i-path { fill: var(--ir-path); }
+  .an-i-drive { fill: var(--ir-drive); }
   .an-i-ln {
     fill: none;
-    stroke: #43505a;
+    stroke: var(--ir-line);
     stroke-width: 1;
   }
-  .an-i-pole { stroke: #6b777c; stroke-width: 2; }
-  .an-i-pier { fill: #3b474c; }
-  .an-i-person { fill: #cdd5d8; }
+  .an-i-pole { stroke: var(--ir-pole); stroke-width: 2; }
+  .an-i-pier { fill: var(--ir-pier); }
+  .an-i-person { fill: var(--ir-figure); }
   .an-i-box {
     fill: none;
-    stroke: #f2f5f6;
+    stroke: var(--ir-box);
     stroke-width: 1.5;
   }
-  .an-i-flash { fill: #e9eef0; opacity: 0; }
+  .an-i-flash { fill: var(--ir-flash); opacity: 0; }
   .an-i-frame {
     fill: none;
     stroke: var(--dusk-400);
     stroke-width: 1;
   }
   .an-osd {
-    fill: #e7ecee;
+    fill: var(--ir-osd);
     font-size: clamp(12px, calc(var(--u) * 9.5px), 21px);
     dominant-baseline: hanging;
   }
   .an-osd--mid { dominant-baseline: central; }
-  .an-rec { fill: #e7ecee; }
+  .an-osd--label { letter-spacing: 0.1em; }
+  .an-rec { fill: var(--ir-osd); }
 
   /* ---------- Phone: the HKC app alert ---------- */
   .an-phone {
@@ -1196,13 +1290,19 @@ const insetLines = (() => {
     gap: 0.35rem;
     color: var(--dusk-200);
   }
+  .an-card__name {
+    font-size: 0.7rem;
+    font-weight: 700;
+    line-height: 1.2;
+    white-space: nowrap;
+  }
   .an-card__led {
     flex: none;
     width: 7px;
     height: 7px;
     border-radius: 2px;
     background: var(--strobe-400);
-    box-shadow: 0 0 8px 1px rgb(61 124 255 / 0.7);
+    box-shadow: 0 0 8px 1px color-mix(in srgb, var(--strobe-500) 70%, transparent);
   }
   .an-card__time {
     margin-left: auto;
@@ -1230,7 +1330,9 @@ const insetLines = (() => {
     margin-top: auto;
     text-align: center;
     color: var(--dusk-300);
-    font-size: 0.66rem;
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
   }
 
   @media (max-width: 999.98px) {

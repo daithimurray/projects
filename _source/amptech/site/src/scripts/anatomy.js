@@ -6,13 +6,15 @@
 // pans (pan), the smoke detector pulses, the bell box strobes while the flood
 // trips on, and the alert lands on a phone (strobe). Earlier zones stay armed.
 // Small screens (motion on): the drawing sticks to the top and pans to each
-// zone as its step passes. Reduced motion and no JS: the markup is already the
-// finished, fully armed drawing, so nothing here runs.
-import { boot, gsap, ScrollTrigger, sweepIn, strobe, motionOK } from './motion.js';
+// zone as its step passes. Reduced motion, no JS, and screens too short for
+// either (landscape phones, high zoom): the markup is already the finished,
+// fully armed drawing in a static layout, so nothing here runs.
+import { boot, gsap, ScrollTrigger, sweepIn, strobe, motionOK, isPaused, onPauseChange } from './motion.js';
 
-const DESK = '(min-width: 1000px) and (min-height: 600px) and (prefers-reduced-motion: no-preference)';
-const STACK =
-  '(max-width: 999.98px) and (prefers-reduced-motion: no-preference), (max-height: 599.98px) and (prefers-reduced-motion: no-preference)';
+// Heights are in em so a larger default text size needs a taller screen
+// before the section pins or sticks (37.5em = 600px, 35em = 560px at 16px).
+const DESK = '(min-width: 1000px) and (min-height: 37.5em) and (prefers-reduced-motion: no-preference)';
+const STACK = '(max-width: 999.98px) and (min-height: 35em) and (prefers-reduced-motion: no-preference)';
 const STEP_VH = 0.7; // pinned scroll per zone, as a share of the viewport height
 const FULL = '0 0 1200 860';
 // Small-screen crops of the same drawing, one per zone (same 1200:860 aspect).
@@ -57,7 +59,23 @@ export function initAnatomy(root) {
   setU();
   if ('ResizeObserver' in window) new ResizeObserver(setU).observe(svg);
 
-  sweepIn($('#anatomy-title'));
+  const title = $('#anatomy-title');
+  sweepIn(title);
+  // The heading re-splits into new lines a beat after a width change, so the
+  // section's height moves after ScrollTrigger has measured. Re-measure then,
+  // or every trigger below starts a line early or late.
+  if (motionOK() && 'ResizeObserver' in window) {
+    let h = 0;
+    let wait = 0;
+    new ResizeObserver(([entry]) => {
+      const next = Math.round(entry.contentRect.height);
+      if (h && next !== h) {
+        clearTimeout(wait);
+        wait = setTimeout(() => ScrollTrigger.refresh(), 250);
+      }
+      h = next;
+    }).observe(title);
+  }
   if (motionOK()) {
     const foot = $('[data-an-foot]');
     gsap.from(foot.querySelectorAll('.icon path, .icon circle'), {
@@ -96,14 +114,14 @@ export function initAnatomy(root) {
   const restOf = (el) => rest.get(el) ?? 1;
 
   // The CCTV clock ticks while the camera is the live zone.
-  const clockBase = E.clock.textContent;
+  const clockBase = E.clock.textContent.trim();
   const [hh, mins, ss] = clockBase.split(':');
   let secs = Number(ss) || 0;
   let clockCall = null;
   const tick = () => {
     secs = (secs + 1) % 60;
     E.clock.textContent = `${hh}:${mins}:${String(secs).padStart(2, '0')}`;
-    clockCall = gsap.delayedCall(1, tick);
+    clockCall = hold(gsap.delayedCall(1, tick));
   };
   const stopClock = () => {
     clockCall?.kill();
@@ -116,6 +134,17 @@ export function initAnatomy(root) {
   const state = new Array(N).fill('calm');
   const tls = new Array(N).fill(null);
   const loops = steps.map(() => []);
+
+  // Pause (WCAG 2.2.2): the header's control stops every looping device
+  // (REC blink, walker, smoke rings, bell-box strobe) and the camera clock.
+  // Scroll-driven changes keep working; they are the reader's own doing.
+  const hold = (t) => {
+    if (isPaused()) t.pause();
+    return t;
+  };
+  onPauseChange((paused) => {
+    [...loops.flat(), clockCall].forEach((t) => t?.paused(paused));
+  });
 
   // ---------- One authored moment per device. s: 'on' | 'calm' | 'off' ----------
   const devices = [
@@ -180,20 +209,22 @@ export function initAnatomy(root) {
           .fromTo(E.inset, { scaleY: 0.012, opacity: 1 }, { scaleY: 1, duration: 0.5, ease: 'expo.out' }, 0.7)
           .fromTo(E.flash, { opacity: 0.9 }, { opacity: 0, duration: 0.8, ease: 'power2.out' }, 0.75)
           .add(() => {
-            clockCall = gsap.delayedCall(1, tick);
+            clockCall = hold(gsap.delayedCall(1, tick));
             loops[2].push(
-              gsap.to(E.rec, { opacity: 0.1, duration: 0.5, repeat: -1, yoyo: true, ease: 'steps(1)' }),
+              hold(gsap.to(E.rec, { opacity: 0.1, duration: 0.5, repeat: -1, yoyo: true, ease: 'steps(1)' })),
               // The figure on the driveway keeps walking while the camera is live.
-              gsap.to(E.walker, {
-                x: 14,
-                y: 7,
-                scale: 1.1,
-                transformOrigin: '50% 100%',
-                duration: 3.4,
-                repeat: -1,
-                yoyo: true,
-                ease: 'sine.inOut',
-              }),
+              hold(
+                gsap.to(E.walker, {
+                  x: 14,
+                  y: 7,
+                  scale: 1.1,
+                  transformOrigin: '50% 100%',
+                  duration: 3.4,
+                  repeat: -1,
+                  yoyo: true,
+                  ease: 'sine.inOut',
+                }),
+              ),
             );
           }, 1.2);
       } else if (s === 'calm') {
@@ -224,7 +255,7 @@ export function initAnatomy(root) {
             { scale: 7, opacity: 0, duration: 1.7, ease: 'power1.out', stagger: 0.4 },
             0,
           );
-        loops[3].push(loop);
+        loops[3].push(hold(loop));
       } else {
         tl.to([...E.rings, E.smokeGlow], { opacity: 0, duration: 0.4 }, 0);
       }
@@ -241,7 +272,7 @@ export function initAnatomy(root) {
           .to(E.blue, { opacity: 0.2, duration: 0.1, ease: 'none' })
           .to(E.blue, { opacity: 1, duration: 0.04, ease: 'none' })
           .to(E.blue, { opacity: 0.3, duration: 0.55, ease: 'decay' });
-        loops[4].push(loop);
+        loops[4].push(hold(loop));
       } else {
         const off = s === 'off';
         tl.to(lights, { opacity: (i, el) => (off ? 0 : restOf(el)), duration: off ? 0.4 : 1.3, ease: 'decay' }, 0).to(
@@ -407,10 +438,46 @@ export function initAnatomy(root) {
 
     let onPointer = null;
     let onHover = null;
+    let fitWatch = null;
     if (desk) {
+      // The list reserves its tallest state: every zone closed plus the
+      // longest one open. Rows are measured whatever their transition state
+      // (a row minus its body is its closed height). If that outgrows the
+      // room under the header, the list tightens.
+      const need = () => {
+        let closed = 0;
+        let open = 0;
+        steps.forEach((li) => {
+          const body = li.querySelector('.an-step__body');
+          closed += li.offsetHeight - body.offsetHeight;
+          open = Math.max(open, body.firstElementChild.scrollHeight);
+        });
+        return Math.ceil(closed + open);
+      };
+      const fitList = () => {
+        root.classList.remove('is-tight');
+        const cs = getComputedStyle(stage);
+        const room = stage.clientHeight - parseFloat(cs.paddingTop) - parseFloat(cs.paddingBottom);
+        let h = need();
+        if (h > room) {
+          root.classList.add('is-tight');
+          h = need();
+        }
+        root.style.setProperty('--an-list-h', `${h}px`);
+      };
+      fitList();
+      // Width, height and late fonts all change the rows; the stage's own
+      // size changes with the viewport only (pinning keeps it).
+      fitWatch = new ResizeObserver(fitList);
+      fitWatch.observe(stage);
+      document.fonts?.ready.then(() => mode === 'desk' && fitList());
+
       const pin = ScrollTrigger.create({
         trigger: stage,
         pin: true,
+        // Measured before every later trigger, so they start below its spacing
+        // (also after a breakpoint round trip re-creates it last).
+        refreshPriority: 1,
         start: 'top top',
         end: () => `+=${Math.round(window.innerHeight * STEP_VH * N)}`,
         invalidateOnRefresh: true,
@@ -425,11 +492,17 @@ export function initAnatomy(root) {
         },
       });
 
-      // Each step becomes a real control: click or tab to it and the scroll moves there.
-      const goTo = (i, quick) => {
+      // Each step becomes a real control: click or tab to it and the scroll
+      // moves there. A pointer click glides. Keyboard focus jumps: a running
+      // glide would swallow the browser's scroll to the next focused element,
+      // leaving focus off-screen after the next Tab or Shift+Tab.
+      const goTo = (i, how) => {
         const y = pin.start + (pin.end - pin.start) * ((i + 0.3) / N);
         const lenis = window.__lenis;
-        if (lenis) lenis.scrollTo(y, { duration: quick ? 0.7 : 1.3, force: true });
+        if (how === 'jump') {
+          if (lenis) lenis.scrollTo(y, { immediate: true, force: true });
+          else window.scrollTo(0, y);
+        } else if (lenis) lenis.scrollTo(y, { duration: 1.3, force: true });
         else window.scrollTo({ top: y, behavior: 'smooth' });
       };
       let pointerFocus = false;
@@ -462,9 +535,10 @@ export function initAnatomy(root) {
         b.className = 'an-step__btn';
         b.append(...h.childNodes);
         h.append(b);
-        b.addEventListener('click', () => goTo(i));
+        // detail 0: activated from the keyboard (Enter or Space), so jump too
+        b.addEventListener('click', (e) => goTo(i, e.detail === 0 ? 'jump' : 'glide'));
         b.addEventListener('focus', () => {
-          if (!pointerFocus) goTo(i, true);
+          if (!pointerFocus) goTo(i, 'jump');
         });
         return b;
       });
@@ -475,9 +549,18 @@ export function initAnatomy(root) {
           start: 'top 58%',
           end: 'bottom 58%',
           onToggle: (self) => self.isActive && setStep(i),
-          onLeaveBack: i === 0 ? () => setStep(-1) : undefined,
         }),
       );
+      // A jump (nav link, Home/End) can skip every step trigger. Past the list
+      // the drawing settles on its last zone; above it, everything is off. Either
+      // way no looping device is left running off-screen.
+      ScrollTrigger.create({
+        trigger: $('.an-steps'),
+        start: 'top 58%',
+        end: 'bottom 58%',
+        onLeave: () => setStep(N - 1),
+        onLeaveBack: () => setStep(-1),
+      });
     }
 
     return () => {
@@ -501,7 +584,9 @@ export function initAnatomy(root) {
       buttons = [];
       if (onPointer) root.removeEventListener('pointerdown', onPointer);
       if (onHover) root.removeEventListener('pointerover', onHover);
-      root.classList.remove('is-live', 'is-pinned', 'is-sticky');
+      fitWatch?.disconnect();
+      root.style.removeProperty('--an-list-h');
+      root.classList.remove('is-live', 'is-pinned', 'is-sticky', 'is-tight');
       steps.forEach((li) => {
         li.classList.remove('is-active', 'is-done');
         li.style.removeProperty('--fill');
