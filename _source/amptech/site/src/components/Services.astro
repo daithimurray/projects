@@ -1,10 +1,750 @@
 ---
-// STUB: replaced by the section builder. See _source/amptech/BUILD-SPEC.md.
-import { services } from '../data/content.js';
+// Services: a lit, ruled index of zones, like an alarm panel's zone list.
+// Left: heading, lede, a floodlight-on-a-wall vignette and the phone CTA
+// (sticky on wide screens). Right: seven rows. Each row "trips" as it scrolls
+// in, and lights up under the pointer or keyboard focus, where its drawn
+// glyph plays its own small movement. Hovering a row also re-trips the lamp.
+import Icon from './Icon.astro';
+import { company, hero, services, servicesUi } from '../data/content.js';
+
+// Service glyphs: 24px grid, 1.6 stroke, round caps (same grammar as Icon.astro).
+// Local because each carries class hooks for its own micro-animation.
+const glyphs: Record<string, string> = {
+  // PIR detector: its detection fan pulses outward
+  intruder:
+    '<path d="M8 3.5h8a1.5 1.5 0 0 1 1.5 1.5v3.4a5.5 5.5 0 0 1-11 0V5A1.5 1.5 0 0 1 8 3.5Z"/><circle cx="12" cy="8.6" r="1.6"/>' +
+    '<path class="g-lit g-fan g-fan-1" d="M8.4 16.4q3.6 2 7.2 0"/><path class="g-lit g-fan g-fan-2" d="M6 19.3q6 3.3 12 0"/>',
+  // Bullet camera on a wall bracket: the head pans
+  cctv:
+    '<path d="M3.5 14.2v6"/><path d="M3.5 17.2h4.6a1.4 1.4 0 0 0 1.4-1.4v-3.1"/>' +
+    '<g class="g-head"><path d="M4.4 5.3h15"/><rect x="5.5" y="7.2" width="12" height="5.5" rx="1.6"/><path class="g-lit" d="M17.5 8.4h2.4v3.1h-2.4"/></g>',
+  // Ceiling smoke detector: smoke rises to it, its LED blinks
+  fire:
+    '<path d="M3.5 3.5h17"/><path d="M6.5 3.5v2.3a2.2 2.2 0 0 0 2.2 2.2h6.6a2.2 2.2 0 0 0 2.2-2.2V3.5"/><path d="M9 5.7h3.5"/>' +
+    '<circle class="g-led" cx="15.2" cy="5.7" r=".95" fill="currentColor" stroke="none"/>' +
+    '<path class="g-smoke g-smoke-1" d="M10 21.2c-1.3-1.2 1.3-2.3 0-3.6s1.3-2.3 0-3.6"/><path class="g-smoke g-smoke-2" d="M14.4 20.4c-1.2-1.1 1.2-2.1 0-3.3s1.2-2.1 0-3.3"/>',
+  // Floodlight on a wall plate: the beam extends
+  lighting:
+    '<path d="M3.5 4.6v7"/><path d="M3.5 8.1h2.2"/><path d="M6.1 5.2 13 7.6l-1.6 4.8-6.6-2.4Z"/>' +
+    '<path class="g-lit g-beam" pathLength="1" d="M14.3 8.8 20.6 11"/><path class="g-lit g-beam" pathLength="1" d="m13.5 11.8 5.3 4.8"/><path class="g-lit g-beam" pathLength="1" d="m12.2 14 3 5.8"/>',
+  // Wrench: turns on the nut
+  upgrades:
+    '<g class="g-wrench"><path d="M14.5 4a4.5 4.5 0 0 0-4.2 6.1l-6 6a1.8 1.8 0 0 0 2.6 2.6l6-6A4.5 4.5 0 0 0 19.5 8l-2.8 2.8-2.5-.7-.7-2.5L16.3 4.8A4.5 4.5 0 0 0 14.5 4Z"/></g>',
+  // Service clock: the minute hand ticks round
+  maintenance:
+    '<circle cx="12" cy="12" r="8.5"/><path d="M12 3.5v1.4"/><path d="M20.5 12h-1.4"/><path d="M12 20.5v-1.4"/><path d="M3.5 12h1.4"/>' +
+    '<path d="m12 12 3.1 1.8"/><path class="g-min g-lit" d="M12 12V6.6"/>',
+  // Phone: buzzes, and a notification lands
+  app:
+    '<g class="g-phone"><rect x="7" y="3" width="10" height="18" rx="2.2"/><path d="M10.5 18h3"/><path d="M9.6 7.6h4.8"/><path d="M9.6 10.6h3"/></g>' +
+    '<path class="g-buzz" d="M4.2 9.6v4.8"/><path class="g-buzz" d="M19.8 9.6v4.8"/>' +
+    '<circle class="g-dot" cx="16.6" cy="4.1" r="1.9" stroke="none"/>',
+};
+
+const linkLabel = (id: string) => (servicesUi.links as Record<string, string>)[id];
+
+// Rain streaks inside the floodlight beam: one 300-unit tile, repeated to loop.
+const rain = Array.from({ length: 26 }, (_, i) => {
+  const x = 214 + ((i * 97) % 262);
+  const y = (i * 53) % 300;
+  const len = 9 + ((i * 7) % 8);
+  return `M${x} ${y}l-2 ${len}`;
+}).join('');
 ---
 
-<section id="services" class="section is-lit" data-lit-reveal aria-label="Services">
-  <div class="container">
-    <h2 class="h-section">{services.title}</h2>
+<section id="services" class="section services is-lit" data-lit-reveal aria-labelledby="services-title" data-services>
+  <div class="container services__layout">
+    <div class="services__aside" data-services-aside>
+      <div class="services__intro">
+        <h2 id="services-title" class="h-section services__title">{services.title}</h2>
+        <p class="lede services__lede">{services.lede}</p>
+      </div>
+
+      <div class="services__lamp">
+        <div class="lamp" data-lamp>
+          <svg class="lamp__svg" viewBox="0 0 480 300" aria-hidden="true" focusable="false" preserveAspectRatio="xMidYMid slice">
+            <defs>
+              <linearGradient id="svc-sky" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0" stop-color="#0e1a2f" />
+                <stop offset=".7" stop-color="#1a2440" />
+                <stop offset="1" stop-color="#3a2f35" />
+              </linearGradient>
+              <radialGradient id="svc-horizon" cx="400" cy="232" r="210" gradientUnits="userSpaceOnUse">
+                <stop offset="0" stop-color="#ff9e3d" stop-opacity=".42" />
+                <stop offset=".55" stop-color="#ff9e3d" stop-opacity=".08" />
+                <stop offset="1" stop-color="#ff9e3d" stop-opacity="0" />
+              </radialGradient>
+              <pattern id="svc-pebble" width="13" height="11" patternUnits="userSpaceOnUse">
+                <circle cx="2" cy="2.4" r="1" fill="#3a404c" />
+                <circle cx="8.6" cy="3.6" r=".8" fill="#232831" />
+                <circle cx="4.8" cy="7.6" r=".7" fill="#383e4a" />
+                <circle cx="11.2" cy="9.2" r=".9" fill="#252a33" />
+                <circle cx="10.4" cy="0.8" r=".5" fill="#40464f" />
+              </pattern>
+              <filter id="svc-soft" x="-10%" y="-10%" width="120%" height="120%">
+                <feGaussianBlur stdDeviation="3.5" />
+              </filter>
+              <radialGradient id="svc-street" cx=".5" cy=".5" r=".5">
+                <stop offset="0" stop-color="#ffb461" stop-opacity=".55" />
+                <stop offset=".35" stop-color="#ff9e3d" stop-opacity=".18" />
+                <stop offset="1" stop-color="#ff9e3d" stop-opacity="0" />
+              </radialGradient>
+              <radialGradient id="svc-spill" cx="206" cy="66" r="190" gradientUnits="userSpaceOnUse">
+                <stop offset="0" stop-color="#fff6e6" stop-opacity=".7" />
+                <stop offset=".35" stop-color="#ffe7c4" stop-opacity=".22" />
+                <stop offset="1" stop-color="#ffe7c4" stop-opacity="0" />
+              </radialGradient>
+              <linearGradient id="svc-beam" gradientUnits="userSpaceOnUse" x1="210" y1="66" x2="360" y2="290">
+                <stop offset="0" stop-color="#fffaf0" stop-opacity=".78" />
+                <stop offset=".55" stop-color="#fff1da" stop-opacity=".24" />
+                <stop offset="1" stop-color="#fff1da" stop-opacity=".05" />
+              </linearGradient>
+              <radialGradient id="svc-pool" cx="352" cy="272" r="140" gradientTransform="matrix(1 0 0 .2 0 217.6)" gradientUnits="userSpaceOnUse">
+                <stop offset="0" stop-color="#fff5e4" stop-opacity=".62" />
+                <stop offset=".6" stop-color="#ffe2b8" stop-opacity=".16" />
+                <stop offset="1" stop-color="#ffe2b8" stop-opacity="0" />
+              </radialGradient>
+              <radialGradient id="svc-bulb" cx=".5" cy=".5" r=".5">
+                <stop offset="0" stop-color="#fffdf6" />
+                <stop offset=".4" stop-color="#fff2d6" stop-opacity=".55" />
+                <stop offset="1" stop-color="#ffe0ad" stop-opacity="0" />
+              </radialGradient>
+              <clipPath id="svc-beam-clip">
+                <path d="M207 58 214 76 236 300H480V236Z" />
+              </clipPath>
+            </defs>
+
+            <!-- Sky, the sodium glow of the estate beyond, a terrace roofline -->
+            <rect width="480" height="300" fill="url(#svc-sky)" />
+            <rect width="480" height="300" fill="url(#svc-horizon)" />
+            <path d="M232 204h248v-50l-34-22-34 22v-8h-16v12l-28-20-44 28-26-16-22 14-44 14Z" fill="#161d2b" />
+            <rect x="330" y="168" width="11" height="14" rx="1" fill="#ffd49a" opacity=".85" />
+            <rect x="418" y="160" width="11" height="14" rx="1" fill="#ffd49a" opacity=".5" />
+            <!-- A distant sodium streetlight -->
+            <path d="M462 204v-66h-10" fill="none" stroke="#10151f" stroke-width="2" />
+            <circle cx="451" cy="139" r="26" fill="url(#svc-street)" />
+            <circle cx="451" cy="139" r="2.4" fill="#ffc27a" />
+
+            <!-- Driveway -->
+            <rect y="236" width="480" height="64" fill="#151a22" />
+            <path d="M230 236h250" stroke="#262c37" stroke-width="2" />
+            <ellipse class="lamp__pool" cx="352" cy="272" rx="140" ry="28" fill="url(#svc-pool)" />
+
+            <!-- Pebbledash gable wall and its corner -->
+            <rect width="232" height="240" fill="#2b303a" />
+            <rect width="232" height="240" fill="url(#svc-pebble)" />
+            <rect class="lamp__spill" width="232" height="240" fill="url(#svc-spill)" />
+            <path d="M231 0v240" stroke="#3e4450" stroke-width="3" />
+            <path d="M0 236h232" stroke="#1b2029" stroke-width="6" />
+
+            <!-- A teal front door with a lit fanlight -->
+            <rect x="46" y="92" width="80" height="18" rx="9" fill="#ffd49a" opacity=".82" />
+            <path d="M46 101h80M66 92v18M86 92v18M106 92v18" stroke="#6f5530" stroke-width="1.6" />
+            <rect x="42" y="112" width="88" height="124" rx="2" fill="#16504f" />
+            <rect class="lamp__door-lit" x="42" y="112" width="88" height="124" rx="2" fill="#2d8f8a" />
+            <rect x="52" y="124" width="30" height="42" rx="2" fill="none" stroke="#0f3a3a" stroke-width="2" />
+            <rect x="90" y="124" width="30" height="42" rx="2" fill="none" stroke="#0f3a3a" stroke-width="2" />
+            <rect x="52" y="178" width="30" height="46" rx="2" fill="none" stroke="#0f3a3a" stroke-width="2" />
+            <rect x="90" y="178" width="30" height="46" rx="2" fill="none" stroke="#0f3a3a" stroke-width="2" />
+            <rect x="72" y="170" width="28" height="5" rx="1.5" fill="#c9a24a" />
+            <circle cx="118" cy="174" r="2.6" fill="#c9a24a" />
+
+            <!-- Floodlight, PIR detector and cable -->
+            <path d="M194 18v26" stroke="#10151f" stroke-width="2" />
+            <rect x="186" y="44" width="14" height="22" rx="3" fill="#1b2230" />
+            <g transform="rotate(24 200 64)">
+              <rect x="194" y="50" width="30" height="24" rx="4" fill="#232b3a" />
+              <path d="M198 50h22" stroke="#394358" stroke-width="2" stroke-linecap="round" />
+              <rect class="lamp__lens" x="219" y="52" width="6" height="20" rx="2" fill="#fffaf0" />
+            </g>
+            <circle class="lamp__bloom" cx="218" cy="72" r="34" fill="url(#svc-bulb)" />
+            <rect x="185" y="84" width="16" height="10" rx="2" fill="#1b2230" />
+            <path d="M186 94h14v4a7 7 0 0 1-14 0Z" fill="#5d6678" />
+            <path d="M189 96h8" stroke="#8b94a6" stroke-width="1.4" stroke-linecap="round" opacity=".6" />
+            <rect class="lamp__pir" x="191" y="86.5" width="4" height="4" rx="1" fill="#ff9e3d" />
+
+            <!-- The beam, with rain falling through it -->
+            <path class="lamp__beam" d="M207 58 214 76 240 300H480V232Z" fill="url(#svc-beam)" filter="url(#svc-soft)" />
+            <g clip-path="url(#svc-beam-clip)">
+              <g class="lamp__rain" stroke="#fff4e0" stroke-width="1.2" stroke-linecap="round" fill="none">
+                <path class="lamp__rain-tile" d={rain} />
+                <path d={rain} transform="translate(0 -300)" />
+              </g>
+            </g>
+          </svg>
+        </div>
+
+        <div class="services__cta">
+          <a class="btn btn--primary" href={company.phoneHref}>
+            <Icon name="phone" />
+            {servicesUi.call}
+          </a>
+          <a class="btn btn--ghost" href={hero.secondary.href}>{servicesUi.quote}</a>
+        </div>
+      </div>
+    </div>
+
+    <ul class="svc-index" role="list">
+      {
+        services.items.map((item) => (
+          <li class={`svc svc--${item.id}`} data-svc data-pointer-light>
+            <span class="svc__icon" aria-hidden="true">
+              <svg
+                class="svc__glyph"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.6"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                focusable="false"
+                set:html={glyphs[item.id]}
+              />
+            </span>
+            <h3 class="svc__name">{item.name}</h3>
+            <p class="svc__body">{item.body}</p>
+            <p class="svc__for">
+              <span class="visually-hidden">{servicesUi.forLabel} </span>
+              {item.for.map((tag) => (
+                <span class="svc__chip">{tag}</span>
+              ))}
+            </p>
+            {item.href && linkLabel(item.id) && (
+              <a class="svc__link" href={item.href}>
+                <span>{linkLabel(item.id)}</span>
+                <Icon name="arrow" size={18} />
+              </a>
+            )}
+          </li>
+        ))
+      }
+    </ul>
   </div>
 </section>
+
+<style>
+  /* Once the floodlight reveal has finished, drop its overlay so a section
+     taller than the reveal radius (phones) never keeps a dark lower half. */
+  :global(.motion-ok) .services.is-revealed::after {
+    content: none;
+  }
+
+  .services__layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    row-gap: clamp(2.5rem, 2rem + 3vw, 4rem);
+  }
+  /* On small screens the aside's two blocks sit either side of the index */
+  .services__aside {
+    display: contents;
+  }
+  .services__intro {
+    order: 1;
+  }
+  .svc-index {
+    order: 2;
+  }
+  .services__lamp {
+    order: 3;
+  }
+
+  .services__title {
+    max-width: 14ch;
+  }
+  .services__lede {
+    margin-top: var(--space-5);
+    max-width: 36ch;
+    color: var(--ink-700);
+  }
+
+  /* ---------- Floodlight vignette ---------- */
+  .lamp {
+    --flood: 1;
+    position: relative;
+    aspect-ratio: 16 / 10;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    background: var(--night-900);
+    box-shadow: var(--shadow-flood);
+  }
+  .lamp__svg {
+    width: 100%;
+    height: 100%;
+  }
+  .lamp__beam {
+    opacity: calc(var(--flood) * 0.95);
+    mix-blend-mode: screen;
+  }
+  .lamp__spill,
+  .lamp__pool {
+    opacity: var(--flood);
+  }
+  .lamp__door-lit {
+    opacity: calc(var(--flood) * 0.55);
+  }
+  .lamp__bloom {
+    opacity: calc(var(--flood) * 0.9);
+  }
+  .lamp__lens {
+    opacity: calc(0.25 + var(--flood) * 0.75);
+  }
+  .lamp__rain {
+    opacity: calc(var(--flood) * 0.5);
+  }
+  .lamp__pir {
+    opacity: 0.35;
+  }
+  .lamp.is-detect .lamp__pir {
+    opacity: 1;
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .lamp.is-live .lamp__rain {
+      animation: lamp-rain 0.85s linear infinite;
+    }
+  }
+  @keyframes lamp-rain {
+    to {
+      transform: translate(-6px, 300px);
+    }
+  }
+
+  .services__cta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+    margin-top: var(--space-5);
+  }
+
+  /* ---------- The index ---------- */
+  .svc-index {
+    border-top: 1px solid var(--flood-300);
+  }
+
+  .svc {
+    --mx: 30%;
+    --my: 40%;
+    --flash: 0;
+    position: relative;
+    isolation: isolate;
+    display: grid;
+    grid-template-columns: 2.75rem minmax(0, 1fr);
+    grid-template-areas:
+      'icon name'
+      'body body'
+      'for for'
+      'link link';
+    column-gap: 0.9rem;
+    align-items: center;
+    padding: clamp(1.4rem, 1.1rem + 1vw, 2.1rem) clamp(0.25rem, -0.4rem + 2vw, 1.5rem);
+    border-bottom: 1px solid var(--flood-300);
+  }
+
+  /* The light pool that follows the pointer inside a lit row */
+  .svc::before,
+  .svc::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+  }
+  .svc::before {
+    background:
+      radial-gradient(30rem 15rem at var(--mx) var(--my), rgb(255 255 255 / 1), rgb(255 250 240 / 0.7) 38%, rgb(255 250 240 / 0) 72%),
+      radial-gradient(14rem 9rem at var(--mx) var(--my), rgb(255 190 110 / 0.22), rgb(255 190 110 / 0) 70%),
+      var(--flood-100);
+    box-shadow: 0 1px 0 var(--flood-300), 0 16px 30px -22px rgb(12 22 40 / 0.35);
+    opacity: 0;
+    transition: opacity var(--dur-decay) var(--ease-out);
+  }
+  /* Arrival: the zone trips once as it scrolls into view */
+  .svc::after {
+    background: radial-gradient(22rem 11rem at 2.5rem 50%, rgb(255 206 145 / 0.42), rgb(255 206 145 / 0) 72%);
+    opacity: var(--flash);
+  }
+
+  .svc:hover::before,
+  .svc:focus-within::before {
+    opacity: 1;
+    transition-duration: var(--dur-trip);
+  }
+  @media (hover: none) {
+    .svc:hover::before {
+      opacity: 0;
+    }
+    .svc:focus-within::before {
+      opacity: 1;
+    }
+  }
+
+  .svc__icon {
+    grid-area: icon;
+    display: grid;
+    place-items: center;
+    width: 2.75rem;
+    height: 2.75rem;
+    color: var(--ink-900);
+  }
+  .svc__glyph {
+    width: 2.6rem;
+    height: 2.6rem;
+    overflow: visible;
+  }
+
+  .svc__name {
+    grid-area: name;
+    font-size: clamp(1.45rem, 1.05rem + 1.5vw, 2.45rem);
+    font-stretch: var(--wide);
+    font-weight: 720;
+    letter-spacing: -0.022em;
+    line-height: 1.02;
+    color: var(--ink-900);
+    transition: translate var(--dur-decay) var(--ease-out);
+  }
+  .svc:hover .svc__name,
+  .svc:focus-within .svc__name {
+    translate: 0.35rem 0;
+    transition-duration: var(--dur-med);
+  }
+
+  .svc__body {
+    grid-area: body;
+    margin-top: var(--space-3);
+    max-width: 60ch;
+    color: var(--ink-700);
+  }
+
+  .svc__for {
+    grid-area: for;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    margin-top: var(--space-4);
+  }
+  .svc__chip {
+    display: inline-flex;
+    align-items: center;
+    min-height: 1.75rem;
+    padding: 0.1rem 0.55rem;
+    border: 1px solid var(--flood-300);
+    border-radius: var(--radius-xs);
+    background: rgb(255 255 255 / 0.55);
+    color: var(--ink-700);
+    font-size: var(--step--2);
+    font-weight: 600;
+    letter-spacing: 0.01em;
+    line-height: 1.2;
+  }
+
+  .svc__link {
+    grid-area: link;
+    justify-self: start;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    min-height: 44px;
+    margin-top: var(--space-2);
+    color: var(--sodium-800);
+    font-family: var(--font-display);
+    font-stretch: 108%;
+    font-weight: 680;
+    font-size: var(--step-0);
+    text-decoration: underline;
+    text-decoration-color: rgb(154 75 0 / 0.35);
+    text-underline-offset: 0.3em;
+    transition: text-decoration-color var(--dur-fast) var(--ease-out), color var(--dur-fast);
+  }
+  .svc__link :global(svg) {
+    transition: translate var(--dur-med) var(--ease-out);
+  }
+  .svc__link:hover {
+    color: var(--ink-900);
+    text-decoration-color: currentColor;
+  }
+  .svc__link:hover :global(svg) {
+    translate: 4px 0;
+  }
+  .svc__link:active {
+    translate: 0 1px;
+  }
+
+  /* ---------- Glyph micro-animations ---------- */
+  .svc__glyph :global(*) {
+    transform-box: view-box;
+  }
+  .svc__glyph :global(.g-lit) {
+    transition: stroke var(--dur-decay) var(--ease-out);
+  }
+  .svc:hover .svc__glyph :global(.g-lit),
+  .svc:focus-within .svc__glyph :global(.g-lit) {
+    stroke: var(--sodium-600);
+    transition-duration: var(--dur-trip);
+  }
+  .svc__glyph :global(.g-led) {
+    fill: var(--ink-500);
+  }
+  .svc__glyph :global(.g-dot) {
+    fill: var(--strobe-500);
+    opacity: 0;
+    transform-origin: 16.6px 4.1px;
+  }
+  .svc__glyph :global(.g-buzz) {
+    opacity: 0;
+  }
+  .svc__glyph :global(.g-min) {
+    transform-origin: 12px 12px;
+    transition: rotate 0.9s steps(3, end);
+  }
+  .svc:hover .svc__glyph :global(.g-min),
+  .svc:focus-within .svc__glyph :global(.g-min) {
+    rotate: 90deg;
+  }
+  .svc:hover .svc__glyph :global(.g-dot),
+  .svc:focus-within .svc__glyph :global(.g-dot) {
+    opacity: 1;
+  }
+  .svc:hover .svc__glyph :global(.g-led),
+  .svc:focus-within .svc__glyph :global(.g-led) {
+    fill: var(--alarm-700);
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .svc:is(:hover, :focus-within) .svc__glyph :global(.g-fan-1) {
+      animation: g-fan 1.1s var(--ease-out) 2;
+    }
+    .svc:is(:hover, :focus-within) .svc__glyph :global(.g-fan-2) {
+      animation: g-fan 1.1s var(--ease-out) 0.12s 2;
+    }
+    .svc__glyph :global(.g-head) {
+      transform-origin: 9.5px 12.7px;
+    }
+    .svc:is(:hover, :focus-within) .svc__glyph :global(.g-head) {
+      animation: g-pan 1.6s var(--ease-in-out);
+    }
+    .svc:is(:hover, :focus-within) .svc__glyph :global(.g-smoke-1) {
+      animation: g-smoke 1.2s var(--ease-out) 2;
+    }
+    .svc:is(:hover, :focus-within) .svc__glyph :global(.g-smoke-2) {
+      animation: g-smoke 1.2s var(--ease-out) 0.3s 2;
+    }
+    .svc:is(:hover, :focus-within) .svc__glyph :global(.g-led) {
+      animation: g-blink 0.6s steps(1, end) 3;
+    }
+    .svc:is(:hover, :focus-within) .svc__glyph :global(.g-beam) {
+      stroke-dasharray: 1;
+      animation: g-beam 0.9s var(--ease-snap) both;
+    }
+    .svc:is(:hover, :focus-within) .svc__glyph :global(.g-beam:nth-of-type(n + 5)) {
+      animation-delay: 60ms;
+    }
+    .svc__glyph :global(.g-wrench) {
+      transform-origin: 15.2px 8.6px;
+    }
+    .svc:is(:hover, :focus-within) .svc__glyph :global(.g-wrench) {
+      animation: g-turn 1s var(--ease-in-out);
+    }
+    .svc:is(:hover, :focus-within) .svc__glyph :global(.g-phone) {
+      animation: g-buzz 0.5s linear 2;
+    }
+    .svc:is(:hover, :focus-within) .svc__glyph :global(.g-buzz) {
+      animation: g-buzz-lines 0.5s steps(2, end) 2;
+    }
+    .svc:is(:hover, :focus-within) .svc__glyph :global(.g-dot) {
+      animation: g-pop 0.5s var(--ease-out) 0.55s both;
+    }
+  }
+
+  @keyframes g-fan {
+    0% { translate: 0 0; opacity: 1; }
+    45% { translate: 0 1.6px; opacity: 0.25; }
+    46% { translate: 0 -1px; opacity: 0; }
+    100% { translate: 0 0; opacity: 1; }
+  }
+  @keyframes g-pan {
+    0%, 100% { rotate: 0deg; }
+    35% { rotate: -9deg; }
+    70% { rotate: 8deg; }
+  }
+  @keyframes g-smoke {
+    0% { translate: 0 0; opacity: 1; }
+    70% { translate: 0 -3px; opacity: 0; }
+    71% { translate: 0 2px; opacity: 0; }
+    100% { translate: 0 0; opacity: 1; }
+  }
+  @keyframes g-blink {
+    50% { fill: var(--ink-500); }
+  }
+  @keyframes g-beam {
+    0% { stroke-dashoffset: 1; }
+    100% { stroke-dashoffset: 0; }
+  }
+  @keyframes g-turn {
+    0%, 100% { rotate: 0deg; }
+    45% { rotate: -32deg; }
+    65% { rotate: -28deg; }
+  }
+  @keyframes g-buzz {
+    0%, 100% { translate: 0 0; }
+    20% { translate: -0.8px 0; }
+    40% { translate: 0.8px 0; }
+    60% { translate: -0.6px 0; }
+    80% { translate: 0.6px 0; }
+  }
+  @keyframes g-buzz-lines {
+    0% { opacity: 1; }
+    100% { opacity: 0; }
+  }
+  @keyframes g-pop {
+    0% { scale: 0.2; opacity: 0; }
+    60% { scale: 1.2; opacity: 1; }
+    100% { scale: 1; opacity: 1; }
+  }
+
+  /* ---------- Wider rows: chips sit opposite the name ---------- */
+  @media (min-width: 640px) {
+    .svc {
+      grid-template-columns: 3.5rem minmax(0, 1fr) auto;
+      grid-template-areas:
+        'icon name for'
+        '. body body'
+        '. link link';
+      column-gap: 1.25rem;
+    }
+    .svc__icon {
+      width: 3.5rem;
+      height: 3.5rem;
+    }
+    .svc__glyph {
+      width: 3.1rem;
+      height: 3.1rem;
+    }
+    .svc__for {
+      margin-top: 0;
+      justify-content: flex-end;
+      align-self: center;
+    }
+  }
+
+  /* ---------- Desktop: sticky left column beside the index ---------- */
+  @media (min-width: 1024px) {
+    .services__layout {
+      grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+      column-gap: clamp(3rem, 1rem + 5vw, 7rem);
+      align-items: start;
+    }
+    .services__aside {
+      display: flex;
+      flex-direction: column;
+      gap: clamp(2rem, 1rem + 2vw, 3rem);
+    }
+    .services__intro,
+    .svc-index,
+    .services__lamp {
+      order: 0;
+    }
+    .svc-index {
+      margin-top: 0.4rem;
+    }
+  }
+  @media (min-width: 1024px) and (min-height: 760px) {
+    .services__aside {
+      position: sticky;
+      top: calc(var(--header-h) + 1.5rem);
+    }
+  }
+</style>
+
+<script>
+  import { boot, gsap, ScrollTrigger, motionOK, isTouch } from '../scripts/motion.js';
+
+  boot();
+
+  const root = document.querySelector('[data-services]');
+  const lamp = root?.querySelector('[data-lamp]');
+  const rows = root ? [...root.querySelectorAll('[data-svc]')] : [];
+
+  // Keep the rain running only while the vignette is on screen
+  if (lamp && 'IntersectionObserver' in window) {
+    new IntersectionObserver(([entry]) => lamp.classList.toggle('is-live', entry.isIntersecting), {
+      rootMargin: '80px',
+    }).observe(lamp);
+  }
+
+  if (root && lamp && motionOK()) {
+    // The shared reveal (motion.js) opens to a fixed radius; release it when done
+    ScrollTrigger.create({
+      trigger: root,
+      start: 'top 10%',
+      end: 'max',
+      toggleClass: { targets: root, className: 'is-revealed' },
+    });
+
+    // trip: the floodlight snaps on when the vignette arrives, flickers, settles
+    gsap.set(lamp, { '--flood': 0 });
+    gsap
+      .timeline({ scrollTrigger: { trigger: lamp, start: 'top 78%', once: true } })
+      .to(lamp, { '--flood': 1.12, duration: 0.07, ease: 'none' }, 0.25)
+      .to(lamp, { '--flood': 0.55, duration: 0.06, ease: 'none' })
+      .to(lamp, { '--flood': 1.05, duration: 0.05, ease: 'none' })
+      .to(lamp, { '--flood': 1, duration: 1.2, ease: 'decay' });
+
+    // Each zone trips once as it scrolls in: the row lights, then decays
+    const parts = rows.map((row) => row.querySelectorAll('.svc__icon, .svc__name, .svc__body, .svc__for, .svc__link'));
+    parts.forEach((p) => gsap.set(p, { opacity: 0.18, y: 12 }));
+
+    ScrollTrigger.batch(rows, {
+      start: 'top 86%',
+      once: true,
+      onEnter: (batch) => {
+        batch.forEach((row, i) => {
+          const els = parts[rows.indexOf(row)];
+          const at = i * 0.12;
+          gsap
+            .timeline({ delay: at })
+            .to(els, {
+              keyframes: [
+                { opacity: 0.9, duration: 0.06, ease: 'none' },
+                { opacity: 0.55, duration: 0.05, ease: 'none' },
+                { opacity: 1, duration: 0.7, ease: 'expo.out' },
+              ],
+              stagger: 0.05,
+            })
+            .to(els, { y: 0, duration: 0.9, ease: 'expo.out', stagger: 0.05, clearProps: 'transform' }, 0)
+            .fromTo(
+              row,
+              { '--flash': 0 },
+              {
+                keyframes: [
+                  { '--flash': 1, duration: 0.07, ease: 'none' },
+                  { '--flash': 0.6, duration: 0.06, ease: 'none' },
+                  { '--flash': 0, duration: 1.3, ease: 'decay' },
+                ],
+              },
+              0,
+            );
+        });
+      },
+    });
+
+    // A row under the pointer is someone walking past the sensor: re-trip the lamp
+    let last = null;
+    let lastAt = 0;
+    const retrip = (row) => {
+      const now = performance.now();
+      if (row === last && now - lastAt < 1500) return;
+      if (now - lastAt < 350) return;
+      last = row;
+      lastAt = now;
+      lamp.classList.add('is-detect');
+      gsap.delayedCall(0.7, () => lamp.classList.remove('is-detect'));
+      gsap.killTweensOf(lamp);
+      gsap
+        .timeline()
+        .to(lamp, { '--flood': 0.6, duration: 0.05, ease: 'none' })
+        .to(lamp, { '--flood': 1.15, duration: 0.07, ease: 'none' })
+        .to(lamp, { '--flood': 1, duration: 1, ease: 'decay' });
+    };
+    if (!isTouch()) rows.forEach((row) => row.addEventListener('pointerenter', () => retrip(row)));
+    rows.forEach((row) => row.addEventListener('focusin', () => retrip(row)));
+  }
+</script>

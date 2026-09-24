@@ -1,10 +1,304 @@
 ---
-// STUB: replaced by the section builder. See _source/amptech/BUILD-SPEC.md.
-import { trust } from '../data/content.js';
+// Trust strip: a thin panel status bar under the hero. When it scrolls into
+// view it runs a self-test: each LED blinks amber while it checks, then settles
+// clear green, ~150ms apart. Without JS or with reduced motion every LED is
+// already green and the status reads "All zones OK".
+import { trust, trustCheck } from '../data/content.js';
 ---
 
-<section id="trust" class="section is-night" aria-label="TrustCheck">
-  <div class="container">
-    <p>Stub</p>
+<section
+  id="trust"
+  class="section trust is-night"
+  aria-labelledby="trust-title"
+  data-trust
+  data-checking={trustCheck.checking}
+  data-ok={trustCheck.ok}
+>
+  <h2 id="trust-title" class="visually-hidden">{trustCheck.title}</h2>
+  <span class="trust__scan" aria-hidden="true" data-trust-scan></span>
+
+  <div class="container trust__panel">
+    <p class="trust__status data" aria-hidden="true" data-trust-status>
+      <span class="trust__status-text" data-trust-text>{trustCheck.ok}</span>
+      <span class="trust__count" data-trust-count></span>
+    </p>
+
+    <ul class="trust__list" role="list">
+      {
+        trust.map((item) => (
+          <li class="trust__item" data-trust-item>
+            <span class="trust__led" aria-hidden="true" />
+            <span class="trust__label">{item.label}</span>
+            <span class="trust__value">{item.value}</span>
+          </li>
+        ))
+      }
+    </ul>
   </div>
 </section>
+
+<style>
+  .trust {
+    --cell-bg: var(--night-900);
+    padding-block: clamp(1rem, 0.6rem + 1.2vw, 1.75rem);
+    background: var(--cell-bg);
+    border-top: 1px solid var(--rule);
+    overflow: hidden;
+  }
+
+  /* The detection beam that runs along the top hairline during the self-test */
+  .trust__scan {
+    display: none;
+  }
+  :global(.motion-ok) .trust__scan {
+    display: block;
+    position: absolute;
+    top: -1px;
+    left: 0;
+    width: 28%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--sodium-400) 55%, var(--sodium-300) 70%, transparent);
+    box-shadow: 0 0 10px 1px var(--sodium-glow);
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  /* Hairline dividers: the panel and list grids show the rule colour through 1px gaps */
+  .trust__panel {
+    display: grid;
+    gap: 1px;
+    background: var(--rule);
+  }
+  .trust__status {
+    background: var(--cell-bg);
+  }
+
+  .trust__status {
+    display: flex;
+    align-items: center;
+    gap: 0.6em;
+    min-height: 2.75rem;
+    padding: 0.35rem 1.25rem 0.9rem 0;
+    color: var(--sodium-500);
+    white-space: nowrap;
+    transition: color var(--dur-trip) linear;
+  }
+  .trust__status-text {
+    letter-spacing: 0.06em;
+  }
+  .trust__count {
+    color: var(--dusk-300);
+  }
+  .trust__count:empty {
+    display: none;
+  }
+  .trust__status:not([data-state='checking']) {
+    color: var(--clear-400);
+  }
+
+  .trust__list {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1px;
+    background: var(--rule);
+  }
+  .trust__item {
+    display: grid;
+    grid-template-columns: 8px minmax(0, 1fr);
+    grid-template-areas:
+      'led label'
+      '. value';
+    column-gap: 0.7rem;
+    row-gap: 0.2rem;
+    align-content: start;
+    padding: 0.9rem 0.9rem 0.9rem 0;
+    background: var(--cell-bg);
+  }
+  .trust__item:nth-child(even) {
+    padding-left: 0.9rem;
+  }
+  /* An odd one out spans the row, so no empty cell shows the rule colour */
+  @media (max-width: 639px) {
+    .trust__item:last-child:nth-child(odd) {
+      grid-column: 1 / -1;
+    }
+  }
+
+  /* Panel status LED: square, radius 2px, clear green when the zone is OK */
+  .trust__led {
+    grid-area: led;
+    align-self: start;
+    width: 8px;
+    height: 8px;
+    margin-top: 0.42em;
+    border-radius: 2px;
+    background: var(--clear-400);
+    box-shadow: 0 0 8px 1px rgb(94 224 160 / 0.45);
+    transition:
+      background-color var(--dur-trip) linear,
+      box-shadow var(--dur-trip) linear;
+  }
+  .trust__item[data-state='idle'] .trust__led {
+    background: var(--night-600);
+    box-shadow: none;
+  }
+  .trust__item[data-state='checking'] .trust__led {
+    background: var(--sodium-500);
+    box-shadow: 0 0 9px 1px var(--sodium-glow);
+    animation: trust-blink 150ms steps(1, end) infinite;
+  }
+  @keyframes trust-blink {
+    50% {
+      background: var(--night-600);
+      box-shadow: none;
+    }
+  }
+
+  .trust__label {
+    grid-area: label;
+    font-family: var(--font-display);
+    font-stretch: 112%;
+    font-weight: 620;
+    font-size: var(--step--1);
+    line-height: 1.25;
+    letter-spacing: 0.005em;
+    color: var(--dusk-50);
+    transition: color var(--dur-decay) var(--ease-out);
+  }
+  .trust__item[data-state='idle'] .trust__label,
+  .trust__item[data-state='checking'] .trust__label {
+    color: var(--dusk-300);
+    transition-duration: 0ms;
+  }
+  .trust__value {
+    grid-area: value;
+    font-size: var(--step--1);
+    line-height: 1.4;
+    color: var(--dusk-300);
+  }
+
+  @media (max-width: 359px) {
+    .trust__list {
+      grid-template-columns: minmax(0, 1fr);
+    }
+    .trust__item:nth-child(even) {
+      padding-left: 0;
+    }
+  }
+
+  /* Tablet: three over two, the last pair shares the second row */
+  @media (min-width: 640px) {
+    .trust__list {
+      grid-template-columns: repeat(6, minmax(0, 1fr));
+    }
+    .trust__item,
+    .trust__item:nth-child(even) {
+      grid-column: span 2;
+      padding: 1rem 1.1rem;
+    }
+    .trust__item:nth-child(3n + 1) {
+      padding-left: 0;
+    }
+    .trust__item:nth-child(n + 4) {
+      grid-column: span 3;
+    }
+    .trust__item:nth-child(4) {
+      padding-left: 0;
+    }
+  }
+
+  /* Desktop: one quiet row, status first */
+  @media (min-width: 1100px) {
+    .trust__panel {
+      grid-template-columns: auto minmax(0, 1fr);
+      align-items: stretch;
+    }
+    .trust__status {
+      padding: 0.2rem 1.75rem 0.2rem 0;
+      align-self: stretch;
+      align-items: flex-start;
+      flex-direction: column;
+      justify-content: center;
+      gap: 0.15rem;
+    }
+    .trust__list {
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+    }
+    .trust__item,
+    .trust__item:nth-child(even),
+    .trust__item:nth-child(n + 4) {
+      grid-column: auto;
+      padding: 0.2rem 1rem 0.2rem 1.4rem;
+    }
+    .trust__item:nth-child(3n + 1),
+    .trust__item:nth-child(4) {
+      padding-left: 1.4rem;
+    }
+  }
+  @media (min-width: 1280px) {
+    .trust__label {
+      font-size: var(--step-0);
+    }
+  }
+</style>
+
+<script>
+  import { boot, gsap, ScrollTrigger, motionOK } from '../scripts/motion.js';
+
+  boot();
+
+  const root = document.querySelector('[data-trust]');
+  if (root && motionOK()) {
+    const items = [...root.querySelectorAll('[data-trust-item]')];
+    const status = root.querySelector('[data-trust-status]');
+    const text = root.querySelector('[data-trust-text]');
+    const count = root.querySelector('[data-trust-count]');
+    const scan = root.querySelector('[data-trust-scan]');
+    const total = items.length;
+    const step = 0.15; // gap between zones
+    const hold = 0.42; // how long each zone blinks amber
+
+    // Dark panel, waiting for its self-test
+    items.forEach((item) => (item.dataset.state = 'idle'));
+    status.dataset.state = 'checking';
+    text.textContent = root.dataset.checking;
+    count.textContent = `0/${total}`;
+
+    const end = (total - 1) * step + hold;
+    const tl = gsap.timeline({ paused: true });
+
+    // The beam runs the length of the band while the zones are checked
+    tl.fromTo(scan, { xPercent: -100, opacity: 0 }, { opacity: 1, duration: 0.12, ease: 'none' }, 0)
+      .to(scan, { left: '100%', duration: end, ease: 'power1.inOut' }, 0)
+      .to(scan, { opacity: 0, duration: 0.5, ease: 'decay' }, end - 0.1);
+
+    items.forEach((item, i) => {
+      tl.call(() => (item.dataset.state = 'checking'), null, i * step);
+      tl.call(
+        () => {
+          item.dataset.state = 'ok';
+          count.textContent = `${i + 1}/${total}`;
+        },
+        null,
+        i * step + hold,
+      );
+    });
+
+    tl.call(
+      () => {
+        status.dataset.state = 'ok';
+        text.textContent = root.dataset.ok;
+        count.textContent = '';
+      },
+      null,
+      end + 0.18,
+    );
+
+    ScrollTrigger.create({
+      trigger: root,
+      start: 'top 90%',
+      once: true,
+      onEnter: () => tl.play(),
+    });
+  }
+</script>

@@ -1,10 +1,894 @@
 ---
-// STUB: replaced by the section builder. See _source/amptech/BUILD-SPEC.md.
-import { upgrade } from '../data/content.js';
+// Upgrade: an interactive before/after of the same hall wall. Before, a
+// yellowed beige keypad blinking FAULT; after, a slim touchscreen keypad and a
+// phone with an app notification. The divider is a real <input type="range">.
+// Robert C.'s testimonial closes the section as its proof.
+import { upgrade, testimonial, upgradeScene as scene } from '../data/content.js';
+
+// ---- 14-segment LCD text for the old keypad, built as two paths (lit, ghost) ----
+const T = 4.2;
+const hSeg = (x1: number, y: number, x2: number) => {
+  const h = T / 2;
+  return `M${x1} ${y}L${x1 + h} ${y - h}H${x2 - h}L${x2} ${y}L${x2 - h} ${y + h}H${x1 + h}Z`;
+};
+const vSeg = (x: number, y1: number, y2: number) => {
+  const h = T / 2;
+  return `M${x} ${y1}L${x + h} ${y1 + h}V${y2 - h}L${x} ${y2}L${x - h} ${y2 - h}V${y1 + h}Z`;
+};
+const SEGS: Record<string, (ox: number) => string> = {
+  a: (o) => hSeg(o + 2.4, 0, o + 21.6),
+  b: (o) => vSeg(o + 23, 1.4, 18.2),
+  c: (o) => vSeg(o + 23, 19.8, 36.6),
+  d: (o) => hSeg(o + 2.4, 38, o + 21.6),
+  e: (o) => vSeg(o + 1, 19.8, 36.6),
+  f: (o) => vSeg(o + 1, 1.4, 18.2),
+  g1: (o) => hSeg(o + 2.4, 19, o + 11.4),
+  g2: (o) => hSeg(o + 12.6, 19, o + 21.6),
+  i: (o) => vSeg(o + 12, 2.6, 17.2),
+  l: (o) => vSeg(o + 12, 20.8, 35.4),
+};
+const GLYPHS: Record<string, string[]> = {
+  A: ['a', 'b', 'c', 'e', 'f', 'g1', 'g2'],
+  F: ['a', 'e', 'f', 'g1'],
+  L: ['d', 'e', 'f'],
+  T: ['a', 'i', 'l'],
+  U: ['b', 'c', 'd', 'e', 'f'],
+};
+const lcdChars = scene.lcd.toUpperCase().split('');
+const CELL = 24;
+const GAP = 8.5;
+const lcdWidth = lcdChars.length * CELL + (lcdChars.length - 1) * GAP;
+const lcdLit = lcdChars
+  .map((ch, i) => (GLYPHS[ch] || []).map((s) => SEGS[s](i * (CELL + GAP))).join(''))
+  .join('');
+const lcdGhost = lcdChars
+  .map((_, i) => Object.values(SEGS).map((fn) => fn(i * (CELL + GAP))).join(''))
+  .join('');
+const lcdX = 204 + (172 - lcdWidth) / 2 + 2;
+
+// ---- Keypad keys ----
+const keyLabels = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '*', '0', '#'];
+const worn = new Set(['1', '2', '5', '0']);
+const keys = keyLabels.map((label, i) => ({
+  label,
+  x: 194 + (i % 3) * 68,
+  y: 202 + Math.floor(i / 3) * 48,
+  worn: worn.has(label),
+}));
+
+// ---- Heading: one sentence per line, so it never breaks mid-thought ----
+// The last two words of each sentence are bound, so no word is left alone on a line.
+const titleSentences = upgrade.title.split(/(?<=[?.!])\s+/).map((s) => s.replace(/\s+(\S+)$/, '\u00a0$1'));
+
+// ---- The testimonial, with its strongest phrase marked ----
+const phrase = 'second to none';
+const at = testimonial.quote.indexOf(phrase);
+const quoteParts =
+  at === -1
+    ? { pre: testimonial.quote, mark: '', post: '' }
+    : { pre: testimonial.quote.slice(0, at), mark: phrase, post: testimonial.quote.slice(at + phrase.length) };
 ---
 
-<section id="upgrades" class="section is-night" aria-label="Upgrade">
+<section id="upgrades" class="section upgrade is-night" aria-labelledby="upgrade-title" data-upgrade>
   <div class="container">
-    <h2 class="h-section">{upgrade.title}</h2>
+    <div class="upgrade__grid">
+      <div class="upgrade__copy">
+        <h2 id="upgrade-title" class="h-section upgrade__title" data-upgrade-title>
+          {
+            titleSentences.map((sentence, i) => (
+              <Fragment>
+                {i > 0 && ' '}
+                <span class="upgrade__sentence">
+                  <span class="upgrade__sentence-in" data-sentence>
+                    {sentence}
+                  </span>
+                </span>
+              </Fragment>
+            ))
+          }
+        </h2>
+        <p class="lede upgrade__lede">{upgrade.lede}</p>
+        <a class="btn btn--primary upgrade__cta" href={upgrade.cta.href}>{upgrade.cta.label}</a>
+      </div>
+
+      <figure class="cmp" data-cmp style="--v: 50">
+        <div class="cmp__stage">
+          <div class="cmp__scenes" role="img" aria-label={scene.stageLabel}>
+            <!-- BEFORE: a tired hall wall, a yellowed keypad with a fault -->
+            <svg class="cmp__scene cmp__scene--before" viewBox="0 0 600 500" aria-hidden="true" focusable="false">
+              <defs>
+                <radialGradient id="up-bwall" cx="130" cy="30" r="560" gradientUnits="userSpaceOnUse">
+                  <stop offset="0" stop-color="#7d6f57" />
+                  <stop offset=".45" stop-color="#4d4538" />
+                  <stop offset="1" stop-color="#27231e" />
+                </radialGradient>
+                <linearGradient id="up-obody" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0" stop-color="#eee4c8" />
+                  <stop offset=".55" stop-color="#e0d2a9" />
+                  <stop offset="1" stop-color="#c9b483" />
+                </linearGradient>
+                <radialGradient id="up-oyellow" cx=".45" cy=".4" r=".8">
+                  <stop offset=".35" stop-color="#b8924a" stop-opacity="0" />
+                  <stop offset="1" stop-color="#9c7630" stop-opacity=".45" />
+                </radialGradient>
+                <linearGradient id="up-okey" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0" stop-color="#f4ecd5" />
+                  <stop offset="1" stop-color="#dccfa6" />
+                </linearGradient>
+                <linearGradient id="up-lcd" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0" stop-color="#9aa68b" />
+                  <stop offset="1" stop-color="#86927a" />
+                </linearGradient>
+                <filter id="up-grime" x="0" y="0" width="100%" height="100%">
+                  <feTurbulence type="fractalNoise" baseFrequency=".85" numOctaves="2" seed="11" />
+                  <feColorMatrix values="0 0 0 0 .36  0 0 0 0 .29  0 0 0 0 .16  1.8 0 0 0 -.78" />
+                </filter>
+                <filter id="up-soft" x="-20%" y="-20%" width="140%" height="140%">
+                  <feGaussianBlur stdDeviation="9" />
+                </filter>
+                <clipPath id="up-oclip">
+                  <rect x="175" y="80" width="230" height="330" rx="22" />
+                </clipPath>
+              </defs>
+
+              <rect width="600" height="500" fill="url(#up-bwall)" />
+              <!-- Unfaded paint where a bigger, older box once hung -->
+              <rect x="160" y="64" width="262" height="364" rx="6" fill="#5b5243" opacity=".2" />
+              <!-- Scuffs -->
+              <path d="M470 330c14 3 30 2 44-2M486 344c9 1 18 0 26-3" stroke="#2a251f" stroke-width="3" stroke-linecap="round" opacity=".35" fill="none" />
+              <!-- Surface trunking run to the ceiling -->
+              <rect x="280" y="0" width="18" height="84" fill="#d8cca9" />
+              <path d="M282 0v84" stroke="#f0e7cc" stroke-width="1.5" opacity=".8" />
+              <path d="M296 0v84" stroke="#a8966a" stroke-width="1.5" />
+              <path d="M279 26h20M279 58h20" stroke="#b09d70" stroke-width="1.2" />
+
+              <!-- Light switch -->
+              <rect x="66" y="202" width="62" height="62" rx="6" fill="#141210" opacity=".35" filter="url(#up-soft)" />
+              <rect x="62" y="196" width="62" height="62" rx="6" fill="#e2d8bd" />
+              <rect x="82" y="210" width="22" height="34" rx="3" fill="#d4c7a1" stroke="#b7a57a" stroke-width="1.2" />
+              <path d="M85 214h16" stroke="#f3ecd6" stroke-width="1.4" stroke-linecap="round" />
+
+              <!-- Keypad, dropping its shadow below -->
+              <rect x="181" y="96" width="230" height="330" rx="22" fill="#0f0d0a" opacity=".55" filter="url(#up-soft)" />
+              <rect x="175" y="80" width="230" height="330" rx="22" fill="url(#up-obody)" />
+              <g clip-path="url(#up-oclip)">
+                <rect x="175" y="80" width="230" height="330" fill="url(#up-oyellow)" />
+                <rect x="175" y="80" width="230" height="330" filter="url(#up-grime)" opacity=".55" />
+                <path d="M175 381q14-4 20 6t-4 23" stroke="#a48c56" stroke-width="1" fill="none" opacity=".7" />
+              </g>
+              <rect x="175.75" y="80.75" width="228.5" height="328.5" rx="21.25" fill="none" stroke="#fbf5e3" stroke-opacity=".55" stroke-width="1.5" />
+              <path d="M190 409.2h200" stroke="#8f7a4c" stroke-width="1.6" stroke-linecap="round" opacity=".6" />
+
+              <!-- Grey-green segment LCD -->
+              <rect x="197" y="104" width="186" height="64" rx="8" fill="#4b4533" />
+              <rect x="204" y="111" width="172" height="50" rx="4" fill="url(#up-lcd)" />
+              <path d="M207 113.5h166" stroke="#c3cdb3" stroke-width="1.2" opacity=".5" />
+              <g transform={`translate(${lcdX} 117) skewX(-7)`}>
+                <path d={lcdGhost} fill="#1e2619" opacity=".07" />
+                <path class="cmp-lcd" d={lcdLit} fill="#1b2316" opacity=".86" />
+              </g>
+
+              <!-- Status LEDs: power dim, fault red -->
+              <circle cx="214" cy="186" r="4.5" fill="#56624a" />
+              <circle class="cmp-fault" cx="234" cy="186" r="11" fill="#ff5a4e" opacity=".28" />
+              <circle class="cmp-fault" cx="234" cy="186" r="4.5" fill="#ff5a4e" />
+              <path d="M300 186h83" stroke="#bfae80" stroke-width="1.4" stroke-linecap="round" stroke-dasharray="2 5" />
+
+              <!-- Worn membrane keys -->
+              {
+                keys.map((k) => (
+                  <g>
+                    <rect x={k.x} y={k.y + 2.5} width="56" height="38" rx="7" fill="#b39f70" />
+                    <rect x={k.x} y={k.y} width="56" height="38" rx="7" fill="url(#up-okey)" />
+                    {k.worn && <ellipse cx={k.x + 28} cy={k.y + 20} rx="17" ry="11" fill="#7d6538" opacity=".2" />}
+                    <text x={k.x + 28} y={k.y + 25.5} class="cmp-keylabel" opacity={k.worn ? 0.32 : 0.9}>
+                      {k.label}
+                    </text>
+                  </g>
+                ))
+              }
+
+              <!-- Grille and screws -->
+              <path d="M268 397h44M268 402h44" stroke="#a9966a" stroke-width="1.6" stroke-linecap="round" />
+              <circle cx="193" cy="397" r="4" fill="#cbb98c" stroke="#9a8659" />
+              <path d="M190.5 397h5" stroke="#8a764c" stroke-width="1.2" />
+              <circle cx="387" cy="397" r="4" fill="#cbb98c" stroke="#9a8659" />
+              <path d="M387 394.5v5" stroke="#8a764c" stroke-width="1.2" />
+            </svg>
+
+            <!-- AFTER: the same wall, a slim touchscreen keypad and a phone -->
+            <svg class="cmp__scene cmp__scene--after" viewBox="0 0 600 500" aria-hidden="true" focusable="false">
+              <defs>
+                <radialGradient id="up-awall" cx="300" cy="150" r="520" gradientUnits="userSpaceOnUse">
+                  <stop offset="0" stop-color="#46506a" />
+                  <stop offset=".5" stop-color="#2c3447" />
+                  <stop offset="1" stop-color="#161c29" />
+                </radialGradient>
+                <radialGradient id="up-glow" cx="290" cy="235" r="220" gradientUnits="userSpaceOnUse">
+                  <stop offset="0" stop-color="#9dbbff" stop-opacity=".2" />
+                  <stop offset="1" stop-color="#9dbbff" stop-opacity="0" />
+                </radialGradient>
+                <linearGradient id="up-nbody" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0" stop-color="#1b2230" />
+                  <stop offset="1" stop-color="#0b1018" />
+                </linearGradient>
+                <linearGradient id="up-nscreen" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0" stop-color="#0f1c33" />
+                  <stop offset="1" stop-color="#070f1d" />
+                </linearGradient>
+                <linearGradient id="up-pscreen" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0" stop-color="#15233d" />
+                  <stop offset=".7" stop-color="#0c1628" />
+                  <stop offset="1" stop-color="#2b2433" />
+                </linearGradient>
+                <filter id="up-soft2" x="-20%" y="-20%" width="140%" height="140%">
+                  <feGaussianBlur stdDeviation="9" />
+                </filter>
+              </defs>
+
+              <rect width="600" height="500" fill="url(#up-awall)" />
+              <ellipse cx="290" cy="235" rx="230" ry="240" fill="url(#up-glow)" />
+
+              <!-- Light switch, same place, clean -->
+              <rect x="66" y="202" width="62" height="62" rx="6" fill="#05080d" opacity=".35" filter="url(#up-soft2)" />
+              <rect x="62" y="196" width="62" height="62" rx="6" fill="#d9dee7" />
+              <rect x="82" y="210" width="22" height="34" rx="3" fill="#cdd3de" stroke="#aab2c1" stroke-width="1.2" />
+              <path d="M85 214h16" stroke="#f1f4f8" stroke-width="1.4" stroke-linecap="round" />
+
+              <!-- Slim keypad -->
+              <rect x="181" y="94" width="230" height="330" rx="16" fill="#03060b" opacity=".6" filter="url(#up-soft2)" />
+              <rect x="175" y="80" width="230" height="330" rx="16" fill="url(#up-nbody)" stroke="#2d3649" stroke-width="1.5" />
+              <path d="M192 81.4h196" stroke="#ffffff" stroke-opacity=".16" stroke-width="1.4" stroke-linecap="round" />
+              <rect x="189" y="96" width="202" height="272" rx="9" fill="url(#up-nscreen)" />
+              <path d="M198 97h120l-68 110h-52Z" fill="#ffffff" opacity=".025" />
+
+              <!-- Screen UI -->
+              <circle cx="207" cy="120" r="12" fill="#5ee0a0" opacity=".22" />
+              <circle cx="207" cy="120" r="5" fill="#5ee0a0" />
+              <text x="221" y="126" class="cmp-ui-status">{scene.status}</text>
+              <text x="221" y="143" class="cmp-ui-data">{scene.time}</text>
+              <path d="M201 156H379" stroke="#213252" stroke-width="1.2" />
+              {
+                scene.zones.map(([zone, state], i) => (
+                  <g>
+                    <circle cx="206" cy={179 + i * 26} r="3" fill="#5ee0a0" />
+                    <text x="217" y={183 + i * 26} class="cmp-ui-data cmp-ui-zone">
+                      {zone}
+                    </text>
+                    <text x="378" y={183 + i * 26} class="cmp-ui-data cmp-ui-ok" text-anchor="end">
+                      {state}
+                    </text>
+                  </g>
+                ))
+              }
+              <path d="M201 258H379" stroke="#213252" stroke-width="1.2" />
+              {
+                scene.modes.map((mode, i) => (
+                  <g>
+                    <rect
+                      x={201 + i * 61}
+                      y="276"
+                      width="56"
+                      height="44"
+                      rx="7"
+                      fill={i === 1 ? 'rgb(255 158 61 / 0.14)' : 'none'}
+                      stroke={i === 1 ? '#ff9e3d' : '#33466b'}
+                      stroke-width="1.4"
+                    />
+                    <text x={229 + i * 61} y="302.5" class:list={['cmp-ui-mode', { 'is-on': i === 1 }]} text-anchor="middle">
+                      {mode}
+                    </text>
+                  </g>
+                ))
+              }
+              <rect x="272" y="350" width="36" height="3" rx="1.5" fill="#33466b" />
+              <circle cx="290" cy="389" r="7.5" fill="none" stroke="#39465e" stroke-width="1.4" />
+              <circle cx="290" cy="389" r="1.8" fill="#39465e" />
+
+              <!-- Phone with the app notification -->
+              <g transform="translate(436 214) rotate(-6 62 125)">
+                <rect x="8" y="16" width="124" height="250" rx="22" fill="#020409" opacity=".6" filter="url(#up-soft2)" />
+                <rect x="0" y="0" width="124" height="250" rx="20" fill="#0a0f18" stroke="#303a4f" stroke-width="2" />
+                <rect x="6" y="6" width="112" height="238" rx="15" fill="url(#up-pscreen)" />
+                <circle cx="62" cy="16" r="3" fill="#1b2332" />
+                <text x="62" y="56" class="cmp-ui-clock" text-anchor="middle">{scene.time}</text>
+                <g class="cmp-notif" data-notif>
+                  <rect class="cmp-notif-halo" data-notif-halo x="8" y="70" width="108" height="86" rx="13" fill="#3d7cff" opacity="0" />
+                  <rect x="12" y="74" width="100" height="78" rx="10" fill="#16243d" stroke="#33466b" stroke-width="1.2" />
+                  <rect x="20" y="83" width="16" height="16" rx="4" fill="#3d7cff" />
+                  <path d="M24.5 94.2h7M25.4 94.2v-3a2.6 2.6 0 0 1 5.2 0v3M27.2 96.4h1.6" stroke="#fff" stroke-width="1.2" stroke-linecap="round" fill="none" />
+                  <text x="42" y="94.5" class="cmp-ui-app">{scene.notifyApp}</text>
+                  <text x="104" y="94.5" class="cmp-ui-when" text-anchor="end">{scene.notifyWhen}</text>
+                  <text x="20" y="117" class="cmp-ui-title">{scene.notifyTitle}</text>
+                  {
+                    scene.notifyBody.map((line, i) => (
+                      <text x="20" y={131 + i * 12} class="cmp-ui-body">
+                        {line}
+                      </text>
+                    ))
+                  }
+                </g>
+                <rect x="44" y="236" width="36" height="3" rx="1.5" fill="#4c5f86" />
+              </g>
+            </svg>
+          </div>
+
+          <span class="cmp__tag cmp__tag--before" aria-hidden="true">{upgrade.beforeLabel}</span>
+          <span class="cmp__tag cmp__tag--after" aria-hidden="true">{upgrade.afterLabel}</span>
+
+          <input
+            class="cmp__range"
+            type="range"
+            min="0"
+            max="100"
+            step="1"
+            value="50"
+            aria-label={upgrade.sliderLabel}
+            aria-valuetext={scene.valueText.replace('{before}', '50').replace('{after}', '50')}
+            data-valuetext={scene.valueText}
+            data-cmp-range
+          />
+          <div class="cmp__handle" aria-hidden="true">
+            <span class="cmp__grip">
+              <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" focusable="false">
+                <path d="m9 7-5 5 5 5" /><path d="m15 7 5 5-5 5" />
+              </svg>
+            </span>
+          </div>
+
+        </div>
+
+        <figcaption class="cmp__caption">
+          <p><strong>{upgrade.beforeLabel}:</strong> {upgrade.beforeCaption}</p>
+          <p><strong>{upgrade.afterLabel}:</strong> {upgrade.afterCaption}</p>
+          <p class="cmp__note">{upgrade.illustrationNote}</p>
+        </figcaption>
+      </figure>
+    </div>
+
+    <figure class="quote" data-quote>
+      <svg class="quote__mark" viewBox="0 0 92 64" aria-hidden="true" focusable="false" data-quote-mark>
+        <path d="M19.5 64C8.4 64 0 55.9 0 44.4 0 24.6 13.7 7.8 34.6 0l3.6 6.8C25.7 12.6 18.6 21 17.7 29.6c1.4-.6 3-.9 4.8-.9 10 0 17.3 7.3 17.3 17.4C39.8 56.1 31.3 64 19.5 64Z" />
+        <path d="M71.7 64C60.6 64 52.2 55.9 52.2 44.4 52.2 24.6 65.9 7.8 86.8 0l3.6 6.8C77.9 12.6 70.8 21 69.9 29.6c1.4-.6 3-.9 4.8-.9 10 0 17.3 7.3 17.3 17.4C92 56.1 83.5 64 71.7 64Z" />
+      </svg>
+      <blockquote class="quote__text">
+        <p>{quoteParts.pre}{quoteParts.mark && <mark class="quote__mark-phrase" data-quote-phrase>{quoteParts.mark}</mark>}{quoteParts.post}</p>
+      </blockquote>
+      <figcaption class="quote__by">
+        <span class="quote__name">{testimonial.name}</span>
+        <span class="quote__place">{testimonial.place}</span>
+        <span class="quote__job data">{testimonial.job}</span>
+      </figcaption>
+    </figure>
   </div>
 </section>
+
+<style>
+  .upgrade {
+    overflow: clip;
+  }
+
+  .upgrade__grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    row-gap: clamp(2.5rem, 2rem + 3vw, 4rem);
+  }
+  .upgrade__title {
+    max-width: none;
+  }
+  /* One sentence per line; each one is swept in through its own mask */
+  .upgrade__sentence {
+    display: block;
+    overflow: clip;
+    padding-bottom: 0.1em;
+    margin-bottom: -0.1em;
+  }
+  .upgrade__sentence-in {
+    display: block;
+  }
+  .upgrade__lede {
+    margin-top: var(--space-5);
+    max-width: 40ch;
+  }
+  .upgrade__cta {
+    margin-top: var(--space-6);
+  }
+
+  /* ---------- Before / after ---------- */
+  .cmp {
+    --v: 50;
+    --thumb: 44px;
+    --pos: calc(var(--thumb) / 2 + (100% - var(--thumb)) * var(--v) / 100);
+    min-width: 0;
+  }
+  .cmp__stage {
+    position: relative;
+    aspect-ratio: 6 / 5;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    background: var(--night-800);
+    box-shadow: var(--shadow-2);
+    outline: 1px solid var(--night-700);
+    outline-offset: -1px;
+    user-select: none;
+    -webkit-user-select: none;
+  }
+  .cmp__scenes,
+  .cmp__scene {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+  }
+  .cmp__scene--after {
+    clip-path: inset(0 0 0 var(--pos));
+  }
+
+  .cmp-keylabel {
+    font-family: var(--font-display);
+    font-stretch: 110%;
+    font-weight: 600;
+    font-size: 19px;
+    fill: #5b503b;
+    text-anchor: middle;
+  }
+  .cmp-ui-status {
+    font-family: var(--font-display);
+    font-stretch: 108%;
+    font-weight: 650;
+    font-size: 17px;
+    fill: var(--dusk-50);
+  }
+  .cmp-ui-data {
+    font-family: var(--font-data);
+    font-stretch: 90%;
+    font-size: 11px;
+    fill: var(--dusk-300);
+    letter-spacing: 0.02em;
+  }
+  .cmp-ui-zone {
+    fill: var(--dusk-200);
+  }
+  .cmp-ui-ok {
+    fill: var(--clear-400);
+  }
+  .cmp-ui-mode {
+    font-family: var(--font-display);
+    font-weight: 620;
+    font-size: 12.5px;
+    fill: var(--dusk-300);
+  }
+  .cmp-ui-mode.is-on {
+    fill: var(--sodium-300);
+  }
+  .cmp-ui-clock {
+    font-family: var(--font-display);
+    font-stretch: 112%;
+    font-weight: 700;
+    font-size: 26px;
+    fill: var(--dusk-50);
+  }
+  .cmp-ui-app {
+    font-family: var(--font-body);
+    font-weight: 700;
+    font-size: 9px;
+    fill: var(--dusk-200);
+  }
+  .cmp-ui-when {
+    font-family: var(--font-body);
+    font-size: 8.5px;
+    fill: var(--dusk-300);
+  }
+  .cmp-ui-title {
+    font-family: var(--font-body);
+    font-weight: 700;
+    font-size: 11.5px;
+    fill: var(--dusk-50);
+  }
+  .cmp-ui-body {
+    font-family: var(--font-body);
+    font-size: 9.5px;
+    fill: var(--dusk-200);
+  }
+
+  /* The FAULT display and red LED blink while the frame is on screen */
+  @media (prefers-reduced-motion: no-preference) {
+    .cmp.is-live .cmp-lcd,
+    .cmp.is-live .cmp-fault {
+      animation: cmp-blink 1.3s steps(1, end) infinite;
+    }
+  }
+  @keyframes cmp-blink {
+    76% {
+      opacity: 0.04;
+    }
+  }
+
+  /* Corner labels fade as their side is squeezed out */
+  .cmp__tag {
+    position: absolute;
+    top: 0.85rem;
+    z-index: 2;
+    padding: 0.3rem 0.6rem;
+    border-radius: var(--radius-xs);
+    background: rgb(7 13 25 / 0.82);
+    color: var(--dusk-50);
+    font-family: var(--font-display);
+    font-stretch: 112%;
+    font-weight: 650;
+    font-size: var(--step--1);
+    line-height: 1.2;
+    pointer-events: none;
+    transition: opacity var(--dur-fast) linear;
+  }
+  .cmp__tag--before {
+    left: 0.85rem;
+    opacity: clamp(0, calc((var(--v) - 14) / 10), 1);
+  }
+  .cmp__tag--after {
+    right: 0.85rem;
+    opacity: clamp(0, calc((86 - var(--v)) / 10), 1);
+  }
+
+  /* The divider: a lit sodium grip on a thin line */
+  .cmp__handle {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: var(--pos);
+    z-index: 2;
+    width: 0;
+    pointer-events: none;
+  }
+  .cmp__handle::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: -1px;
+    width: 2px;
+    background: var(--dusk-50);
+    box-shadow: 0 0 0 1px rgb(7 13 25 / 0.35);
+  }
+  .cmp__grip {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    display: grid;
+    place-items: center;
+    width: 44px;
+    height: 68px;
+    translate: -50% -50%;
+    border-radius: var(--radius-sm);
+    background: var(--sodium-500);
+    color: var(--night-950);
+    box-shadow: var(--shadow-lit), 0 2px 4px rgb(3 7 15 / 0.4);
+    transition:
+      background-color var(--dur-fast) var(--ease-out),
+      scale var(--dur-med) var(--ease-out),
+      box-shadow var(--dur-med) var(--ease-out);
+  }
+  .cmp__stage:hover .cmp__grip {
+    background: var(--sodium-400);
+    scale: 1.05;
+  }
+  .cmp__stage:active .cmp__grip {
+    scale: 0.97;
+  }
+  .cmp__range:focus-visible ~ .cmp__handle .cmp__grip {
+    outline: 2px solid var(--dusk-50);
+    outline-offset: 3px;
+  }
+
+  /* The real control: a range input over the whole frame */
+  .cmp__range {
+    position: absolute;
+    inset: 0;
+    z-index: 3;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    opacity: 0;
+    cursor: ew-resize;
+    touch-action: pan-y;
+    -webkit-appearance: none;
+    appearance: none;
+    background: transparent;
+  }
+  .cmp__range::-webkit-slider-runnable-track {
+    height: 100%;
+    background: transparent;
+  }
+  .cmp__range::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: var(--thumb);
+    height: 100%;
+    min-height: 200px;
+    background: transparent;
+    border: 0;
+  }
+  .cmp__range::-moz-range-track {
+    height: 100%;
+    background: transparent;
+  }
+  .cmp__range::-moz-range-thumb {
+    width: var(--thumb);
+    height: 100%;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+  }
+  .cmp__range:disabled {
+    cursor: not-allowed;
+  }
+
+  .cmp__caption {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0.35rem 1.5rem;
+    margin-top: var(--space-4);
+    color: var(--dusk-200);
+    font-size: var(--step--1);
+    line-height: 1.45;
+  }
+  .cmp__caption strong {
+    color: var(--dusk-50);
+    font-weight: 700;
+  }
+  .cmp__note {
+    color: var(--dusk-300);
+  }
+
+  /* ---------- Testimonial ---------- */
+  .quote {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    row-gap: var(--space-5);
+    margin-top: clamp(5rem, 3rem + 7vw, 9rem);
+  }
+  .quote__mark {
+    width: clamp(3.5rem, 2.8rem + 3vw, 6rem);
+    height: auto;
+    fill: var(--sodium-500);
+  }
+  .quote__text {
+    margin: 0;
+  }
+  .quote__text p {
+    max-width: 34ch;
+    font-family: var(--font-body);
+    font-size: clamp(1.55rem, 1.05rem + 2vw, 2.6rem);
+    font-weight: 450;
+    line-height: 1.3;
+    letter-spacing: -0.012em;
+    color: var(--dusk-50);
+    text-wrap: pretty;
+  }
+  .quote__mark-phrase {
+    --u: 100%;
+    padding-bottom: 0.04em;
+    background-color: transparent;
+    background-image: linear-gradient(var(--sodium-500), var(--sodium-500));
+    background-repeat: no-repeat;
+    background-position: 0 100%;
+    background-size: var(--u) 0.11em;
+    color: inherit;
+    font-weight: 650;
+  }
+  .quote__by {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.35rem 1.1rem;
+    padding-top: var(--space-5);
+    border-top: 1px solid var(--rule);
+    max-width: 44rem;
+  }
+  .quote__name {
+    font-family: var(--font-display);
+    font-stretch: 112%;
+    font-weight: 700;
+    font-size: var(--step-1);
+    color: var(--dusk-50);
+  }
+  .quote__place {
+    color: var(--dusk-200);
+  }
+  .quote__job {
+    color: var(--dusk-300);
+  }
+
+  @media (min-width: 640px) {
+    .cmp__caption {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) auto;
+      align-items: baseline;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .upgrade__grid {
+      grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+      column-gap: clamp(3rem, 1rem + 5vw, 6.5rem);
+      align-items: center;
+    }
+    .upgrade__copy {
+      padding-bottom: 3rem;
+    }
+    .quote {
+      grid-template-columns: minmax(0, 2fr) minmax(0, 10fr);
+      column-gap: clamp(1.5rem, 0.5rem + 2vw, 3rem);
+      align-items: start;
+    }
+    .quote__mark {
+      grid-row: span 2;
+      justify-self: end;
+      margin-top: 0.4rem;
+    }
+  }
+</style>
+
+<script>
+  import { boot, gsap, ScrollTrigger, motionOK } from '../scripts/motion.js';
+
+  boot();
+
+  const root = document.querySelector('[data-upgrade]');
+  const cmp = root?.querySelector('[data-cmp]');
+  const input = cmp?.querySelector('[data-cmp-range]');
+
+  if (root && cmp && input) {
+    const notif = cmp.querySelector('[data-notif]');
+    const halo = cmp.querySelector('[data-notif-halo]');
+    const template = input.dataset.valuetext || '';
+    const motion = motionOK();
+
+    // The phone sits at the right of the frame: it is uncovered below ~70%
+    const PHONE_IN = 70;
+    const PHONE_OUT = 80;
+    let introDone = !motion;
+    let phoneShown = true;
+    let nudge = null;
+
+    const hideNotif = () => {
+      gsap.killTweensOf([notif, halo]);
+      gsap.set(notif, { opacity: 0, y: -14 });
+      gsap.set(halo, { opacity: 0 });
+    };
+    // A notification lands with the bell-box double blink
+    const landNotif = () => {
+      gsap.killTweensOf([notif, halo]);
+      gsap
+        .timeline()
+        .to(notif, { opacity: 1, y: 0, duration: 0.7, ease: 'expo.out' })
+        .fromTo(halo, { opacity: 0 }, { opacity: 0.55, duration: 0.05, repeat: 3, yoyo: true, ease: 'none' }, 0.12)
+        .to(halo, { opacity: 0, duration: 0.4, ease: 'decay' });
+    };
+
+    const render = (v) => {
+      cmp.style.setProperty('--v', v.toFixed(2));
+      const before = Math.round(v);
+      input.setAttribute(
+        'aria-valuetext',
+        template.replace('{before}', String(before)).replace('{after}', String(100 - before)),
+      );
+      if (!motion || !introDone) return;
+      if (phoneShown && v > PHONE_OUT) {
+        phoneShown = false;
+        hideNotif();
+      } else if (!phoneShown && v < PHONE_IN) {
+        phoneShown = true;
+        landNotif();
+      }
+    };
+
+    const finishIntro = () => {
+      if (introDone) return;
+      introDone = true;
+      nudge?.kill();
+      const v = Number(input.value);
+      if (v < PHONE_IN) {
+        phoneShown = true;
+        landNotif();
+      } else {
+        phoneShown = false;
+      }
+    };
+
+    input.addEventListener('input', () => {
+      finishIntro();
+      render(Number(input.value));
+    });
+
+    // Touch: drag anywhere across the frame, while vertical swipes still scroll
+    let drag = null;
+    const setFromX = (clientX) => {
+      const r = input.getBoundingClientRect();
+      const v = Math.min(100, Math.max(0, ((clientX - r.left - 22) / (r.width - 44)) * 100));
+      input.value = String(Math.round(v));
+      input.dispatchEvent(new Event('input', { bubbles: true }));
+    };
+    input.addEventListener('pointerdown', (e) => {
+      if (e.pointerType === 'mouse') return;
+      drag = { x: e.clientX, y: e.clientY, active: false };
+    });
+    input.addEventListener('pointermove', (e) => {
+      if (!drag) return;
+      if (!drag.active) {
+        const dx = Math.abs(e.clientX - drag.x);
+        const dy = Math.abs(e.clientY - drag.y);
+        if (dx < 6 && dy < 6) return;
+        if (dy > dx) {
+          drag = null;
+          return;
+        }
+        drag.active = true;
+      }
+      setFromX(e.clientX);
+    });
+    const endDrag = () => (drag = null);
+    input.addEventListener('pointerup', endDrag);
+    input.addEventListener('pointercancel', endDrag);
+
+    render(Number(input.value));
+
+    // The LCD only blinks while the frame is on screen
+    if ('IntersectionObserver' in window) {
+      new IntersectionObserver(([entry]) => cmp.classList.toggle('is-live', entry.isIntersecting)).observe(cmp);
+    }
+
+    if (motion) {
+      // sweep: each sentence of the heading rises through its own mask
+      const sentences = root.querySelectorAll('[data-sentence]');
+      gsap.set(sentences, { yPercent: 108 });
+      gsap.to(sentences, {
+        yPercent: 0,
+        duration: 1.05,
+        ease: 'expo.out',
+        stagger: 0.11,
+        scrollTrigger: { trigger: root.querySelector('[data-upgrade-title]'), start: 'top 82%', once: true },
+      });
+
+      // Teach the control: the handle nudges once, then the notification lands
+      hideNotif();
+      phoneShown = false;
+      const state = { v: 50 };
+      const apply = () => {
+        input.value = String(Math.round(state.v));
+        cmp.style.setProperty('--v', state.v.toFixed(2));
+      };
+      ScrollTrigger.create({
+        trigger: cmp,
+        start: 'top 70%',
+        once: true,
+        onEnter: () => {
+          if (introDone) return;
+          state.v = Number(input.value);
+          nudge = gsap
+            .timeline({ delay: 0.35, onUpdate: apply, onComplete: finishIntro })
+            .to(state, { v: 58, duration: 0.55, ease: 'power2.inOut' })
+            .to(state, { v: 45, duration: 0.7, ease: 'power2.inOut' })
+            .to(state, { v: 50, duration: 0.55, ease: 'power2.out' });
+        },
+      });
+
+      // Testimonial: the quote mark trips on, then the underline is drawn in
+      const quote = root.querySelector('[data-quote]');
+      const qmark = root.querySelector('[data-quote-mark]');
+      const phrase = root.querySelector('[data-quote-phrase]');
+      if (quote && qmark) {
+        gsap.set(qmark, { opacity: 0.12 });
+        if (phrase) gsap.set(phrase, { '--u': '0%' });
+        const tl = gsap.timeline({ scrollTrigger: { trigger: quote, start: 'top 72%', once: true } });
+        tl.to(qmark, {
+          keyframes: [
+            { opacity: 1, duration: 0.06, ease: 'none' },
+            { opacity: 0.45, duration: 0.05, ease: 'none' },
+            { opacity: 1, duration: 0.8, ease: 'expo.out' },
+          ],
+        });
+        if (phrase) tl.to(phrase, { '--u': '100%', duration: 1.1, ease: 'power2.inOut' }, 0.45);
+      }
+    }
+  }
+</script>

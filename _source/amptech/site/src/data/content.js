@@ -314,3 +314,44 @@ export const anatomyArt = {
     note: 'Illustration',
   },
 };
+
+
+// ---------- Services, trust strip and upgrade: interface strings ----------
+
+// The panel self-test on the trust strip. Visual only; the list carries the facts.
+export const trustCheck = {
+  title: 'Credentials',
+  checking: 'System check',
+  ok: 'All zones OK',
+};
+
+export const servicesUi = {
+  forLabel: 'Suitable for:',
+  links: {
+    upgrades: 'See an upgrade',
+    app: 'See the app',
+  },
+  call: 'Call 01 615 5980',
+  quote: 'Request a quote',
+};
+
+// Text drawn inside the before/after keypad illustration. Generic demo data, labelled "Illustration".
+export const upgradeScene = {
+  stageLabel:
+    'Illustration. Before: a yellowed beige alarm keypad with worn number keys, its small grey-green display blinking FAULT and a red light on. After: the same wall with a slim dark touchscreen keypad showing the system armed in night mode with every zone OK, and a phone beside it showing an app notification.',
+  lcd: 'FAULT',
+  status: 'Armed · Night',
+  time: '23:10',
+  zones: [
+    ['Z1 Front door', 'OK'],
+    ['Z2 Hall', 'OK'],
+    ['Z3 Back door', 'OK'],
+  ],
+  modes: ['Away', 'Night', 'Off'],
+  notifyApp: 'Alarm',
+  notifyWhen: 'now',
+  notifyTitle: 'System armed',
+  notifyBody: ['Night mode', 'Downstairs guarded'],
+  // {before} and {after} are replaced with percentages for screen readers.
+  valueText: 'Old keypad {before}%, upgraded keypad {after}%',
+};
