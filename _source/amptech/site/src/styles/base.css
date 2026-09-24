@@ -412,7 +412,10 @@ a {
 
 /* Lit sections switch on like a floodlight as they arrive */
 .motion-ok [data-lit-reveal] {
-  --reveal: 160vmax;
+  --reveal: 400vmax;
+}
+.motion-ok [data-lit-reveal].is-revealed::after {
+  content: none;
 }
 .motion-ok [data-lit-reveal]::after {
   content: '';

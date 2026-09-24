@@ -503,12 +503,6 @@ const ringText = Array(3).fill(processDemo.stampRing.toUpperCase()).join(' · ')
       padding-top: clamp(3rem, 6vw, 5.5rem);
     }
   }
-  /* Once the floodlight is fully on, drop the shared reveal mask: its radius is
-     viewport-sized and would leave the foot of this tall section in the dark. */
-  .process.is-revealed::after {
-    content: none;
-  }
-
   .finale__line {
     font-family: var(--font-display);
     font-size: var(--step-3);
@@ -908,14 +902,6 @@ const ringText = Array(3).fill(processDemo.stampRing.toUpperCase()).join(' · ')
         progB = 0;
         rebuild();
         ScrollTrigger.addEventListener('refreshInit', rebuild);
-
-        // The shared floodlight reveal ends at 'top 25%'; after that the mask can go.
-        ScrollTrigger.create({
-          trigger: root,
-          start: 'top 25%',
-          end: 'max',
-          toggleClass: { targets: root, className: 'is-revealed' },
-        });
 
         // Cable A: along the blocks. The tip keeps pace with the reader.
         gsap.fromTo(

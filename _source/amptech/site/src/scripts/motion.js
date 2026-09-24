@@ -123,7 +123,13 @@ export function lightsOn(targets, { trigger, start = 'top 82%', stagger = 0.09, 
  */
 export function sweepIn(heading, { trigger, start = 'top 80%', delay = 0 } = {}) {
   if (!motionOK() || !heading) return null;
-  const split = SplitText.create(heading, { type: 'lines', mask: 'lines', linesClass: 'sweep-line', aria: 'auto' });
+  const split = SplitText.create(heading, {
+    type: 'lines',
+    mask: 'lines',
+    linesClass: 'sweep-line',
+    aria: 'auto',
+    reduceWhiteSpace: false,
+  });
   gsap.set(split.lines, { yPercent: 105 });
   return gsap.to(split.lines, {
     yPercent: 0,
@@ -146,17 +152,29 @@ export function strobe(el, { color = 'var(--strobe-500)' } = {}) {
     .to(el, { '--strobe-a': 0, duration: 0.4, ease: 'decay' });
 }
 
-// Lit sections: the floodlight switches on as the section arrives.
+// Lit sections: the floodlight switches on as the section arrives. The final
+// radius covers the whole section (tall sections on phones outgrow any vmax
+// value), and the overlay is dropped entirely once the light is fully on.
 function initLitReveals() {
   if (!motionOK()) return;
   gsap.utils.toArray('[data-lit-reveal]').forEach((section) => {
+    const full = () => `${Math.ceil(Math.hypot(section.offsetWidth / 2, section.offsetHeight) + 40)}px`;
     gsap.fromTo(
       section,
-      { '--reveal': '0vmax' },
+      { '--reveal': '0px' },
       {
-        '--reveal': '160vmax',
+        '--reveal': full,
         ease: 'power2.in',
-        scrollTrigger: { trigger: section, start: 'top 92%', end: 'top 25%', scrub: 0.4 },
+        immediateRender: true,
+        scrollTrigger: {
+          trigger: section,
+          start: 'top 92%',
+          end: 'top 25%',
+          scrub: 0.4,
+          invalidateOnRefresh: true,
+          onUpdate: (self) => section.classList.toggle('is-revealed', self.progress > 0.995),
+          onLeave: () => section.classList.add('is-revealed'),
+        },
       },
     );
   });

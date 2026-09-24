@@ -64,6 +64,8 @@ for (const width of widths) {
   page.on('requestfailed', (r) => errors.push(`[requestfailed] ${r.url()} ${r.failure()?.errorText}`));
 
   await page.goto(url, { waitUntil: 'networkidle' });
+  // The skip link shows while the page has focus after load; never capture it.
+  await page.addStyleTag({ content: '.skip-link{display:none!important}' });
   await page.waitForTimeout(wait);
 
   // Walk the page so once-only scroll reveals fire, then return to the top.
@@ -112,6 +114,8 @@ for (const width of widths) {
       await page.waitForTimeout(500);
     }
     const file = path.join(outDir, `${prefix}.png`);
+    // Fixed chrome would be stitched into tall element captures.
+    await page.addStyleTag({ content: '.site-header,.mobile-bar{visibility:hidden!important}' });
     const box = await el.boundingBox();
     if (box && box.height > heightFor(width) * 3) {
       // Very tall (pinned) sections: capture the viewport instead.

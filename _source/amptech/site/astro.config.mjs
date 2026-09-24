@@ -7,4 +7,6 @@ export default defineConfig({
   trailingSlash: 'ignore',
   build: { inlineStylesheets: 'auto' },
   devToolbar: { enabled: false },
+  // The hero's lazy three.js chunk is ~150 KB gzipped and loads after the page is idle.
+  vite: { build: { chunkSizeWarningLimit: 700 } },
 });

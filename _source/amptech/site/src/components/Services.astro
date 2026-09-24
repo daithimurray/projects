@@ -223,12 +223,6 @@ const rain = Array.from({ length: 26 }, (_, i) => {
 </section>
 
 <style>
-  /* Once the floodlight reveal has finished, drop its overlay so a section
-     taller than the reveal radius (phones) never keeps a dark lower half. */
-  :global(.motion-ok) .services.is-revealed::after {
-    content: none;
-  }
-
   .services__layout {
     display: grid;
     grid-template-columns: minmax(0, 1fr);
@@ -671,14 +665,6 @@ const rain = Array.from({ length: 26 }, (_, i) => {
   }
 
   if (root && lamp && motionOK()) {
-    // The shared reveal (motion.js) opens to a fixed radius; release it when done
-    ScrollTrigger.create({
-      trigger: root,
-      start: 'top 10%',
-      end: 'max',
-      toggleClass: { targets: root, className: 'is-revealed' },
-    });
-
     // trip: the floodlight snaps on when the vignette arrives, flickers, settles
     gsap.set(lamp, { '--flood': 0 });
     gsap
