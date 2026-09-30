@@ -1,7 +1,8 @@
-# Hawthorn Green Residents' Association: source
+# Barnhall Meadows residents association: source
 
-Source for the residents association site. The built site lives in `/residents/`.
-Page map and copy come from the content plan (`content-plan/site-content-plan.md` in the project files).
+Source for the residents association site for Barnhall Meadows, Leixlip, Co. Kildare. The built site lives in `/residents/`.
+Page map and copy come from the content plan (`content-plan/site-content-plan.md` in the project files). Estate facts come from
+the research profile (`research/barnhall-meadows-profile.md` in the project files).
 
 ```
 node build.mjs          # preview build: placeholders get a dotted underline and a banner
@@ -21,13 +22,14 @@ assets, and fails if any internal link or anchor does not resolve.
 - **News post**: add an entry to `posts` (kind `news` or `council`). It appears on Home (newest 3) and News.
 - **Event**: add an entry to `events`. It gets its own page and calendar file. Home shows the next event
   still to come, worked out in the browser, so it never shows a past event.
-- **Document**: set `file` to a path under `residents/docs/` and put the PDF there. Until then it shows "Coming soon".
+- **Document**: set `file` to a path under `residents/docs/` and put the PDF there, or set `url` for an outside source. Otherwise it shows "Coming soon".
+- **Sources**: council posts and the estate section carry `sources` (label and link), shown under the text.
 - Update `site.lastUpdated` whenever content changes. It shows in the footer.
 
 ## Design
 
-- Type: Fraunces (display) and Public Sans (text). Palette: hawthorn green, paper, berry red, sun yellow.
-- Signature: an estate skyline drawn in SVG. Its three layers move at different speeds on scroll, and windows light up on load.
+- Type: Fraunces (display) and Public Sans (text). Palette: deep green, paper, berry red, sun yellow.
+- Signature: an estate skyline drawn in SVG, with the Wonderful Barn and its two dovecotes behind the houses. The back layers move at different speeds on scroll, and windows light up on load.
 - Motion: staggered scroll reveals, sticky header that condenses, reading-progress bar, count-up numbers,
   filter chips with view transitions, animated accordions, slide-in menu, cross-page transitions.
   All of it switches off under `prefers-reduced-motion`.
@@ -41,15 +43,40 @@ the association address. Nothing is stored by the site. If the committee wants s
 visitor's email app, swap in a form service (for example FormSubmit, as on the Cathy Conlon site) and
 update the privacy notice.
 
-## Before launch: the association must supply
+## Before launch
 
-Everything with a dotted underline in a preview build is a placeholder. From the content plan, the blockers are:
+Everything with a dotted underline in a preview build is a placeholder. Posts and events marked "Example" are
+placeholders too.
 
-1. Official name and logo (the mark and "Hawthorn Green" are placeholders).
-2. Committee names, roles and one-line bios, with written consent to publish each. Photos optional (initials show until then).
-3. A shared contact email the committee controls (set `site.email` in `data.mjs`; the forms pick it up at build time).
-4. At least 3 real news posts or events.
+### Check the researched facts
 
-Then: estate facts (homes, roads, council), the documents, social links, meeting details, and the
-privacy notice sign-off (data controller, retention period). Build with `--final`, then remove the
-`X-Robots-Tag` header from `vercel.json` and the `Disallow` from `robots.txt`.
+The estate facts came from search-engine extracts, not full reads of each page. Check each one against the source
+linked on the site before launch:
+
+- Glenveagh built the estate. Planning for up to 450 homes granted 13 April 2018 (ABP-300606).
+- Clúid Housing has 56 cost-rental homes in the estate.
+- The Wonderful Barn: built 1743 by Katherine Conolly.
+- Wonderful Barn park plan (Part 8, P82024.10) approved 18 October 2024.
+- Taking in charge: consultation 19 November to 18 December 2024; still not taken in charge per the council's reply in September 2025.
+- Leixlip Garda Station, 19 Station Road, 01 666 7800.
+
+### Kept as placeholders on purpose
+
+- The association's name. "Barnhall Meadows Residents' Association" is a working name; none was found online.
+- Which councillors to list. Leixlip or Celbridge local electoral area is unconfirmed, so the site lists none.
+- The road list. Six roads were found and the list is likely incomplete, so the forms ask for a free-text address.
+  Swap in a dropdown once the committee confirms every road.
+- Bus routes, the council's phone number and online reporting link, and Glenveagh's contact for estate issues.
+- How many of the 450 homes (including 100 apartments) are built and occupied.
+
+### The committee must supply
+
+1. Official name and logo (the mark is a placeholder).
+2. Committee names and one-line bios, with written consent to publish each. Cards show roles only until then.
+3. A shared contact email the committee controls. Set `site.email` in `data.mjs`; the forms pick it up at build time.
+   The current `committee@example.com` is a placeholder.
+4. At least 3 real news posts or events to replace the examples.
+
+Then: the documents, social links, meeting dates and venue, and the privacy notice sign-off (data controller,
+retention period). Build with `--final`, then remove the `X-Robots-Tag` header from `vercel.json` and the
+`Disallow` from `robots.txt`.

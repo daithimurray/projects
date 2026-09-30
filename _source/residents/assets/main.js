@@ -1,4 +1,4 @@
-// Hawthorn Green Residents' Association · page behaviour. No dependencies.
+// Barnhall Meadows residents association · page behaviour. No dependencies.
 // Everything here is an enhancement: the pages read and work without JavaScript.
 
 const $ = (sel, root = document) => root.querySelector(sel);
@@ -189,7 +189,7 @@ if (msg) {
    No backend: on a valid submit we open a pre-filled email to the association.
    Swap this for a form service once the committee decides where submissions should go (see README). */
 const messages = {
-  valueMissing: el => el.type === 'checkbox' ? 'Please tick this box so we can contact you.' : el.tagName === 'SELECT' ? `Please choose ${/^your /i.test(labelFor(el)) ? labelFor(el).toLowerCase() : 'a ' + labelFor(el).toLowerCase()}.` : `Please enter your ${labelFor(el).toLowerCase()}.`,
+  valueMissing: el => el.type === 'checkbox' ? 'Please tick this box so we can contact you.' : el.tagName === 'SELECT' ? `Please choose ${/^your /i.test(labelFor(el)) ? labelFor(el).toLowerCase() : 'a ' + labelFor(el).toLowerCase()}.` : `Please enter ${/^your /i.test(labelFor(el)) ? '' : 'your '}${labelFor(el).toLowerCase()}.`,
   typeMismatch: () => 'Please enter an email address like name@example.com.',
 };
 function labelFor(el) {

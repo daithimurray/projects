@@ -1,11 +1,11 @@
-// Builds the Hawthorn Green Residents' Association site into ../../residents/.
+// Builds the Barnhall Meadows residents association site into ../../residents/.
 // No dependencies: `node build.mjs` (preview, placeholders underlined) or `node build.mjs --final`.
 // Output is plain HTML, CSS and JS with relative paths, so it can be served from any folder.
 
 import { mkdirSync, rmSync, writeFileSync, copyFileSync, readdirSync, readFileSync, existsSync } from 'node:fs';
 import { dirname, join, relative } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { site, impact, whatWeDo, posts, events, committee, nextMeeting, documents, faqs } from './data.mjs';
+import { site, impact, estateFacts, whatWeDo, posts, events, committee, nextMeeting, documents, faqs } from './data.mjs';
 
 const HERE = dirname(fileURLToPath(import.meta.url));
 const OUT = join(HERE, '../../residents');
@@ -25,10 +25,13 @@ const time12 = t => {
   return `${hh}${m ? '.' + String(m).padStart(2, '0') : ''}${h < 12 ? 'am' : 'pm'}`;
 };
 const initials = n => n.split(/\s+/).map(w => w[0]).slice(0, 2).join('');
-const byDateDesc = (a, b) => b.date.localeCompare(a.date);
+const byDateDesc = (a, b) => (b.date || '').localeCompare(a.date || '');
 const byDateAsc = (a, b) => a.date.localeCompare(b.date);
 const upcoming = events.filter(e => e.date >= site.lastUpdated).sort(byDateAsc);
 const kindLabel = { news: 'News', council: 'Council notice', event: 'Event' };
+
+const sourceList = (sources, cls = 'sources') => sources && sources.length ? `<p class="${cls}"><span>Sources:</span> ${sources.map(([label, url]) => `<a href="${url}" rel="noopener">${esc(label)}</a>`).join('; ')}</p>` : '';
+const exampleTag = item => (!FINAL && item.placeholder ? '<span class="tag tag-example">Example</span>' : '');
 
 const icon = (id, size = 20) => `<svg class="i" width="${size}" height="${size}" aria-hidden="true"><use href="#i-${id}"/></svg>`;
 
@@ -58,10 +61,11 @@ const sprite = `<svg width="0" height="0" style="position:absolute" aria-hidden=
   <symbol id="i-alert" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/><path d="M12 9v4M12 17h.01"/></g></symbol>
   <symbol id="i-lamp" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7V16h8v-1.3A7 7 0 0 0 12 2z"/></g></symbol>
   <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></symbol>
+  <symbol id="i-home" viewBox="0 0 24 24"><path d="M3 11 12 4l9 7M5 10v10h14V10M10 20v-6h4v6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
   <symbol id="i-chat" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></symbol>
 </svg>`;
 
-// Mark: a hawthorn sprig (leaf and three berries) over a roofline.
+// Placeholder mark (a sprig and berries over a roofline) until the association supplies a logo.
 const mark = (size = 40) => `<svg class="mark" width="${size}" height="${size}" viewBox="0 0 48 48" aria-hidden="true">
   <rect width="48" height="48" rx="12" fill="var(--green)"/>
   <path d="M9 33 24 20l15 13" fill="none" stroke="var(--paper)" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -112,7 +116,7 @@ function footer(r) {
     <div class="footer-grid">
       <div class="footer-about">
         <a class="brand" href="${r}">${mark(44)}<span class="brand-text"><span class="brand-name">${esc(site.estate)}</span><span class="brand-sub">Residents’ Association</span></span></a>
-        <p>The residents association for ${ph(site.estate)}, ${ph(site.area)}. Volunteer-run, non-political, and open to every resident.</p>
+        <p>The residents association for ${esc(site.estate)}, ${esc(site.area)}. Volunteer-run, non-political, and open to every resident.</p>
       </div>
       <nav aria-label="Footer">
         <h2 class="footer-h">Pages</h2>
@@ -130,7 +134,7 @@ function footer(r) {
     </div>
     <p class="footer-word" aria-hidden="true">${esc(site.estate)}</p>
     <div class="footer-base">
-      <p>© ${new Date().getFullYear()} ${esc(site.name)}</p>
+      <p>© ${new Date().getFullYear()} ${ph(site.name)}</p>
       <p>Last updated <time datetime="${site.lastUpdated}">${shortDate(site.lastUpdated)}</time></p>
     </div>
   </div>
@@ -217,6 +221,20 @@ function tree(x, y, s, fill, berries) {
   }
   return out + '</g>';
 }
+// The Wonderful Barn (1743): a tapering tower with a stair winding round the outside, between two conical dovecotes.
+function barn(cx, y, scale = 1) {
+  const f = 'var(--barn)';
+  let out = `<g class="barn" transform="translate(${cx} ${y}) scale(${scale}) translate(${-cx} ${-y})"><clipPath id="barn-clip"><path d="M${cx - 42} ${y}L${cx - 25} ${y - 196}C${cx - 22} ${y - 232} ${cx + 22} ${y - 232} ${cx + 25} ${y - 196}L${cx + 42} ${y}Z"/></clipPath>`;
+  out += `<rect x="${cx - 118}" y="${y - 16}" width="236" height="16" fill="${f}"/>`;
+  for (const dx of [-92, 92]) {
+    out += `<rect x="${cx + dx - 14}" y="${y - 46}" width="28" height="46" fill="${f}"/><path d="M${cx + dx - 18} ${y - 46}L${cx + dx} ${y - 84}L${cx + dx + 18} ${y - 46}Z" fill="${f}"/><rect x="${cx + dx - 2}" y="${y - 94}" width="4" height="12" fill="${f}"/>`;
+  }
+  out += `<path d="M${cx - 42} ${y}L${cx - 25} ${y - 196}C${cx - 22} ${y - 232} ${cx + 22} ${y - 232} ${cx + 25} ${y - 196}L${cx + 42} ${y}Z" fill="${f}"/>`;
+  out += `<g clip-path="url(#barn-clip)" stroke="var(--paper)" stroke-opacity=".55" stroke-width="3.5">`;
+  for (let k = 0; k < 6; k++) { const yy = y - 18 - k * 36; out += `<path d="M${cx - 48} ${yy}L${cx + 48} ${yy - 26}"/>`; }
+  out += `</g><rect x="${cx - 3}" y="${y - 238}" width="6" height="14" fill="${f}"/></g>`;
+  return out;
+}
 function skyline(variant) {
   if (variant === 'band') {
     return `<svg class="skyline skyline-band" viewBox="0 0 1440 120" preserveAspectRatio="xMidYMax slice" aria-hidden="true" focusable="false">
@@ -225,6 +243,7 @@ function skyline(variant) {
   }
   return `<svg class="skyline" viewBox="0 0 1440 420" preserveAspectRatio="xMidYMax slice" aria-hidden="true" focusable="false">
     <g class="layer" data-depth="0.18"><path d="M0 250C180 200 320 215 480 235S820 180 1000 205 1300 230 1440 200V420H0Z" fill="var(--hill)"/></g>
+    <g class="layer" data-depth="0.06">${barn(720, 404, 1.2)}</g>
     <g class="layer" data-depth="0.1">${houseRow({ seed: 3, y: 330, h: 70, minW: 60, maxW: 110, fill: 'var(--house-far)', win: 'var(--win-far)', winChance: 0.3 })}</g>
     <g>${houseRow({ seed: 29, y: 404, h: 110, minW: 90, maxW: 150, fill: 'var(--house-near)', win: 'var(--sun)', winChance: 0.45 })}${tree(118, 408, 1.25, 'var(--tree)', true)}${tree(1318, 408, 1.1, 'var(--tree)', true)}<rect x="0" y="400" width="1440" height="60" fill="var(--house-near)"/></g>
   </svg>`;
@@ -234,7 +253,7 @@ function skyline(variant) {
 const dateBadge = iso => `<span class="date-badge" aria-hidden="true"><span class="db-m">${fmt(iso, { month: 'short' })}</span><span class="db-d">${fmt(iso, { day: 'numeric' })}</span></span>`;
 
 const postCard = (p, r, i = 0) => `<article class="post-card" data-kind="${p.kind}" data-reveal style="--i:${i}">
-  <p class="meta"><span class="tag tag-${p.kind}">${kindLabel[p.kind]}</span><time datetime="${p.date}">${shortDate(p.date)}</time></p>
+  <p class="meta"><span class="tag tag-${p.kind}">${kindLabel[p.kind]}</span>${exampleTag(p)}<time datetime="${p.date}">${shortDate(p.date)}</time></p>
   <h3><a class="stretched" href="${r}news/${p.slug}/">${esc(p.title)}</a></h3>
   <p>${esc(p.summary)}</p>
   <span class="more" aria-hidden="true">Read more ${icon('arrow', 18)}</span>
@@ -244,7 +263,7 @@ const eventRow = (e, r, i = 0) => `<li class="event-row" data-kind="event" data-
   ${dateBadge(e.date)}
   <div class="event-body">
     <h3><a class="stretched" href="${r}events/${e.slug}/">${esc(e.title)}</a></h3>
-    <p class="event-meta"><span>${icon('clock', 16)}<time datetime="${e.date}T${e.start}">${fmt(e.date, { weekday: 'short', day: 'numeric', month: 'short' })}, ${time12(e.start)}</time></span><span>${icon('pin', 16)}${esc(e.place)}</span></p>
+    <p class="event-meta"><span>${icon('clock', 16)}<time datetime="${e.date}T${e.start}">${fmt(e.date, { weekday: 'short', day: 'numeric', month: 'short' })}, ${time12(e.start)}</time></span><span>${icon('pin', 16)}${ph(e.place)}</span></p>
   </div>
   <span class="chev" aria-hidden="true">${icon('arrow')}</span>
 </li>`;
@@ -264,15 +283,7 @@ const field = ({ id, label, type = 'text', required = true, autocomplete, hint, 
   <p class="error" id="${id}-error" hidden></p>
 </div>`;
 
-const roadSelect = (id = 'road') => `<div class="field">
-  <label for="${id}">Your road</label>
-  <select id="${id}" name="${id}" required autocomplete="address-line1">
-    <option value="">Choose your road</option>
-    ${site.roads.map(r => `<option>${esc(r)}</option>`).join('')}
-    <option>Outside the estate</option>
-  </select>
-  <p class="error" id="${id}-error" hidden></p>
-</div>`;
+const addressField = (id, required = true) => field({ id, label: 'Your address', required, autocomplete: 'street-address', hint: `House number and road in ${esc(site.estate)}, for example 12 The Drive.` });
 
 const consent = (r, id) => `<div class="field check-field">
   <input type="checkbox" id="${id}" name="consent" required>
@@ -295,9 +306,9 @@ page('', {
     return `<section class="hero">
   <div class="container hero-grid">
     <div class="hero-copy">
-      <p class="eyebrow" data-reveal>${ph(site.estate)} · ${ph(site.area)}</p>
+      <p class="eyebrow" data-reveal>${esc(site.estate)} · ${esc(site.area)}</p>
       <h1 class="display-hero" data-reveal style="--i:1">Looking after ${(() => { const w = esc(site.estate).split(' '); const last = w.pop(); return `${w.length ? `<em>${w.join(' ')}</em> ` : ''}<span class="nw"><em>${last}</em>,</span>`; })()} together.</h1>
-      <p class="lede" data-reveal style="--i:2">We’re the residents association for ${ph(site.estate)}. We represent ${ph(site.homes + ' homes')} and work with the council, local groups and each other to keep this a great place to live.</p>
+      <p class="lede" data-reveal style="--i:2">We’re the residents association for ${esc(site.estate)} in Leixlip, an estate of ${ph('up to ' + site.homes + ' homes')}. We work with the council, the developer, local groups and each other to keep this a great place to live.</p>
       <div class="hero-ctas" data-reveal style="--i:3">
         <a class="btn btn-primary btn-lg" href="${r}get-involved/#join">Join the association ${icon('arrow')}</a>
         <a class="btn btn-ghost btn-lg" href="${r}news/">See what’s on</a>
@@ -311,7 +322,7 @@ page('', {
       <ul class="notice-facts">
         <li>${icon('cal', 18)}<time datetime="${next.date}" data-ne-date>${longDate(next.date).replace(/ \d{4}$/, '')}</time></li>
         <li>${icon('clock', 18)}<span data-ne-time>${time12(next.start)} to ${time12(next.end)}</span></li>
-        <li>${icon('pin', 18)}<span data-ne-place>${esc(next.place)}</span></li>
+        <li>${icon('pin', 18)}<span data-ne-place>${ph(next.place)}</span></li>
       </ul>
       <a class="btn btn-outline btn-sm" href="${r}events/${next.slug}/event.ics" download data-ne-ics>${icon('cal', 18)} Add to calendar</a>
     </aside>
@@ -332,9 +343,17 @@ page('', {
   </div>
 </section>
 
-<section class="impact" aria-label="The association in numbers">
-  <div class="container impact-grid">
-    ${impact.map((m, i) => `<p class="stat" data-reveal style="--i:${i}"><span class="stat-num" data-count="${m.value}">${FINAL ? m.value : `<span class="ph">${m.value}</span>`}</span><span class="stat-label">${esc(m.label)}</span></p>`).join('')}
+<section class="section estate" aria-labelledby="estate-title">
+  <div class="container estate-grid">
+    <div class="estate-copy">
+      <p class="eyebrow" data-reveal>The estate</p>
+      <h2 id="estate-title" class="display-l" data-reveal style="--i:1">${esc(estateFacts.title)}</h2>
+      <div class="estate-body" data-reveal style="--i:2">${estateFacts.body.map(t => `<p>${esc(t)}</p>`).join('')}</div>
+      <div data-reveal style="--i:3">${sourceList(estateFacts.sources)}</div>
+    </div>
+    <ul class="facts" aria-label="The estate in numbers">
+      ${impact.map((m, i) => `<li class="stat" data-reveal style="--i:${i}"><span class="stat-num" data-count="${m.value}">${m.placeholder && !FINAL ? `<span class="ph">${m.value}</span>` : m.value}</span><span class="stat-label">${esc(m.label)}</span><span class="stat-source">${esc(m.source)}</span></li>`).join('')}
+    </ul>
   </div>
 </section>
 
@@ -424,7 +443,7 @@ for (const p of posts) {
     <p class="meta" data-reveal><span class="tag tag-${p.kind}">${kindLabel[p.kind]}</span><time datetime="${p.date}">${longDate(p.date)}</time></p>
     <h1 class="display-xl" data-reveal style="--i:1">${esc(p.title)}</h1>
     <p class="byline" data-reveal style="--i:2">From the ${esc(p.author)}</p>
-    <div class="prose" data-reveal style="--i:3">${p.body.map(t => `<p>${esc(t)}</p>`).join('')}</div>
+    <div class="prose" data-reveal style="--i:3">${!FINAL && p.placeholder ? '<p class="callout"><strong>Example post.</strong> Replace with a real one before launch.</p>' : ''}${p.body.map(t => `<p>${esc(t)}</p>`).join('')}${sourceList(p.sources)}</div>
   </div>
 </article>`,
   });
@@ -432,7 +451,7 @@ for (const p of posts) {
 
 // Single events + .ics
 for (const e of events) {
-  const mapUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(e.place + ', ' + site.area)}`;
+  const mapUrl = e.mapQuery ? `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(e.mapQuery)}` : null;
   page(`events/${e.slug}/`, {
     current: 'news/',
     title: e.title,
@@ -447,7 +466,7 @@ for (const e of events) {
       <ul class="notice-facts">
         <li>${icon('cal', 18)}<time datetime="${e.date}">${longDate(e.date)}</time></li>
         <li>${icon('clock', 18)}<span>${time12(e.start)} to ${time12(e.end)}</span></li>
-        <li>${icon('pin', 18)}<a href="${mapUrl}" rel="noopener">${esc(e.place)}</a></li>
+        <li>${icon('pin', 18)}${mapUrl ? `<a href="${mapUrl}" rel="noopener">${esc(e.place)}</a>` : `<span>${ph(e.place)}</span>`}</li>
       </ul>
       <a class="btn btn-primary" href="event.ics" download>${icon('cal', 18)} Add to calendar</a>
     </div>
@@ -469,7 +488,7 @@ function ics(e) {
     'BEGIN:DAYLIGHT', 'DTSTART:19700329T010000', 'RRULE:FREQ=YEARLY;BYMONTH=3;BYDAY=-1SU', 'TZOFFSETFROM:+0000', 'TZOFFSETTO:+0100', 'TZNAME:IST', 'END:DAYLIGHT',
     'END:VTIMEZONE',
     'BEGIN:VEVENT',
-    `UID:${e.slug}-${e.date}@hawthorngreen-ra.ie`,
+    `UID:${e.slug}-${e.date}@${site.shortName.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`,
     `DTSTAMP:${site.lastUpdated.replace(/-/g, '')}T000000Z`,
     `DTSTART;TZID=Europe/Dublin:${dt(e.date, e.start)}`,
     `DTEND;TZID=Europe/Dublin:${dt(e.date, e.end)}`,
@@ -488,14 +507,14 @@ page('committee/', {
   body: r => `${pageHero({
     eyebrow: 'Committee',
     title: 'Volunteers you can put a name to.',
-    intro: `The committee is made up of volunteer residents, elected at our AGM each ${ph(site.meetingMonth)}. We meet ${ph(site.meetingRhythm)} and all residents are welcome to attend.`,
+    intro: `The first committee will be elected at our first public meeting, then at an AGM each ${ph(site.meetingMonth)}. It will meet ${ph(site.meetingRhythm)}, and all residents are welcome to attend.`,
   })}
 <section class="section tight">
   <div class="container">
     <ul class="people">
       ${committee.map((c, i) => `<li class="person" data-reveal style="--i:${i}">
-        <span class="avatar" aria-hidden="true" style="--h:${(i * 47) % 360}">${esc(initials(c.name))}</span>
-        <div><p class="role">${esc(c.role)}</p><h2 class="person-name">${ph(c.name)}</h2><p>${esc(c.line)}</p></div>
+        <span class="avatar" aria-hidden="true" style="--h:${(i * 47) % 360}">${esc(initials(c.role).toUpperCase())}</span>
+        <div><p class="role">${esc(c.role)}</p><h2 class="person-name">${c.name ? ph(c.name) : ph('Name to be confirmed')}</h2><p>${esc(c.line)}</p></div>
       </li>`).join('')}
     </ul>
   </div>
@@ -512,7 +531,7 @@ page('committee/', {
       <li data-reveal style="--i:2">${icon('chat', 24)}<p><strong>Our constitution is available to all residents.</strong> Ask the Secretary for a printed copy.</p></li>
     </ul>
     <div class="meeting" data-reveal>
-      <p class="eyebrow on-dark">Next committee meeting</p>
+      <p class="eyebrow on-dark">First public meeting</p>
       <p class="display-m"><time datetime="${nextMeeting.date}">${longDate(nextMeeting.date).replace(/ \d{4}$/, '')}</time></p>
       <p>${ph(nextMeeting.time)} · ${ph(nextMeeting.venue)}. All residents welcome.</p>
     </div>
@@ -529,7 +548,7 @@ page('get-involved/', {
   body: r => `${pageHero({
     eyebrow: 'Get Involved',
     title: 'You don’t need lots of time. Even signing up helps.',
-    intro: `Every resident of ${ph(site.estate)} can be a member, whether you own or rent.`,
+    intro: `Every resident of ${esc(site.estate)} can be a member, whether you own your home, rent privately or rent from Clúid Housing.`,
   })}
 <section class="section tight">
   <div class="container">
@@ -573,10 +592,7 @@ page('get-involved/', {
         </div>
       </fieldset>
       ${field({ id: 'name', label: 'Full name', autocomplete: 'name' })}
-      <div class="field-row">
-        ${roadSelect()}
-        ${field({ id: 'house', label: 'House number', autocomplete: 'address-line2', attrs: 'inputmode="numeric"' })}
-      </div>
+      ${addressField('address')}
       ${field({ id: 'email', label: 'Email', type: 'email', autocomplete: 'email' })}
       ${field({ id: 'phone', label: 'Phone', type: 'tel', required: false, autocomplete: 'tel' })}
       <fieldset class="field">
@@ -607,7 +623,7 @@ page('documents/', {
   current: 'documents/',
   title: 'Documents',
   description: `Minutes, reports and key documents from ${site.name}.`,
-  body: r => `${pageHero({ eyebrow: 'Documents', title: 'Everything on the record.', intro: 'Minutes, reports and key documents from the association. Most recent first.' })}
+  body: r => `${pageHero({ eyebrow: 'Documents', title: 'Everything on the record.', intro: 'The association’s own papers, plus council and planning documents about the estate. Most recent first.' })}
 <section class="section tight">
   <div class="container narrow">
     <div class="search" data-doc-search hidden>
@@ -617,19 +633,19 @@ page('documents/', {
     </div>
     <p class="visually-hidden" role="status" data-doc-status></p>
     <div class="accordion docs">
-      ${documents.map((c, i) => `<details${i < 3 ? ' open' : ''} data-reveal style="--i:${i}" data-doc-cat>
+      ${documents.map((c, i) => `<details${c.items.some(it => it.file || it.url) ? ' open' : ''} data-reveal style="--i:${i}" data-doc-cat>
         <summary><span>${esc(c.category)} <span class="count">${c.items.length}</span></span>${icon('plus', 20)}</summary>
         <div class="acc-body"><ul class="doc-list">
-          ${[...c.items].sort(byDateDesc).map(it => `<li class="doc" data-doc="${esc((it.title + ' ' + c.category).toLowerCase())}">
+          ${[...c.items].sort(byDateDesc).map(it => `<li class="doc" data-doc="${esc((it.title + ' ' + c.category + ' ' + (it.source || '')).toLowerCase())}">
             ${icon('file', 22)}
-            <div><p class="doc-title">${esc(it.title)}</p><p class="doc-meta"><time datetime="${it.date}">${shortDate(it.date)}</time> · ${it.type}, ${it.size}</p></div>
-            ${it.file ? `<a class="btn btn-outline btn-sm" href="${r}${it.file}" download>${icon('down', 18)} Download<span class="visually-hidden"> ${esc(it.title)}</span></a>` : `<span class="soon">Coming soon</span>`}
+            <div><p class="doc-title">${esc(it.title)}</p><p class="doc-meta">${[it.source && esc(it.source), it.date && `<time datetime="${it.date}">${shortDate(it.date)}</time>`, it.type + (it.size ? `, ${it.size}` : '')].filter(Boolean).join(' · ')}</p></div>
+            ${it.file ? `<a class="btn btn-outline btn-sm" href="${r}${it.file}" download>${icon('down', 18)} Download<span class="visually-hidden"> ${esc(it.title)}</span></a>` : it.url ? `<a class="btn btn-outline btn-sm" href="${it.url}" rel="noopener">${icon('arrow', 18)} Open<span class="visually-hidden"> ${esc(it.title)} (opens ${esc(it.source)} website)</span></a>` : `<span class="soon">Coming soon</span>`}
           </li>`).join('')}
         </ul></div>
       </details>`).join('')}
     </div>
     <p class="doc-empty" data-doc-empty hidden>No documents match that search. Try “minutes” or “planning”.</p>
-    <p class="note">Looking for something that isn’t here? <a href="${r}contact/">Contact the Secretary</a>.</p>
+    <p class="note">Looking for something that isn’t here? <a href="${r}contact/">Contact us</a>.</p>
   </div>
 </section>`,
 });
@@ -645,7 +661,7 @@ page('contact/', {
     <form class="form" data-form="contact" novalidate action="mailto:${site.email}" method="post" enctype="text/plain" data-reveal>
       ${field({ id: 'c-name', label: 'Name', autocomplete: 'name' })}
       ${field({ id: 'c-email', label: 'Email', type: 'email', autocomplete: 'email' })}
-      ${roadSelect('c-road')}
+      ${addressField('c-address', false)}
         <div class="field">
           <label for="c-topic">Topic</label>
           <select id="c-topic" name="c-topic" required>
@@ -675,8 +691,10 @@ page('contact/', {
         <h2 class="display-s">Who to contact for what</h2>
         <ul>
           <li class="urgent">${icon('alert', 22)}<p><strong>Emergencies:</strong> call <a href="tel:999">999</a> or <a href="tel:112">112</a>.</p></li>
-          <li>${icon('lamp', 22)}<p><strong>Street lights, potholes, bins, illegal dumping:</strong> report to <a href="${site.councilUrl}" rel="noopener">${ph(site.council)}</a>.</p></li>
-          <li>${icon('shield', 22)}<p><strong>Anti-social behaviour:</strong> contact ${ph(site.garda)}.</p></li>
+          <li>${icon('lamp', 22)}<p><strong>Roads, street lights and green areas:</strong> the estate is <a href="${r}news/taking-in-charge/">not yet taken in charge</a>, so these are still the developer’s job. Report them to Glenveagh Homes (${ph('contact to be confirmed')}) and copy us.</p></li>
+          <li>${icon('file', 22)}<p><strong>Bins, illegal dumping and other council services:</strong> report to <a href="${site.councilUrl}" rel="noopener">${esc(site.council)}</a> (${ph('reporting link to be confirmed')}).</p></li>
+          <li>${icon('home', 22)}<p><strong>Clúid Housing tenants:</strong> report repairs in your home to <a href="${site.cluidUrl}" rel="noopener">Clúid Housing</a>.</p></li>
+          <li>${icon('shield', 22)}<p><strong>Anti-social behaviour:</strong> ${esc(site.garda.name)}, ${esc(site.garda.address)}, <a href="tel:${site.garda.tel}">${esc(site.garda.phone)}</a>.</p></li>
           <li>${icon('chat', 22)}<p><strong>Everything else:</strong> use the form.</p></li>
         </ul>
       </div>
@@ -701,7 +719,7 @@ page('privacy/', {
     <div class="prose">
       <p class="callout">${FINAL ? '' : '<strong>Draft for committee sign-off.</strong> '}The committee must confirm the data controller, retention period and storage before launch.</p>
       <h2>Who we are</h2>
-      <p>${esc(site.name)} is the data controller for personal data collected through this website. Contact: <a href="mailto:${site.email}">${ph(site.email)}</a>.</p>
+      <p>${ph(site.name)} is the data controller for personal data collected through this website. Contact: <a href="mailto:${site.email}">${ph(site.email)}</a>.</p>
       <h2>What we collect</h2>
       <p>When you join, volunteer or contact us, we collect your name, road and house number, email address, and, if you give it, your phone number, interests and message.</p>
       <h2>Why we use it</h2>

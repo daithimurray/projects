@@ -1,6 +1,6 @@
 BEGIN:VCALENDAR
 VERSION:2.0
-PRODID:-//Hawthorn Green RA//Website//EN
+PRODID:-//Barnhall Meadows RA//Website//EN
 CALSCALE:GREGORIAN
 METHOD:PUBLISH
 BEGIN:VTIMEZONE
@@ -21,12 +21,12 @@ TZNAME:IST
 END:DAYLIGHT
 END:VTIMEZONE
 BEGIN:VEVENT
-UID:autumn-clean-up-2026-10-17@hawthorngreen-ra.ie
+UID:autumn-clean-up-2026-10-17@barnhall-meadows-ra
 DTSTAMP:20260930T000000Z
 DTSTART;TZID=Europe/Dublin:20261017T100000
 DTEND;TZID=Europe/Dublin:20261017T120000
-SUMMARY:Community clean-up (Hawthorn Green RA)
-LOCATION:The green\, Hawthorn Green
+SUMMARY:Community clean-up (Barnhall Meadows RA)
+LOCATION:Meeting point to be confirmed
 DESCRIPTION:Gloves\, bags and pickers provided. Tea and cake after.
 END:VEVENT
 END:VCALENDAR

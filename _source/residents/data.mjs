@@ -1,40 +1,60 @@
-// Hawthorn Green Residents' Association · site content.
-// Everything estate-specific is a placeholder until the committee supplies the real detail.
-// Wrap placeholder text in ph() (see build.mjs) so it shows with a dotted underline in preview builds.
-// Source of the copy: /mnt/project-files/content-plan/site-content-plan.md
+// Barnhall Meadows residents association · site content.
+// Estate facts come from the research profile (/mnt/project-files/research/barnhall-meadows-profile.md),
+// which was built from search results only: check every fact against its source before launch.
+// Anything the committee still has to supply is a placeholder. Wrap it in ph() (see build.mjs)
+// so it shows with a dotted underline in preview builds.
+// Page map and copy: /mnt/project-files/content-plan/site-content-plan.md
 
 export const site = {
-  name: "Hawthorn Green Residents' Association",
-  shortName: 'Hawthorn Green RA',
-  estate: 'Hawthorn Green',
-  area: 'Co. Kildare',
+  // Working name only. No formal association was found online; the committee confirms the real name.
+  name: "Barnhall Meadows Residents' Association",
+  shortName: 'Barnhall Meadows RA',
+  estate: 'Barnhall Meadows',
+  area: 'Leixlip, Co. Kildare',
   council: 'Kildare County Council',
   councilUrl: 'https://kildarecoco.ie/',
-  homes: 412,
-  founded: 1998,
-  email: 'hello@hawthorngreen-ra.ie',
+  district: 'Celbridge-Leixlip Municipal District',
+  homes: 450,
+  // Placeholder address on a reserved domain until the committee sets up a shared inbox.
+  email: 'committee@example.com',
   facebook: 'https://www.facebook.com/',
   instagram: 'https://www.instagram.com/',
   replyDays: 5,
   meetingMonth: 'November',
-  meetingRhythm: 'on the first Tuesday of every month',
-  meetingVenue: 'Hawthorn Green Community Centre',
-  garda: 'your local Garda station',
-  // Update when content changes. Shown on Home so residents can see the site is looked after.
+  meetingRhythm: 'once a month',
+  meetingVenue: 'Venue to be confirmed',
+  garda: { name: 'Leixlip Garda Station', address: '19 Station Road, Leixlip', phone: '01 666 7800', tel: '+35316667800' },
+  cluidUrl: 'https://www.cluid.ie/property/barnhall-meadows/',
+  // Update when content changes. Shown in the footer so residents can see the site is looked after.
   lastUpdated: '2026-09-30',
-  roads: ['Hawthorn Avenue', 'Hawthorn Close', 'Blackthorn Drive', 'Elder Grove', 'Rowan Court', 'The Green'],
 };
 
+// Facts about the estate, each with a source. Shown on Home.
 export const impact = [
-  { value: 412, label: 'homes represented' },
-  { value: 9, label: 'events this year' },
-  { value: 23, label: 'issues resolved with the council' },
+  { value: 450, label: 'homes in the estate when complete', source: 'An Bord Pleanála, ABP-300606 (2018)', placeholder: true },
+  { value: 56, label: 'cost-rental homes run by Clúid Housing', source: 'Clúid Housing, 2021' },
+  { value: 1743, label: 'the year the Wonderful Barn was built', source: 'The Wonderful Barn, Wikipedia' },
 ];
+
+export const estateFacts = {
+  title: 'Living beside the Wonderful Barn.',
+  body: [
+    'Barnhall Meadows was built by Glenveagh Homes on the former Wonderful Barn lands, off the Celbridge Road (R404). Planning permission for up to 450 homes, a crèche, open space and a new roundabout on the R404 was granted in April 2018.',
+    'The estate takes its name from Barnhall House and the Wonderful Barn beside it. Katherine Conolly of Castletown built the barn in 1743, probably as famine relief work. Its corkscrew stair winds around the outside, between two conical dovecotes.',
+    'Owners, private renters and Clúid Housing tenants all live here. The association is for all of them.',
+  ],
+  sources: [
+    ['An Bord Pleanála case ABP-300606', 'https://www.pleanala.ie/en-ie/case/300606'],
+    ['Glenveagh: Barnhall Meadows', 'https://glenveagh.ie/developments/barnhall-meadows'],
+    ['Clúid Housing: Barnhall Meadows', 'https://www.cluid.ie/property/barnhall-meadows/'],
+    ['The Wonderful Barn (Wikipedia)', 'https://en.wikipedia.org/wiki/The_Wonderful_Barn'],
+  ],
+};
 
 export const whatWeDo = [
   {
     title: 'A voice with the council.',
-    body: 'We raise issues on roads, lighting, green spaces and planning with the council and local reps.',
+    body: 'We raise roads, lighting, green spaces and planning with Kildare County Council, local reps and the developer. First job: getting the estate taken in charge.',
   },
   {
     title: 'Events that bring people together.',
@@ -46,32 +66,57 @@ export const whatWeDo = [
   },
 ];
 
-// kind: news | council
+// kind: news | council. sources: [label, url] pairs shown under the post.
+// Council posts use researched facts. News posts are placeholders until the committee writes real ones.
 export const posts = [
   {
-    slug: 'agm-notice-2026',
-    kind: 'news',
-    title: 'AGM notice',
-    date: '2026-09-22',
-    author: 'Secretary',
-    summary: 'Our AGM takes place on Tuesday 17 November at the Community Centre. All residents welcome. Nominations for committee close on 3 November.',
+    slug: 'taking-in-charge',
+    kind: 'council',
+    title: 'Taking in charge: where things stand',
+    date: '2026-09-28',
+    author: 'Committee',
+    summary: 'The council has not yet taken the estate in charge. Until it does, the developer is responsible for roads, lighting and open space.',
     body: [
-      'Our Annual General Meeting takes place on Tuesday 17 November at 7.30pm in Hawthorn Green Community Centre. Every resident is welcome, whether you are a member or not.',
-      'We will present the year in review, the financial statement, and elect the committee for the coming year. Members can vote. You can join on the night.',
-      'Nominations for committee close on Tuesday 3 November. Send the name of the person you are nominating, with their agreement, to the Secretary.',
+      '“Taking in charge” is when the council takes over an estate’s roads, footpaths, street lights, open spaces and surface water drains from the developer. After that, the council maintains them.',
+      'Kildare County Council ran a public consultation on taking Barnhall Meadows in charge from 19 November to 18 December 2024.',
+      'The most recent council update we have found, from September 2025, said the estate was still not taken in charge.',
+      'Until the handover happens, report problems with roads, lighting and green areas to the developer, and copy us so we can keep a record. We are asking the council for the current position and will post it here.',
+    ],
+    sources: [
+      ['Kildare County Council consultation, Nov to Dec 2024', 'https://consult.kildarecoco.ie/en/consultation/taking-charge-roads-and-services-barnhall-meadows-leixlip'],
+      ['Kildare Now, September 2025', 'https://www.kildarenow.com/news/councillor-asks-for-update-on-landscaping-works-at-kildares-wonderful-barn-9142973'],
     ],
   },
   {
-    slug: 'street-lighting-update',
+    slug: 'wonderful-barn-park',
     kind: 'council',
-    title: 'Update on the street lighting on Elder Grove',
-    date: '2026-09-15',
-    author: 'Chairperson',
-    summary: 'We met with the council on 10 September. Here is what was agreed and what happens next.',
+    title: 'Plans for a public park at the Wonderful Barn',
+    date: '2026-09-21',
+    author: 'Committee',
+    summary: 'The council’s plan to turn the Wonderful Barn lands into a public park was approved in October 2024. It includes a walking and cycling bridge over the M4.',
     body: [
-      'Four lights on Elder Grove have been out since June. We met the council’s public lighting team on 10 September with photos and a map residents helped us put together.',
-      'The council agreed to replace the four heads with LED units. Works are scheduled for the week of 12 October. There may be short traffic stops on the day.',
-      'If a light is still out after that week, report it to the council directly and let us know so we can follow up.',
+      'Kildare County Council plans to turn about 19.8 hectares around the Wonderful Barn into a public park and heritage attraction. The plan covers the barn, Barnhall House, the two dovecotes, the walled garden, the courtyards and the parkland between the M4, the Celbridge Road and the estate.',
+      'Councillors in the Celbridge-Leixlip Municipal District approved the plan (Part 8 scheme P82024.10) on 18 October 2024.',
+      'It includes a walking and cycling bridge over the M4 to the Castletown Estate in Celbridge. The bridge’s final design needs approval from Transport Infrastructure Ireland.',
+      'We have not seen a start date for the works. We will share one when the council publishes it.',
+    ],
+    sources: [
+      ['Kildare County Council: The Wonderful Barn', 'https://kildarecoco.ie/AllServices/PublicRealm/TheWonderfulBarn/'],
+      ['IrishCycle.com, December 2024', 'https://irishcycle.com/2024/12/02/cycle-paths-planned-to-connect-the-wonderful-barn-in-lexilip-to-castletown-estate-in-celbridge-via-new-bridge-over-the-m4/'],
+    ],
+  },
+  {
+    slug: 'first-public-meeting',
+    kind: 'news',
+    title: 'Help set up a residents association',
+    date: '2026-09-14',
+    author: 'Organisers',
+    placeholder: true,
+    summary: 'Our first public meeting is on Tuesday 17 November. Come along, have your say, and put your name forward for the committee.',
+    body: [
+      'Barnhall Meadows doesn’t have a formal residents association yet. We want to change that, so the estate has one voice with the council and the developer.',
+      'Our first public meeting is on Tuesday 17 November at 7.30pm. Every resident is welcome, whether you own your home, rent privately or rent from Clúid Housing.',
+      'We will agree a constitution, elect a committee, and choose our first priorities. Taking the estate in charge is top of the list.',
     ],
   },
   {
@@ -79,41 +124,17 @@ export const posts = [
     kind: 'news',
     title: 'Community clean-up: Saturday 17 October',
     date: '2026-09-08',
-    author: 'PRO',
-    summary: 'Gloves, bags and pickers provided. Meet at the green at 10am. Tea and cake after.',
+    author: 'Organisers',
+    placeholder: true,
+    summary: 'Gloves, bags and pickers provided. Tea and cake after.',
     body: [
-      'Our autumn clean-up is on Saturday 17 October. Meet at the green at 10am. We will split into small teams, one for each road, and finish by midday.',
-      'Gloves, bags and litter pickers are provided, thanks to the council’s Community Clean-Up scheme. Children are very welcome with an adult.',
-      'Tea and cake afterwards in the Community Centre.',
-    ],
-  },
-  {
-    slug: 'resurfacing-hawthorn-avenue',
-    kind: 'council',
-    title: 'Resurfacing works on Hawthorn Avenue',
-    date: '2026-08-27',
-    author: 'Council notice',
-    summary: 'The council will resurface Hawthorn Avenue from 5 October. Parking restrictions apply for three days.',
-    body: [
-      'The council has confirmed resurfacing works on Hawthorn Avenue starting Monday 5 October, weather permitting.',
-      'Please do not park on the road between 7am and 6pm from 5 to 7 October. Access to driveways will be kept open except for short periods.',
-      'Questions about the works go to the council’s roads section. We are passing on any issues residents raise with us.',
-    ],
-  },
-  {
-    slug: 'summer-fun-day-thank-you',
-    kind: 'news',
-    title: 'Thank you for the summer fun day',
-    date: '2026-08-10',
-    author: 'Chairperson',
-    summary: 'Over 300 people came to the green. Here is where the money raised is going.',
-    body: [
-      'Over 300 people came along to the summer fun day on the green. Thank you to the 38 volunteers who set up, ran stalls and cleared away.',
-      'We raised €1,840. It goes towards new planters at the estate entrance and the Christmas lights.',
+      'Our autumn clean-up is on Saturday 17 October from 10am. We will split into small teams, one for each road, and finish by midday.',
+      'Gloves, bags and litter pickers are provided. Children are very welcome with an adult.',
     ],
   },
 ];
 
+// All events are placeholders until the committee confirms dates and places.
 export const events = [
   {
     slug: 'autumn-clean-up',
@@ -121,13 +142,13 @@ export const events = [
     date: '2026-10-17',
     start: '10:00',
     end: '12:00',
-    place: 'The green, Hawthorn Green',
+    place: 'Meeting point to be confirmed',
     summary: 'Gloves, bags and pickers provided. Tea and cake after.',
     body: [
-      'Meet at the green at 10am. We split into small teams, one per road, and finish by midday.',
+      'We split into small teams, one per road, and finish by midday.',
       'Gloves, bags and litter pickers are provided. Children are welcome with an adult.',
     ],
-    contact: 'PRO',
+    contact: 'organisers',
   },
   {
     slug: 'halloween-trail',
@@ -135,88 +156,61 @@ export const events = [
     date: '2026-10-31',
     start: '17:30',
     end: '19:30',
-    place: 'Starts at Rowan Court',
+    place: 'Starting point to be confirmed',
     summary: 'A lantern-lit trail around the estate for families. Houses taking part display a pumpkin.',
     body: [
       'A lantern-lit trail around the estate for families. Houses taking part will display a pumpkin sticker in the window.',
       'Want your house on the trail? Let us know by 24 October and we will drop a sticker in.',
     ],
-    contact: 'Secretary',
+    contact: 'organisers',
   },
   {
-    slug: 'agm-2026',
-    title: 'Annual General Meeting',
+    slug: 'first-public-meeting',
+    title: 'First public meeting',
     date: '2026-11-17',
     start: '19:30',
     end: '21:00',
-    place: 'Hawthorn Green Community Centre',
-    summary: 'Year in review, accounts and committee elections. All residents welcome.',
+    place: 'Venue to be confirmed',
+    summary: 'Set up the association, agree a constitution and elect a committee. All residents welcome.',
     body: [
-      'The year in review, the financial statement, and the election of the committee for the coming year.',
-      'All residents are welcome. Members can vote, and you can join on the night.',
+      'We will agree a constitution, elect a committee and choose our first priorities.',
+      'Every resident is welcome, whether you own your home, rent privately or rent from Clúid Housing.',
     ],
-    contact: 'Secretary',
-  },
-  {
-    slug: 'christmas-lights',
-    title: 'Christmas lights switch-on',
-    date: '2026-12-05',
-    start: '17:00',
-    end: '18:30',
-    place: 'The green, Hawthorn Green',
-    summary: 'Carols, hot chocolate and the big switch-on at 5.30pm.',
-    body: [
-      'Carols from the local school choir, hot chocolate, and the switch-on at 5.30pm.',
-      'We need volunteers to help set up from 3pm. Get in touch if you can give an hour.',
-    ],
-    contact: 'PRO',
+    contact: 'organisers',
   },
 ];
 
+// Names stay placeholders until each person gives written consent to be published.
 export const committee = [
-  { name: 'Máire Kavanagh', role: 'Chairperson', line: 'Living in Hawthorn Green since 2004. Leads meetings and council liaison.' },
-  { name: 'Tom Byrne', role: 'Secretary', line: 'Keeps minutes and handles correspondence.' },
-  { name: 'Aoife Dunne', role: 'Treasurer', line: 'Manages accounts and membership.' },
-  { name: 'Ciarán Walsh', role: 'PRO', line: 'Runs the newsletter, website and social channels.' },
-  { name: 'Niamh O’Reilly', role: 'Road rep', line: 'Blackthorn Drive and Rowan Court.' },
-  { name: 'Pádraig Flood', role: 'Road rep', line: 'Elder Grove and Hawthorn Close.' },
+  { role: 'Chairperson', line: 'Leads meetings and liaison with the council and the developer.' },
+  { role: 'Secretary', line: 'Keeps minutes and handles correspondence.' },
+  { role: 'Treasurer', line: 'Manages accounts and membership.' },
+  { role: 'PRO', line: 'Runs the newsletter, website and social channels.' },
+  { role: 'Road rep', line: 'The link between each road and the committee. Roads to be confirmed.' },
+  { role: 'Clúid tenants’ rep', line: 'Raises issues for cost-rental tenants.' },
 ];
 
-export const nextMeeting = { date: '2026-10-06', time: '8pm', venue: 'Hawthorn Green Community Centre' };
+export const nextMeeting = { date: '2026-11-17', time: '7.30pm', venue: 'Venue to be confirmed' };
 
-// file: null shows "Coming soon" instead of a broken download link.
+// file: a PDF under residents/docs/. url: an outside source. Neither shows "Coming soon".
 export const documents = [
-  { category: 'Constitution', items: [{ title: 'Constitution of the association', date: '2019-11-12', type: 'PDF', size: '180 KB', file: null }] },
+  { category: 'Constitution', items: [{ title: 'Constitution of the association', type: 'PDF', file: null }] },
+  { category: 'Meeting minutes', items: [{ title: 'Minutes of the first public meeting', type: 'PDF', file: null }] },
+  { category: 'Financial statements', items: [{ title: 'First financial statement', type: 'PDF', file: null }] },
   {
-    category: 'AGM minutes and reports',
+    category: 'Council and planning',
     items: [
-      { title: 'AGM minutes 2025', date: '2025-11-18', type: 'PDF', size: '240 KB', file: null },
-      { title: 'Chairperson’s report 2025', date: '2025-11-18', type: 'PDF', size: '310 KB', file: null },
+      { title: 'Taking in charge consultation, Barnhall Meadows', source: 'Kildare County Council', date: '2024-11-19', type: 'Web page', url: 'https://consult.kildarecoco.ie/en/consultation/taking-charge-roads-and-services-barnhall-meadows-leixlip' },
+      { title: 'Wonderful Barn redevelopment, Part 8 summary', source: 'Kildare County Council', date: '2024-10-18', type: 'PDF', url: 'https://kildarecoco.ie/AllServices/Planning/Part8Schemes/StrategicProjectsandPublicRealm/P8202410Part8-ProposedRedevelopmentofTheWonderfulBarnLeixlipCoKildare/2.%20Part%208%20Summary%20Sheet%20%20accessible.pdf' },
+      { title: 'Planning permission for Barnhall Meadows, ABP-300606', source: 'An Bord Pleanála', date: '2018-04-13', type: 'PDF', url: 'https://www.pleanala.ie/anbordpleanala/media/abp/cases/orders/300/d300606.pdf' },
     ],
-  },
-  {
-    category: 'Committee meeting minutes',
-    items: [
-      { title: 'Minutes, September 2026', date: '2026-09-01', type: 'PDF', size: '120 KB', file: null },
-      { title: 'Minutes, August 2026', date: '2026-08-04', type: 'PDF', size: '110 KB', file: null },
-      { title: 'Minutes, July 2026', date: '2026-07-07', type: 'PDF', size: '115 KB', file: null },
-    ],
-  },
-  { category: 'Financial statements', items: [{ title: 'Financial statement 2025', date: '2025-11-10', type: 'PDF', size: '95 KB', file: null }] },
-  {
-    category: 'Council correspondence and submissions',
-    items: [{ title: 'Street lighting submission, Elder Grove', date: '2026-07-20', type: 'PDF', size: '1.2 MB', file: null }],
-  },
-  {
-    category: 'Planning submissions and observations',
-    items: [{ title: 'Observation on application 26/1234', date: '2026-03-14', type: 'PDF', size: '420 KB', file: null }],
   },
   {
     category: 'Local guides',
     items: [
-      { title: 'Bin collection schedule', date: '2026-01-05', type: 'PDF', size: '60 KB', file: null },
-      { title: 'Useful numbers', date: '2026-01-05', type: 'PDF', size: '40 KB', file: null },
-      { title: 'Estate map', date: '2024-05-01', type: 'PDF', size: '2.1 MB', file: null },
+      { title: 'Bin collection schedule', type: 'PDF', file: null },
+      { title: 'Useful numbers', type: 'PDF', file: null },
+      { title: 'Estate map', type: 'PDF', file: null },
     ],
   },
 ];
@@ -224,6 +218,6 @@ export const documents = [
 export const faqs = [
   { q: 'Does it cost anything?', a: 'No. Membership is free for every household.' },
   { q: 'Do I have to attend meetings?', a: 'No. Attend when you can. Members get the minutes either way.' },
-  { q: 'I rent. Can I join?', a: 'Yes. Every resident is welcome.' },
+  { q: 'I rent. Can I join?', a: 'Yes. Every resident is welcome, whether you rent privately or from Clúid Housing.' },
   { q: 'How is my data used?', a: 'Only to contact you about association business. See our privacy notice.' },
 ];

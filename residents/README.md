@@ -1,4 +1,4 @@
-# Hawthorn Green Residents' Association: website
+# Barnhall Meadows residents association: website
 
 Built output. Do not edit files here: edit `_source/residents/` and run `npm run build` there.
 

@@ -1,6 +1,6 @@
 BEGIN:VCALENDAR
 VERSION:2.0
-PRODID:-//Hawthorn Green RA//Website//EN
+PRODID:-//Barnhall Meadows RA//Website//EN
 CALSCALE:GREGORIAN
 METHOD:PUBLISH
 BEGIN:VTIMEZONE
@@ -21,12 +21,12 @@ TZNAME:IST
 END:DAYLIGHT
 END:VTIMEZONE
 BEGIN:VEVENT
-UID:halloween-trail-2026-10-31@hawthorngreen-ra.ie
+UID:halloween-trail-2026-10-31@barnhall-meadows-ra
 DTSTAMP:20260930T000000Z
 DTSTART;TZID=Europe/Dublin:20261031T173000
 DTEND;TZID=Europe/Dublin:20261031T193000
-SUMMARY:Halloween trail (Hawthorn Green RA)
-LOCATION:Starts at Rowan Court
+SUMMARY:Halloween trail (Barnhall Meadows RA)
+LOCATION:Starting point to be confirmed
 DESCRIPTION:A lantern-lit trail around the estate for families. Houses taking part display a pumpkin.
 END:VEVENT
 END:VCALENDAR

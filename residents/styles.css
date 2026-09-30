@@ -1,4 +1,4 @@
-/* Hawthorn Green Residents' Association · styles. Mobile first. */
+/* Barnhall Meadows residents association · styles. Mobile first. */
 
 @font-face { font-family: 'Fraunces'; src: url(fonts/fraunces-latin-opsz-normal.woff2) format('woff2'); font-weight: 100 900; font-style: normal; font-display: swap; }
 @font-face { font-family: 'Fraunces'; src: url(fonts/fraunces-latin-opsz-italic.woff2) format('woff2'); font-weight: 100 900; font-style: italic; font-display: swap; }
@@ -29,6 +29,7 @@
   --win-far: #F7EBC4;
   --house-near: var(--green);
   --tree: #3A7A5A;
+  --barn: #8FAA96;
 
   --serif: 'Fraunces', 'Iowan Old Style', Georgia, serif;
   --sans: 'Public Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
@@ -134,6 +135,7 @@ main:focus { outline: none; }
 .bar-actions { display: flex; align-items: center; gap: 6px; }
 @media (min-width: 1100px) { .nav { display: flex; } .menu-btn { display: none; } }
 @media (max-width: 420px) { .brand-sub { display: none; } .bar { gap: 8px; } .bar-actions { gap: 2px; } .bar-actions .btn { padding-inline: 14px; } }
+@media (max-width: 340px) { .brand-name { font-size: .88rem !important; } }
 @media (max-width: 370px) { .brand { gap: 8px; } .brand .mark { width: 34px; height: 34px; } .brand-name { font-size: .95rem; } .menu-btn { width: 44px; height: 44px; } .bar-actions .btn { padding-inline: 12px; font-size: .875rem; } }
 
 .progress { position: absolute; left: 0; right: 0; bottom: -1px; height: 3px; pointer-events: none; }
@@ -204,6 +206,22 @@ main:focus { outline: none; }
   .what-list li, .what-list li:last-child { grid-template-columns: 1fr; border-bottom: 0; padding-top: 28px; }
   .what-num { grid-row: auto; font-size: 3.5rem; line-height: 1; color: transparent; -webkit-text-stroke: 1px var(--sun); margin-bottom: 18px; }
 }
+
+/* ---------- the estate ---------- */
+.estate { background: var(--paper-2); }
+.estate-grid { display: grid; gap: 48px; align-items: start; }
+.estate-copy { min-width: 0; }
+.estate-body { margin-top: 24px; max-width: 36em; color: var(--ink-2); }
+.sources { margin-top: 24px; font-size: .875rem; color: var(--ink-2); max-width: 44em; }
+.sources span { font-weight: 700; }
+.sources a { color: var(--green); }
+.prose .sources { margin-top: 2em; padding-top: 1em; border-top: 1px solid var(--line); font-size: .9375rem; }
+.facts { display: grid; gap: 0; }
+.facts .stat { padding: 24px 0; border-top: 1px solid var(--line-strong); }
+.facts .stat:last-child { border-bottom: 1px solid var(--line-strong); }
+.stat-source { font-size: .8125rem; color: var(--ink-2); }
+@media (min-width: 960px) { .estate-grid { grid-template-columns: 1.25fr .75fr; gap: 80px; } }
+.tag-example { background: var(--sun); color: var(--ink); }
 
 /* ---------- impact ---------- */
 .impact { background: var(--paper-2); padding-block: clamp(48px, 7vw, 88px); }
@@ -434,7 +452,8 @@ input:focus, select:focus, textarea:focus { outline: none; border-color: var(--g
 .site-footer ul a { display: inline-flex; min-height: 40px; align-items: center; color: var(--on-dark); text-decoration: none; }
 .site-footer ul a:hover { text-decoration: underline; }
 .site-footer :focus-visible { outline-color: var(--sun); }
-.footer-word { margin: 48px 0 0; font-size: clamp(3.5rem, 13vw, 12rem); line-height: .8; font-weight: 600; letter-spacing: -.05em; color: transparent; -webkit-text-stroke: 1px rgba(246, 241, 231, .22); white-space: nowrap; transform: translateY(var(--fy, 20%)); transition: transform .1s linear; }
+/* Sized so the estate name fits the container (about 6.7em wide in Fraunces). */
+.footer-word { margin: 48px 0 0; font-size: min(11.5rem, calc((min(100vw, 1240px) - 2 * var(--gutter)) / 6.9)); line-height: .8; font-weight: 600; letter-spacing: -.05em; color: transparent; -webkit-text-stroke: 1px rgba(246, 241, 231, .22); white-space: nowrap; transform: translateY(var(--fy, 20%)); transition: transform .1s linear; }
 .footer-base { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px 24px; padding: 20px 0 28px; border-top: 1px solid rgba(246, 241, 231, .12); font-size: .875rem; position: relative; background: var(--ink); }
 
 /* ---------- scroll reveal ---------- */

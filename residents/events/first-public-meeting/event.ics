@@ -1,6 +1,6 @@
 BEGIN:VCALENDAR
 VERSION:2.0
-PRODID:-//Hawthorn Green RA//Website//EN
+PRODID:-//Barnhall Meadows RA//Website//EN
 CALSCALE:GREGORIAN
 METHOD:PUBLISH
 BEGIN:VTIMEZONE
@@ -21,12 +21,12 @@ TZNAME:IST
 END:DAYLIGHT
 END:VTIMEZONE
 BEGIN:VEVENT
-UID:agm-2026-2026-11-17@hawthorngreen-ra.ie
+UID:first-public-meeting-2026-11-17@barnhall-meadows-ra
 DTSTAMP:20260930T000000Z
 DTSTART;TZID=Europe/Dublin:20261117T193000
 DTEND;TZID=Europe/Dublin:20261117T210000
-SUMMARY:Annual General Meeting (Hawthorn Green RA)
-LOCATION:Hawthorn Green Community Centre
-DESCRIPTION:Year in review\, accounts and committee elections. All residents welcome.
+SUMMARY:First public meeting (Barnhall Meadows RA)
+LOCATION:Venue to be confirmed
+DESCRIPTION:Set up the association\, agree a constitution and elect a committee. All residents welcome.
 END:VEVENT
 END:VCALENDAR
