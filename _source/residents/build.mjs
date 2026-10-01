@@ -306,12 +306,14 @@ function skyline(variant) {
   }
   const far = { y: 330, unit: [24, 32], storey: 26, fill: 'var(--house-far)', win: 'var(--win-far)', winChance: 0.3 };
   const near = { y: 404, unit: [44, 54], storey: 44, fill: 'var(--house-near)', win: 'var(--ochre-light)', winChance: 0.45, apartments: [] };
-  return `<svg class="skyline" viewBox="0 0 1440 420" preserveAspectRatio="xMidYMax slice" aria-hidden="true" focusable="false">
-    <g class="layer" data-depth="0.18"><path d="M0 250C180 200 320 215 480 235S820 180 1000 205 1300 230 1440 200V420H0Z" fill="var(--hill)"/></g>
-    <g class="layer" data-depth="0.1">${houseRow({ seed: 3, from: -20, to: 590, ...far })}${houseRow({ seed: 7, from: 860, ...far })}</g>
+  // The scene runs well past both screen edges, so wide windows show more houses instead of a bigger Barn.
+  // The Barn's size then depends only on the skyline's height, which keeps it clear of the hero text (styles.css).
+  return `<svg class="skyline" viewBox="-840 0 3120 420" preserveAspectRatio="xMidYMax slice" aria-hidden="true" focusable="false">
+    <g class="layer" data-depth="0.18"><path d="M-840 225C-620 250-260 195 0 250C180 200 320 215 480 235S820 180 1000 205 1300 230 1440 200C1700 165 2000 240 2280 215V420H-840Z" fill="var(--hill)"/></g>
+    <g class="layer" data-depth="0.1">${houseRow({ seed: 3, from: -860, to: 590, ...far })}${houseRow({ seed: 7, from: 860, to: 2300, width: 2300, ...far })}</g>
     <g>${barn(720, 404, 1.38)}${tree(505, 406, 0.9, 'var(--tree)')}${tree(948, 406, 0.75, 'var(--tree)')}
-      ${houseRow({ seed: 29, from: -20, to: 462, ...near })}${houseRow({ seed: 41, from: 1000, ...near, apartments: [0] })}
-      ${sapling(150, 406, 1, 'var(--tree)')}${sapling(1290, 406, 1.1, 'var(--tree)')}<rect x="0" y="400" width="1440" height="60" fill="var(--house-near)"/></g>
+      ${houseRow({ seed: 29, from: -860, to: 462, ...near })}${houseRow({ seed: 41, from: 1000, to: 2300, width: 2300, ...near, apartments: [0] })}
+      ${sapling(-420, 406, 1, 'var(--tree)')}${sapling(150, 406, 1, 'var(--tree)')}${sapling(1290, 406, 1.1, 'var(--tree)')}${sapling(1880, 406, 1, 'var(--tree)')}<rect x="-840" y="400" width="3120" height="60" fill="var(--house-near)"/></g>
   </svg>`;
 }
 

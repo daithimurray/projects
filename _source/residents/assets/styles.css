@@ -182,7 +182,7 @@ main:focus { outline: none; }
 .page-hero .lede { margin-top: 24px; }
 
 /* ---------- home hero ---------- */
-.hero { position: relative; padding-top: clamp(40px, 7vw, 96px); background: radial-gradient(1200px 520px at 80% 0%, var(--ochre-tint), transparent 65%), var(--limestone); isolation: isolate; }
+.hero { position: relative; padding-top: clamp(36px, 5.5vw, 80px); background: radial-gradient(1200px 520px at 80% 0%, var(--ochre-tint), transparent 65%), var(--limestone); isolation: isolate; }
 .hero-grid { display: grid; gap: 48px; align-items: end; position: relative; z-index: 2; }
 .hero-copy .lede { margin-top: 28px; }
 .hero-ctas { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 36px; }
@@ -207,7 +207,13 @@ main:focus { outline: none; }
 .notice-facts li { display: flex; gap: 10px; align-items: center; }
 .notice-facts .i { color: var(--green-2); }
 
-.skyline { width: 100%; height: clamp(190px, 26vw, 380px); margin-top: clamp(-150px, -8vw, -12px); position: relative; z-index: 1; }
+/* The Barn's top sits 24% of the way down the skyline (y 100 of 420). Pulling the skyline up by 20% of its
+   height tucks only empty sky under the hero, so the Barn always starts just below the buttons and the card.
+   The height also follows the window height, so the whole Barn fits on short laptop screens. */
+.hero { --sky-h: clamp(190px, min(26vw, 36svh), 380px); }
+/* Past about 2800px the scene runs out of width and the Barn grows, so the skyline stops tucking under. */
+@media (min-width: 2700px) { .hero { --tuck: 0; } }
+.skyline { width: 100%; height: var(--sky-h); margin-top: calc(var(--sky-h) * var(--tuck, -0.2)); position: relative; z-index: 1; }
 .skyline .layer { will-change: transform; }
 .win { opacity: .22; }
 .win.lit { animation: light-on .9s var(--d, 0s) both steps(1, end), glow 6s calc(var(--d, 0s) + 2s) infinite ease-in-out; }
