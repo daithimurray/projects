@@ -2,8 +2,8 @@
 
 Built output. Do not edit files here: edit `_source/residents/` and run `npm run build` there.
 
-Six pages plus a privacy notice, in plain HTML, CSS and JS. No framework, no third-party requests,
-no cookies. Every path is relative, so the folder can be served from any URL (with trailing slashes).
+Six pages plus a privacy notice, in plain HTML, CSS and JS. It uses no framework, no third-party requests
+and no cookies. Every path is relative, so the folder can be served from any URL (with trailing slashes).
 
 - `index.html` Home · `news/` News & Events (plus one page per post) · `events/<slug>/` one page per event, each with an `event.ics`
 - `committee/` · `get-involved/` · `documents/` · `contact/` · `privacy/`

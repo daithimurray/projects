@@ -11,7 +11,21 @@ npm run serve           # then open http://localhost:4321/residents/
 ```
 
 The build has no dependencies (Node 18+). It writes every page, one `.ics` per event, copies the
-assets, and fails if any internal link or anchor does not resolve.
+assets, and fails if any internal link or anchor does not resolve. It also fails on house style problems in the copy:
+any em or en dash, a hyphen used as a dash, or a banned stock phrase (`bannedPhrases` in `build.mjs`).
+
+## Writing rules
+
+David's rules for all site copy, agreed on 1 October 2026. The build catches dashes and fixed phrases. The rest need a read-through.
+
+- No em or en dashes. Use commas, full stops, brackets, or "to" for ranges.
+- No binary contrasts ("It's not X. It's Y.", "not just X but Y", "more than just").
+- No throat-clearing openers, faux-insight setups or colon reveals. Colons in labels, times and lists are fine.
+- No dramatic fragments or punchline endings. Short headlines and button labels can stay short.
+- No superficial analysis ("highlighting", "reflecting", "showcasing") and no puffery ("a testament to", "pivotal").
+- Name the source or cut the claim. No "experts agree" or "studies show".
+- One name per thing: "residents" (never "homeowners"), "taken in charge" (not "handover"), "green areas",
+  "street lights", "the monthly update", "the developer" after the first mention of Glenveagh Homes.
 
 - `data.mjs`: all content. Site facts, posts, events, committee, documents, FAQs.
 - `build.mjs`: page templates and the link check.

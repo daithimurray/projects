@@ -210,7 +210,7 @@ function showError(el) {
   else el.removeAttribute('aria-describedby');
 }
 
-const subjects = { join: 'Membership', contact: 'Message from the website', subscribe: 'Subscribe to updates' };
+const subjects = { join: 'Membership', contact: 'Message from the website', subscribe: 'Subscribe to the monthly update' };
 
 $$('form[data-form]').forEach(form => {
   const fields = $$('input, select, textarea', form).filter(el => el.id && el.willValidate);

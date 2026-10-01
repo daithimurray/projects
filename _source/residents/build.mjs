@@ -107,7 +107,7 @@ const joinBand = r => `<section class="join-band" aria-labelledby="join-band-tit
   <div class="container join-inner" data-reveal>
     <div>
       <p class="eyebrow on-dark">Membership is free</p>
-      <h2 id="join-band-title" class="display-m">It takes two minutes to join. The more of us, the louder our voice.</h2>
+      <h2 id="join-band-title" class="display-m">Every member gives us more weight with the council.</h2>
     </div>
     <a class="btn btn-ochre btn-lg" href="${r}get-involved/#join">Join the association ${icon('arrow')}</a>
   </div>
@@ -120,7 +120,7 @@ function footer(r) {
     <div class="footer-grid">
       <div class="footer-about">
         <a class="brand" href="${r}">${mark(44)}<span class="brand-text"><span class="brand-name">${esc(site.estate)}</span><span class="brand-sub">Residents’ Association</span></span></a>
-        <p>The residents association for ${esc(site.estate)}, ${esc(site.area)}. Volunteer-run, non-political, and open to every resident.</p>
+        <p>The residents association for ${esc(site.estate)}, ${esc(site.area)}. It is volunteer-run, non-political and open to every resident.</p>
       </div>
       <nav aria-label="Footer">
         <h2 class="footer-h">Pages</h2>
@@ -355,7 +355,7 @@ function stairTracker(level = 'h3') {
   const steps = takingInCharge.steps;
   const done = steps.filter(st => st.status === 'done').length;
   return `<div class="stair" data-reveal style="--steps:${steps.length}">
-  <p class="stair-status"><strong>${done} of ${steps.length} steps done.</strong> Waiting on ${esc(takingInCharge.waitingOn)}. Latest update we have found: ${esc(takingInCharge.latest)}.</p>
+  <p class="stair-status"><strong>${done} of ${steps.length} steps done.</strong> We are waiting on ${esc(takingInCharge.waitingOn)}. The latest update we have found is from ${esc(takingInCharge.latest)}.</p>
   <ol class="stair-steps">
     ${steps.map((st, n) => `<li class="stair-step is-${st.status}" style="--n:${n}"${st.status === 'now' ? ' aria-current="step"' : ''}>
       <span class="stair-dot" aria-hidden="true">${st.status === 'done' ? icon('check', 18) : n + 1}</span>
@@ -418,7 +418,7 @@ page('', {
   <div class="container hero-grid">
     <div class="hero-copy">
       <h1 class="display-hero" data-reveal>Looking after ${(() => { const w = esc(site.estate).split(' '); const last = w.pop(); return `${w.length ? `<span class="estate-name">${w.join(' ')}</span> ` : ''}<span class="nw"><span class="estate-name">${last}</span>,</span>`; })()} together.</h1>
-      <p class="lede" data-reveal style="--i:1">We’re the residents association for ${esc(site.estate)} in Leixlip, an estate of ${ph('up to ' + site.homes + ' homes')}. We work with the council, the developer, local groups and each other to keep this a great place to live.</p>
+      <p class="lede" data-reveal style="--i:1">We’re the residents association for ${esc(site.estate)} in Leixlip, an estate of ${ph('up to ' + site.homes + ' homes')}. We raise estate issues with the council and the developer, and run events with local groups.</p>
       <div class="hero-ctas" data-reveal style="--i:2">
         <a class="btn btn-primary btn-lg" href="${r}get-involved/#join">Join the association ${icon('arrow')}</a>
         <a class="btn btn-ghost btn-lg" href="${r}news/">See what’s on</a>
@@ -446,7 +446,7 @@ page('', {
 <section class="section what" aria-labelledby="what-title">
   <div class="container">
     <div class="section-head">
-      <h2 id="what-title" class="display-l" data-reveal>Three jobs, done by neighbours.</h2>
+      <h2 id="what-title" class="display-l" data-reveal>Three jobs, done by residents.</h2>
     </div>
     <ol class="what-list">
       ${whatWeDo.map((w, i) => `<li data-reveal style="--i:${i}"><h3 class="display-s">${esc(w.title)}</h3><p>${esc(w.body)}</p></li>`).join('')}
@@ -539,8 +539,8 @@ page('news/', {
   <div class="container">
     <form class="signup" data-form="subscribe" data-reveal novalidate action="mailto:${site.email}?subject=Subscribe" method="post" enctype="text/plain">
       <div>
-        <h2 id="signup-title" class="display-m">Get updates by email.</h2>
-        <p>One short email a month. No spam.</p>
+        <h2 id="signup-title" class="display-m">Get the monthly update by email.</h2>
+        <p>It is one short email with news, events and council notices.</p>
       </div>
       <div class="signup-row">
         ${field({ id: 'sub-email', label: 'Email address', type: 'email', autocomplete: 'email' })}
@@ -671,7 +671,7 @@ page('get-involved/', {
   description: `Join ${site.name}, volunteer for an event or become a road rep.`,
   body: r => `${pageHero({
     eyebrow: 'Get Involved',
-    title: 'You don’t need lots of time. Even signing up helps.',
+    title: 'You don’t need lots of time to help.',
     intro: `Every resident of ${esc(site.estate)} can be a member, whether you own your home, rent privately or rent from Clúid Housing.`,
   })}
 <section class="section tight">
@@ -679,12 +679,12 @@ page('get-involved/', {
     <ul class="ways">
       <li class="way" data-reveal>
         <h2 class="display-s">Become a member</h2>
-        <p>${ph('Free')} for every household. Members get a vote at the AGM and our monthly update.</p>
+        <p>${ph('Free')} for every household. Members get a vote at the AGM and the monthly update.</p>
         <a class="btn btn-primary" href="#join" data-intent="member">Join the association ${icon('arrow')}</a>
       </li>
       <li class="way" data-reveal style="--i:1">
         <h2 class="display-s">Volunteer for an event</h2>
-        <p>Help at a clean-up, fun day or the Christmas lights. An hour makes a difference.</p>
+        <p>Help at a clean-up, a fun day or the Christmas lights, even for an hour.</p>
         <a class="btn btn-outline" href="#join" data-intent="volunteer">I can help ${icon('arrow')}</a>
       </li>
       <li class="way" data-reveal style="--i:2">
@@ -700,7 +700,7 @@ page('get-involved/', {
   <div class="container form-grid">
     <div class="form-intro">
       <p class="eyebrow" data-reveal>Join the association</p>
-      <h2 id="join-title" class="display-l" data-reveal style="--i:1">Two minutes, and you’re in.</h2>
+      <h2 id="join-title" class="display-l" data-reveal style="--i:1">Join in two minutes.</h2>
       <p data-reveal style="--i:2">We only use your details to contact you about association business. We never share them. Read the <a href="${r}privacy/">privacy notice</a>.</p>
     </div>
     <form class="form" data-form="join" novalidate action="mailto:${site.email}?subject=Membership" method="post" enctype="text/plain" data-reveal>
@@ -743,8 +743,8 @@ page('get-involved/', {
 page('documents/', {
   current: 'documents/',
   title: 'Documents',
-  description: `Minutes, reports and key documents from ${site.name}.`,
-  body: r => `${pageHero({ eyebrow: 'Documents', title: 'Everything on the record.', intro: 'The association’s own papers, plus council and planning documents about the estate. Most recent first.' })}
+  description: `The constitution, minutes and financial statements of ${site.name}, plus council and planning documents about the estate.`,
+  body: r => `${pageHero({ eyebrow: 'Documents', title: 'Find a document.', intro: 'Our constitution, minutes and financial statements, plus council and planning documents about the estate. Most recent first.' })}
 <section class="section tight">
   <div class="container narrow">
     <div class="search" data-doc-search hidden>
@@ -926,4 +926,41 @@ if (broken) {
   console.error(`${broken} broken link(s).`);
   process.exit(1);
 }
-console.log(`Built ${pages.length} pages, ${events.length} calendar files into ${relative(process.cwd(), OUT) || '.'} (${FINAL ? 'final' : 'preview'}). All internal links resolve.`);
+
+/* ---------- check: house style for copy ---------- */
+// David's rules (1 October 2026): no em or en dashes (use commas, full stops, brackets, or "to" for ranges),
+// and none of the stock phrases below. The judgment calls (binary contrasts, colon reveals, synonym cycling,
+// dramatic fragments) can't be matched by a pattern, so new copy still needs a read-through against them.
+const dashChars = /[\u2013\u2014]|&[mn]dash;|&#(?:8211|8212|x201[34]);/i;
+const spacedHyphen = /[\p{L}'")\]] -{1,2} [\p{L}'"(]/u;
+const bannedPhrases = [
+  "here's the thing", 'let me be clear', 'nobody tells you', 'everyone misses', 'the best part',
+  "that's it", 'the whole thing', 'pivotal', 'testament to', 'experts agree', 'studies show', 'research shows',
+  "isn't coming", "it's already here", 'not just', 'more than just', "isn't just", 'not only',
+  'commitment to', 'highlighting', 'underscoring', 'showcasing', ', reflecting', 'homeowner',
+];
+const notXItsY = /\bit(?:'s| is) not\b[^.]*\.\s*it(?:'s| is)\b/i;
+let style = 0;
+for (const rel of written) {
+  if (!/\.(html|ics|js|md|txt)$/.test(rel)) continue;
+  const raw = readFileSync(join(OUT, rel), 'utf8');
+  // Words only: drop scripts (bar the events data), styles and drawings, keep the text and the readable
+  // attributes (alt, labels, titles, descriptions), and straighten apostrophes.
+  const words = /\.html$/.test(rel)
+    ? raw.replace(/<script(?! type="application\/json")[\s\S]*?<\/script>|<style[\s\S]*?<\/style>|<svg[\s\S]*?<\/svg>/g, ' ')
+        .replace(/<[^>]+>/g, tag => ' ' + [...tag.matchAll(/\b(?:alt|aria-label|title|content|placeholder)="([^"]*)"/g)].map(m => m[1]).join(' . ') + ' ')
+    : raw;
+  const text = words.replace(/&#39;|&rsquo;|&lsquo;|[‘’]/g, "'").replace(/&amp;/g, '&');
+  const fail = msg => { console.error(`${rel}: ${msg}`); style++; };
+  const at = re => { const m = re.exec(text); return m ? `"${text.slice(Math.max(0, m.index - 30), m.index + 40).replace(/\s+/g, ' ').trim()}"` : ''; };
+  if (dashChars.test(raw)) fail(`em or en dash ${at(dashChars)}`);
+  if (/\.(html|ics)$/.test(rel) && spacedHyphen.test(text)) fail(`hyphen used as a dash ${at(spacedHyphen)}`);
+  if (notXItsY.test(text)) fail(`"It's not X. It's Y." ${at(notXItsY)}`);
+  const lower = text.toLowerCase();
+  for (const p of bannedPhrases) if (lower.includes(p)) fail(`banned phrase "${p}"`);
+}
+if (style) {
+  console.error(`${style} house style problem(s).`);
+  process.exit(1);
+}
+console.log(`Built ${pages.length} pages, ${events.length} calendar files into ${relative(process.cwd(), OUT) || '.'} (${FINAL ? 'final' : 'preview'}). All internal links resolve, and the copy passes the house style check.`);

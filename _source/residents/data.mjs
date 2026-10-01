@@ -40,9 +40,9 @@ export const impact = [
 export const estateFacts = {
   title: 'Living beside the Wonderful Barn.',
   body: [
-    'Barnhall Meadows was built by Glenveagh Homes on the former Wonderful Barn lands, off the Celbridge Road (R404). Planning permission for up to 450 homes, a crèche, open space and a new roundabout on the R404 was granted in April 2018.',
+    'Barnhall Meadows was built by Glenveagh Homes on the former Wonderful Barn lands, off the Celbridge Road (R404). Planning permission for up to 450 homes, a crèche, green areas and a new roundabout on the R404 was granted in April 2018.',
     'The estate takes its name from Barnhall House and the Wonderful Barn beside it. Katherine Conolly of Castletown built the barn in 1743, probably as famine relief work. Its corkscrew stair winds around the outside, between two conical dovecotes.',
-    'Owners, private renters and Clúid Housing tenants all live here. The association is for all of them.',
+    'Owners, private renters and Clúid Housing tenants all live here, and the association is open to all of them.',
   ],
   sources: [
     ['An Bord Pleanála case ABP-300606', 'https://www.pleanala.ie/en-ie/case/300606'],
@@ -55,15 +55,15 @@ export const estateFacts = {
 export const whatWeDo = [
   {
     title: 'A voice with the council.',
-    body: 'We raise roads, lighting, green spaces and planning with Kildare County Council, local reps and the developer. First job: getting the estate taken in charge.',
+    body: 'We raise roads, street lights, green areas and planning with Kildare County Council, councillors and the developer. Our first job is getting the estate taken in charge.',
   },
   {
-    title: 'Events that bring people together.',
+    title: 'Events on the estate.',
     body: 'Clean-ups, summer fun days, Halloween trails and the Christmas lights switch-on.',
   },
   {
-    title: 'Information you can trust.',
-    body: 'Meeting minutes, updates and local notices, all in one place.',
+    title: 'Minutes and updates in one place.',
+    body: 'Meeting minutes, news and council notices, here and in the monthly update.',
   },
 ];
 
@@ -76,7 +76,7 @@ export const takingInCharge = {
     {
       title: 'Planning permission granted',
       when: 'April 2018',
-      body: 'An Bord Pleanála approved up to 450 homes, a crèche and open space.',
+      body: 'An Bord Pleanála approved up to 450 homes, a crèche and green areas.',
       status: 'done',
       source: ['An Bord Pleanála, ABP-300606', 'https://www.pleanala.ie/en-ie/case/300606'],
     },
@@ -84,7 +84,7 @@ export const takingInCharge = {
       title: 'Residents move in',
       when: 'From 2020',
       whenPlaceholder: true,
-      body: 'Until the handover, the developer looks after the roads, footpaths, street lights and green areas.',
+      body: 'Until the estate is taken in charge, the developer looks after the roads, footpaths, street lights and green areas.',
       status: 'done',
     },
     {
@@ -97,14 +97,14 @@ export const takingInCharge = {
     {
       title: 'Council decision',
       when: 'Waiting',
-      body: 'Still not taken in charge at the last update we found. We are asking the council for the current position.',
+      body: 'The estate was still not taken in charge at the last update we found. We are asking the council for the current position.',
       status: 'now',
       source: ['Kildare Now, September 2025', 'https://www.kildarenow.com/news/councillor-asks-for-update-on-landscaping-works-at-kildares-wonderful-barn-9142973'],
     },
     {
-      title: 'The council takes over',
+      title: 'Taken in charge',
       when: 'Date not set',
-      body: 'The council maintains the roads, footpaths, street lights, open spaces and drains.',
+      body: 'The council maintains the roads, footpaths, street lights, green areas and surface water drains.',
       status: 'next',
     },
   ],
@@ -119,12 +119,12 @@ export const posts = [
     title: 'Taking in charge: where things stand',
     date: '2026-09-28',
     author: 'Committee',
-    summary: 'The council has not yet taken the estate in charge. Until it does, the developer is responsible for roads, lighting and open space.',
+    summary: 'The council has not yet taken the estate in charge. Until it does, the developer is responsible for roads, street lights and green areas.',
     body: [
-      '“Taking in charge” is when the council takes over an estate’s roads, footpaths, street lights, open spaces and surface water drains from the developer. After that, the council maintains them.',
+      '“Taking in charge” is when the council takes responsibility for an estate’s roads, footpaths, street lights, green areas and surface water drains from the developer, and maintains them from then on.',
       'Kildare County Council ran a public consultation on taking Barnhall Meadows in charge from 19 November to 18 December 2024.',
       'The most recent council update we have found, from September 2025, said the estate was still not taken in charge.',
-      'Until the handover happens, report problems with roads, lighting and green areas to the developer, and copy us so we can keep a record. We are asking the council for the current position and will post it here.',
+      'Until then, report problems with roads, street lights and green areas to the developer, and copy us so we can keep a record. We are asking the council for the current position and will post it here.',
     ],
     sources: [
       ['Kildare County Council consultation, Nov to Dec 2024', 'https://consult.kildarecoco.ie/en/consultation/taking-charge-roads-and-services-barnhall-meadows-leixlip'],
@@ -160,7 +160,7 @@ export const posts = [
     body: [
       'Barnhall Meadows doesn’t have a formal residents association yet. We want to change that, so the estate has one voice with the council and the developer.',
       'Our first public meeting is on Tuesday 17 November at 7.30pm. Every resident is welcome, whether you own your home, rent privately or rent from Clúid Housing.',
-      'We will agree a constitution, elect a committee, and choose our first priorities. Taking the estate in charge is top of the list.',
+      'We will agree a constitution, elect a committee, and choose our first priorities. Getting the estate taken in charge is top of the list.',
     ],
   },
   {
@@ -170,10 +170,10 @@ export const posts = [
     date: '2026-09-08',
     author: 'Organisers',
     placeholder: true,
-    summary: 'Gloves, bags and pickers provided. Tea and cake after.',
+    summary: 'Gloves, bags and litter pickers are provided, with tea and cake after.',
     body: [
       'Our autumn clean-up is on Saturday 17 October from 10am. We will split into small teams, one for each road, and finish by midday.',
-      'Gloves, bags and litter pickers are provided. Children are very welcome with an adult.',
+      'Gloves, bags and litter pickers are provided. Children are welcome with an adult.',
     ],
   },
 ];
@@ -187,7 +187,7 @@ export const events = [
     start: '10:00',
     end: '12:00',
     place: 'Meeting point to be confirmed',
-    summary: 'Gloves, bags and pickers provided. Tea and cake after.',
+    summary: 'Gloves, bags and litter pickers are provided, with tea and cake after.',
     body: [
       'We split into small teams, one per road, and finish by midday.',
       'Gloves, bags and litter pickers are provided. Children are welcome with an adult.',
@@ -201,7 +201,7 @@ export const events = [
     start: '17:30',
     end: '19:30',
     place: 'Starting point to be confirmed',
-    summary: 'A lantern-lit trail around the estate for families. Houses taking part display a pumpkin.',
+    summary: 'A lantern-lit trail around the estate for families. Houses taking part display a pumpkin sticker.',
     body: [
       'A lantern-lit trail around the estate for families. Houses taking part will display a pumpkin sticker in the window.',
       'Want your house on the trail? Let us know by 24 October and we will drop a sticker in.',
@@ -229,9 +229,9 @@ export const committee = [
   { role: 'Chairperson', line: 'Leads meetings and liaison with the council and the developer.' },
   { role: 'Secretary', line: 'Keeps minutes and handles correspondence.' },
   { role: 'Treasurer', line: 'Manages accounts and membership.' },
-  { role: 'PRO', line: 'Runs the newsletter, website and social channels.' },
+  { role: 'PRO', line: 'Runs the monthly update, the website and social media.' },
   { role: 'Road rep', line: 'The link between each road and the committee. Roads to be confirmed.' },
-  { role: 'Clúid tenants’ rep', line: 'Raises issues for cost-rental tenants.' },
+  { role: 'Clúid tenants’ rep', line: 'Raises issues for Clúid Housing tenants.' },
 ];
 
 export const nextMeeting = { date: '2026-11-17', time: '7.30pm', venue: 'Venue to be confirmed' };
