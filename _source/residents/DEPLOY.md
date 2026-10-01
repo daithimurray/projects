@@ -12,7 +12,9 @@ confirms the details. `vercel.json` sends `X-Robots-Tag: noindex` and `robots.tx
 Preconditions, set once by David in Project settings, environment (a new session picks them up):
 
 - `VERCEL_TOKEN` environment variable (never pasted into chat). Create it at vercel.com/account/tokens, with an expiry date.
-- Network access allows `vercel.com`, `api.vercel.com` and `*.vercel.app`.
+- Network access set to Custom, with `vercel.com`, `api.vercel.com` and `*.vercel.app` in Allowed domains, and the default
+  package manager list kept on (the Vercel CLI installs through npm). David's step-by-step version, in ASD-STE100, is
+  `residents-site/vercel-token-setup-ste.md` in the project files.
 
 Check: `curl -sS -H "Authorization: Bearer $VERCEL_TOKEN" https://api.vercel.com/v2/user` returns the user.
 
