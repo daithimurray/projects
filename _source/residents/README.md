@@ -30,6 +30,10 @@ David's rules for all site copy, agreed on 1 October 2026. The build catches das
 - `data.mjs`: all content. Site facts, posts, events, committee, documents, FAQs.
 - `build.mjs`: page templates and the link check.
 - `assets/`: `styles.css`, `main.js`, fonts, favicon, `robots.txt`, `vercel.json`.
+- `wonderful-barn/`: David's interactive 3D model of the Wonderful Barn, built from the 2024 measured survey. The build copies it to
+  `/residents/wonderful-barn/` as is. three.js r160 and the model's fonts are served from the folder, so the page makes no
+  third-party requests. Home and the park post link to it.
+- `DEPLOY.md`: how to put the site on Vercel.
 
 ## Adding content
 
@@ -47,7 +51,7 @@ David's rules for all site copy, agreed on 1 October 2026. The build catches das
 - Palette: meadow green, limestone, barn ochre, slate blue. Ochre is for shapes and large type; text uses the
   darker `--ochre-ink`. Slate is for links and council notices. Red (`--signal`) is for errors and emergencies only.
   Every text pairing passes WCAG AA (contrast ratios are noted next to the tokens in `styles.css`).
-- Logo and favicon: the Wonderful Barn with its two dovecotes (`markShapes` in `build.mjs`; the favicon is generated from it).
+- Logo and favicon: the Wonderful Barn with its two pigeon houses (`markShapes` in `build.mjs`; the favicon is generated from it).
 - Signature: the estate skyline in SVG. The Barn stands in the meadow with modern semis, terraces and an apartment
   block either side. The back layers move on scroll, and windows light up on load. The Barn is drawn from
   published descriptions; check it against a photo before launch.
@@ -82,7 +86,7 @@ linked on the site before launch:
 - The Wonderful Barn: built 1743 by Katherine Conolly.
 - Wonderful Barn park plan (Part 8, P82024.10) approved 18 October 2024.
 - Taking in charge: consultation 19 November to 18 December 2024; still not taken in charge per the council's reply in September 2025.
-- The Barn drawing (logo, favicon, skyline): check the stair, the flat roof and the dovecotes against a photo.
+- The Barn drawing (logo, favicon, skyline): check the stair, the flat roof and the pigeon houses against a photo (the 3D model in `wonderful-barn/` follows the 2024 survey and is the better guide).
 - The taking-in-charge tracker: ask the council for the current position and update `takingInCharge`.
 - Leixlip Garda Station, 19 Station Road, 01 666 7800.
 

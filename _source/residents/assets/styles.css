@@ -364,6 +364,10 @@ main:focus { outline: none; }
 .prose p { margin-bottom: 1.1em; }
 .prose h2 { font-family: var(--serif); font-size: 1.5rem; font-weight: 580; margin: 2em 0 .5em; }
 .prose a { color: var(--slate); font-weight: 600; }
+/* Link to the 3D model of the Wonderful Barn, on Home and the park post. */
+.model-link { margin-top: 28px; }
+.prose .model-link a { color: var(--fg); }
+.model-link .btn { white-space: normal; max-width: 100%; }
 .callout { padding: 16px 20px; background: var(--ochre-tint); border-radius: 12px; }
 .event-card { display: grid; gap: 20px; margin-top: 28px; padding: 26px; background: var(--card); border: 1px solid var(--line); border-radius: var(--radius-lg); box-shadow: var(--shadow); }
 .event-card .notice-facts { margin: 0; }

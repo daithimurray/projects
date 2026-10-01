@@ -2,7 +2,7 @@
 // No dependencies: `node build.mjs` (preview, placeholders underlined) or `node build.mjs --final`.
 // Output is plain HTML, CSS and JS with relative paths, so it can be served from any folder.
 
-import { mkdirSync, rmSync, writeFileSync, copyFileSync, readdirSync, readFileSync, existsSync } from 'node:fs';
+import { mkdirSync, rmSync, writeFileSync, copyFileSync, readdirSync, readFileSync, existsSync, statSync } from 'node:fs';
 import { dirname, join, relative } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { site, impact, estateFacts, whatWeDo, takingInCharge, posts, events, committee, nextMeeting, documents, faqs } from './data.mjs';
@@ -472,6 +472,7 @@ page('', {
     <div class="estate-copy">
       <h2 id="estate-title" class="display-l" data-reveal>${esc(estateFacts.title)}</h2>
       <div class="estate-body" data-reveal style="--i:2">${estateFacts.body.map(t => `<p>${esc(t)}</p>`).join('')}</div>
+      <p class="model-link" data-reveal style="--i:3"><a class="btn btn-outline" href="${r}wonderful-barn/">See the Wonderful Barn in 3D ${icon('arrow')}</a></p>
       <div data-reveal style="--i:3">${sourceList(estateFacts.sources)}</div>
     </div>
     <ul class="facts" aria-label="The estate in numbers">
@@ -565,7 +566,7 @@ for (const p of posts) {
     <h1 class="display-xl" data-reveal style="--i:1">${esc(p.title)}</h1>
     <p class="byline" data-reveal style="--i:2">From the ${esc(p.author)}</p>
     <div class="coil-wrap" data-reveal style="--i:2">${coil}</div>
-    <div class="prose" data-reveal style="--i:3">${!FINAL && p.placeholder ? '<p class="callout"><strong>Example post.</strong> Replace with a real one before launch.</p>' : ''}${p.body.map(t => `<p>${esc(t)}</p>`).join('')}${p.slug === 'taking-in-charge' ? '' : sourceList(p.sources)}</div>
+    <div class="prose" data-reveal style="--i:3">${!FINAL && p.placeholder ? '<p class="callout"><strong>Example post.</strong> Replace with a real one before launch.</p>' : ''}${p.body.map(t => `<p>${esc(t)}</p>`).join('')}${p.model ? `<p class="model-link"><a class="btn btn-outline" href="${r}wonderful-barn/">See the 2024 plan in 3D ${icon('arrow')}</a></p>` : ''}${p.slug === 'taking-in-charge' ? '' : sourceList(p.sources)}</div>
     ${p.slug === 'taking-in-charge' ? `<section class="post-steps" id="steps" aria-labelledby="steps-title"><h2 id="steps-title" class="display-m">Where things stand, step by step</h2>${stairTracker()}</section><div class="prose">${sourceList(p.sources)}</div>` : ''}
   </div>
 </article>`,
@@ -897,6 +898,14 @@ for (const f of readdirSync(join(HERE, 'assets/fonts'))) {
   written.add('fonts/' + f);
 }
 copyFileSync(join(HERE, 'README.site.md'), join(OUT, 'README.md'));
+// The 3D model of the Wonderful Barn, with three.js and its fonts served from the site.
+for (const f of readdirSync(join(HERE, 'wonderful-barn'), { recursive: true })) {
+  const src = join(HERE, 'wonderful-barn', f);
+  if (statSync(src).isDirectory()) continue;
+  mkdirSync(dirname(join(OUT, 'wonderful-barn', f)), { recursive: true });
+  copyFileSync(src, join(OUT, 'wonderful-barn', f));
+  written.add(join('wonderful-barn', f));
+}
 
 /* ---------- check: every internal link and asset resolves ---------- */
 let broken = 0;
@@ -942,7 +951,7 @@ const bannedPhrases = [
 const notXItsY = /\bit(?:'s| is) not\b[^.]*\.\s*it(?:'s| is)\b/i;
 let style = 0;
 for (const rel of written) {
-  if (!/\.(html|ics|js|md|txt)$/.test(rel)) continue;
+  if (!/\.(html|ics|js|md|txt)$/.test(rel) || rel.endsWith('.min.js')) continue;
   const raw = readFileSync(join(OUT, rel), 'utf8');
   // Words only: drop scripts (bar the events data), styles and drawings, keep the text and the readable
   // attributes (alt, labels, titles, descriptions), and straighten apostrophes.

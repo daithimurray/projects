@@ -41,7 +41,7 @@ export const estateFacts = {
   title: 'Living beside the Wonderful Barn.',
   body: [
     'Barnhall Meadows was built by Glenveagh Homes on the former Wonderful Barn lands, off the Celbridge Road (R404). Planning permission for up to 450 homes, a crèche, green areas and a new roundabout on the R404 was granted in April 2018.',
-    'The estate takes its name from Barnhall House and the Wonderful Barn beside it. Katherine Conolly of Castletown built the barn in 1743, probably as famine relief work. Its corkscrew stair winds around the outside, between two conical dovecotes.',
+    'The estate takes its name from Barnhall House and the Wonderful Barn beside it. Katherine Conolly of Castletown built the barn in 1743, probably as famine relief work. Its corkscrew stair winds around the outside, and two pigeon houses stand in the yard behind it.',
     'Owners, private renters and Clúid Housing tenants all live here, and the association is open to all of them.',
   ],
   sources: [
@@ -138,8 +138,9 @@ export const posts = [
     date: '2026-09-21',
     author: 'Committee',
     summary: 'The council’s plan to turn the Wonderful Barn lands into a public park was approved in October 2024. It includes a walking and cycling bridge over the M4.',
+    model: true, // links to the 3D model of the barn
     body: [
-      'Kildare County Council plans to turn about 19.8 hectares around the Wonderful Barn into a public park and heritage attraction. The plan covers the barn, Barnhall House, the two dovecotes, the walled garden, the courtyards and the parkland between the M4, the Celbridge Road and the estate.',
+      'Kildare County Council plans to turn about 19.8 hectares around the Wonderful Barn into a public park and heritage attraction. The plan covers the barn, Barnhall House, the two pigeon houses, the walled garden, the courtyards and the parkland between the M4, the Celbridge Road and the estate.',
       'Councillors in the Celbridge-Leixlip Municipal District approved the plan (Part 8 scheme P82024.10) on 18 October 2024.',
       'It includes a walking and cycling bridge over the M4 to the Castletown Estate in Celbridge. The bridge’s final design needs approval from Transport Infrastructure Ireland.',
       'We have not seen a start date for the works. We will share one when the council publishes it.',
