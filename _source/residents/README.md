@@ -39,7 +39,8 @@ assets, and fails if any internal link or anchor does not resolve.
   published descriptions; check it against a photo before launch.
 - Taking-in-charge tracker: stair steps on Home and on the taking-in-charge post (`takingInCharge` in `data.mjs`).
   The stair line draws itself once when it scrolls into view. Update the statuses when the council replies.
-- Motion: staggered scroll reveals, the stair line, sticky header that condenses, reading-progress bar, count-up numbers,
+- Inner pages: a quiet, tone-on-tone Barn beside the page header (wide screens) and the stair coil as a divider.
+- Motion: staggered scroll reveals, the stair line, sticky header that settles on scroll (no height change), reading-progress bar, count-up numbers,
   filter chips with view transitions, animated accordions, slide-in menu, cross-page transitions.
   All of it switches off under `prefers-reduced-motion`.
 - Accessibility: skip link, landmarks, visible focus, 44px minimum targets, native `<dialog>` menu,
@@ -82,12 +83,13 @@ linked on the site before launch:
 
 ### The committee must supply
 
-1. Official name and logo (the mark is a placeholder).
+1. Official name, and a yes or no on the Barn mark as the logo.
 2. Committee names and one-line bios, with written consent to publish each. Cards show roles only until then.
 3. A shared contact email the committee controls. Set `site.email` in `data.mjs`; the forms pick it up at build time.
    The current `committee@example.com` is a placeholder.
 4. At least 3 real news posts or events to replace the examples.
 
-Then: the documents, social links, meeting dates and venue, and the privacy notice sign-off (data controller,
+Then: the documents, public social pages (set `site.facebook` and `site.instagram`; the links stay hidden while they are
+`null`, and the current Facebook group is private so it can't be used), meeting dates and venue, and the privacy notice sign-off (data controller,
 retention period). Build with `--final`, then remove the `X-Robots-Tag` header from `vercel.json` and the
 `Disallow` from `robots.txt`.

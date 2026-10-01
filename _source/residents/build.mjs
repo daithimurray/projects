@@ -33,6 +33,9 @@ const kindLabel = { news: 'News', council: 'Council notice', event: 'Event' };
 const sourceList = (sources, cls = 'sources') => sources && sources.length ? `<p class="${cls}"><span>Sources:</span> ${sources.map(([label, url]) => `<a href="${url}" rel="noopener">${esc(label)}</a>`).join('; ')}</p>` : '';
 const exampleTag = item => (!FINAL && item.placeholder ? '<span class="tag tag-example">Example</span>' : '');
 
+// Only public pages the association runs. Hidden until the committee sets them up.
+const socialLinks = [['Facebook', site.facebook], ['Instagram', site.instagram]].filter(([, url]) => url);
+
 const icon = (id, size = 20) => `<svg class="i" width="${size}" height="${size}" aria-hidden="true"><use href="#i-${id}"/></svg>`;
 
 /* ---------- shared chrome ---------- */
@@ -84,7 +87,7 @@ function header(r, current) {
     <a class="brand" href="${r}" aria-label="${esc(site.name)}, home">${mark(40)}<span class="brand-text"><span class="brand-name">${esc(site.estate)}</span><span class="brand-sub">Residents’ Association</span></span></a>
     <nav class="nav" aria-label="Main">${links.join('')}</nav>
     <div class="bar-actions">
-      <a class="btn btn-primary btn-sm" href="${r}get-involved/#join">Join us</a>
+      <a class="btn btn-primary btn-sm" href="${r}get-involved/#join">Join</a>
       <button class="icon-btn menu-btn" type="button" aria-label="Open menu" aria-haspopup="dialog" data-menu-open>${icon('menu', 24)}</button>
     </div>
   </div>
@@ -106,7 +109,7 @@ const joinBand = r => `<section class="join-band" aria-labelledby="join-band-tit
       <p class="eyebrow on-dark">Membership is free</p>
       <h2 id="join-band-title" class="display-m">It takes two minutes to join. The more of us, the louder our voice.</h2>
     </div>
-    <a class="btn btn-ochre btn-lg" href="${r}get-involved/#join">Become a member ${icon('arrow')}</a>
+    <a class="btn btn-ochre btn-lg" href="${r}get-involved/#join">Join the association ${icon('arrow')}</a>
   </div>
   ${skyline('band')}
 </section>`;
@@ -127,10 +130,9 @@ function footer(r) {
         <h2 class="footer-h">Get in touch</h2>
         <ul>
           <li><a href="mailto:${site.email}">${ph(site.email)}</a></li>
-          <li><a href="${site.facebook}" rel="noopener">Facebook</a></li>
-          <li><a href="${site.instagram}" rel="noopener">Instagram</a></li>
+          <li><a href="${r}contact/">Contact form</a></li>
+          ${socialLinks.map(([label, url]) => `<li><a href="${url}" rel="noopener">${label}</a></li>`).join('')}
         </ul>
-        <a class="btn btn-ochre" href="${r}get-involved/#join">Join the association ${icon('arrow')}</a>
       </div>
     </div>
     <p class="footer-word" aria-hidden="true">${esc(site.estate)}</p>
@@ -294,10 +296,12 @@ function houseRow({ seed, y, from = -20, to = 1460, unit: [uMin, uMax], storey, 
 }
 function skyline(variant) {
   if (variant === 'band') {
-    const near = { y: 120, unit: [26, 34], storey: 22, fill: 'rgba(255,255,255,.06)', winChance: 0, apartments: [3] };
-    return `<svg class="skyline skyline-band" viewBox="0 0 1440 120" preserveAspectRatio="xMidYMax slice" aria-hidden="true" focusable="false">
-      ${houseRow({ seed: 11, from: -20, to: 1080, ...near })}${houseRow({ seed: 13, from: 1290, ...near })}
-      ${barn(1185, 120, 0.42, { body: 'rgba(255,255,255,.1)', stair: 'rgba(255,255,255,.06)', back: 'rgba(255,255,255,.07)' })}
+    const tone = { fill: 'rgba(237,233,224,.07)', win: 'rgba(237,233,224,.06)', winChance: 0 };
+    const near = { y: 150, unit: [30, 36], storey: 28, apartments: [], ...tone };
+    return `<svg class="skyline skyline-band" viewBox="0 0 1440 150" preserveAspectRatio="xMidYMax slice" aria-hidden="true" focusable="false">
+      ${houseRow({ seed: 29, from: -20, to: 780, ...near })}${houseRow({ seed: 41, from: 1010, ...near, apartments: [1] })}
+      ${barn(895, 150, 0.56, { body: 'rgba(237,233,224,.1)', stair: 'rgba(23,59,44,.55)', back: 'rgba(237,233,224,.08)' })}
+      ${tree(760, 151, 0.55, 'rgba(237,233,224,.07)')}${sapling(1040, 151, 0.7, 'rgba(237,233,224,.07)')}${sapling(300, 151, 0.7, 'rgba(237,233,224,.07)')}
     </svg>`;
   }
   const far = { y: 330, unit: [24, 32], storey: 26, fill: 'var(--house-far)', win: 'var(--win-far)', winChance: 0.3 };
@@ -319,6 +323,18 @@ const postCard = (p, r, i = 0) => `<article class="post-card" data-kind="${p.kin
   <h3><a class="stretched" href="${r}news/${p.slug}/">${esc(p.title)}</a></h3>
   <p>${esc(p.summary)}</p>
   <span class="more" aria-hidden="true">Read more ${icon('arrow', 18)}</span>
+</article>`;
+
+// The newest post, full width on Home, so the news section doesn't repeat the card grid of every other section.
+const leadCard = (p, r) => `<article class="post-card post-lead" data-kind="${p.kind}" data-reveal>
+  <div class="lead-head">
+    <p class="meta"><span class="tag tag-${p.kind}">${kindLabel[p.kind]}</span>${exampleTag(p)}<time datetime="${p.date}">${shortDate(p.date)}</time></p>
+    <h3 class="display-m"><a class="stretched" href="${r}news/${p.slug}/">${esc(p.title)}</a></h3>
+  </div>
+  <div class="lead-body">
+    <p>${esc(p.summary)}</p>
+    <span class="more" aria-hidden="true">Read more ${icon('arrow', 18)}</span>
+  </div>
 </article>`;
 
 const eventRow = (e, r, i = 0) => `<li class="event-row" data-kind="event" data-reveal style="--i:${i}">
@@ -350,11 +366,22 @@ function stairTracker(level = 'h3') {
 </div>`;
 }
 
+// The Barn's stair seen side-on: a looping line, used as a divider under page headers.
+const coil = (() => {
+  const pts = [];
+  for (let t = 0; t <= Math.PI * 2 * 6; t += 0.15) pts.push(`${(10 + t * 4 - 8 * Math.sin(t)).toFixed(1)} ${(9 + 6.5 * Math.cos(t)).toFixed(1)}`);
+  return `<svg class="coil" viewBox="0 0 172 18" width="172" height="18" aria-hidden="true" focusable="false"><path d="M${pts.join('L')}" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" pathLength="1"/></svg>`;
+})();
+
 const pageHero = ({ eyebrow, title, intro }) => `<section class="page-hero">
-  <div class="container">
-    <p class="eyebrow" data-reveal>${eyebrow}</p>
-    <h1 class="display-xl" data-reveal style="--i:1">${title}</h1>
-    ${intro ? `<p class="lede" data-reveal style="--i:2">${intro}</p>` : ''}
+  <div class="container page-hero-inner">
+    <div>
+      <p class="eyebrow" data-reveal>${eyebrow}</p>
+      <h1 class="display-xl" data-reveal style="--i:1">${title}</h1>
+      ${intro ? `<p class="lede" data-reveal style="--i:2">${intro}</p>` : ''}
+      <div class="coil-wrap" data-reveal style="--i:3">${coil}</div>
+    </div>
+    <svg class="page-barn" viewBox="560 150 320 260" aria-hidden="true" focusable="false">${barn(720, 404, 1, { body: 'var(--barn-tone)', stair: 'var(--barn-tone-2)', back: 'var(--barn-tone)' })}<rect x="560" y="402" width="320" height="4" rx="2" fill="var(--barn-tone-2)"/></svg>
   </div>
 </section>`;
 
@@ -388,17 +415,17 @@ page('', {
     return `<section class="hero">
   <div class="container hero-grid">
     <div class="hero-copy">
-      <p class="eyebrow" data-reveal>${esc(site.estate)} · ${esc(site.area)}</p>
-      <h1 class="display-hero" data-reveal style="--i:1">Looking after ${(() => { const w = esc(site.estate).split(' '); const last = w.pop(); return `${w.length ? `<span class="estate-name">${w.join(' ')}</span> ` : ''}<span class="nw"><span class="estate-name">${last}</span>,</span>`; })()} together.</h1>
-      <p class="lede" data-reveal style="--i:2">We’re the residents association for ${esc(site.estate)} in Leixlip, an estate of ${ph('up to ' + site.homes + ' homes')}. We work with the council, the developer, local groups and each other to keep this a great place to live.</p>
-      <div class="hero-ctas" data-reveal style="--i:3">
+      <h1 class="display-hero" data-reveal>Looking after ${(() => { const w = esc(site.estate).split(' '); const last = w.pop(); return `${w.length ? `<span class="estate-name">${w.join(' ')}</span> ` : ''}<span class="nw"><span class="estate-name">${last}</span>,</span>`; })()} together.</h1>
+      <p class="lede" data-reveal style="--i:1">We’re the residents association for ${esc(site.estate)} in Leixlip, an estate of ${ph('up to ' + site.homes + ' homes')}. We work with the council, the developer, local groups and each other to keep this a great place to live.</p>
+      <div class="hero-ctas" data-reveal style="--i:2">
         <a class="btn btn-primary btn-lg" href="${r}get-involved/#join">Join the association ${icon('arrow')}</a>
         <a class="btn btn-ghost btn-lg" href="${r}news/">See what’s on</a>
       </div>
     </div>
-    <aside class="notice" aria-labelledby="next-title" data-reveal style="--i:4" data-next-event>
+    <div class="hero-next">
+    <aside class="notice" aria-labelledby="next-title" data-reveal style="--i:3" data-next-event>
       <span class="notice-pin" aria-hidden="true"></span>
-      <p class="eyebrow">Next event</p>
+      <p class="notice-label">Next event</p>
       <h2 id="next-title" class="display-s"><a href="${r}events/${next.slug}/" data-ne-link>${esc(next.title)}</a></h2>
       <p class="countdown" data-countdown="${next.date}T${next.start}" hidden></p>
       <ul class="notice-facts">
@@ -408,6 +435,7 @@ page('', {
       </ul>
       <a class="btn btn-outline btn-sm" href="${r}events/${next.slug}/event.ics" download data-ne-ics>${icon('cal', 18)} Add to calendar</a>
     </aside>
+    </div>
   </div>
   ${skyline('hero')}
   <script type="application/json" id="events-data">${JSON.stringify(upcoming.map(e => ({ slug: e.slug, title: e.title, date: e.date, start: e.start, end: e.end, place: e.place, when: longDate(e.date).replace(/ \d{4}$/, ''), time: `${time12(e.start)} to ${time12(e.end)}` })))}</script>
@@ -416,11 +444,10 @@ page('', {
 <section class="section what" aria-labelledby="what-title">
   <div class="container">
     <div class="section-head">
-      <p class="eyebrow" data-reveal>What we do</p>
-      <h2 id="what-title" class="display-l" data-reveal style="--i:1">Three jobs, done by neighbours.</h2>
+      <h2 id="what-title" class="display-l" data-reveal>Three jobs, done by neighbours.</h2>
     </div>
     <ol class="what-list">
-      ${whatWeDo.map((w, i) => `<li data-reveal style="--i:${i}"><span class="what-num" aria-hidden="true">0${i + 1}</span><h3 class="display-s">${esc(w.title)}</h3><p>${esc(w.body)}</p></li>`).join('')}
+      ${whatWeDo.map((w, i) => `<li data-reveal style="--i:${i}"><h3 class="display-s">${esc(w.title)}</h3><p>${esc(w.body)}</p></li>`).join('')}
     </ol>
   </div>
 </section>
@@ -441,8 +468,7 @@ page('', {
 <section class="section estate" aria-labelledby="estate-title">
   <div class="container estate-grid">
     <div class="estate-copy">
-      <p class="eyebrow" data-reveal>The estate</p>
-      <h2 id="estate-title" class="display-l" data-reveal style="--i:1">${esc(estateFacts.title)}</h2>
+      <h2 id="estate-title" class="display-l" data-reveal>${esc(estateFacts.title)}</h2>
       <div class="estate-body" data-reveal style="--i:2">${estateFacts.body.map(t => `<p>${esc(t)}</p>`).join('')}</div>
       <div data-reveal style="--i:3">${sourceList(estateFacts.sources)}</div>
     </div>
@@ -456,20 +482,18 @@ page('', {
   <div class="container">
     <div class="section-head split">
       <div>
-        <p class="eyebrow" data-reveal>Latest news</p>
-        <h2 id="latest-title" class="display-l" data-reveal style="--i:1">What’s happening on the estate.</h2>
+        <h2 id="latest-title" class="display-l" data-reveal>What’s happening on the estate.</h2>
       </div>
       <a class="link-arrow" href="${r}news/" data-reveal style="--i:2">All news and events ${icon('arrow', 18)}</a>
     </div>
-    <div class="post-grid">${latest.map((p, i) => postCard(p, r, i)).join('')}</div>
+    <div class="post-grid post-grid-home">${leadCard(latest[0], r)}${latest.slice(1).map((p, i) => postCard(p, r, i + 1)).join('')}</div>
   </div>
 </section>
 
 <section class="section coming" aria-labelledby="coming-title">
   <div class="container">
     <div class="section-head">
-      <p class="eyebrow" data-reveal>Coming up</p>
-      <h2 id="coming-title" class="display-l" data-reveal style="--i:1">Put these in the diary.</h2>
+      <h2 id="coming-title" class="display-l" data-reveal>Put these in the diary.</h2>
     </div>
     <ul class="event-list">${upcoming.map((e, i) => eventRow(e, r, i)).join('')}</ul>
   </div>
@@ -538,6 +562,7 @@ for (const p of posts) {
     <p class="meta" data-reveal><span class="tag tag-${p.kind}">${kindLabel[p.kind]}</span><time datetime="${p.date}">${longDate(p.date)}</time></p>
     <h1 class="display-xl" data-reveal style="--i:1">${esc(p.title)}</h1>
     <p class="byline" data-reveal style="--i:2">From the ${esc(p.author)}</p>
+    <div class="coil-wrap" data-reveal style="--i:2">${coil}</div>
     <div class="prose" data-reveal style="--i:3">${!FINAL && p.placeholder ? '<p class="callout"><strong>Example post.</strong> Replace with a real one before launch.</p>' : ''}${p.body.map(t => `<p>${esc(t)}</p>`).join('')}${p.slug === 'taking-in-charge' ? '' : sourceList(p.sources)}</div>
     ${p.slug === 'taking-in-charge' ? `<section class="post-steps" id="steps" aria-labelledby="steps-title"><h2 id="steps-title" class="display-m">Where things stand, step by step</h2>${stairTracker()}</section><div class="prose">${sourceList(p.sources)}</div>` : ''}
   </div>
@@ -557,6 +582,7 @@ for (const e of events) {
     <a class="link-back" href="${r}news/">${icon('back', 18)} Back to news and events</a>
     <p class="meta" data-reveal><span class="tag tag-event">Event</span></p>
     <h1 class="display-xl" data-reveal style="--i:1">${esc(e.title)}</h1>
+    <div class="coil-wrap" data-reveal style="--i:2">${coil}</div>
     <div class="event-card" data-reveal style="--i:2">
       ${dateBadge(e.date)}
       <ul class="notice-facts">
@@ -650,19 +676,16 @@ page('get-involved/', {
   <div class="container">
     <ul class="ways">
       <li class="way" data-reveal>
-        <span class="way-num" aria-hidden="true">01</span>
         <h2 class="display-s">Become a member</h2>
         <p>${ph('Free')} for every household. Members get a vote at the AGM and our monthly update.</p>
-        <a class="btn btn-primary" href="#join" data-intent="member">Join now ${icon('arrow')}</a>
+        <a class="btn btn-primary" href="#join" data-intent="member">Join the association ${icon('arrow')}</a>
       </li>
       <li class="way" data-reveal style="--i:1">
-        <span class="way-num" aria-hidden="true">02</span>
         <h2 class="display-s">Volunteer for an event</h2>
         <p>Help at a clean-up, fun day or the Christmas lights. An hour makes a difference.</p>
         <a class="btn btn-outline" href="#join" data-intent="volunteer">I can help ${icon('arrow')}</a>
       </li>
       <li class="way" data-reveal style="--i:2">
-        <span class="way-num" aria-hidden="true">03</span>
         <h2 class="display-s">Be a road rep</h2>
         <p>Be the link between your road and the committee. Share updates and flag issues.</p>
         <a class="btn btn-outline" href="#join" data-intent="roadrep">Tell me more ${icon('arrow')}</a>
@@ -781,7 +804,7 @@ page('contact/', {
       <div class="direct" data-reveal>
         <p class="eyebrow">Email us directly</p>
         <p><a class="big-link" href="mailto:${site.email}">${ph(site.email)}</a></p>
-        <p class="socials"><a href="${site.facebook}" rel="noopener">Facebook</a><a href="${site.instagram}" rel="noopener">Instagram</a></p>
+        ${socialLinks.length ? `<p class="socials">${socialLinks.map(([label, url]) => `<a href="${url}" rel="noopener">${label}</a>`).join('')}</p>` : ''}
       </div>
       <div class="routes" data-reveal style="--i:1">
         <h2 class="display-s">Who to contact for what</h2>
@@ -812,6 +835,7 @@ page('privacy/', {
   <div class="container narrow">
     <p class="eyebrow">Privacy notice</p>
     <h1 class="display-xl">How we use your details.</h1>
+    <div class="coil-wrap">${coil}</div>
     <div class="prose">
       <p class="callout">${FINAL ? '' : '<strong>Draft for committee sign-off.</strong> '}The committee must confirm the data controller, retention period and storage before launch.</p>
       <h2>Who we are</h2>

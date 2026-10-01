@@ -17,8 +17,9 @@ export const site = {
   homes: 450,
   // Placeholder address on a reserved domain until the committee sets up a shared inbox.
   email: 'committee@example.com',
-  facebook: 'https://www.facebook.com/',
-  instagram: 'https://www.instagram.com/',
+  // Public social pages, once the association has them. The current Facebook group is private, so it can't go here.
+  facebook: null,
+  instagram: null,
   replyDays: 5,
   meetingMonth: 'November',
   meetingRhythm: 'once a month',
