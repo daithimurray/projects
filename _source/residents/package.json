@@ -1,0 +1,11 @@
+{
+  "name": "barnhall-meadows-ra-site",
+  "private": true,
+  "type": "module",
+  "description": "Builds the residents association site into ../../residents. No dependencies.",
+  "scripts": {
+    "build": "node build.mjs",
+    "build:final": "node build.mjs --final",
+    "serve": "npx --yes serve ../../ -l 4321"
+  }
+}
