@@ -28,9 +28,18 @@ assets, and fails if any internal link or anchor does not resolve.
 
 ## Design
 
-- Type: Fraunces (display) and Public Sans (text). Palette: deep green, paper, berry red, sun yellow.
-- Signature: an estate skyline drawn in SVG, with the Wonderful Barn and its two dovecotes behind the houses. The back layers move at different speeds on scroll, and windows light up on load.
-- Motion: staggered scroll reveals, sticky header that condenses, reading-progress bar, count-up numbers,
+- Direction: "the estate beside the Barn", agreed by David on 1 October 2026.
+- Type: upright Fraunces at a low optical size for headings (no italic), Public Sans for text.
+- Palette: meadow green, limestone, barn ochre, slate blue. Ochre is for shapes and large type; text uses the
+  darker `--ochre-ink`. Slate is for links and council notices. Red (`--signal`) is for errors and emergencies only.
+  Every text pairing passes WCAG AA (contrast ratios are noted next to the tokens in `styles.css`).
+- Logo and favicon: the Wonderful Barn with its two dovecotes (`markShapes` in `build.mjs`; the favicon is generated from it).
+- Signature: the estate skyline in SVG. The Barn stands in the meadow with modern semis, terraces and an apartment
+  block either side. The back layers move on scroll, and windows light up on load. The Barn is drawn from
+  published descriptions; check it against a photo before launch.
+- Taking-in-charge tracker: stair steps on Home and on the taking-in-charge post (`takingInCharge` in `data.mjs`).
+  The stair line draws itself once when it scrolls into view. Update the statuses when the council replies.
+- Motion: staggered scroll reveals, the stair line, sticky header that condenses, reading-progress bar, count-up numbers,
   filter chips with view transitions, animated accordions, slide-in menu, cross-page transitions.
   All of it switches off under `prefers-reduced-motion`.
 - Accessibility: skip link, landmarks, visible focus, 44px minimum targets, native `<dialog>` menu,
@@ -58,6 +67,8 @@ linked on the site before launch:
 - The Wonderful Barn: built 1743 by Katherine Conolly.
 - Wonderful Barn park plan (Part 8, P82024.10) approved 18 October 2024.
 - Taking in charge: consultation 19 November to 18 December 2024; still not taken in charge per the council's reply in September 2025.
+- The Barn drawing (logo, favicon, skyline): check the stair, the flat roof and the dovecotes against a photo.
+- The taking-in-charge tracker: ask the council for the current position and update `takingInCharge`.
 - Leixlip Garda Station, 19 Station Road, 01 666 7800.
 
 ### Kept as placeholders on purpose

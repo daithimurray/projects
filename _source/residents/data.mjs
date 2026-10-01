@@ -66,6 +66,49 @@ export const whatWeDo = [
   },
 ];
 
+// The taking-in-charge campaign, shown as stair steps on Home and on the taking-in-charge post.
+// status: done | now | next. When the council replies, update the statuses, latest and the post.
+export const takingInCharge = {
+  latest: 'September 2025',
+  waitingOn: 'the council’s decision',
+  steps: [
+    {
+      title: 'Planning permission granted',
+      when: 'April 2018',
+      body: 'An Bord Pleanála approved up to 450 homes, a crèche and open space.',
+      status: 'done',
+      source: ['An Bord Pleanála, ABP-300606', 'https://www.pleanala.ie/en-ie/case/300606'],
+    },
+    {
+      title: 'Residents move in',
+      when: 'From 2020',
+      whenPlaceholder: true,
+      body: 'Until the handover, the developer looks after the roads, footpaths, street lights and green areas.',
+      status: 'done',
+    },
+    {
+      title: 'Council consultation',
+      when: 'Nov to Dec 2024',
+      body: 'Kildare County Council asked the public for views on taking the estate in charge.',
+      status: 'done',
+      source: ['Kildare County Council consultation', 'https://consult.kildarecoco.ie/en/consultation/taking-charge-roads-and-services-barnhall-meadows-leixlip'],
+    },
+    {
+      title: 'Council decision',
+      when: 'Waiting',
+      body: 'Still not taken in charge at the last update we found. We are asking the council for the current position.',
+      status: 'now',
+      source: ['Kildare Now, September 2025', 'https://www.kildarenow.com/news/councillor-asks-for-update-on-landscaping-works-at-kildares-wonderful-barn-9142973'],
+    },
+    {
+      title: 'The council takes over',
+      when: 'Date not set',
+      body: 'The council maintains the roads, footpaths, street lights, open spaces and drains.',
+      status: 'next',
+    },
+  ],
+};
+
 // kind: news | council. sources: [label, url] pairs shown under the post.
 // Council posts use researched facts. News posts are placeholders until the committee writes real ones.
 export const posts = [

@@ -5,7 +5,7 @@
 import { mkdirSync, rmSync, writeFileSync, copyFileSync, readdirSync, readFileSync, existsSync } from 'node:fs';
 import { dirname, join, relative } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { site, impact, estateFacts, whatWeDo, posts, events, committee, nextMeeting, documents, faqs } from './data.mjs';
+import { site, impact, estateFacts, whatWeDo, takingInCharge, posts, events, committee, nextMeeting, documents, faqs } from './data.mjs';
 
 const HERE = dirname(fileURLToPath(import.meta.url));
 const OUT = join(HERE, '../../residents');
@@ -62,16 +62,17 @@ const sprite = `<svg width="0" height="0" style="position:absolute" aria-hidden=
   <symbol id="i-lamp" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7V16h8v-1.3A7 7 0 0 0 12 2z"/></g></symbol>
   <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></symbol>
   <symbol id="i-home" viewBox="0 0 24 24"><path d="M3 11 12 4l9 7M5 10v10h14V10M10 20v-6h4v6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12.5 4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></symbol>
   <symbol id="i-chat" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></symbol>
 </svg>`;
 
-// Placeholder mark (a sprig and berries over a roofline) until the association supplies a logo.
-const mark = (size = 40) => `<svg class="mark" width="${size}" height="${size}" viewBox="0 0 48 48" aria-hidden="true">
-  <rect width="48" height="48" rx="12" fill="var(--green)"/>
-  <path d="M9 33 24 20l15 13" fill="none" stroke="var(--paper)" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/>
-  <path d="M24 20c1-6 5-9 11-9-1 6-5 9-11 9z" fill="var(--leaf)"/>
-  <circle cx="18" cy="38" r="3" fill="var(--berry-bright)"/><circle cx="24.5" cy="39.5" r="3" fill="var(--berry-bright)"/><circle cx="31" cy="38" r="3" fill="var(--berry-bright)"/>
-</svg>`;
+// Logo mark: the Wonderful Barn and its two dovecotes. Locked up with the association's name in the header and footer.
+const markShapes = `<rect width="48" height="48" rx="12" fill="var(--green)"/>
+  <path d="M5.5 40 7.4 28H9.6L11.5 40ZM6.8 25.6h3.4v2.4H6.8ZM36.5 40 38.4 28H40.6L42.5 40ZM37.8 25.6h3.4v2.4h-3.4Z" fill="var(--ochre-light)"/>
+  <path d="M13 40 19 12H29L35 40ZM18 8.6h12v3.6H18Z" fill="var(--ochre)"/>
+  <path d="M12 37 36 31.4M14 28.9 34 23.9M16 20.8 32 16.4" stroke="var(--green)" stroke-width="2.4"/>
+  <rect x="4" y="39.6" width="40" height="2.6" rx="1.3" fill="var(--limestone)"/>`;
+const mark = (size = 40) => `<svg class="mark" width="${size}" height="${size}" viewBox="0 0 48 48" aria-hidden="true">${markShapes}</svg>`;
 
 function header(r, current) {
   const links = NAV.map(([href, label]) => {
@@ -105,7 +106,7 @@ const joinBand = r => `<section class="join-band" aria-labelledby="join-band-tit
       <p class="eyebrow on-dark">Membership is free</p>
       <h2 id="join-band-title" class="display-m">It takes two minutes to join. The more of us, the louder our voice.</h2>
     </div>
-    <a class="btn btn-sun btn-lg" href="${r}get-involved/#join">Become a member ${icon('arrow')}</a>
+    <a class="btn btn-ochre btn-lg" href="${r}get-involved/#join">Become a member ${icon('arrow')}</a>
   </div>
   ${skyline('band')}
 </section>`;
@@ -129,7 +130,7 @@ function footer(r) {
           <li><a href="${site.facebook}" rel="noopener">Facebook</a></li>
           <li><a href="${site.instagram}" rel="noopener">Instagram</a></li>
         </ul>
-        <a class="btn btn-sun" href="${r}get-involved/#join">Join the association ${icon('arrow')}</a>
+        <a class="btn btn-ochre" href="${r}get-involved/#join">Join the association ${icon('arrow')}</a>
       </div>
     </div>
     <p class="footer-word" aria-hidden="true">${esc(site.estate)}</p>
@@ -178,74 +179,135 @@ ${footer(r)}
 `;
 }
 
-/* ---------- illustration: estate skyline ----------
-   Deterministic rows of houses with windows that light up. Layers move at different speeds on scroll (main.js). */
+/* ---------- illustration: the estate beside the Barn ----------
+   Deterministic rows of houses with windows that light up. The back layers move on scroll (main.js);
+   the Barn and the front row stay put so the Barn stays anchored to the ground. */
 function rng(seed) {
   let s = seed;
   return () => ((s = (s * 16807) % 2147483647) / 2147483647);
 }
-function houseRow({ seed, y, h, minW, maxW, fill, win, winChance, width = 1440 }) {
-  const rand = rng(seed);
-  let x = -20;
-  let out = '';
-  let n = 0;
-  while (x < width + 20) {
-    const w = Math.round(minW + rand() * (maxW - minW));
-    const hh = Math.round(h * (0.8 + rand() * 0.35));
-    const roof = Math.round(w * (0.28 + rand() * 0.14));
-    const top = y - hh;
-    out += `<path d="M${x} ${y}V${top}L${x + w / 2} ${top - roof}L${x + w} ${top}V${y}Z" fill="${fill}"/>`;
-    if (rand() > 0.55) out += `<rect x="${x + w * 0.68}" y="${top - roof * 0.9}" width="${Math.max(6, w * 0.08)}" height="${roof * 0.7}" fill="${fill}"/>`;
-    if (win) {
-      const cols = w > 90 ? 3 : 2;
-      const ww = Math.max(7, w * 0.13);
-      for (let row = 0; row < 2; row++) {
-        for (let c = 0; c < cols; c++) {
-          const wx = x + (w / (cols + 1)) * (c + 1) - ww / 2;
-          const wy = top + 12 + row * (hh * 0.38);
-          const lit = rand() < winChance;
-          out += `<rect class="win${lit ? ' lit' : ''}" style="--d:${(n++ % 17) * 0.23}s" x="${wx.toFixed(1)}" y="${wy.toFixed(1)}" width="${ww.toFixed(1)}" height="${(ww * 1.25).toFixed(1)}" rx="1.5" fill="${win}"/>`;
-        }
-      }
+function tree(x, y, s, fill) {
+  return `<g transform="translate(${x} ${y}) scale(${s})"><rect x="-3.5" y="-44" width="7" height="44" fill="${fill}"/><circle cx="0" cy="-74" r="34" fill="${fill}"/><circle cx="-25" cy="-54" r="23" fill="${fill}"/><circle cx="25" cy="-56" r="25" fill="${fill}"/></g>`;
+}
+// A young street tree, as planted along the estate's roads.
+const sapling = (x, y, s, fill) => `<g transform="translate(${x} ${y}) scale(${s})"><rect x="-2" y="-36" width="4" height="36" fill="${fill}"/><ellipse cx="0" cy="-50" rx="14" ry="22" fill="${fill}"/></g>`;
+
+// A tapering round tower with a stair winding round the outside to a flat roof with a parapet.
+// Each stair band is the front half of one turn, so it wraps round the edges like the real thing.
+function tower(cx, y, { base, top, h, turns, ext, band, body, stair, doors = false }) {
+  const w = hh => base - (base - top) * (hh / h);
+  let out = `<path d="M${cx - base} ${y}L${cx - top} ${y - h}H${cx + top}L${cx + base} ${y}Z" fill="${body}"/>`;
+  out += `<rect x="${cx - top - 3}" y="${y - h - 11}" width="${(top + 3) * 2}" height="11" fill="${body}"/>`;
+  const pitch = (h - 8) / turns;
+  for (let k = 0; k < turns; k++) {
+    const h0 = 4 + k * pitch;
+    const pts = [];
+    for (let i = 0; i <= 18; i++) {
+      const t = i / 18;
+      const hh = h0 + (t * pitch) / 2;
+      pts.push([cx - Math.cos(t * Math.PI) * (w(hh) + ext), y - hh]);
     }
-    x += w + Math.round(4 + rand() * 18);
+    const edge = pts.map(([px, py]) => `${px.toFixed(1)} ${py.toFixed(1)}`).join('L');
+    const under = [...pts].reverse().map(([px, py]) => `${px.toFixed(1)} ${(py + band).toFixed(1)}`).join('L');
+    out += `<path d="M${edge}L${under}Z" fill="${stair}"/>`;
+    if (doors && k > 0 && k % 2 === 0) {
+      const hy = y - (h0 + pitch / 4);
+      out += `<path d="M${cx - 5} ${hy}v-13a5 5 0 0 1 10 0v13Z" fill="${stair}"/>`;
+    }
   }
   return out;
 }
-function tree(x, y, s, fill, berries) {
-  let out = `<g transform="translate(${x} ${y}) scale(${s})"><rect x="-4" y="-40" width="8" height="40" fill="${fill}"/>`;
-  out += `<circle cx="0" cy="-70" r="38" fill="${fill}"/><circle cx="-30" cy="-50" r="26" fill="${fill}"/><circle cx="30" cy="-52" r="28" fill="${fill}"/>`;
-  if (berries) {
-    const rand = rng(x + 7);
-    for (let i = 0; i < 14; i++) out += `<circle class="berry" cx="${(rand() * 90 - 45).toFixed(1)}" cy="${(-rand() * 80 - 30).toFixed(1)}" r="3.2" fill="var(--berry-bright)" style="--d:${(i * 0.12).toFixed(2)}s"/>`;
-  }
+// The Wonderful Barn (1743), drawn from published descriptions: a conical tower about twice as tall as it is wide,
+// 94 steps winding round the outside to a flat roof with a parapet, and two smaller towers of the same design
+// (dovecotes) behind it. Check against a photo before launch.
+function barn(cx, y, scale = 1, { body = 'var(--barn)', stair = 'var(--barn-stair)', back = body } = {}) {
+  let out = `<g class="barn" transform="translate(${cx} ${y}) scale(${scale}) translate(${-cx} ${-y})">`;
+  out += `<rect x="${cx - 112}" y="${y - 16}" width="224" height="16" fill="${back}"/>`;
+  for (const dx of [-100, 100]) out += tower(cx + dx, y, { base: 21, top: 11, h: 74, turns: 2, ext: 2.5, band: 5, body: back, stair });
+  out += tower(cx, y, { base: 52, top: 22, h: 208, turns: 5, ext: 5, band: 9, body, stair, doors: true });
   return out + '</g>';
 }
-// The Wonderful Barn (1743): a tapering tower with a stair winding round the outside, between two conical dovecotes.
-function barn(cx, y, scale = 1) {
-  const f = 'var(--barn)';
-  let out = `<g class="barn" transform="translate(${cx} ${y}) scale(${scale}) translate(${-cx} ${-y})"><clipPath id="barn-clip"><path d="M${cx - 42} ${y}L${cx - 25} ${y - 196}C${cx - 22} ${y - 232} ${cx + 22} ${y - 232} ${cx + 25} ${y - 196}L${cx + 42} ${y}Z"/></clipPath>`;
-  out += `<rect x="${cx - 118}" y="${y - 16}" width="236" height="16" fill="${f}"/>`;
-  for (const dx of [-92, 92]) {
-    out += `<rect x="${cx + dx - 14}" y="${y - 46}" width="28" height="46" fill="${f}"/><path d="M${cx + dx - 18} ${y - 46}L${cx + dx} ${y - 84}L${cx + dx + 18} ${y - 46}Z" fill="${f}"/><rect x="${cx + dx - 2}" y="${y - 94}" width="4" height="12" fill="${f}"/>`;
+
+/* Modern estate housing: semis and terraces under shallow roofs, and flat-roofed apartment blocks. */
+// apartments: chance that a building is an apartment block, or a list of the building numbers that are.
+function houseRow({ seed, y, from = -20, to = 1460, unit: [uMin, uMax], storey, fill, win, winChance, apartments = 0.14, width = 1440 }) {
+  const rand = rng(seed);
+  let x = from;
+  let out = '';
+  let n = 0;
+  let b = 0;
+  const pane = (px, py, pw, ph, cls = 'win') => {
+    const lit = cls === 'win' && rand() < winChance;
+    return `<rect class="${cls}${lit ? ' lit' : ''}" style="--d:${(n++ % 17) * 0.23}s" x="${px.toFixed(1)}" y="${py.toFixed(1)}" width="${pw.toFixed(1)}" height="${ph.toFixed(1)}" rx="1" fill="${win}"/>`;
+  };
+  while (x < to) {
+    const r = rand();
+    const u = uMin + rand() * (uMax - uMin);
+    const apt = Array.isArray(apartments) ? apartments.includes(b) : r < apartments;
+    const kind = apt ? 'apt' : r < 0.6 ? 'semi' : 'terrace';
+    const units = kind === 'semi' ? 2 : kind === 'terrace' ? 3 + (rand() < 0.4 ? 1 : 0) : 0;
+    const w = kind === 'apt' ? u * (2.8 + rand() * 0.8) : u * units;
+    if (x + w > to && to < width) break;
+    if (kind === 'apt') {
+      const floors = 4;
+      const top = y - storey * floors - 6;
+      out += `<path d="M${x} ${y}V${top}H${x + w}V${y}Z" fill="${fill}"/><rect x="${x + w * 0.62}" y="${top - 8}" width="${w * 0.22}" height="9" fill="${fill}"/>`;
+      if (win) {
+        const cols = Math.max(3, Math.round(w / (u * 0.55)));
+        const cw = w / cols;
+        for (let f = 0; f < floors; f++) {
+          for (let c = 0; c < cols; c++) {
+            const py = top + 10 + f * storey;
+            out += pane(x + c * cw + cw * 0.22, py, cw * 0.56, storey * 0.5);
+            if (f > 0 && c % 2 === 0) out += pane(x + c * cw + cw * 0.12, py + storey * 0.58, cw * 0.76, 2.5, 'rail');
+          }
+        }
+      }
+    } else {
+      const top = y - storey * 2;
+      const roof = storey * 0.32;
+      const hip = rand() < 0.5 ? roof * 1.8 : 0;
+      out += `<path d="M${x} ${y}V${top}H${(x - 3).toFixed(1)}L${(x + hip).toFixed(1)} ${(top - roof).toFixed(1)}H${(x + w - hip).toFixed(1)}L${(x + w + 3).toFixed(1)} ${top}H${x + w}V${y}Z" fill="${fill}"/>`;
+      // Some semis have a shallow front gable over one house.
+      if (kind === 'semi' && rand() < 0.5) {
+        const gx = rand() < 0.5 ? x : x + u;
+        out += `<path d="M${(gx + u * 0.08).toFixed(1)} ${top}L${(gx + u * 0.5).toFixed(1)} ${(top - roof * 1.5).toFixed(1)}L${(gx + u * 0.92).toFixed(1)} ${top}Z" fill="${fill}"/>`;
+      }
+      if (win) {
+        for (let k = 0; k < units; k++) {
+          const ux = x + k * u;
+          const mirror = k % 2 === 1;
+          const doorX = mirror ? ux + u * 0.7 : ux + u * 0.12;
+          const winX = mirror ? ux + u * 0.1 : ux + u * 0.46;
+          out += pane(doorX, y - storey * 0.68, u * 0.18, storey * 0.68, 'door');
+          out += `<rect x="${(doorX - u * 0.04).toFixed(1)}" y="${(y - storey * 0.76).toFixed(1)}" width="${(u * 0.26).toFixed(1)}" height="3" fill="${win}" opacity=".5"/>`;
+          out += pane(winX, y - storey * 0.72, u * 0.42, storey * 0.38);
+          out += pane(ux + u * 0.14, top + storey * 0.26, u * 0.3, storey * 0.38);
+          out += pane(ux + u * 0.56, top + storey * 0.26, u * 0.3, storey * 0.38);
+        }
+      }
+    }
+    x += w + Math.round(6 + rand() * 22);
+    b++;
   }
-  out += `<path d="M${cx - 42} ${y}L${cx - 25} ${y - 196}C${cx - 22} ${y - 232} ${cx + 22} ${y - 232} ${cx + 25} ${y - 196}L${cx + 42} ${y}Z" fill="${f}"/>`;
-  out += `<g clip-path="url(#barn-clip)" stroke="var(--paper)" stroke-opacity=".55" stroke-width="3.5">`;
-  for (let k = 0; k < 6; k++) { const yy = y - 18 - k * 36; out += `<path d="M${cx - 48} ${yy}L${cx + 48} ${yy - 26}"/>`; }
-  out += `</g><rect x="${cx - 3}" y="${y - 238}" width="6" height="14" fill="${f}"/></g>`;
   return out;
 }
 function skyline(variant) {
   if (variant === 'band') {
+    const near = { y: 120, unit: [26, 34], storey: 22, fill: 'rgba(255,255,255,.06)', winChance: 0, apartments: [3] };
     return `<svg class="skyline skyline-band" viewBox="0 0 1440 120" preserveAspectRatio="xMidYMax slice" aria-hidden="true" focusable="false">
-      ${houseRow({ seed: 11, y: 120, h: 50, minW: 50, maxW: 90, fill: 'rgba(255,255,255,.06)', winChance: 0 })}
+      ${houseRow({ seed: 11, from: -20, to: 1080, ...near })}${houseRow({ seed: 13, from: 1290, ...near })}
+      ${barn(1185, 120, 0.42, { body: 'rgba(255,255,255,.1)', stair: 'rgba(255,255,255,.06)', back: 'rgba(255,255,255,.07)' })}
     </svg>`;
   }
+  const far = { y: 330, unit: [24, 32], storey: 26, fill: 'var(--house-far)', win: 'var(--win-far)', winChance: 0.3 };
+  const near = { y: 404, unit: [44, 54], storey: 44, fill: 'var(--house-near)', win: 'var(--ochre-light)', winChance: 0.45, apartments: [] };
   return `<svg class="skyline" viewBox="0 0 1440 420" preserveAspectRatio="xMidYMax slice" aria-hidden="true" focusable="false">
     <g class="layer" data-depth="0.18"><path d="M0 250C180 200 320 215 480 235S820 180 1000 205 1300 230 1440 200V420H0Z" fill="var(--hill)"/></g>
-    <g class="layer" data-depth="0.06">${barn(720, 404, 1.2)}</g>
-    <g class="layer" data-depth="0.1">${houseRow({ seed: 3, y: 330, h: 70, minW: 60, maxW: 110, fill: 'var(--house-far)', win: 'var(--win-far)', winChance: 0.3 })}</g>
-    <g>${houseRow({ seed: 29, y: 404, h: 110, minW: 90, maxW: 150, fill: 'var(--house-near)', win: 'var(--sun)', winChance: 0.45 })}${tree(118, 408, 1.25, 'var(--tree)', true)}${tree(1318, 408, 1.1, 'var(--tree)', true)}<rect x="0" y="400" width="1440" height="60" fill="var(--house-near)"/></g>
+    <g class="layer" data-depth="0.1">${houseRow({ seed: 3, from: -20, to: 590, ...far })}${houseRow({ seed: 7, from: 860, ...far })}</g>
+    <g>${barn(720, 404, 1.38)}${tree(505, 406, 0.9, 'var(--tree)')}${tree(948, 406, 0.75, 'var(--tree)')}
+      ${houseRow({ seed: 29, from: -20, to: 462, ...near })}${houseRow({ seed: 41, from: 1000, ...near, apartments: [0] })}
+      ${sapling(150, 406, 1, 'var(--tree)')}${sapling(1290, 406, 1.1, 'var(--tree)')}<rect x="0" y="400" width="1440" height="60" fill="var(--house-near)"/></g>
   </svg>`;
 }
 
@@ -267,6 +329,26 @@ const eventRow = (e, r, i = 0) => `<li class="event-row" data-kind="event" data-
   </div>
   <span class="chev" aria-hidden="true">${icon('arrow')}</span>
 </li>`;
+
+// Taking-in-charge tracker: stair steps that climb to the right, like the Barn's stair. On narrow
+// containers it becomes a vertical list. The stair line draws itself once, when it scrolls into view.
+const statusText = { done: 'Done', now: 'In progress', next: 'Not started' };
+function stairTracker(level = 'h3') {
+  const steps = takingInCharge.steps;
+  const done = steps.filter(st => st.status === 'done').length;
+  return `<div class="stair" data-reveal style="--steps:${steps.length}">
+  <p class="stair-status"><strong>${done} of ${steps.length} steps done.</strong> Waiting on ${esc(takingInCharge.waitingOn)}. Latest update we have found: ${esc(takingInCharge.latest)}.</p>
+  <ol class="stair-steps">
+    ${steps.map((st, n) => `<li class="stair-step is-${st.status}" style="--n:${n}"${st.status === 'now' ? ' aria-current="step"' : ''}>
+      <span class="stair-dot" aria-hidden="true">${st.status === 'done' ? icon('check', 18) : n + 1}</span>
+      <p class="stair-when">${st.whenPlaceholder ? ph(st.when) : esc(st.when)}<span class="visually-hidden">. ${statusText[st.status]}.</span></p>
+      <${level} class="stair-title">${esc(st.title)}</${level}>
+      <p class="stair-body">${esc(st.body)}</p>
+      ${st.source ? `<p class="stair-src">Source: <a href="${st.source[1]}" rel="noopener">${esc(st.source[0])}</a></p>` : ''}
+    </li>`).join('')}
+  </ol>
+</div>`;
+}
 
 const pageHero = ({ eyebrow, title, intro }) => `<section class="page-hero">
   <div class="container">
@@ -307,7 +389,7 @@ page('', {
   <div class="container hero-grid">
     <div class="hero-copy">
       <p class="eyebrow" data-reveal>${esc(site.estate)} · ${esc(site.area)}</p>
-      <h1 class="display-hero" data-reveal style="--i:1">Looking after ${(() => { const w = esc(site.estate).split(' '); const last = w.pop(); return `${w.length ? `<em>${w.join(' ')}</em> ` : ''}<span class="nw"><em>${last}</em>,</span>`; })()} together.</h1>
+      <h1 class="display-hero" data-reveal style="--i:1">Looking after ${(() => { const w = esc(site.estate).split(' '); const last = w.pop(); return `${w.length ? `<span class="estate-name">${w.join(' ')}</span> ` : ''}<span class="nw"><span class="estate-name">${last}</span>,</span>`; })()} together.</h1>
       <p class="lede" data-reveal style="--i:2">We’re the residents association for ${esc(site.estate)} in Leixlip, an estate of ${ph('up to ' + site.homes + ' homes')}. We work with the council, the developer, local groups and each other to keep this a great place to live.</p>
       <div class="hero-ctas" data-reveal style="--i:3">
         <a class="btn btn-primary btn-lg" href="${r}get-involved/#join">Join the association ${icon('arrow')}</a>
@@ -340,6 +422,19 @@ page('', {
     <ol class="what-list">
       ${whatWeDo.map((w, i) => `<li data-reveal style="--i:${i}"><span class="what-num" aria-hidden="true">0${i + 1}</span><h3 class="display-s">${esc(w.title)}</h3><p>${esc(w.body)}</p></li>`).join('')}
     </ol>
+  </div>
+</section>
+
+<section class="section campaign" aria-labelledby="tic-title">
+  <div class="container">
+    <div class="section-head split">
+      <div>
+        <p class="eyebrow" data-reveal>Our first job</p>
+        <h2 id="tic-title" class="display-l" data-reveal style="--i:1">Getting the estate taken in charge.</h2>
+      </div>
+      <a class="link-arrow" href="${r}news/taking-in-charge/" data-reveal style="--i:2">What taking in charge means ${icon('arrow', 18)}</a>
+    </div>
+    ${stairTracker()}
   </div>
 </section>
 
@@ -443,7 +538,8 @@ for (const p of posts) {
     <p class="meta" data-reveal><span class="tag tag-${p.kind}">${kindLabel[p.kind]}</span><time datetime="${p.date}">${longDate(p.date)}</time></p>
     <h1 class="display-xl" data-reveal style="--i:1">${esc(p.title)}</h1>
     <p class="byline" data-reveal style="--i:2">From the ${esc(p.author)}</p>
-    <div class="prose" data-reveal style="--i:3">${!FINAL && p.placeholder ? '<p class="callout"><strong>Example post.</strong> Replace with a real one before launch.</p>' : ''}${p.body.map(t => `<p>${esc(t)}</p>`).join('')}${sourceList(p.sources)}</div>
+    <div class="prose" data-reveal style="--i:3">${!FINAL && p.placeholder ? '<p class="callout"><strong>Example post.</strong> Replace with a real one before launch.</p>' : ''}${p.body.map(t => `<p>${esc(t)}</p>`).join('')}${p.slug === 'taking-in-charge' ? '' : sourceList(p.sources)}</div>
+    ${p.slug === 'taking-in-charge' ? `<section class="post-steps" id="steps" aria-labelledby="steps-title"><h2 id="steps-title" class="display-m">Where things stand, step by step</h2>${stairTracker()}</section><div class="prose">${sourceList(p.sources)}</div>` : ''}
   </div>
 </article>`,
   });
@@ -513,7 +609,7 @@ page('committee/', {
   <div class="container">
     <ul class="people">
       ${committee.map((c, i) => `<li class="person" data-reveal style="--i:${i}">
-        <span class="avatar" aria-hidden="true" style="--h:${(i * 47) % 360}">${esc(initials(c.role).toUpperCase())}</span>
+        <span class="avatar avatar-${i % 3}" aria-hidden="true">${esc(initials(c.role).toUpperCase())}</span>
         <div><p class="role">${esc(c.role)}</p><h2 class="person-name">${c.name ? ph(c.name) : ph('Name to be confirmed')}</h2><p>${esc(c.line)}</p></div>
       </li>`).join('')}
     </ul>
@@ -758,7 +854,11 @@ for (const p of pages) {
     written.add(relative(OUT, join(OUT, p.path, 'event.ics')));
   }
 }
-for (const f of ['styles.css', 'favicon.svg', 'robots.txt', 'vercel.json']) {
+// The favicon is the logo mark, with the colour tokens written out.
+const HEX = { green: '#173B2C', ochre: '#C8913A', 'ochre-light': '#E0B25E', limestone: '#EDE9E0' };
+writeFileSync(join(OUT, 'favicon.svg'), `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48">${markShapes.replace(/var\(--([\w-]+)\)/g, (_, k) => HEX[k])}</svg>\n`);
+written.add('favicon.svg');
+for (const f of ['styles.css', 'robots.txt', 'vercel.json']) {
   copyFileSync(join(HERE, 'assets', f), join(OUT, f));
   written.add(f);
 }
